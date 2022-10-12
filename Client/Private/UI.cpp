@@ -36,7 +36,7 @@ HRESULT CUI::Initialize(void * pArg)
 	m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 	
-	m_fX = 1130;
+	m_fX = 1150;
 	m_fY = 600;
 
 	m_pTransformCom2->Set_Scale(XMLoadFloat3(&vScale));
@@ -50,7 +50,14 @@ void CUI::Tick(_float fTimeDelta)
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 	if (pGameInstance->Key_Down(DIK_I))
+	{
 		m_bInven = !m_bInven;
+		if (m_bInven)
+		{
+			m_bSelect = false;
+			SetSelectButton();
+		}
+	}
 	
 	if (m_bInven)
 	{
@@ -63,6 +70,10 @@ void CUI::Tick(_float fTimeDelta)
 		{
 			m_bSelect = !m_bSelect;
 			SetSelectButton();
+		}
+		if (pGameInstance->Key_Down(DIK_RETURN))
+		{
+			m_bInven = !m_bInven;
 		}
 	}
 	Safe_Release(pGameInstance);
@@ -81,13 +92,6 @@ HRESULT CUI::Render()
 
 	if (FAILED(SetUp_ShaderResources()))
 		return E_FAIL;
-
-	m_pShaderCom->Begin();
-	m_pVIBufferCom->Render();
-	m_pShaderCom2->Begin();
-	m_pVIBufferCom2->Render();
-	m_pShaderCom3->Begin();
-	m_pVIBufferCom3->Render();
 
 	return S_OK;
 }
@@ -128,7 +132,7 @@ HRESULT CUI::Ready_Components()
 
 HRESULT CUI::SetUp_ShaderResources()
 {
-	if (nullptr == m_pShaderCom)
+	if (nullptr == m_pShaderCom || nullptr == m_pShaderCom2 || nullptr == m_pShaderCom3)
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
@@ -140,6 +144,9 @@ HRESULT CUI::SetUp_ShaderResources()
 	if (FAILED(m_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(3))))
 		return E_FAIL;
 
+	m_pShaderCom->Begin();
+	m_pVIBufferCom->Render();
+
 	if (FAILED(m_pShaderCom2->Set_RawValue("g_WorldMatrix", &m_pTransformCom2->Get_World4x4_TP(), sizeof(_float4x4))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom2->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
@@ -149,6 +156,9 @@ HRESULT CUI::SetUp_ShaderResources()
 	if (FAILED(m_pShaderCom2->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(4))))
 		return E_FAIL;
 
+	m_pShaderCom2->Begin();
+	m_pVIBufferCom2->Render();
+
 	if (FAILED(m_pShaderCom3->Set_RawValue("g_WorldMatrix", &m_pTransformCom3->Get_World4x4_TP(), sizeof(_float4x4))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom3->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
@@ -157,6 +167,9 @@ HRESULT CUI::SetUp_ShaderResources()
 		return E_FAIL;
 	if (FAILED(m_pShaderCom3->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(0))))
 		return E_FAIL;
+
+	m_pShaderCom3->Begin();
+	m_pVIBufferCom3->Render();
 
 	return S_OK;
 }
@@ -172,7 +185,7 @@ HRESULT CUI::SetSelectButton()
 	}
 	else
 	{
-		m_fX = 950;
+		m_fX = 930;
 		m_fY = 600;
 	}
 	_float3 vScale = { m_fSizeX,m_fSizeY,0.f };

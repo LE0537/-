@@ -22,16 +22,14 @@ protected:
 	CGameObj(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CGameObj(const CGameObj& rhs);
 	virtual ~CGameObj() = default;
-
-
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
 	virtual void Tick(_float fTimeDelta);
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
+
 public:
-	
 	typedef struct tagInfo {
 		wstring		strName;
 		_int		iMoney;
@@ -41,19 +39,19 @@ public:
 	}PLAYERINFO;
 	typedef struct tagInfo2 {
 		wstring		strName;
-		_short		sPokeNum;
-		_short		sMaxHp;
-		_short		sHp;
-		_short		sDmg;
-		_short		sSDmg;
-		_short		sDef;
-		_short		sSDef;
-		_short		sSpeed;
-		_short		sLv;
-		_short		sMaxExp;
-		_short		sExp;
-		_short		sItem;
-		_short		sSex;
+		_int		iPokeNum;
+		_int		iMaxHp;
+		_int		iHp;
+		_int		iDmg;
+		_int		iSDmg;
+		_int		iDef;
+		_int		iSDef;
+		_int		iSpeed;
+		_int		iLv;
+		_int		iMaxExp;
+		_int		iExp;
+		_int		iItem;
+		_int		iSex;
 		_bool		bItem;
 		POKETYPE	eType;
 		POKETYPE	eType2;
@@ -61,8 +59,8 @@ public:
 	}POKEINFO;
 	typedef struct tagInfo3 {
 		wstring		strName;
-		_short		sDmg;
-		_short		sSDmg;
+		_int		iDmg;
+		_int		iSDmg;
 		POKETYPE	eType;
 		
 	}SKILLINFO;
@@ -77,6 +75,11 @@ protected:
 	PLAYERINFO				m_PlayerInfo;
 	POKEINFO				m_PokemonInfo;
 	SKILLINFO				m_SkillInfo;
+
+public:
+	POKEINFO Get_PokeInfo() {return m_PokemonInfo;}
+	PLAYERINFO Get_PalyerInfo() { return m_PlayerInfo; }
+	SKILLINFO Get_SkillInfo() { return m_SkillInfo; }
 
 public:
 	static CGameObj* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

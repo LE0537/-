@@ -49,8 +49,11 @@
     <Filter Include="02.GameObjects\99.GameObj\04.UI">
       <UniqueIdentifier>{418b620b-4b2f-48ea-aa56-0881b5828d8f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\04.UI\01.Pokemon">
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon">
       <UniqueIdentifier>{1325a119-e099-4af2-9e0c-f8091f2a9f18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\00.Bag">
+      <UniqueIdentifier>{2dfa4ff2-4911-4e83-9925-3be1078db5f5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +105,9 @@
     <ClInclude Include="..\public\GameObj.h">
       <Filter>02.GameObjects\99.GameObj</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Bag.h">
+      <Filter>02.GameObjects\99.GameObj\04.UI\00.Bag</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -139,6 +145,9 @@
     </ClCompile>
     <ClCompile Include="..\private\GameObj.cpp">
       <Filter>02.GameObjects\99.GameObj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Bag.cpp">
+      <Filter>02.GameObjects\99.GameObj\04.UI\00.Bag</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

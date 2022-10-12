@@ -42,6 +42,66 @@ void CInput_Device::Update()
 	m_pMouse->GetDeviceState(sizeof(DIMOUSESTATE), &m_MouseState);
 }
 
+_bool CInput_Device::Key_Down(_uchar eKeyID)
+{
+	if (m_preKeyState[eKeyID] != m_byKeyState[eKeyID])
+	{
+		if (m_byKeyState[eKeyID] & 0x80)
+			return true;
+	}
+	return false;
+}
+
+_bool CInput_Device::Key_Up(_uchar eKeyID)
+{
+	if (m_preKeyState[eKeyID] != m_byKeyState[eKeyID])
+	{
+		if (m_preKeyState[eKeyID] & 0x80)
+			return true;
+	}
+	return false;
+}
+
+_bool CInput_Device::Key_Pressing(_uchar eKeyID)
+{
+	if (m_preKeyState[eKeyID] == m_byKeyState[eKeyID])
+	{
+		if (m_preKeyState[eKeyID] & 0x80)
+			return true;
+	}
+	return false;
+}
+
+_bool CInput_Device::Mouse_Down(DIMK eMouseKeyID)
+{
+	if (m_PreMouseState.rgbButtons[eMouseKeyID] != m_MouseState.rgbButtons[eMouseKeyID])
+	{
+		if (m_MouseState.rgbButtons[eMouseKeyID] & 0x80)
+			return true;
+	}
+	return false;
+}
+
+_bool CInput_Device::Mouse_Up(DIMK eMouseKeyID)
+{
+	if (m_PreMouseState.rgbButtons[eMouseKeyID] != m_MouseState.rgbButtons[eMouseKeyID])
+	{
+		if (m_PreMouseState.rgbButtons[eMouseKeyID] & 0x80)
+			return true;
+	}
+	return false;
+}
+
+_bool CInput_Device::Mouse_Pressing(DIMK eMouseKeyID)
+{
+	if (m_PreMouseState.rgbButtons[eMouseKeyID] == m_MouseState.rgbButtons[eMouseKeyID])
+	{
+		if (m_MouseState.rgbButtons[eMouseKeyID] & 0x80)
+			return true;
+	}
+	return false;
+}
+
 void CInput_Device::Free()
 {
 	Safe_Release(m_pKeyboard);

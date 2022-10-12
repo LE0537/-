@@ -34,6 +34,24 @@
     <Filter Include="02.GameObjects\01.Terrain">
       <UniqueIdentifier>{6cd33bd8-14ca-4499-8f92-7d7ff986c039}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj">
+      <UniqueIdentifier>{701d7561-2a2e-4eab-b54e-11fdc7498453}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\00.Player">
+      <UniqueIdentifier>{659557ea-ef16-4743-a036-c75deba40809}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\02.Trainer">
+      <UniqueIdentifier>{3815298a-3c12-4565-a0c5-1e6c9566ed01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item">
+      <UniqueIdentifier>{466febe0-2f93-4a78-9ae0-77c521a99087}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI">
+      <UniqueIdentifier>{418b620b-4b2f-48ea-aa56-0881b5828d8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\01.Pokemon">
+      <UniqueIdentifier>{1325a119-e099-4af2-9e0c-f8091f2a9f18}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -78,6 +96,12 @@
     <ClInclude Include="..\Public\Terrain.h">
       <Filter>02.GameObjects\01.Terrain</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\UI.h">
+      <Filter>02.GameObjects\99.GameObj\04.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\GameObj.h">
+      <Filter>02.GameObjects\99.GameObj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -109,6 +133,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Terrain.cpp">
       <Filter>02.GameObjects\01.Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI.cpp">
+      <Filter>02.GameObjects\99.GameObj\04.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\GameObj.cpp">
+      <Filter>02.GameObjects\99.GameObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

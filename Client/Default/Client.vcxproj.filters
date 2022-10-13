@@ -46,14 +46,20 @@
     <Filter Include="02.GameObjects\99.GameObj\03.Item">
       <UniqueIdentifier>{466febe0-2f93-4a78-9ae0-77c521a99087}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\04.UI">
-      <UniqueIdentifier>{418b620b-4b2f-48ea-aa56-0881b5828d8f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\99.GameObj\01.Pokemon">
       <UniqueIdentifier>{1325a119-e099-4af2-9e0c-f8091f2a9f18}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\00.MonsterBall">
+      <UniqueIdentifier>{4d268ae1-5b94-49db-8353-b24613b752cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI">
+      <UniqueIdentifier>{418b620b-4b2f-48ea-aa56-0881b5828d8f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\99.GameObj\04.UI\00.Bag">
       <UniqueIdentifier>{2dfa4ff2-4911-4e83-9925-3be1078db5f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\99.None">
+      <UniqueIdentifier>{a97d3628-279c-4448-9144-d105bb01d579}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +114,12 @@
     <ClInclude Include="..\public\Bag.h">
       <Filter>02.GameObjects\99.GameObj\04.UI\00.Bag</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\MonsterBall.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\00.MonsterBall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\None.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\99.None</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -148,6 +160,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Bag.cpp">
       <Filter>02.GameObjects\99.GameObj\04.UI\00.Bag</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MonsterBall.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\00.MonsterBall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\None.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\99.None</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

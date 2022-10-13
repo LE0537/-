@@ -55,7 +55,7 @@ public:
 		_bool		bItem;
 		POKETYPE	eType;
 		POKETYPE	eType2;
-
+		STATINFO    eStatInfo;
 	}POKEINFO;
 	typedef struct tagInfo3 {
 		wstring		strName;
@@ -64,6 +64,14 @@ public:
 		POKETYPE	eType;
 		
 	}SKILLINFO;
+	typedef struct tagInfo4 {
+		wstring		strName;
+		wstring		strInfo;
+		_int		iPrice;
+		_int		iItemNum;
+		_int		iNum;
+
+	}ITEMINFO;
 protected:
 	CShader*				m_pShaderCom = nullptr;
 	CTexture*				m_pTextureCom = nullptr;
@@ -75,12 +83,15 @@ protected:
 	PLAYERINFO				m_PlayerInfo;
 	POKEINFO				m_PokemonInfo;
 	SKILLINFO				m_SkillInfo;
+	ITEMINFO				m_ItemInfo;
 
 public:
 	POKEINFO Get_PokeInfo() {return m_PokemonInfo;}
 	PLAYERINFO Get_PalyerInfo() { return m_PlayerInfo; }
 	SKILLINFO Get_SkillInfo() { return m_SkillInfo; }
+	ITEMINFO Get_ItemInfo() { return m_ItemInfo; }
 
+	
 public:
 	static CGameObj* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

@@ -22,7 +22,8 @@ private:
 	CBag(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CBag(const CBag& rhs);
 	virtual ~CBag() = default;
-
+public:
+	enum ButtonDir {DIR_UP,DIR_DOWN,DIR_END};
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -41,11 +42,11 @@ private:
 	CTexture*				m_pTextureCom2 = nullptr; //아이템 텍스쳐
 	CTexture*				m_pTextureCom3 = nullptr; // 포켓 텍스쳐
 	CVIBuffer_Rect*			m_pVIBufferPoke[18];
-	CVIBuffer_Rect*			m_pVIBufferItem[7];
+	CVIBuffer_Rect*			m_pVIBufferItem[8];
 	CTransform*				m_pTransformPoke[18];
-	CTransform*				m_pTransformItem[7];
+	CTransform*				m_pTransformItem[8];
 	CShader*				m_pShaderPoke[18];
-	CShader*				m_pShaderItem[7];
+	CShader*				m_pShaderItem[8];
 private:
 	_float					m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_float4x4				m_ViewMatrix, m_ProjMatrix;
@@ -60,8 +61,10 @@ private:
 private:
 	HRESULT Ready_Components();
 	HRESULT SetUp_ShaderResources(); /* 셰이더 전역변수에 값을 전달한다. */
-	HRESULT SetSelectButton(_int iIndex);
-
+	HRESULT SetUp_ItemResources();
+	HRESULT SetSelectButton(_int iIndex, ButtonDir _eDir);
+	void	Key_Input();
+	void	Set_ItemPos();
 public:
 	static CBag* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

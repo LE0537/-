@@ -49,7 +49,7 @@ void CUI::Tick(_float fTimeDelta)
 {
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
-	if (pGameInstance->Key_Down(DIK_I))
+	if (pGameInstance->Key_Down(DIK_I) && !g_bBag)
 	{
 		m_bInven = !m_bInven;
 		if (m_bInven)
@@ -74,7 +74,13 @@ void CUI::Tick(_float fTimeDelta)
 		if (pGameInstance->Key_Down(DIK_RETURN))
 		{
 			m_bInven = !m_bInven;
+			if(m_bSelect)
+				g_bBag = true;
+			
 		}
+		if (pGameInstance->Key_Down(DIK_BACKSPACE))
+			m_bInven = !m_bInven;
+
 	}
 	Safe_Release(pGameInstance);
 }

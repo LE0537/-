@@ -4,6 +4,8 @@
 #include "GameInstance.h"
 #include "Level_Loading.h"
 
+bool		g_bBag = false;
+
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::Get_Instance())
 {

@@ -9,6 +9,8 @@
 #include "Terrain.h"
 #include "UI.h"
 #include "Bag.h"
+#include "MonsterBall.h"
+#include "None.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -64,15 +66,18 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	/* 텍스쳐 로딩 중. */
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐 로딩 중."));
-
+	/* 백그 텍스쳐 */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BackGround"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
 		return E_FAIL;
-	
+	/* UI 텍스쳐 */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_UI"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Bag/%d.dds"), 5))))
 		return E_FAIL;
-
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Item"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Item/%d.dds"), 41))))
+		return E_FAIL;
+	/* 터레인 텍스쳐 */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.dds"), 2))))
 		return E_FAIL;
@@ -87,22 +92,22 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	
 	lstrcpy(m_szLoadingText, TEXT("객체 생성 중."));
 
-	/* 백그 객체. */
+	/* 백그 객체 */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BackGround"),
 		CBackGround::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* 터레인 객체. */
+	/* 터레인 객체 */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Terrain"),
 		CTerrain::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* 카메라 객체. */
+	/* 카메라 객체 */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Dynamic"),
 		CCamera_Dynamic::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* UI 객체. */
+	/* UI 객체 */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UI"),
 		CUI::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -110,7 +115,13 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		CBag::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-
+	/* 아이템 객체 */
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_None"),
+		CNone::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_MonsterBall"),
+		CMonsterBall::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

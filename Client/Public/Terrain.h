@@ -19,6 +19,7 @@ BEGIN(Client)
 
 class CTerrain final : public CGameObject
 {
+	enum TEXTURE { TYPE_DIFFUSE, TYPE_BRUSH, TYPE_END };
 private:
 	CTerrain(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CTerrain(const CTerrain& rhs);
@@ -40,7 +41,7 @@ private:
 	CVIBuffer_Terrain*		m_pVIBufferCom = nullptr;
 
 private:
-
+	_uint					m_iPassIndex = 0;
 
 private:
 	HRESULT Ready_Components();

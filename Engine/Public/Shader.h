@@ -23,7 +23,7 @@ public:
 
 public:
 	HRESULT Begin(_uint iPassIndex = 0);
-	HRESULT Set_RawValue(const char* pConstantName, void* pData, _uint iLength);
+	HRESULT Set_RawValue(const char* pConstantName, const void* pData, _uint iLength);
 	HRESULT Set_ShaderResourceView(const char* pConstantName, ID3D11ShaderResourceView* pSRV);
 
 private:	

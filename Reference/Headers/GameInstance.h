@@ -8,6 +8,7 @@
 #include "PipeLine.h"
 
 #include "Component_Manager.h"
+#include "Light_Manager.h"
 
 BEGIN(Engine)
 
@@ -66,7 +67,9 @@ public: /* For.PipeLine */
 	_float4x4 Get_TransformFloat4x4_TP(CPipeLine::TRANSFORMSTATE  eState);
 	_float4 Get_CamPosition();
 
-
+public:
+	const LIGHTDESC* Get_LightDesc(_uint iIndex);
+	HRESULT Add_Light(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const LIGHTDESC& LightDesc);
 	
 public:
 	static void Release_Engine();
@@ -79,6 +82,7 @@ private:
 	CTimer_Manager*					m_pTimer_Manager = nullptr;
 	CComponent_Manager*				m_pComponent_Manager = nullptr;
 	CPipeLine*						m_pPipeLine = nullptr;
+	CLight_Manager*					m_pLight_Manager = nullptr;
 
 public:
 	virtual void Free() override;

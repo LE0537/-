@@ -6,10 +6,6 @@
 CGameObj::CGameObj(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
 {
-	ZeroMemory(&m_PlayerInfo, sizeof(PLAYERINFO));
-	ZeroMemory(&m_PokemonInfo, sizeof(POKEINFO));
-	ZeroMemory(&m_SkillInfo, sizeof(SKILLINFO));
-	ZeroMemory(&m_ItemInfo, sizeof(ITEMINFO));
 }
 
 CGameObj::CGameObj(const CGameObj & rhs)
@@ -24,6 +20,11 @@ HRESULT CGameObj::Initialize_Prototype()
 
 HRESULT CGameObj::Initialize(void * pArg)
 {
+	ZeroMemory(&m_PlayerInfo, sizeof(PLAYERINFO));
+	ZeroMemory(&m_PokemonInfo, sizeof(POKEINFO));
+	ZeroMemory(&m_SkillInfo, sizeof(SKILLINFO));
+	ZeroMemory(&m_ItemInfo, sizeof(ITEMINFO));
+
 	return S_OK;
 }
 

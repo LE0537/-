@@ -41,12 +41,12 @@ private:
 	CVIBuffer_Rect*			m_pVIBufferCom3 = nullptr; // 포켓몬 셀렉
 	CTexture*				m_pTextureCom2 = nullptr; //아이템 텍스쳐
 	CTexture*				m_pTextureCom3 = nullptr; // 포켓 텍스쳐
-	CVIBuffer_Rect*			m_pVIBufferPoke[18];
-	CVIBuffer_Rect*			m_pVIBufferItem[8];
-	CTransform*				m_pTransformPoke[18];
-	CTransform*				m_pTransformItem[8];
-	CShader*				m_pShaderPoke[18];
-	CShader*				m_pShaderItem[8];
+	CVIBuffer_Rect*			m_pVIBufferPoke[18] = { nullptr };
+	CVIBuffer_Rect*			m_pVIBufferItem[8] = { nullptr };
+	CTransform*				m_pTransformPoke[18] = { nullptr };
+	CTransform*				m_pTransformItem[8] = { nullptr };
+	CShader*				m_pShaderPoke[18] = { nullptr };
+	CShader*				m_pShaderItem[8] = { nullptr };
 private:
 	_float					m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_float4x4				m_ViewMatrix, m_ProjMatrix;

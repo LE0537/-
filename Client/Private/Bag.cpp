@@ -7,43 +7,15 @@
 CBag::CBag(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
 {
-	for (_int i = 0; i < 18; ++i)
-	{
-		m_pVIBufferPoke[i] = nullptr;
-		m_pTransformPoke[i] = nullptr;
-		m_pShaderPoke[i] = nullptr;
-	}
-	for (_int i = 0; i < 8; ++i)
-	{
-		m_pVIBufferItem[i] = nullptr;
-		m_pTransformItem[i] = nullptr;
-		m_pShaderItem[i] = nullptr;
-	}
 }
 
 CBag::CBag(const CBag & rhs)
 	: CGameObj(rhs)
 {
-	for (_int i = 0; i < 18; ++i)
-	{
-		m_pVIBufferPoke[i] = rhs.m_pVIBufferPoke[i];
-		m_pTransformPoke[i] = rhs.m_pTransformPoke[i];
-		m_pShaderPoke[i] = rhs.m_pShaderPoke[i];
-	}
-	for (_int i = 0; i < 8; ++i)
-	{
-		m_pVIBufferItem[i] = rhs.m_pVIBufferItem[i];
-		m_pTransformItem[i] = rhs.m_pTransformItem[i];
-		m_pShaderItem[i] = rhs.m_pShaderItem[i];
-	}
 }
 
 HRESULT CBag::Initialize_Prototype()
 {
-	
-
-
-
 	return S_OK;
 }
 
@@ -57,14 +29,14 @@ HRESULT CBag::Initialize(void * pArg)
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 	
-	for (_int i = 0; i < 8; ++i)
+	for (_int i = 0; i < 5; ++i)
 	{
 		CGameObject* tInfo;
 		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_MonsterBall"), LEVEL_STATIC, TEXT("Layer_Item"),&tInfo)))
 			return E_FAIL;
 		m_vecItem.push_back(tInfo);
 	}
-	for (_int i = 8; i < 50; ++i)
+	for (_int i = 5; i < 50; ++i)
 	{
 		CGameObject* tInfo;
 		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_None"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfo)))
@@ -156,7 +128,7 @@ HRESULT CBag::Ready_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Components(TEXT("Com_Texture2"), LEVEL_STATIC, TEXT("Prototype_Component_Texture_Item"), (CComponent**)&m_pTextureCom2)))
 		return E_FAIL;
-	if (FAILED(__super::Add_Components(TEXT("Com_Texture3"), LEVEL_STATIC, TEXT("Prototype_Component_Texture_UI"), (CComponent**)&m_pTextureCom3)))
+	if (FAILED(__super::Add_Components(TEXT("Com_Texture3"), LEVEL_STATIC, TEXT("Prototype_Component_Texture_PokeNum"), (CComponent**)&m_pTextureCom3)))
 		return E_FAIL;
 	/* For.Com_VIBuffer */
 	if (FAILED(__super::Add_Components(TEXT("Com_VIBuffer"), LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), (CComponent**)&m_pVIBufferCom)))
@@ -319,7 +291,7 @@ void CBag::Key_Input()
 	{
 		if (m_iSelect == 7)
 		{
-			if (m_iItemScoll != 50)
+			if (dynamic_cast<CGameObj*>(m_vecItem[m_iItemPos + 1])->Get_ItemInfo().iItemNum != 99 && m_iItemScoll != 50)
 			{
 				++m_iItemScoll;
 				++m_iItemPos;
@@ -403,7 +375,21 @@ void CBag::Free()
 		Safe_Release(m_pTransformItem[i]);
 		Safe_Release(m_pShaderItem[i]);
 	}
-
+	for (int i = 0; i < 18; ++i)
+	{
+		Safe_Release(m_pVIBufferPoke[i]);
+		Safe_Release(m_pTransformPoke[i]);
+		Safe_Release(m_pShaderPoke[i]);
+	}
+	if (!m_vecItem.empty())
+	{
+		for (int i = 0; i < 50; ++i)
+		{
+			Safe_Release(m_vecItem[i]);
+		}
+		m_vecPoke.clear();
+		m_vecItem.clear();
+	}
 	Safe_Release(m_pTextureCom2);
 	Safe_Release(m_pTextureCom3);
 	Safe_Release(m_pTransformCom2);

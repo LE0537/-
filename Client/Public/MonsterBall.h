@@ -33,16 +33,6 @@ public:
 
 private:
 
-private:
-	_float					m_fX, m_fY, m_fSizeX, m_fSizeY;
-	_float4x4				m_ViewMatrix, m_ProjMatrix;
-
-	_bool					m_bInven = false;
-	_bool					m_bSelect = false;
-private:
-	HRESULT Ready_Components();
-	HRESULT SetUp_ShaderResources(); /* 셰이더 전역변수에 값을 전달한다. */
-
 
 
 public:

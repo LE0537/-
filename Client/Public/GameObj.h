@@ -9,7 +9,7 @@ class CShader;
 class CTexture;
 class CRenderer;
 class CTransform;
-class CVIBuffer_Terrain;
+class CVIBuffer_Rect;
 
 END
 
@@ -77,7 +77,7 @@ protected:
 	CTexture*				m_pTextureCom = nullptr;
 	CRenderer*				m_pRendererCom = nullptr;
 	CTransform*				m_pTransformCom = nullptr;
-	CVIBuffer_Terrain*		m_pVIBufferCom = nullptr;
+	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
 
 protected:
 	PLAYERINFO				m_PlayerInfo;

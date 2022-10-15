@@ -39,6 +39,7 @@ public:
 	}PLAYERINFO;
 	typedef struct tagInfo2 {
 		wstring		strName;
+		wstring		strInfo;
 		_int		iPokeNum;
 		_int		iMaxHp;
 		_int		iHp;
@@ -52,7 +53,7 @@ public:
 		_int		iExp;
 		_int		iItem;
 		_int		iSex;
-		_bool		bItem;
+		
 		POKETYPE	eType;
 		POKETYPE	eType2;
 		STATINFO    eStatInfo;

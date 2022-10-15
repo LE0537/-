@@ -61,6 +61,15 @@
     <Filter Include="02.GameObjects\99.GameObj\03.Item\99.None">
       <UniqueIdentifier>{a97d3628-279c-4448-9144-d105bb01d579}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\25.Pikachu">
+      <UniqueIdentifier>{8d69a1a7-26cd-43a1-a454-0dbfacee3b72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\999.NonePoke">
+      <UniqueIdentifier>{1fb9c189-7ab9-47c9-8d33-a8dcf75ec444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\152.Garomakguri">
+      <UniqueIdentifier>{9bc0ec44-7ce4-4898-95ab-e01296c53f4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -120,6 +129,15 @@
     <ClInclude Include="..\public\None.h">
       <Filter>02.GameObjects\99.GameObj\03.Item\99.None</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Pikachu.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\25.Pikachu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\NonePoke.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\999.NonePoke</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Garomakguri.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\152.Garomakguri</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -166,6 +184,15 @@
     </ClCompile>
     <ClCompile Include="..\private\None.cpp">
       <Filter>02.GameObjects\99.GameObj\03.Item\99.None</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Pikachu.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\25.Pikachu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\NonePoke.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\999.NonePoke</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Garomakguri.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\152.Garomakguri</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

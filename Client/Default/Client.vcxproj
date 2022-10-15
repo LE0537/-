@@ -174,6 +174,7 @@
     <ClInclude Include="..\Public\Camera_Dynamic.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\public\GameObj.h" />
+    <ClInclude Include="..\public\Garomakguri.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Logo.h" />
@@ -181,6 +182,8 @@
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\public\MonsterBall.h" />
     <ClInclude Include="..\public\None.h" />
+    <ClInclude Include="..\public\NonePoke.h" />
+    <ClInclude Include="..\public\Pikachu.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\public\UI.h" />
     <ClInclude Include="Client.h" />
@@ -193,6 +196,7 @@
     <ClCompile Include="..\private\Bag.cpp" />
     <ClCompile Include="..\Private\Camera_Dynamic.cpp" />
     <ClCompile Include="..\private\GameObj.cpp" />
+    <ClCompile Include="..\private\Garomakguri.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />
@@ -200,6 +204,8 @@
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\private\MonsterBall.cpp" />
     <ClCompile Include="..\private\None.cpp" />
+    <ClCompile Include="..\private\NonePoke.cpp" />
+    <ClCompile Include="..\private\Pikachu.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
     <ClCompile Include="Client.cpp" />

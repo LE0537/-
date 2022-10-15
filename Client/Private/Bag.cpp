@@ -29,14 +29,14 @@ HRESULT CBag::Initialize(void * pArg)
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 	
-	for (_int i = 0; i < 5; ++i)
+	for (_int i = 0; i < 15; ++i)
 	{
 		CGameObject* tInfo;
 		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_MonsterBall"), LEVEL_STATIC, TEXT("Layer_Item"),&tInfo)))
 			return E_FAIL;
 		m_vecItem.push_back(tInfo);
 	}
-	for (_int i = 5; i < 50; ++i)
+	for (_int i = 15; i < 50; ++i)
 	{
 		CGameObject* tInfo;
 		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_None"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfo)))
@@ -115,7 +115,11 @@ HRESULT CBag::Render()
 	{
 		if (nullptr == m_pShaderCom || nullptr == m_pVIBufferCom || nullptr == m_pShaderCom2 || nullptr == m_pVIBufferCom2 || nullptr == m_pShaderCom3 || nullptr == m_pVIBufferCom3)
 			return E_FAIL;
-
+		if (m_bUseItem || m_bUsePoke)
+		{
+			if (FAILED(SetUp_UseResources()))
+				return E_FAIL;
+		}
 		if (FAILED(SetUp_PokeResources()))
 			return E_FAIL;
 
@@ -142,12 +146,20 @@ HRESULT CBag::Ready_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Components(TEXT("Com_Transform3"), LEVEL_STATIC, TEXT("Prototype_Component_Transform"), (CComponent**)&m_pTransformCom3)))
 		return E_FAIL;
+	if (FAILED(__super::Add_Components(TEXT("Com_Transform4"), LEVEL_STATIC, TEXT("Prototype_Component_Transform"), (CComponent**)&m_pTransformCom4)))
+		return E_FAIL;
+	if (FAILED(__super::Add_Components(TEXT("Com_Transform5"), LEVEL_STATIC, TEXT("Prototype_Component_Transform"), (CComponent**)&m_pTransformCom5)))
+		return E_FAIL;
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Components(TEXT("Com_Shader"), LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 	if (FAILED(__super::Add_Components(TEXT("Com_Shader2"), LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), (CComponent**)&m_pShaderCom2)))
 		return E_FAIL;
 	if (FAILED(__super::Add_Components(TEXT("Com_Shader3"), LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), (CComponent**)&m_pShaderCom3)))
+		return E_FAIL;
+	if (FAILED(__super::Add_Components(TEXT("Com_Shader4"), LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), (CComponent**)&m_pShaderCom4)))
+		return E_FAIL;
+	if (FAILED(__super::Add_Components(TEXT("Com_Shader5"), LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), (CComponent**)&m_pShaderCom5)))
 		return E_FAIL;
 	/* For.Com_Texture */
 	if (FAILED(__super::Add_Components(TEXT("Com_Texture"), LEVEL_STATIC, TEXT("Prototype_Component_Texture_UI"), (CComponent**)&m_pTextureCom)))
@@ -158,6 +170,7 @@ HRESULT CBag::Ready_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Components(TEXT("Com_Texture4"), LEVEL_STATIC, TEXT("Prototype_Component_Texture_StatInfo"), (CComponent**)&m_pTextureCom4)))
 		return E_FAIL;
+
 	/* For.Com_VIBuffer */
 	if (FAILED(__super::Add_Components(TEXT("Com_VIBuffer"), LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), (CComponent**)&m_pVIBufferCom)))
 		return E_FAIL;
@@ -165,7 +178,10 @@ HRESULT CBag::Ready_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Components(TEXT("Com_VIBuffer3"), LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), (CComponent**)&m_pVIBufferCom3)))
 		return E_FAIL;
-	
+	if (FAILED(__super::Add_Components(TEXT("Com_VIBuffer4"), LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), (CComponent**)&m_pVIBufferCom4)))
+		return E_FAIL;
+	if (FAILED(__super::Add_Components(TEXT("Com_VIBuffer5"), LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), (CComponent**)&m_pVIBufferCom5)))
+		return E_FAIL;
 	wstring szBuffer[8];
 	wstring szTrans[8];
 	wstring szShader[8];
@@ -213,6 +229,7 @@ HRESULT CBag::Ready_Components()
 
 HRESULT CBag::SetUp_ShaderResources()
 {
+
 	if (m_bItemSelect)
 	{
 		if (nullptr == m_pShaderCom || nullptr == m_pShaderCom2 || nullptr == m_pShaderCom3)
@@ -378,6 +395,51 @@ HRESULT CBag::SetUp_PokeResources()
 	return S_OK;
 }
 
+HRESULT CBag::SetUp_UseResources()
+{
+	if (FAILED(m_pShaderCom5->Set_RawValue("g_WorldMatrix", &m_pTransformCom5->Get_World4x4_TP(), sizeof(_float4x4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom5->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom5->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom5->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(0))))
+		return E_FAIL;
+
+	m_pShaderCom5->Begin();
+	m_pVIBufferCom5->Render();
+
+	if (m_bUseItem)
+	{
+		if (FAILED(m_pShaderCom4->Set_RawValue("g_WorldMatrix", &m_pTransformCom4->Get_World4x4_TP(), sizeof(_float4x4))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom4->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom4->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom4->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(9))))
+			return E_FAIL;
+
+		m_pShaderCom4->Begin();
+		m_pVIBufferCom4->Render();
+	}
+	if (m_bUsePoke)
+	{
+		if (FAILED(m_pShaderCom4->Set_RawValue("g_WorldMatrix", &m_pTransformCom4->Get_World4x4_TP(), sizeof(_float4x4))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom4->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom4->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom4->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(8))))
+			return E_FAIL;
+
+		m_pShaderCom4->Begin();
+		m_pVIBufferCom4->Render();
+	}
+	return S_OK;
+}
+
 HRESULT CBag::SetSelectButton(_int iIndex, ButtonDir _eDir)
 {
 
@@ -431,12 +493,35 @@ HRESULT CBag::SetSelectButtonPoke(_int iIndex, ButtonDir _eDir)
 	return S_OK;
 }
 
+HRESULT CBag::SetSelectButtonUse(_int iIndex, ButtonDir _eDir)
+{
+	_vector vPos = m_pTransformCom5->Get_State(CTransform::STATE_TRANSLATION);
+	switch (_eDir)
+	{
+	case CBag::DIR_UP:
+		vPos.m128_f32[1] += 22;
+		m_pTransformCom5->Set_State(CTransform::STATE_TRANSLATION, vPos);
+		break;
+	case CBag::DIR_DOWN:
+		vPos.m128_f32[1] -= 22;
+		m_pTransformCom5->Set_State(CTransform::STATE_TRANSLATION, vPos);
+		break;
+	default:
+		break;
+	}
+	return S_OK;
+}
+
 void CBag::Key_Input()
 {
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
-	if (pGameInstance->Key_Down(DIK_BACKSPACE))
+	if (pGameInstance->Key_Down(DIK_BACKSPACE) && !m_bUseItem && !m_bUsePoke)
 	{
+		m_bUseItem = false;
+		m_bUsePoke = false;
+		m_bUseKey = false;
+		m_UsePos = 0;
 		m_iPokeSelect = 0;
 		m_iSelect = 0;
 		m_iItemPos = 0;
@@ -454,78 +539,182 @@ void CBag::Key_Input()
 	}
 	if (pGameInstance->Key_Down(DIK_UP))
 	{
-		if (m_bItemSelect)
+		if (!m_bUseItem && !m_bUsePoke)
 		{
-			if (m_iSelect == 0)
+			if (m_bItemSelect)
 			{
-				if (m_iItemScoll != 0)
+				if (m_iSelect == 0)
 				{
-					--m_iItemScoll;
+					if (m_iItemScoll != 0)
+					{
+						--m_iItemScoll;
+						--m_iItemPos;
+					}
+				}
+				else
+				{
+					SetSelectButton(m_iSelect, DIR_UP);
+					--m_iSelect;
 					--m_iItemPos;
 				}
 			}
 			else
 			{
-				SetSelectButton(m_iSelect, DIR_UP);
-				--m_iSelect;
-				--m_iItemPos;
+				if (m_iPokeSelect != 0)
+				{
+					SetSelectButtonPoke(m_iSelect, DIR_UP);
+					--m_iPokeSelect;
+				}
 			}
 		}
-		else
+		if (m_bUseItem || m_bUsePoke)
 		{
-			if (m_iPokeSelect != 0)
+			if (m_UsePos != 0)
 			{
-				SetSelectButtonPoke(m_iSelect, DIR_UP);
-				--m_iPokeSelect;
+				SetSelectButtonUse(m_UsePos, DIR_UP);
+				--m_UsePos;
 			}
 		}
 	}
 
 	if (pGameInstance->Key_Down(DIK_DOWN))
 	{
-		if (m_bItemSelect)
+		if (!m_bUseItem && !m_bUsePoke)
 		{
-			if (m_iSelect == 7)
+			if (m_bItemSelect)
 			{
-				if (dynamic_cast<CGameObj*>(m_vecItem[m_iItemPos + 1])->Get_ItemInfo().iItemNum != 99 && m_iItemScoll != 50)
+				if (m_iSelect == 7)
 				{
-					++m_iItemScoll;
-					++m_iItemPos;
+					if (dynamic_cast<CGameObj*>(m_vecItem[m_iItemPos + 1])->Get_ItemInfo().iItemNum != 99 && m_iItemScoll != 50)
+					{
+						++m_iItemScoll;
+						++m_iItemPos;
+					}
+				}
+				else
+				{
+					if (dynamic_cast<CGameObj*>(m_vecItem[m_iItemPos + 1])->Get_ItemInfo().iItemNum != 99)
+					{
+						SetSelectButton(m_iSelect, DIR_DOWN);
+						++m_iSelect;
+						++m_iItemPos;
+					}
 				}
 			}
 			else
 			{
-				if (dynamic_cast<CGameObj*>(m_vecItem[m_iItemPos + 1])->Get_ItemInfo().iItemNum != 99)
+				if (m_iPokeSelect != 5 && dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect + 1])->Get_PokeInfo().iPokeNum != 999)
 				{
-					SetSelectButton(m_iSelect, DIR_DOWN);
-					++m_iSelect;
-					++m_iItemPos;
+					SetSelectButtonPoke(m_iSelect, DIR_DOWN);
+					++m_iPokeSelect;
 				}
 			}
 		}
-		else
+		if (m_bUseItem || m_bUsePoke)
 		{
-			if (m_iPokeSelect != 5 && dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect + 1])->Get_PokeInfo().iPokeNum != 999)
+			if (m_UsePos != 2)
 			{
-				SetSelectButtonPoke(m_iSelect, DIR_DOWN);
-				++m_iPokeSelect;
+				SetSelectButtonUse(m_UsePos, DIR_DOWN);
+				++m_UsePos;
 			}
 		}
 	}
 	if (pGameInstance->Key_Down(DIK_RETURN))
 	{
-
+		if (!m_bUseItem && !m_bUsePoke)
+		{
+			if (m_bItemSelect && m_bUseKey)
+			{
+				m_bUseItem = true;
+				Set_UseItemPos(m_iItemPos);
+			}
+			else if (!m_bItemSelect && m_bUseKey)
+			{
+				m_bUsePoke = true;
+				Set_UsePokePos(m_iPokeSelect);
+			}
+			m_bUseKey = true;
+		}
+		if (m_bUseItem)
+		{
+			if (m_bUse)
+			{
+				switch (m_UsePos)
+				{
+				case 0:
+					UseItem();
+					m_bUseItem = false;
+					m_UsePos = 0;
+					m_bUse = false;
+					Safe_Release(pGameInstance);
+					return;
+					break;
+				case 1:
+					GiveItem();
+					m_bUseItem = false;
+					m_UsePos = 0;
+					m_bUse = false;
+					Safe_Release(pGameInstance);
+					return;
+					break;
+				case 2:
+					m_bUseItem = false;
+					m_UsePos = 0;
+					m_bUse = false;
+					Safe_Release(pGameInstance);
+					return;
+					break;
+				default:
+					break;
+				}
+			}
+			m_bUse = true;
+		}
+		if (m_bUsePoke)
+		{
+			if (m_bUse)
+			{
+				switch (m_UsePos)
+				{
+				case 0:
+					LookStats();
+					m_bUse = false;
+					Safe_Release(pGameInstance);
+					return;
+					break;
+				case 1:
+					SwapPoke();
+					m_bUse = false;
+					Safe_Release(pGameInstance);
+					return;
+					break;
+				case 2:
+					m_bUsePoke = false;
+					m_UsePos = 0;
+					m_bUse = false;
+					Safe_Release(pGameInstance);
+					return;
+					break;
+				default:
+					break;
+				}
+			}
+			m_bUse = true;
+		}
 	}
-	if (m_bItemSelect && pGameInstance->Key_Down(DIK_LEFT))
+	if (!m_bUseItem && !m_bUsePoke)
+	{
+		if (m_bItemSelect && pGameInstance->Key_Down(DIK_LEFT))
 		{
 			m_bItemSelect = !m_bItemSelect;
-			SetSelectButtonPoke(m_iSelect,DIR_LEFT);
+			SetSelectButtonPoke(m_iSelect, DIR_LEFT);
 		}
-	else if (!m_bItemSelect && pGameInstance->Key_Down(DIK_RIGHT))
+		else if (!m_bItemSelect && pGameInstance->Key_Down(DIK_RIGHT))
 		{
 			m_iPokeSelect = 0;
 			m_bItemSelect = !m_bItemSelect;
 		}
+	}
 	Safe_Release(pGameInstance);
 }
 
@@ -597,6 +786,86 @@ void CBag::Set_PokePos()
 	}
 }
 
+void CBag::Set_UseItemPos(_int _iIndex)
+{
+	_vector vScale = { 120.f,80.f,0.f,0.f };
+	_vector vPos = m_pTransformItem[_iIndex]->Get_State(CTransform::STATE_TRANSLATION);
+
+	vPos.m128_f32[0] += 200.f;
+	vPos.m128_f32[1] -= 20.f;
+	m_pTransformCom4->Set_Scale(vScale);
+	m_pTransformCom4->Set_State(CTransform::STATE_TRANSLATION, vPos);
+
+	vPos.m128_f32[0] -= 70.f;
+	vPos.m128_f32[1] += 20.f;
+	vScale = { 20.f,20.f,0.f,0.f };
+	m_pTransformCom5->Set_Scale(vScale);
+	m_pTransformCom5->Set_State(CTransform::STATE_TRANSLATION, vPos);
+}
+
+void CBag::Set_UsePokePos(_int _iIndex)
+{
+	_vector vScale = { 120.f,80.f,0.f,0.f };
+	_vector vPos = m_pTransformPoke[_iIndex]->Get_State(CTransform::STATE_TRANSLATION);
+
+	vPos.m128_f32[0] += 350.f;
+	vPos.m128_f32[1] -= 10.f;
+	m_pTransformCom4->Set_Scale(vScale);
+	m_pTransformCom4->Set_State(CTransform::STATE_TRANSLATION, vPos);
+
+	vPos.m128_f32[0] -= 70.f;
+	vPos.m128_f32[1] += 20.f;
+	vScale = { 20.f,20.f,0.f,0.f };
+	m_pTransformCom5->Set_Scale(vScale);
+	m_pTransformCom5->Set_State(CTransform::STATE_TRANSLATION, vPos);
+}
+
+void CBag::UseItem()
+{
+	auto& iter = m_vecItem.begin();
+	iter += m_UsePos;
+	(*iter)->m_bDead = true;
+	m_vecItem.erase(iter);
+
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	CGameObject* tInfo;
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_None"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfo)))
+		return;
+	m_vecItem.push_back(tInfo);
+	
+	RELEASE_INSTANCE(CGameInstance);
+
+	if (m_bItemSelect)
+	{
+		if (m_iSelect == 0)
+		{
+			if (m_iItemScoll != 0)
+			{
+				--m_iItemScoll;
+				--m_iItemPos;
+			}
+		}
+		else if(dynamic_cast<CGameObj*>(m_vecItem[m_iItemPos])->Get_ItemInfo().iItemNum == 99)
+		{
+			SetSelectButton(m_iSelect, DIR_UP);
+			--m_iSelect;
+			--m_iItemPos;
+		}
+	}
+}
+
+void CBag::GiveItem()
+{
+}
+
+void CBag::LookStats()
+{
+}
+
+void CBag::SwapPoke()
+{
+}
+
 CBag * CBag::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CBag*	pInstance = new CBag(pDevice, pContext);
@@ -661,8 +930,14 @@ void CBag::Free()
 	Safe_Release(m_pTextureCom4);
 	Safe_Release(m_pTransformCom2);
 	Safe_Release(m_pTransformCom3);
+	Safe_Release(m_pTransformCom4);
+	Safe_Release(m_pTransformCom5);
 	Safe_Release(m_pShaderCom2);
 	Safe_Release(m_pShaderCom3);
+	Safe_Release(m_pShaderCom4);
+	Safe_Release(m_pShaderCom5);
 	Safe_Release(m_pVIBufferCom2);
 	Safe_Release(m_pVIBufferCom3);
+	Safe_Release(m_pVIBufferCom4);
+	Safe_Release(m_pVIBufferCom5);
 }

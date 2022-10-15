@@ -40,7 +40,8 @@ protected:
 	HRESULT Add_Components(const _tchar* pComponentTag, _uint iLevelIndex, const _tchar* pPrototypeTag, CComponent** ppOut, void* pArg = nullptr);
 	void Compute_CamDistance(_float3 vWorldPos);
 
-
+public:
+	_bool	m_bDead = false;
 
 
 

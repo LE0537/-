@@ -35,10 +35,16 @@ public:
 private:
 	CTransform*				m_pTransformCom2 = nullptr;
 	CTransform*				m_pTransformCom3 = nullptr;
+	CTransform*				m_pTransformCom4 = nullptr;
+	CTransform*				m_pTransformCom5 = nullptr;
 	CShader*				m_pShaderCom2 = nullptr;
 	CShader*				m_pShaderCom3 = nullptr;
+	CShader*				m_pShaderCom4 = nullptr;
+	CShader*				m_pShaderCom5 = nullptr;
 	CVIBuffer_Rect*			m_pVIBufferCom2 = nullptr; // 아이템 셀렉
 	CVIBuffer_Rect*			m_pVIBufferCom3 = nullptr; // 포켓몬 셀렉
+	CVIBuffer_Rect*			m_pVIBufferCom4 = nullptr; // 사용UI
+	CVIBuffer_Rect*			m_pVIBufferCom5 = nullptr; // 사용UI
 	CTexture*				m_pTextureCom2 = nullptr; //아이템 텍스쳐
 	CTexture*				m_pTextureCom3 = nullptr; // 포켓 텍스쳐
 	CTexture*				m_pTextureCom4 = nullptr; // 상태이상 텍스쳐
@@ -48,6 +54,7 @@ private:
 	CTransform*				m_pTransformItem[8] = { nullptr };
 	CShader*				m_pShaderPoke[24] = { nullptr };
 	CShader*				m_pShaderItem[8] = { nullptr };
+
 private:
 	_float					m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_float					m_PokefX, m_PokefY, m_PokefSizeX, m_PokefSizeY;
@@ -58,6 +65,14 @@ private:
 	_int					m_iSelect = 0;
 	_int					m_iItemScoll = 0;
 	_int					m_iItemPos = 0;
+
+	_bool					m_bUseKey = false;
+	_bool					m_bUseItem = false;
+	_bool					m_bUsePoke = false;
+	_int					m_UsePos = 0;
+
+	_bool					m_bUse = false;
+
 	vector<CGameObject*>    m_vecItem;
 	vector<CGameObject*>    m_vecPoke;
 private:
@@ -65,11 +80,19 @@ private:
 	HRESULT SetUp_ShaderResources(); /* 셰이더 전역변수에 값을 전달한다. */
 	HRESULT SetUp_ItemResources();
 	HRESULT SetUp_PokeResources();
+	HRESULT SetUp_UseResources();
 	HRESULT SetSelectButton(_int iIndex, ButtonDir _eDir);
 	HRESULT SetSelectButtonPoke(_int iIndex, ButtonDir _eDir);
+	HRESULT SetSelectButtonUse(_int iIndex, ButtonDir _eDir);
 	void	Key_Input();
 	void	Set_ItemPos();
 	void	Set_PokePos();
+	void	Set_UseItemPos(_int _iIndex);
+	void	Set_UsePokePos(_int _iIndex);
+	void	UseItem();
+	void	GiveItem();
+	void	LookStats();
+	void	SwapPoke();
 public:
 	static CBag* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

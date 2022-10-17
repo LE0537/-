@@ -516,11 +516,11 @@ HRESULT CBag::SetSelectButton(_int iIndex, ButtonDir _eDir)
 	switch (_eDir)
 	{
 	case CBag::DIR_UP:
-		m_fY -= 50;
+		m_fY -= 50.f;
 		m_pTransformCom2->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 		break;
 	case CBag::DIR_DOWN:
-		m_fY += 50;
+		m_fY += 50.f;
 		m_pTransformCom2->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 		break;
 	default:
@@ -538,18 +538,18 @@ HRESULT CBag::SetSelectButtonPoke(_int iIndex, ButtonDir _eDir)
 	switch (_eDir)
 	{
 	case CBag::DIR_UP:
-		m_PokefY -= 96;
+		m_PokefY -= 96.f;
 		m_pTransformCom3->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_PokefX - g_iWinSizeX * 0.5f, -m_PokefY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 		break;
 	case CBag::DIR_DOWN:
-		m_PokefY += 96;
+		m_PokefY += 96.f;
 		m_pTransformCom3->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_PokefX - g_iWinSizeX * 0.5f, -m_PokefY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 		break;
 	case CBag::DIR_LEFT:
-		 m_PokefSizeX = 60;
-		 m_PokefSizeY = 60;
-		 m_PokefX = 40;
-		 m_PokefY = 150 + (iIndex * 96);
+		 m_PokefSizeX = 60.f;
+		 m_PokefSizeY = 60.f;
+		 m_PokefX = 40.f;
+		 m_PokefY = 150.f + (iIndex * 96.f);
 		 vScale = { m_PokefSizeX,m_PokefSizeY,0.f };
 
 		m_pTransformCom3->Set_Scale(XMLoadFloat3(&vScale));

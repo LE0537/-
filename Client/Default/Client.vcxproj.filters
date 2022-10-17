@@ -70,6 +70,12 @@
     <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\152.Garomakguri">
       <UniqueIdentifier>{9bc0ec44-7ce4-4898-95ab-e01296c53f4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\04.HpPotion">
+      <UniqueIdentifier>{3f49e1f3-b30a-421f-bfc2-5944eb469b44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\30.ExpShare">
+      <UniqueIdentifier>{6601399b-760a-4ea6-af1f-c0fbada8e64a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -138,6 +144,12 @@
     <ClInclude Include="..\public\Garomakguri.h">
       <Filter>02.GameObjects\99.GameObj\01.Pokemon\152.Garomakguri</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\HpPotion.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\04.HpPotion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ExpShare.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\30.ExpShare</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -193,6 +205,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Garomakguri.cpp">
       <Filter>02.GameObjects\99.GameObj\01.Pokemon\152.Garomakguri</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HpPotion.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\04.HpPotion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ExpShare.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\30.ExpShare</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

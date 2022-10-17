@@ -92,7 +92,13 @@ public:
 	SKILLINFO Get_SkillInfo() { return m_SkillInfo; }
 	ITEMINFO Get_ItemInfo() { return m_ItemInfo; }
 
-	
+	void	Set_PokeHp(_int _iDmg) { m_PokemonInfo.iHp += _iDmg;
+	if (m_PokemonInfo.iHp > m_PokemonInfo.iMaxHp) { m_PokemonInfo.iHp = m_PokemonInfo.iMaxHp; }
+	else if (m_PokemonInfo.iHp < 0) { m_PokemonInfo.iHp = 0; }
+	}
+	void	Set_PokeItem(_int _iItemIndex) { m_PokemonInfo.iItem = _iItemIndex; }
+
+
 public:
 	static CGameObj* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

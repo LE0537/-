@@ -173,8 +173,10 @@
     <ClInclude Include="..\public\Bag.h" />
     <ClInclude Include="..\Public\Camera_Dynamic.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
+    <ClInclude Include="..\public\ExpShare.h" />
     <ClInclude Include="..\public\GameObj.h" />
     <ClInclude Include="..\public\Garomakguri.h" />
+    <ClInclude Include="..\public\HpPotion.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Logo.h" />
@@ -195,8 +197,10 @@
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\private\Bag.cpp" />
     <ClCompile Include="..\Private\Camera_Dynamic.cpp" />
+    <ClCompile Include="..\private\ExpShare.cpp" />
     <ClCompile Include="..\private\GameObj.cpp" />
     <ClCompile Include="..\private\Garomakguri.cpp" />
+    <ClCompile Include="..\private\HpPotion.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />

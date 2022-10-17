@@ -14,6 +14,8 @@
 #include "Pikachu.h"
 #include "Garomakguri.h"
 #include "NonePoke.h"
+#include "HpPotion.h"
+#include "ExpShare.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -130,6 +132,12 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_MonsterBall"),
 		CMonsterBall::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_HpPotion"),
+		CHpPotion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_ExpShare"),
+		CExpShare::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	/* Æ÷ÄÏ¸ó °´Ã¼ */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Pikachu"),

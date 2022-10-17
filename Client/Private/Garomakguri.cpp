@@ -26,7 +26,7 @@ HRESULT CGaromakguri::Initialize(void * pArg)
 	m_PokemonInfo.strInfo = TEXT("쥬신 130기 배해월, 난폭운전으로 유명하다.");
 	m_PokemonInfo.iPokeNum = 152;
 	m_PokemonInfo.iMaxHp = 100;
-	m_PokemonInfo.iHp = 0;
+	m_PokemonInfo.iHp = 30;
 	m_PokemonInfo.iDmg = 30;
 	m_PokemonInfo.iSDmg = 30;
 	m_PokemonInfo.iDef = 10;
@@ -40,7 +40,7 @@ HRESULT CGaromakguri::Initialize(void * pArg)
 
 	m_PokemonInfo.eType = EVIL;
 	m_PokemonInfo.eType2 = NORMAL;
-	m_PokemonInfo.eStatInfo = STUN;
+	m_PokemonInfo.eStatInfo = BURN;
 
 
 	return S_OK;

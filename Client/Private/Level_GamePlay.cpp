@@ -173,6 +173,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _tchar * pLayerTag)
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Bag"), LEVEL_STATIC, pLayerTag)))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_PokeInfo"), LEVEL_STATIC, pLayerTag)))
+		return E_FAIL;
 
 	Safe_Release(pGameInstance);
 

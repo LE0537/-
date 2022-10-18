@@ -76,6 +76,9 @@
     <Filter Include="02.GameObjects\99.GameObj\03.Item\30.ExpShare">
       <UniqueIdentifier>{6601399b-760a-4ea6-af1f-c0fbada8e64a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\01.PokeInfo">
+      <UniqueIdentifier>{5f2484c2-abcf-4b9c-965f-5931d7403b4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -150,6 +153,9 @@
     <ClInclude Include="..\public\ExpShare.h">
       <Filter>02.GameObjects\99.GameObj\03.Item\30.ExpShare</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\PokeInfo.h">
+      <Filter>02.GameObjects\99.GameObj\04.UI\01.PokeInfo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -211,6 +217,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ExpShare.cpp">
       <Filter>02.GameObjects\99.GameObj\03.Item\30.ExpShare</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PokeInfo.cpp">
+      <Filter>02.GameObjects\99.GameObj\04.UI\01.PokeInfo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

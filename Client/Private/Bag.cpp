@@ -152,6 +152,7 @@ HRESULT CBag::Render()
 		if (FAILED(SetUp_ShaderResources()))
 			return E_FAIL;
 	
+
 	}
 	return S_OK;
 }
@@ -754,7 +755,8 @@ void CBag::Key_Input()
 				switch (m_UsePos)
 				{
 				case 0:
-					LookStats();
+					g_bBag = false;
+					g_PokeInfo = true;
 					m_bUse = false;
 					break;
 				case 1:
@@ -1080,11 +1082,6 @@ void CBag::GiveItem()
 		RELEASE_INSTANCE(CGameInstance);
 	}
 }
-
-void CBag::LookStats()
-{
-}
-
 void CBag::SwapPoke(_int _iSwapPoke)
 {
 	CGameObject* tInfo;

@@ -103,7 +103,6 @@ private:
 	void	Set_UsePokePos(_int _iIndex);
 	void	UseItem();
 	void	GiveItem();
-	void	LookStats();
 	void	SwapPoke(_int _iSwapPoke);
 	_bool	CheckUseItem();
 	_bool	CheckGiveItem();

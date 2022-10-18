@@ -7,15 +7,20 @@
 #include "Camera_Dynamic.h"
 #include "BackGround.h"
 #include "Terrain.h"
-#include "UI.h"
+//UI 헤더
+#include "UI.h" 
 #include "Bag.h"
-#include "MonsterBall.h"
-#include "None.h"
+#include "PokeInfo.h"
+//Pokemon 헤더
 #include "Pikachu.h"
 #include "Garomakguri.h"
 #include "NonePoke.h"
+//Item 헤더
+#include "MonsterBall.h"
 #include "HpPotion.h"
 #include "ExpShare.h"
+#include "None.h"
+
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -77,7 +82,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	/* UI 텍스쳐 */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_UI"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Bag/%d.dds"), 10))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Bag/%d.dds"), 12))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Item"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Item/%d.dds"), 41))))
@@ -124,6 +129,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Bag"),
 		CBag::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_PokeInfo"),
+		CPokeInfo::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* 아이템 객체 */

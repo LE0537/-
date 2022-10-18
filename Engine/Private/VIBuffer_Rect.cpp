@@ -15,15 +15,6 @@ HRESULT CVIBuffer_Rect::Initialize_Prototype()
 #pragma region VERTICES
 	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
 
-	/*
-	UINT ByteWidth;
-	D3D11_USAGE Usage;
-	UINT BindFlags;
-	UINT CPUAccessFlags;
-	UINT MiscFlags;
-	UINT StructureByteStride;
-	*/
-
 	m_iStride = sizeof(VTXTEX);
 	m_iNumVertices = 4;
 	m_iNumVertexBuffers = 1;

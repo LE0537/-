@@ -5,6 +5,7 @@
 #include "Level_Loading.h"
 
 bool		g_bBag = false;
+bool		g_PokeInfo = false;
 
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::Get_Instance())

@@ -49,7 +49,7 @@ void CUI::Tick(_float fTimeDelta)
 {
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
-	if (pGameInstance->Key_Down(DIK_I) && !g_bBag)
+	if (pGameInstance->Key_Down(DIK_I) && !g_bBag && !g_PokeInfo)
 	{
 		m_bInven = !m_bInven;
 		if (m_bInven)

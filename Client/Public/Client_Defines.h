@@ -17,5 +17,6 @@ namespace Client
 extern HWND			g_hWnd;
 extern HINSTANCE	g_hInst;
 extern bool		g_bBag;
+extern bool		g_PokeInfo;
 
 using namespace Client;

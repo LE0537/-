@@ -37,12 +37,23 @@ HRESULT CPikachu::Initialize(void * pArg)
 	m_PokemonInfo.iExp = 0;
 	m_PokemonInfo.iItem = 99;
 	m_PokemonInfo.iSex = 0;
-	m_PokemonInfo.iBallNum = 4;
-	m_PokemonInfo.iSkillNum1 = 0;
-	m_PokemonInfo.iSkillNum2 = 99;
-	m_PokemonInfo.iSkillNum3 = 99;
-	m_PokemonInfo.iSkillNum4 = 99;
+	m_PokemonInfo.iBallNum = 0;
+	m_PokemonInfo.eSkillNum1.iSkillNum = 0;
+	m_PokemonInfo.eSkillNum2.iSkillNum = 99;
+	m_PokemonInfo.eSkillNum3.iSkillNum = 99;
+	m_PokemonInfo.eSkillNum4.iSkillNum = 99;
 	
+	m_PokemonInfo.eSkillNum1.strName = TEXT("몸통 박치기");
+	m_PokemonInfo.eSkillNum1.strInfo = TEXT("상대를 향해서 몸 전체를 던져 공격한다.");
+	m_PokemonInfo.eSkillNum1.iSkillNum = 0;
+	m_PokemonInfo.eSkillNum1.iDmg = 40;
+	m_PokemonInfo.eSkillNum1.iSDmg = 0;
+	m_PokemonInfo.eSkillNum1.fHit = 100;
+	m_PokemonInfo.eSkillNum1.iMaxPoint = 35;
+	m_PokemonInfo.eSkillNum1.iPoint = m_PokemonInfo.eSkillNum1.iMaxPoint;
+	m_PokemonInfo.eSkillNum1.eType = NORMAL;
+
+
 	m_PokemonInfo.eType = THUNDER;
 	m_PokemonInfo.eType2 = POKETYPE_END;
 	m_PokemonInfo.eStatInfo = STATINFO_END;

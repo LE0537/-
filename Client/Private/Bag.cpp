@@ -28,7 +28,10 @@ HRESULT CBag::Initialize(void * pArg)
 
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
-	
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_PokeInfo"), LEVEL_STATIC, TEXT("Layer_UI"), this)))
+		return E_FAIL;
+
 	for (_int i = 0; i < 5; ++i)
 	{
 		CGameObject* tInfo;
@@ -104,6 +107,7 @@ HRESULT CBag::Initialize(void * pArg)
 	Set_ItemPos();
 	Set_PokePos();
 	Set_PokeItemPos();
+
 	return S_OK;
 }
 

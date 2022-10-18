@@ -36,12 +36,12 @@ HRESULT CNonePoke::Initialize(void * pArg)
 	m_PokemonInfo.iMaxExp = 20;
 	m_PokemonInfo.iExp = 0;
 	m_PokemonInfo.iItem = 99;
-	m_PokemonInfo.iSex = 0;
-	m_PokemonInfo.iBallNum = 0;
-	m_PokemonInfo.iSkillNum1 = 99;
-	m_PokemonInfo.iSkillNum2 = 99;
-	m_PokemonInfo.iSkillNum3 = 99;
-	m_PokemonInfo.iSkillNum4 = 99;
+	m_PokemonInfo.iSex = 99;
+	m_PokemonInfo.iBallNum = 99;
+	m_PokemonInfo.eSkillNum1.iSkillNum = 99;
+	m_PokemonInfo.eSkillNum2.iSkillNum = 99;
+	m_PokemonInfo.eSkillNum3.iSkillNum = 99;
+	m_PokemonInfo.eSkillNum4.iSkillNum = 99;
 
 	m_PokemonInfo.eType = POKETYPE_END;
 	m_PokemonInfo.eType2 = POKETYPE_END;

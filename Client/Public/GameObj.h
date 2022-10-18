@@ -40,6 +40,18 @@ public:
 	typedef struct tagInfo2 {
 		wstring		strName;
 		wstring		strInfo;
+		_int		iSkillNum;
+		_int		iDmg;
+		_int		iSDmg;
+		_float		fHit;
+		_int		iMaxPoint;
+		_int		iPoint;
+		POKETYPE	eType;
+		
+	}SKILLINFO;
+	typedef struct tagInfo3 {
+		wstring		strName;
+		wstring		strInfo;
 		_int		iPokeNum;
 		_int		iMaxHp;
 		_int		iHp;
@@ -54,21 +66,14 @@ public:
 		_int		iItem;
 		_int		iSex;
 		_int		iBallNum;
-		_int		iSkillNum1;
-		_int		iSkillNum2;
-		_int		iSkillNum3;
-		_int		iSkillNum4;
+		SKILLINFO		eSkillNum1;
+		SKILLINFO		eSkillNum2;
+		SKILLINFO		eSkillNum3;
+		SKILLINFO		eSkillNum4;
 		POKETYPE	eType;
 		POKETYPE	eType2;
 		STATINFO    eStatInfo;
 	}POKEINFO;
-	typedef struct tagInfo3 {
-		wstring		strName;
-		_int		iDmg;
-		_int		iSDmg;
-		POKETYPE	eType;
-		
-	}SKILLINFO;
 	typedef struct tagInfo4 {
 		wstring		strName;
 		wstring		strInfo;

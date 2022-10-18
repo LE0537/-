@@ -1,31 +1,3 @@
-﻿FXC : warning X4717: Effects deprecated for D3DCompiler_47
-  
-  compilation object save succeeded; see C:\Users\shout\Desktop\과제\Pokemon\갠폴\Client\Bin\Shader_VtxNorTex.cso
-FXC : warning X4717: Effects deprecated for D3DCompiler_47
-  
-  compilation object save succeeded; see C:\Users\shout\Desktop\과제\Pokemon\갠폴\Client\Bin\Shader_VtxTex.cso
-  Client.cpp
-  UI.cpp
-  PokeInfo.cpp
-  Pikachu.cpp
-  NonePoke.cpp
-  None.cpp
-  MonsterBall.cpp
-  HpPotion.cpp
-  Garomakguri.cpp
-  GameObj.cpp
-  ExpShare.cpp
-  BackGround.cpp
-  Terrain.cpp
-  MainApp.cpp
-  Loader.cpp
-  Level_Logo.cpp
-  Level_Loading.cpp
-  Level_GamePlay.cpp
-  Camera_Dynamic.cpp
-  코드를 생성하고 있습니다...
-  컴파일하고 있습니다...
-  Bag.cpp
-  코드를 생성하고 있습니다...
+﻿  Garomakguri.cpp
   Client.vcxproj -> C:\Users\shout\Desktop\과제\Pokemon\갠폴\Client\Default\..\Bin\Client.exe
   Client.vcxproj -> ..\Bin\Client.pdb (Full PDB)

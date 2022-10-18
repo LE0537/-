@@ -9,6 +9,7 @@
 
 #include "Component_Manager.h"
 #include "Light_Manager.h"
+#include "Font_Manager.h"
 
 BEGIN(Engine)
 
@@ -67,10 +68,16 @@ public: /* For.PipeLine */
 	_float4x4 Get_TransformFloat4x4_TP(CPipeLine::TRANSFORMSTATE  eState);
 	_float4 Get_CamPosition();
 
-public:
+public: /* For.Light_Manager */
 	const LIGHTDESC* Get_LightDesc(_uint iIndex);
 	HRESULT Add_Light(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const LIGHTDESC& LightDesc);
 	
+public: /* For.Font_Manager */
+	HRESULT Add_Fonts(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pFontTag, const _tchar* pFontFilePath);
+	HRESULT Render_Font(const _tchar* pFontTag, const _tchar* pText, _fvector vPos, _fvector vColor, _fvector vScale);
+
+
+
 public:
 	static void Release_Engine();
 
@@ -83,6 +90,7 @@ private:
 	CComponent_Manager*				m_pComponent_Manager = nullptr;
 	CPipeLine*						m_pPipeLine = nullptr;
 	CLight_Manager*					m_pLight_Manager = nullptr;
+	CFont_Manager*					m_pFont_Manager = nullptr;
 
 public:
 	virtual void Free() override;

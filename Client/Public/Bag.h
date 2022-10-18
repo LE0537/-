@@ -104,6 +104,7 @@ private:
 	void	UseItem();
 	void	GiveItem();
 	void	SwapPoke(_int _iSwapPoke);
+	void	RenderFonts();
 	_bool	CheckUseItem();
 	_bool	CheckGiveItem();
 public:

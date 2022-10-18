@@ -156,6 +156,9 @@
     <ClInclude Include="..\public\PokeInfo.h">
       <Filter>02.GameObjects\99.GameObj\04.UI\01.PokeInfo</Filter>
     </ClInclude>
+    <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
+      <Filter>97.ShaderFiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">

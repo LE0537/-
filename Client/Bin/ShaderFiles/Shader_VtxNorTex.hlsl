@@ -1,3 +1,4 @@
+#include "Client_Shader_Defines.hpp"
 
 matrix			g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
@@ -24,21 +25,6 @@ float4			g_vMtrlSpecular = float4(1.f, 1.f, 1.f, 1.f);  // 재질의 하이라이트 (빤
 texture2D		g_BrushTexture;
 float4			g_vBrushPos = float4(5.f, 0.f, 5.f, 1.f); //물체의 월드 좌표
 float			g_fBrushRange = 2.f; // 물체의 반지름
-
-sampler LinearSampler = sampler_state
-{
-	Filter = MIN_MAG_MIP_LINEAR;
-	AddressU = wrap;
-	AddressV = wrap;
-};
-
-sampler PointSampler = sampler_state
-{
-	Filter = MIN_MAG_MIP_POINT;
-	AddressU = wrap;
-	AddressV = wrap;
-};
-
 
 struct VS_IN
 {
@@ -232,6 +218,10 @@ technique11 DefaultTechnique
 {
 	pass Directional
 	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
 		VertexShader = compile vs_5_0 VS_MAIN_DIRECTIONAL();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
@@ -239,6 +229,10 @@ technique11 DefaultTechnique
 
 	pass Point
 	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
 		VertexShader = compile vs_5_0 VS_MAIN_POINT();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
@@ -246,6 +240,10 @@ technique11 DefaultTechnique
 
 	pass Phong
 	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
 		VertexShader = compile vs_5_0 VS_MAIN_PHONG();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_PHONG();

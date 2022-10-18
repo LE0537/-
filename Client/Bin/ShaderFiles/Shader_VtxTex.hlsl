@@ -1,19 +1,9 @@
+#include "Client_Shader_Defines.hpp"
 
 matrix			g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 texture2D		g_DiffuseTexture;
 
 float g_fHP;
-
-sampler LinearSampler = sampler_state
-{	
-	Filter = MIN_MAG_MIP_LINEAR;
-};
-
-sampler PointSampler = sampler_state
-{
-	Filter = MIN_MAG_MIP_POINT;
-};
-
 
 struct VS_IN
 {
@@ -76,6 +66,9 @@ PS_OUT PS_MAIN(PS_IN In)
 
 	Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
 
+//	if (Out.vColor.a == 0.f)
+//		discard;
+
 	return Out;
 }
 
@@ -95,7 +88,10 @@ technique11 DefaultTechnique
 {
 	pass Default
 	{
-	
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
@@ -103,6 +99,9 @@ technique11 DefaultTechnique
 
 	pass PokeHp
 	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;

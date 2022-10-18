@@ -169,6 +169,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\Bag.h" />
     <ClInclude Include="..\Public\Camera_Dynamic.h" />

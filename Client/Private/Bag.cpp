@@ -88,7 +88,7 @@ HRESULT CBag::Initialize(void * pArg)
 
 	m_fSizeX = 500;
 	m_fSizeY = 45;
-	m_fX = 900;
+	m_fX = 890;
 	m_fY = 170;
 	vScale = { m_fSizeX,m_fSizeY,0.f };
 
@@ -135,23 +135,25 @@ HRESULT CBag::Render()
 	{
 		if (nullptr == m_pShaderCom || nullptr == m_pVIBufferCom || nullptr == m_pShaderCom2 || nullptr == m_pVIBufferCom2 || nullptr == m_pShaderCom3 || nullptr == m_pVIBufferCom3)
 			return E_FAIL;
-		if (m_bUseItem || m_bUsePoke)
-		{
-			if (FAILED(SetUp_UseResources()))
-				return E_FAIL;
-		}
-		if (FAILED(SetUp_PokeItemResources()))
-			return E_FAIL;
 
-		if (FAILED(SetUp_PokeResources()))
+		if (FAILED(SetUp_ShaderResources()))
 			return E_FAIL;
 
 		if (FAILED(SetUp_ItemResources()))
 			return E_FAIL;
 
-		if (FAILED(SetUp_ShaderResources()))
+		if (FAILED(SetUp_PokeResources()))
 			return E_FAIL;
-	
+
+		if (FAILED(SetUp_PokeItemResources()))
+			return E_FAIL;
+
+		if (m_bUseItem || m_bUsePoke)
+		{
+			if (FAILED(SetUp_UseResources()))
+				return E_FAIL;
+		}
+	//	RenderFonts();
 
 	}
 	return S_OK;
@@ -274,7 +276,17 @@ HRESULT CBag::Ready_Components()
 
 HRESULT CBag::SetUp_ShaderResources()
 {
+	if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(1))))
+		return E_FAIL;
 
+	m_pShaderCom->Begin();
+	m_pVIBufferCom->Render();
 	if (m_bItemSelect)
 	{
 		if (nullptr == m_pShaderCom || nullptr == m_pShaderCom2 || nullptr == m_pShaderCom3)
@@ -306,20 +318,6 @@ HRESULT CBag::SetUp_ShaderResources()
 		m_pShaderCom3->Begin();
 		m_pVIBufferCom3->Render();
 	}
-	if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(1))))
-		return E_FAIL;
-
-	m_pShaderCom->Begin();
-	m_pVIBufferCom->Render();
-
-	
-
 	return S_OK;
 }
 
@@ -468,18 +466,6 @@ HRESULT CBag::SetUp_PokeItemResources()
 
 HRESULT CBag::SetUp_UseResources()
 {
-	if (FAILED(m_pShaderCom5->Set_RawValue("g_WorldMatrix", &m_pTransformCom5->Get_World4x4_TP(), sizeof(_float4x4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom5->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom5->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom5->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(0))))
-		return E_FAIL;
-
-	m_pShaderCom5->Begin();
-	m_pVIBufferCom5->Render();
-
 	if (m_bUseItem)
 	{
 		if (FAILED(m_pShaderCom4->Set_RawValue("g_WorldMatrix", &m_pTransformCom4->Get_World4x4_TP(), sizeof(_float4x4))))
@@ -508,6 +494,17 @@ HRESULT CBag::SetUp_UseResources()
 		m_pShaderCom4->Begin();
 		m_pVIBufferCom4->Render();
 	}
+	if (FAILED(m_pShaderCom5->Set_RawValue("g_WorldMatrix", &m_pTransformCom5->Get_World4x4_TP(), sizeof(_float4x4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom5->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom5->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom5->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(0))))
+		return E_FAIL;
+
+	m_pShaderCom5->Begin();
+	m_pVIBufferCom5->Render();
 	return S_OK;
 }
 
@@ -996,7 +993,7 @@ void CBag::Set_UseItemPos(_int _iIndex)
 	m_pTransformCom4->Set_Scale(vScale);
 	m_pTransformCom4->Set_State(CTransform::STATE_TRANSLATION, vPos);
 
-	vPos.m128_f32[0] -= 70.f;
+	vPos.m128_f32[0] -= 60.f;
 	vPos.m128_f32[1] += 20.f;
 	vScale = { 20.f,20.f,0.f,0.f };
 	m_pTransformCom5->Set_Scale(vScale);
@@ -1013,7 +1010,7 @@ void CBag::Set_UsePokePos(_int _iIndex)
 	m_pTransformCom4->Set_Scale(vScale);
 	m_pTransformCom4->Set_State(CTransform::STATE_TRANSLATION, vPos);
 
-	vPos.m128_f32[0] -= 70.f;
+	vPos.m128_f32[0] -= 60.f;
 	vPos.m128_f32[1] += 20.f;
 	vScale = { 20.f,20.f,0.f,0.f };
 	m_pTransformCom5->Set_Scale(vScale);
@@ -1088,6 +1085,79 @@ void CBag::SwapPoke(_int _iSwapPoke)
 	tInfo = m_vecPoke[_iSwapPoke];
 	m_vecPoke[_iSwapPoke] = m_vecPoke[m_iPokeSelect];
 	m_vecPoke[m_iPokeSelect] = tInfo;
+}
+
+void CBag::RenderFonts()
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	_vector vPos = {730.f,157.f,0.f,1.f};
+	_vector vPos2 = { 1060.f,157.f,0.f,1.f };
+	_vector vScale = { 0.8f,0.8f,0.8f,1.f };
+	wstring strNum = TEXT("x ");
+	for (_int i = 0; i < 8; ++i)
+	{
+		if (dynamic_cast<CGameObj*>(m_vecItem[i + m_iItemScoll])->Get_ItemInfo().iItemNum != 99)
+		{
+			strNum = TEXT("x ");
+
+			if (m_iSelect == i && m_bItemSelect)
+			{
+				strNum += to_wstring(dynamic_cast<CGameObj*>(m_vecItem[i + m_iItemScoll])->Get_ItemInfo().iNum);
+				pGameInstance->Render_Font(TEXT("Font_Nexon"), dynamic_cast<CGameObj*>(m_vecItem[i + m_iItemScoll])->Get_ItemInfo().strName.c_str(), vPos, XMVectorSet(1.f, 1.f, 1.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+				pGameInstance->Render_Font(TEXT("Font_Nexon"), strNum.c_str(), vPos2, XMVectorSet(1.f, 1.f, 1.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+				vPos.m128_f32[1] += 50.f;
+				vPos2.m128_f32[1] += 50.f;
+			}
+			else
+			{
+				strNum += to_wstring(dynamic_cast<CGameObj*>(m_vecItem[i + m_iItemScoll])->Get_ItemInfo().iNum);
+				pGameInstance->Render_Font(TEXT("Font_Nexon"), dynamic_cast<CGameObj*>(m_vecItem[i + m_iItemScoll])->Get_ItemInfo().strName.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+				pGameInstance->Render_Font(TEXT("Font_Nexon"), strNum.c_str(), vPos2, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+				vPos.m128_f32[1] += 50.f;
+				vPos2.m128_f32[1] += 50.f;
+			}
+		}
+	}
+	vPos = { 580.f,555.f,0.f,1.f };
+	vPos2 = { 580.f,600.f,0.f,1.f };
+	pGameInstance->Render_Font(TEXT("Font_Nexon"), dynamic_cast<CGameObj*>(m_vecItem[m_iItemPos])->Get_ItemInfo().strName.c_str(), vPos, XMVectorSet(1.f, 1.f, 1.f, 1.f), vScale);
+	pGameInstance->Render_Font(TEXT("Font_Nexon"), dynamic_cast<CGameObj*>(m_vecItem[m_iItemPos])->Get_ItemInfo().strInfo.c_str(), vPos2, XMVectorSet(0.f, 0.f, 0.f, 1.f), vScale);
+
+	vPos = { 138.f,120.f,0.f,1.f };
+	wstring strHP = TEXT("");
+	wstring strHP2 = TEXT("/");
+	for (_int i = 0; i < 6; ++i)
+	{
+		pGameInstance->Render_Font(TEXT("Font_Nexon"), dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().strName.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+		vPos.m128_f32[1] += 96.f;
+	}
+	vPos = { 136.f,162.f,0.f,1.f };
+	for (_int i = 0; i < 6; ++i)
+	{
+		strHP = TEXT("");
+		strHP += to_wstring(dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().iHp);
+		strHP += strHP2;
+		strHP += to_wstring(dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().iMaxHp);
+		pGameInstance->Render_Font(TEXT("Font_Nexon"), strHP.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+		vPos.m128_f32[1] += 96.f;
+	}
+	wstring strLv = TEXT("Lv.");
+	vPos = { 336.f,162.f,0.f,1.f };
+	for (_int i = 0; i < 6; ++i)
+	{
+		if (dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().eStatInfo == STATINFO_END)
+		{
+			strLv = TEXT("Lv.");
+			strLv += to_wstring(dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().iLv);
+			pGameInstance->Render_Font(TEXT("Font_Nexon"), strLv.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+			vPos.m128_f32[1] += 96.f;
+		}
+	}
+	wstring strMoney = TEXT("¿ëµ·                    0 ¿ø");
+	vPos = { 980.f,30.f,0.f,1.f };
+	pGameInstance->Render_Font(TEXT("Font_Nexon"), strMoney.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 _bool CBag::CheckUseItem()

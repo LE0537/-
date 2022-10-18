@@ -76,6 +76,12 @@
     <ClCompile Include="..\private\Light_Manager.cpp">
       <Filter>01.Utility\06.Light\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\CustomFont.cpp">
+      <Filter>01.Utility\07.Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Font_Manager.cpp">
+      <Filter>01.Utility\07.Fonts\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -165,6 +171,12 @@
     <ClInclude Include="..\public\Light_Manager.h">
       <Filter>01.Utility\06.Light\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CustomFont.h">
+      <Filter>01.Utility\07.Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Font_Manager.h">
+      <Filter>01.Utility\07.Fonts\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.System">
@@ -244,6 +256,12 @@
     </Filter>
     <Filter Include="01.Utility\06.Light\Manager">
       <UniqueIdentifier>{5ec53c7b-69f6-4d5d-a17e-3d489d69f94f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\07.Fonts">
+      <UniqueIdentifier>{b959e73f-2824-48a6-a197-eee735ae0b29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\07.Fonts\Manager">
+      <UniqueIdentifier>{6207559f-3b27-4fe6-9622-ff6c7c38ec24}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

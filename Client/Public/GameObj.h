@@ -53,7 +53,11 @@ public:
 		_int		iExp;
 		_int		iItem;
 		_int		iSex;
-		
+		_int		iBallNum;
+		_int		iSkillNum1;
+		_int		iSkillNum2;
+		_int		iSkillNum3;
+		_int		iSkillNum4;
 		POKETYPE	eType;
 		POKETYPE	eType2;
 		STATINFO    eStatInfo;

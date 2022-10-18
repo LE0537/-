@@ -37,6 +37,11 @@ HRESULT CGaromakguri::Initialize(void * pArg)
 	m_PokemonInfo.iExp = 0;
 	m_PokemonInfo.iItem = 99;
 	m_PokemonInfo.iSex = 1;
+	m_PokemonInfo.iBallNum = 2;
+	m_PokemonInfo.iSkillNum1 = 0;
+	m_PokemonInfo.iSkillNum2 = 0;
+	m_PokemonInfo.iSkillNum3 = 0;
+	m_PokemonInfo.iSkillNum4 = 0;
 
 	m_PokemonInfo.eType = EVIL;
 	m_PokemonInfo.eType2 = NORMAL;

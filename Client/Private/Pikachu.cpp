@@ -37,7 +37,12 @@ HRESULT CPikachu::Initialize(void * pArg)
 	m_PokemonInfo.iExp = 0;
 	m_PokemonInfo.iItem = 99;
 	m_PokemonInfo.iSex = 0;
-
+	m_PokemonInfo.iBallNum = 4;
+	m_PokemonInfo.iSkillNum1 = 0;
+	m_PokemonInfo.iSkillNum2 = 99;
+	m_PokemonInfo.iSkillNum3 = 99;
+	m_PokemonInfo.iSkillNum4 = 99;
+	
 	m_PokemonInfo.eType = THUNDER;
 	m_PokemonInfo.eType2 = POKETYPE_END;
 	m_PokemonInfo.eStatInfo = STATINFO_END;

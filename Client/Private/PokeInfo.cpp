@@ -95,6 +95,15 @@ HRESULT CPokeInfo::Render()
 
 		if (FAILED(SetUp_ShaderResources()))
 			return E_FAIL;
+
+
+
+
+
+
+
+
+
 	}
 	return S_OK;
 }

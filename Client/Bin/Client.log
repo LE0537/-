@@ -1,3 +1,20 @@
-﻿  Garomakguri.cpp
+﻿  UI.cpp
+  Tackle.cpp
+  PokeInfo.cpp
+  Pikachu.cpp
+  NonePoke.cpp
+  None.cpp
+  MonsterBall.cpp
+  HpPotion.cpp
+  GameObj.cpp
+  ExpShare.cpp
+  Bag.cpp
+  Loader.cpp
+  BreakCar.cpp
+  코드를 생성하고 있습니다...
+c:\users\shout\desktop\과제\pokemon\갠폴\client\private\pokeinfo.cpp(641): warning C4715: 'Client::CPokeInfo::CheckSkillType': 모든 제어 경로에서 값을 반환하지는 않습니다.
+  컴파일하고 있습니다...
+  Garomakguri.cpp
+  코드를 생성하고 있습니다...
   Client.vcxproj -> C:\Users\shout\Desktop\과제\Pokemon\갠폴\Client\Default\..\Bin\Client.exe
   Client.vcxproj -> ..\Bin\Client.pdb (Full PDB)

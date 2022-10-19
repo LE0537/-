@@ -35,7 +35,6 @@ public:
 		_int		iMoney;
 		_int		iLevelIndex;
 
-
 	}PLAYERINFO;
 	typedef struct tagInfo2 {
 		wstring		strName;

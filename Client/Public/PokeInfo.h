@@ -71,6 +71,7 @@ private:
 	void	Set_SkillPos();
 	void	Set_InfoPos();
 	void	RenderFonts();
+	void	RenderFonts2();
 	HRESULT	CheckSkillType(_int _iIndex);
 public:
 	static CPokeInfo* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

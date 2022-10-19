@@ -21,7 +21,7 @@ HRESULT CTackle::Initialize_Prototype()
 HRESULT CTackle::Initialize(void * pArg)
 {
 
-	*(CGameObject**)pArg = this;
+//	*(CGameObject**)pArg = this;
 	m_SkillInfo.strName = TEXT("몸통 박치기");
 	m_SkillInfo.strInfo = TEXT("상대를 향해서 몸 전체를 던져 공격한다.");
 	m_SkillInfo.iSkillNum = 0;
@@ -32,6 +32,7 @@ HRESULT CTackle::Initialize(void * pArg)
 	m_SkillInfo.iPoint = m_SkillInfo.iMaxPoint;
 	m_SkillInfo.eType = NORMAL;
 
+	*(SKILLINFO**)pArg = &m_SkillInfo;
 	return S_OK;
 }
 

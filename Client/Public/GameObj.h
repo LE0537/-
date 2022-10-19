@@ -51,6 +51,15 @@ public:
 	typedef struct tagInfo3 {
 		wstring		strName;
 		wstring		strInfo;
+		_int		iPrice;
+		_int		iItemNum;
+		_int		iNum;
+
+	}ITEMINFO;
+	typedef struct tagInfo4 {
+		wstring		strName;
+		wstring		strInfo;
+		wstring		strChar;
 		_int		iPokeNum;
 		_int		iMaxHp;
 		_int		iHp;
@@ -62,25 +71,18 @@ public:
 		_int		iLv;
 		_int		iMaxExp;
 		_int		iExp;
-		_int		iItem;
 		_int		iSex;
 		_int		iBallNum;
-		SKILLINFO		eSkillNum1;
-		SKILLINFO		eSkillNum2;
-		SKILLINFO		eSkillNum3;
-		SKILLINFO		eSkillNum4;
+		ITEMINFO*		eItem;
+		SKILLINFO*		eSkillNum1;
+		SKILLINFO*		eSkillNum2;
+		SKILLINFO*		eSkillNum3;
+		SKILLINFO*		eSkillNum4;
 		POKETYPE	eType;
 		POKETYPE	eType2;
 		STATINFO    eStatInfo;
 	}POKEINFO;
-	typedef struct tagInfo4 {
-		wstring		strName;
-		wstring		strInfo;
-		_int		iPrice;
-		_int		iItemNum;
-		_int		iNum;
 
-	}ITEMINFO;
 protected:
 	CShader*				m_pShaderCom = nullptr;
 	CTexture*				m_pTextureCom = nullptr;
@@ -104,7 +106,7 @@ public:
 	if (m_PokemonInfo.iHp > m_PokemonInfo.iMaxHp) { m_PokemonInfo.iHp = m_PokemonInfo.iMaxHp; }
 	else if (m_PokemonInfo.iHp < 0) { m_PokemonInfo.iHp = 0; }
 	}
-	void	Set_PokeItem(_int _iItemIndex) { m_PokemonInfo.iItem = _iItemIndex; }
+	void	Set_PokeItem(ITEMINFO* _eItem) { m_PokemonInfo.eItem = _eItem; }
 
 
 public:

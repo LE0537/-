@@ -19,14 +19,15 @@ HRESULT CNone::Initialize_Prototype()
 
 HRESULT CNone::Initialize(void * pArg)
 {
-	*(CGameObject**)pArg = this;
+//	*(CGameObject**)pArg = this;
 
-	m_ItemInfo.strName = TEXT("");
+	m_ItemInfo.strName = TEXT("¾øÀ½");
 	m_ItemInfo.strInfo = TEXT("");
 	m_ItemInfo.iItemNum = 99;
 	m_ItemInfo.iNum = 0;
 	m_ItemInfo.iPrice = 0;
 
+	*(ITEMINFO**)pArg = &m_ItemInfo;
 	return S_OK;
 }
 

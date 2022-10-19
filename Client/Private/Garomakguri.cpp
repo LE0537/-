@@ -24,65 +24,36 @@ HRESULT CGaromakguri::Initialize(void * pArg)
 
 	m_PokemonInfo.strName = TEXT("해월가로막구리");
 	m_PokemonInfo.strInfo = TEXT("쥬신 130기 배해월, 난폭운전으로 유명하다.");
+	m_PokemonInfo.strChar = TEXT("난폭");
 	m_PokemonInfo.iPokeNum = 152;
-	m_PokemonInfo.iMaxHp = 100;
+	m_PokemonInfo.iMaxHp = 250;
 	m_PokemonInfo.iHp = 30;
-	m_PokemonInfo.iDmg = 30;
-	m_PokemonInfo.iSDmg = 30;
-	m_PokemonInfo.iDef = 10;
-	m_PokemonInfo.iSDef = 10;
-	m_PokemonInfo.iSpeed = 30;
+	m_PokemonInfo.iDmg = 130;
+	m_PokemonInfo.iSDmg = 180;
+	m_PokemonInfo.iDef = 150;
+	m_PokemonInfo.iSDef = 150;
+	m_PokemonInfo.iSpeed = 130;
 	m_PokemonInfo.iLv = 5;
 	m_PokemonInfo.iMaxExp = 20;
 	m_PokemonInfo.iExp = 0;
-	m_PokemonInfo.iItem = 99;
 	m_PokemonInfo.iSex = 1;
 	m_PokemonInfo.iBallNum = 2;
-	m_PokemonInfo.eSkillNum1.iSkillNum = 0;
-	m_PokemonInfo.eSkillNum2.iSkillNum = 98;
-	m_PokemonInfo.eSkillNum3.iSkillNum = 98;
-	m_PokemonInfo.eSkillNum4.iSkillNum = 98;
 
-	m_PokemonInfo.eSkillNum1.strName = TEXT("몸통 박치기");
-	m_PokemonInfo.eSkillNum1.strInfo = TEXT("상대를 향해서 몸 전체를 던져 공격한다.");
-	m_PokemonInfo.eSkillNum1.iSkillNum = 0;
-	m_PokemonInfo.eSkillNum1.iDmg = 40;
-	m_PokemonInfo.eSkillNum1.iSDmg = 0;
-	m_PokemonInfo.eSkillNum1.fHit = 100;
-	m_PokemonInfo.eSkillNum1.iMaxPoint = 35;
-	m_PokemonInfo.eSkillNum1.iPoint = m_PokemonInfo.eSkillNum1.iMaxPoint;
-	m_PokemonInfo.eSkillNum1.eType = NORMAL;
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-	m_PokemonInfo.eSkillNum2.strName = TEXT("난폭운전");
-	m_PokemonInfo.eSkillNum2.strInfo = TEXT("배해월 특기 난폭운전 이다.");
-	m_PokemonInfo.eSkillNum2.iSkillNum = 0;
-	m_PokemonInfo.eSkillNum2.iDmg = 0;
-	m_PokemonInfo.eSkillNum2.iSDmg = 150;
-	m_PokemonInfo.eSkillNum2.fHit = 50;
-	m_PokemonInfo.eSkillNum2.iMaxPoint = 5;
-	m_PokemonInfo.eSkillNum2.iPoint = m_PokemonInfo.eSkillNum2.iMaxPoint;
-	m_PokemonInfo.eSkillNum2.eType = EVIL;
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tackle"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum1)))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BreakCar"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum2)))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BreakCar"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum3)))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BreakCar"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum4)))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_None"), LEVEL_STATIC, TEXT("Layer_Item"), &m_PokemonInfo.eItem)))
+		return E_FAIL;
 
+	RELEASE_INSTANCE(CGameInstance);
 
-	m_PokemonInfo.eSkillNum3.strName = TEXT("난폭운전");
-	m_PokemonInfo.eSkillNum3.strInfo = TEXT("배해월 특기 난폭운전 이다.");
-	m_PokemonInfo.eSkillNum3.iSkillNum = 0;
-	m_PokemonInfo.eSkillNum3.iDmg = 0;
-	m_PokemonInfo.eSkillNum3.iSDmg = 150;
-	m_PokemonInfo.eSkillNum3.fHit = 50;
-	m_PokemonInfo.eSkillNum3.iMaxPoint = 5;
-	m_PokemonInfo.eSkillNum3.iPoint = m_PokemonInfo.eSkillNum3.iMaxPoint;
-	m_PokemonInfo.eSkillNum3.eType = EVIL;
-
-	m_PokemonInfo.eSkillNum4.strName = TEXT("난폭운전");
-	m_PokemonInfo.eSkillNum4.strInfo = TEXT("배해월 특기 난폭운전 이다.");
-	m_PokemonInfo.eSkillNum4.iSkillNum = 0;
-	m_PokemonInfo.eSkillNum4.iDmg = 0;
-	m_PokemonInfo.eSkillNum4.iSDmg = 150;
-	m_PokemonInfo.eSkillNum4.fHit = 50;
-	m_PokemonInfo.eSkillNum4.iMaxPoint = 5;
-	m_PokemonInfo.eSkillNum4.iPoint = m_PokemonInfo.eSkillNum4.iMaxPoint;
-	m_PokemonInfo.eSkillNum4.eType = EVIL;
 
 	m_PokemonInfo.eType = EVIL;
 	m_PokemonInfo.eType2 = NORMAL;

@@ -21,9 +21,9 @@ HRESULT CBreakCar::Initialize_Prototype()
 HRESULT CBreakCar::Initialize(void * pArg)
 {
 
-	*(CGameObject**)pArg = this;
+	//*(CGameObject**)pArg = this;
 
-	*(CGameObject**)pArg = this;
+
 	m_SkillInfo.strName = TEXT("난폭운전");
 	m_SkillInfo.strInfo = TEXT("배해월 특기 난폭운전 이다.");
 	m_SkillInfo.iSkillNum = 0;
@@ -34,7 +34,7 @@ HRESULT CBreakCar::Initialize(void * pArg)
 	m_SkillInfo.iPoint = m_SkillInfo.iMaxPoint;
 	m_SkillInfo.eType = EVIL;
 
-
+	*(SKILLINFO**)pArg = &m_SkillInfo;
 	return S_OK;
 }
 

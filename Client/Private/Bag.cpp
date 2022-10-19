@@ -34,28 +34,28 @@ HRESULT CBag::Initialize(void * pArg)
 
 	for (_int i = 0; i < 5; ++i)
 	{
-		CGameObject* tInfo;
+		ITEMINFO* tInfo;
 		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_MonsterBall"), LEVEL_STATIC, TEXT("Layer_Item"),&tInfo)))
 			return E_FAIL;
 		m_vecItem.push_back(tInfo);
 	}
 	for (_int i = 5; i < 15; ++i)
 	{
-		CGameObject* tInfo;
+		ITEMINFO* tInfo;
 		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_HpPotion"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfo)))
 			return E_FAIL;
 		m_vecItem.push_back(tInfo);
 	}
 	for (_int i = 15; i < 20; ++i)
 	{
-		CGameObject* tInfo;
+		ITEMINFO* tInfo;
 		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_ExpShare"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfo)))
 			return E_FAIL;
 		m_vecItem.push_back(tInfo);
 	}
 	for (_int i = 20; i < 50; ++i)
 	{
-		CGameObject* tInfo;
+		ITEMINFO* tInfo;
 		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_None"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfo)))
 			return E_FAIL;
 		m_vecItem.push_back(tInfo);
@@ -335,9 +335,9 @@ HRESULT CBag::SetUp_ItemResources()
 			return E_FAIL;
 		if (FAILED(m_pShaderItem[i]->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
 			return E_FAIL;
-		if (dynamic_cast<CGameObj*>(m_vecItem[i + m_iItemScoll])->Get_ItemInfo().iItemNum != 99)
+		if ((m_vecItem[i + m_iItemScoll]->iItemNum != 99))
 		{
-			if (FAILED(m_pShaderItem[i]->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom2->Get_SRV(dynamic_cast<CGameObj*>(m_vecItem[i + m_iItemScoll])->Get_ItemInfo().iItemNum))))
+			if (FAILED(m_pShaderItem[i]->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom2->Get_SRV(m_vecItem[i + m_iItemScoll]->iItemNum))))
 				return E_FAIL;
 			m_pShaderItem[i]->Begin();
 			m_pVIBufferItem[i]->Render();
@@ -457,9 +457,10 @@ HRESULT CBag::SetUp_PokeItemResources()
 			return E_FAIL;
 		if (FAILED(m_pShaderPokeItem[i]->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
 			return E_FAIL;
-		if (dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().iItem != 99)
+	
+		if (dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().eItem->iItemNum != 99)
 		{
-			if (FAILED(m_pShaderPokeItem[i]->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom2->Get_SRV(dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().iItem))))
+			if (FAILED(m_pShaderPokeItem[i]->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom2->Get_SRV(dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().eItem->iItemNum))))
 				return E_FAIL;
 			m_pShaderPokeItem[i]->Begin();
 			m_pVIBufferPokeItem[i]->Render();
@@ -659,7 +660,7 @@ void CBag::Key_Input()
 			{
 				if (m_iSelect == 7)
 				{
-					if (dynamic_cast<CGameObj*>(m_vecItem[m_iItemPos + 1])->Get_ItemInfo().iItemNum != 99 && m_iItemScoll != 50)
+					if (m_vecItem[m_iItemPos + 1]->iItemNum != 99 && m_iItemScoll != 50)
 					{
 						++m_iItemScoll;
 						++m_iItemPos;
@@ -667,7 +668,7 @@ void CBag::Key_Input()
 				}
 				else
 				{
-					if (dynamic_cast<CGameObj*>(m_vecItem[m_iItemPos + 1])->Get_ItemInfo().iItemNum != 99)
+					if (m_vecItem[m_iItemPos + 1]->iItemNum != 99)
 					{
 						SetSelectButton(m_iSelect, DIR_DOWN);
 						++m_iSelect;
@@ -1027,7 +1028,7 @@ void CBag::UseItem()
 	auto& iter = m_vecItem.begin();
 	iter += m_iItemPos;
 
-	switch (dynamic_cast<CGameObj*>((*iter))->Get_ItemInfo().iItemNum)
+	switch ((*iter)->iItemNum)
 	{
 	case 4:
 		dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_PokeHp(30);
@@ -1035,11 +1036,11 @@ void CBag::UseItem()
 	default:
 		break;
 	}
-	(*iter)->m_bDead = true;
+	
 	m_vecItem.erase(iter);
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-	CGameObject* tInfo;
+	ITEMINFO* tInfo;
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_None"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfo)))
 		return;
 	m_vecItem.push_back(tInfo);
@@ -1055,7 +1056,7 @@ void CBag::UseItem()
 			--m_iItemPos;
 		}
 	}
-	else if(dynamic_cast<CGameObj*>(m_vecItem[m_iItemPos])->Get_ItemInfo().iItemNum == 99)
+	else if(m_vecItem[m_iItemPos]->iItemNum == 99)
 	{
 		SetSelectButton(m_iSelect, DIR_UP);
 		--m_iSelect;
@@ -1066,22 +1067,38 @@ void CBag::UseItem()
 
 void CBag::GiveItem()
 {
-	if (dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().iItem == 99)
+	if (dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().eItem->iItemNum == 99)
 	{
-		dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_PokeItem(dynamic_cast<CGameObj*>(m_vecItem[m_iItemPos])->Get_ItemInfo().iItemNum);
+		dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_PokeItem(m_vecItem[m_iItemPos]);
 
 		auto& iter = m_vecItem.begin();
 		iter += m_iItemPos;
-		(*iter)->m_bDead = true;
+		
 		m_vecItem.erase(iter);
 
 		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-		CGameObject* tInfo;
+		ITEMINFO* tInfo;
 		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_None"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfo)))
 			return;
 		m_vecItem.push_back(tInfo);
 		
 		RELEASE_INSTANCE(CGameInstance);
+
+		if (m_iSelect == 0)
+		{
+			if (m_iItemScoll != 0)
+			{
+				--m_iItemScoll;
+				--m_iItemPos;
+			}
+		}
+		else if (m_vecItem[m_iItemPos]->iItemNum == 99)
+		{
+			SetSelectButton(m_iSelect, DIR_UP);
+			--m_iSelect;
+			--m_iItemPos;
+		}
+
 	}
 }
 void CBag::SwapPoke(_int _iSwapPoke)
@@ -1101,22 +1118,22 @@ void CBag::RenderFonts()
 	wstring strNum = TEXT("x ");
 	for (_int i = 0; i < 8; ++i)
 	{
-		if (dynamic_cast<CGameObj*>(m_vecItem[i + m_iItemScoll])->Get_ItemInfo().iItemNum != 99)
+		if (m_vecItem[i + m_iItemScoll]->iItemNum != 99)
 		{
 			strNum = TEXT("x ");
 
 			if (m_iSelect == i && m_bItemSelect)
 			{
-				strNum += to_wstring(dynamic_cast<CGameObj*>(m_vecItem[i + m_iItemScoll])->Get_ItemInfo().iNum);
-				pGameInstance->Render_Font(TEXT("Font_Nexon"), dynamic_cast<CGameObj*>(m_vecItem[i + m_iItemScoll])->Get_ItemInfo().strName.c_str(), vPos, XMVectorSet(1.f, 1.f, 1.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+				strNum += to_wstring(m_vecItem[i + m_iItemScoll]->iNum);
+				pGameInstance->Render_Font(TEXT("Font_Nexon"), m_vecItem[i + m_iItemScoll]->strName.c_str(), vPos, XMVectorSet(1.f, 1.f, 1.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
 				pGameInstance->Render_Font(TEXT("Font_Nexon"), strNum.c_str(), vPos2, XMVectorSet(1.f, 1.f, 1.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
 				vPos.m128_f32[1] += 50.f;
 				vPos2.m128_f32[1] += 50.f;
 			}
 			else
 			{
-				strNum += to_wstring(dynamic_cast<CGameObj*>(m_vecItem[i + m_iItemScoll])->Get_ItemInfo().iNum);
-				pGameInstance->Render_Font(TEXT("Font_Nexon"), dynamic_cast<CGameObj*>(m_vecItem[i + m_iItemScoll])->Get_ItemInfo().strName.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+				strNum += to_wstring(m_vecItem[i + m_iItemScoll]->iNum);
+				pGameInstance->Render_Font(TEXT("Font_Nexon"), m_vecItem[i + m_iItemScoll]->strName.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
 				pGameInstance->Render_Font(TEXT("Font_Nexon"), strNum.c_str(), vPos2, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
 				vPos.m128_f32[1] += 50.f;
 				vPos2.m128_f32[1] += 50.f;
@@ -1125,8 +1142,8 @@ void CBag::RenderFonts()
 	}
 	vPos = { 580.f,555.f,0.f,1.f };
 	vPos2 = { 580.f,600.f,0.f,1.f };
-	pGameInstance->Render_Font(TEXT("Font_Nexon"), dynamic_cast<CGameObj*>(m_vecItem[m_iItemPos])->Get_ItemInfo().strName.c_str(), vPos, XMVectorSet(1.f, 1.f, 1.f, 1.f), vScale);
-	pGameInstance->Render_Font(TEXT("Font_Nexon"), dynamic_cast<CGameObj*>(m_vecItem[m_iItemPos])->Get_ItemInfo().strInfo.c_str(), vPos2, XMVectorSet(0.f, 0.f, 0.f, 1.f), vScale);
+	pGameInstance->Render_Font(TEXT("Font_Nexon"), m_vecItem[m_iItemPos]->strName.c_str(), vPos, XMVectorSet(1.f, 1.f, 1.f, 1.f), vScale);
+	pGameInstance->Render_Font(TEXT("Font_Nexon"), m_vecItem[m_iItemPos]->strInfo.c_str(), vPos2, XMVectorSet(0.f, 0.f, 0.f, 1.f), vScale);
 
 	vPos = { 138.f,120.f,0.f,1.f };
 	wstring strHP = TEXT("");
@@ -1167,7 +1184,7 @@ void CBag::RenderFonts()
 
 _bool CBag::CheckUseItem()
 {
-	switch (dynamic_cast<CGameObj*>(m_vecItem[m_iItemPos])->Get_ItemInfo().iItemNum)
+	switch (m_vecItem[m_iItemPos]->iItemNum)
 	{
 	case 4:
 		return true;
@@ -1180,7 +1197,7 @@ _bool CBag::CheckUseItem()
 
 _bool CBag::CheckGiveItem()
 {
-	switch (dynamic_cast<CGameObj*>(m_vecItem[m_iItemPos])->Get_ItemInfo().iItemNum)
+	switch (m_vecItem[m_iItemPos]->iItemNum)
 	{
 	case 30:
 		return true;
@@ -1242,10 +1259,6 @@ void CBag::Free()
 	}
 	if (!m_vecItem.empty())
 	{
-		for (int i = 0; i < 50; ++i)
-		{
-			Safe_Release(m_vecItem[i]);
-		}
 		m_vecItem.clear();
 	}
 	if (!m_vecPoke.empty())

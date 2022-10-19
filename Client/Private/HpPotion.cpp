@@ -21,7 +21,7 @@ HRESULT CHpPotion::Initialize_Prototype()
 HRESULT CHpPotion::Initialize(void * pArg)
 {
 
-	*(CGameObject**)pArg = this;
+//	*(CGameObject**)pArg = this;
 
 	m_ItemInfo.strName = TEXT("상처약");
 	m_ItemInfo.strInfo = TEXT("상처 입은 포켓몬의 HP를 30 회복한다.");
@@ -29,7 +29,7 @@ HRESULT CHpPotion::Initialize(void * pArg)
 	m_ItemInfo.iNum = 1;
 	m_ItemInfo.iPrice = 300;
 
-
+	*(ITEMINFO**)pArg = &m_ItemInfo;
 	return S_OK;
 }
 

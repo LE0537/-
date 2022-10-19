@@ -31,19 +31,19 @@ HRESULT CVIBuffer_Hexagon::Initialize_Prototype()
 	VTXTEX*			pVertices = new VTXTEX[m_iNumVertices];
 
 	pVertices[0].vPosition = _float3(0.f, 0.f, 0.f);
-
+	pVertices[0].vTexture = { 0.f,0.f};
 	pVertices[1].vPosition = _float3(0.f, 1.f, 0.f);
-
+	pVertices[1].vTexture = { 1.f,1.f};
 	pVertices[2].vPosition = _float3(sqrtf(3.f) / 2.f, 0.5f, 0.f);
-
+	pVertices[2].vTexture = { 2.f,2.f};
 	pVertices[3].vPosition = _float3(sqrtf(3.f) / 2.f, -0.5f, 0.f);
-
+	pVertices[3].vTexture = { 3.f,3.f };
 	pVertices[4].vPosition = _float3(0.f, -1.f, 0.f);
-
+	pVertices[4].vTexture = { 4.f,4.f };
 	pVertices[5].vPosition = _float3(-(sqrtf(3.f) / 2.f), -0.5f, 0.f);
-	
+	pVertices[5].vTexture = { 5.f,5.f };
 	pVertices[6].vPosition = _float3(-(sqrtf(3.f) / 2.f), 0.5f, 0.f);
-
+	pVertices[6].vTexture = { 6.f,6.f };
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
 	m_SubResourceData.pSysMem = pVertices;
 

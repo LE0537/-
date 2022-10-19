@@ -21,7 +21,7 @@ HRESULT CExpShare::Initialize_Prototype()
 HRESULT CExpShare::Initialize(void * pArg)
 {
 
-	*(CGameObject**)pArg = this;
+//	*(CGameObject**)pArg = this;
 
 	m_ItemInfo.strName = TEXT("학습장치");
 	m_ItemInfo.strInfo = TEXT("지니고 있으면 전투를 하지 않아도 경험치를 얻을 수 있다.");
@@ -29,7 +29,7 @@ HRESULT CExpShare::Initialize(void * pArg)
 	m_ItemInfo.iNum = 1;
 	m_ItemInfo.iPrice = 5000;
 
-
+	*(ITEMINFO**)pArg = &m_ItemInfo;
 	return S_OK;
 }
 

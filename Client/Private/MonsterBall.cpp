@@ -21,7 +21,7 @@ HRESULT CMonsterBall::Initialize_Prototype()
 HRESULT CMonsterBall::Initialize(void * pArg)
 {
 
-	*(CGameObject**)pArg = this;
+//	*(CGameObject**)pArg = this;
 
 	m_ItemInfo.strName = TEXT("몬스터볼");
 	m_ItemInfo.strInfo = TEXT("포켓몬을 잡을 수 있다.");
@@ -29,7 +29,7 @@ HRESULT CMonsterBall::Initialize(void * pArg)
 	m_ItemInfo.iNum = 1;
 	m_ItemInfo.iPrice = 200;
 
-
+	*(ITEMINFO**)pArg = &m_ItemInfo;
 	return S_OK;
 }
 

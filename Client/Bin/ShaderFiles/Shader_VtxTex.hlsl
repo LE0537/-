@@ -3,6 +3,13 @@
 matrix			g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 texture2D		g_DiffuseTexture;
 
+float g_fStatHp;
+float g_fStatDmg;
+float g_fStatSDmg;
+float g_fStatDef;
+float g_fStatSDef;
+float g_fStatSpeed;
+
 float g_fHP;
 
 struct VS_IN
@@ -33,6 +40,36 @@ VS_OUT VS_MAIN(VS_IN In)
 	/* 투영행렬까지 곱하면 정점위치의 w에 뷰스페이스 상의 z를 보관한다. == Out.vPosition이 반드시 float4이어야하는 이유. */
 	Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
 	Out.vTexUV = In.vTexUV;
+
+	return Out;
+}
+
+VS_OUT VS_HEXAGON(VS_IN In)
+{
+	VS_OUT		Out = (VS_OUT)0;
+
+	matrix		matWV, matWVP;
+
+	matWV = mul(g_WorldMatrix, g_ViewMatrix);
+	matWVP = mul(matWV, g_ProjMatrix);
+
+	/* 정점의 위치에 월드 뷰 투영행렬을 곱한다. 현재 정점은 ViewSpace에 존재하낟. */
+	/* 투영행렬까지 곱하면 정점위치의 w에 뷰스페이스 상의 z를 보관한다. == Out.vPosition이 반드시 float4이어야하는 이유. */
+//	Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
+	if (In.vTexUV.x == 0.f)
+		Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
+	if (In.vTexUV.x == 1.f)
+		Out.vPosition = mul(vector(In.vPosition * g_fStatHp, 1.f), matWVP);
+	if (In.vTexUV.x == 2.f)
+		Out.vPosition = mul(vector(In.vPosition * g_fStatDmg, 1.f), matWVP);
+	if (In.vTexUV.x == 3.f)
+		Out.vPosition = mul(vector(In.vPosition * g_fStatDef, 1.f), matWVP);
+	if (In.vTexUV.x == 4.f)
+		Out.vPosition = mul(vector(In.vPosition * g_fStatSpeed, 1.f), matWVP);
+	if (In.vTexUV.x == 5.f)
+		Out.vPosition = mul(vector(In.vPosition * g_fStatSDef, 1.f), matWVP);
+	if (In.vTexUV.x == 6.f)
+		Out.vPosition = mul(vector(In.vPosition * g_fStatSDmg, 1.f), matWVP);
 
 	return Out;
 }
@@ -125,7 +162,7 @@ technique11 DefaultTechnique
 		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 0.1f), 0xffffffff);
 		SetDepthStencilState(DSS_Default, 0);
 
-		VertexShader = compile vs_5_0 VS_MAIN();
+		VertexShader = compile vs_5_0 VS_HEXAGON();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_Hexagon();
 	}

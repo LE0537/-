@@ -81,7 +81,7 @@ private:
 	_int					m_iSwapPoke = 99;
 
 
-	vector<CGameObject*>    m_vecItem;
+	vector<ITEMINFO*>    m_vecItem;
 	vector<CGameObject*>    m_vecPoke;
 public:
 	CGameObject* Get_SelectPoke() { return m_vecPoke[m_iPokeSelect]; }

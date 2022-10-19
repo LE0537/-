@@ -24,6 +24,7 @@ HRESULT CNonePoke::Initialize(void * pArg)
 
 	m_PokemonInfo.strName = TEXT("");
 	m_PokemonInfo.strInfo = TEXT("");
+	m_PokemonInfo.strChar = TEXT("");
 	m_PokemonInfo.iPokeNum = 999;
 	m_PokemonInfo.iMaxHp = 100;
 	m_PokemonInfo.iHp = m_PokemonInfo.iMaxHp;
@@ -35,13 +36,23 @@ HRESULT CNonePoke::Initialize(void * pArg)
 	m_PokemonInfo.iLv = 5;
 	m_PokemonInfo.iMaxExp = 20;
 	m_PokemonInfo.iExp = 0;
-	m_PokemonInfo.iItem = 99;
 	m_PokemonInfo.iSex = 99;
 	m_PokemonInfo.iBallNum = 99;
-	m_PokemonInfo.eSkillNum1.iSkillNum = 99;
-	m_PokemonInfo.eSkillNum2.iSkillNum = 99;
-	m_PokemonInfo.eSkillNum3.iSkillNum = 99;
-	m_PokemonInfo.eSkillNum4.iSkillNum = 99;
+
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NoneSkill"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum1)))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NoneSkill"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum2)))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NoneSkill"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum3)))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NoneSkill"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum4)))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_None"), LEVEL_STATIC, TEXT("Layer_Item"), &m_PokemonInfo.eItem)))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
 
 	m_PokemonInfo.eType = POKETYPE_END;
 	m_PokemonInfo.eType2 = POKETYPE_END;

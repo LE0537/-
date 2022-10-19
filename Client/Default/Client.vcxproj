@@ -187,6 +187,7 @@
     <ClInclude Include="..\public\MonsterBall.h" />
     <ClInclude Include="..\public\None.h" />
     <ClInclude Include="..\public\NonePoke.h" />
+    <ClInclude Include="..\public\NoneSkill.h" />
     <ClInclude Include="..\public\Pikachu.h" />
     <ClInclude Include="..\public\PokeInfo.h" />
     <ClInclude Include="..\public\Tackle.h" />
@@ -214,6 +215,7 @@
     <ClCompile Include="..\private\MonsterBall.cpp" />
     <ClCompile Include="..\private\None.cpp" />
     <ClCompile Include="..\private\NonePoke.cpp" />
+    <ClCompile Include="..\private\NoneSkill.cpp" />
     <ClCompile Include="..\private\Pikachu.cpp" />
     <ClCompile Include="..\private\PokeInfo.cpp" />
     <ClCompile Include="..\private\Tackle.cpp" />

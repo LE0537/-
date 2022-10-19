@@ -1,8 +1,7 @@
-﻿  Font_Manager.cpp
-  CustomFont.cpp
-  Level_Manager.cpp
+﻿  Level_Manager.cpp
   GameObject.cpp
   GameInstance.cpp
+  Component_Manager.cpp
   코드를 생성하고 있습니다...
      ..\Bin\Engine.lib ?쇱씠釉뚮윭由?諛?..\Bin\Engine.exp 媛쒖껜瑜??앹꽦?섍퀬 ?덉뒿?덈떎.
 Effects11d.lib(d3dxGlobal.obj) : warning LNK4099: 'Effects11d.pdb' PDB瑜?'Effects11d.lib(d3dxGlobal.obj)' ?먮뒗 'C:\Users\shout\Desktop\怨쇱젣\Pokemon\媛좏뤃\Engine\Bin\Effects11d.pdb'?먯꽌 李얠쓣 ???놁뒿?덈떎. ?붾쾭洹??뺣낫媛 ?녿뒗 寃껋쿂??媛쒖껜瑜?留곹겕?⑸땲??

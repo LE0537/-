@@ -82,6 +82,15 @@
     <ClCompile Include="..\private\Font_Manager.cpp">
       <Filter>01.Utility\07.Fonts\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\MeshContainer.cpp">
+      <Filter>01.Utility\03.Components\06.Model\MeshContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Model.cpp">
+      <Filter>01.Utility\03.Components\06.Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Hexagon.cpp">
+      <Filter>01.Utility\03.Components\02.VIBuffer\03.Hexagon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -177,6 +186,15 @@
     <ClInclude Include="..\public\Font_Manager.h">
       <Filter>01.Utility\07.Fonts\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\MeshContainer.h">
+      <Filter>01.Utility\03.Components\06.Model\MeshContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Model.h">
+      <Filter>01.Utility\03.Components\06.Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Hexagon.h">
+      <Filter>01.Utility\03.Components\02.VIBuffer\03.Hexagon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.System">
@@ -262,6 +280,15 @@
     </Filter>
     <Filter Include="01.Utility\07.Fonts\Manager">
       <UniqueIdentifier>{6207559f-3b27-4fe6-9622-ff6c7c38ec24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Components\06.Model">
+      <UniqueIdentifier>{a787063a-461d-4178-a6a9-307d84bd410a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Components\06.Model\MeshContainer">
+      <UniqueIdentifier>{5e05660d-da07-4318-af1e-fb85e7ac9d21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Components\02.VIBuffer\03.Hexagon">
+      <UniqueIdentifier>{c51ab10c-5f8a-43d3-aae1-77c9f0cb4513}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

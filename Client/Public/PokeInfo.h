@@ -10,6 +10,7 @@ class CTexture;
 class CRenderer;
 class CTransform;
 class CVIBuffer_Rect;
+class CVIBuffer_Hexagon;
 
 END
 
@@ -33,10 +34,13 @@ public:
 	virtual HRESULT Render();
 
 private:
+	CVIBuffer_Hexagon*		m_pVIBufferHexagonCom = nullptr;
 	CTransform*				m_pTransformCom2 = nullptr;
 	CTransform*				m_pTransformCom3 = nullptr;
+	CTransform*				m_pTransformCom4 = nullptr;
 	CShader*				m_pShaderCom2 = nullptr;
 	CShader*				m_pShaderCom3 = nullptr;
+	CShader*				m_pShaderCom4 = nullptr;
 	CVIBuffer_Rect*			m_pVIBufferCom2 = nullptr;
 	CVIBuffer_Rect*			m_pVIBufferCom3 = nullptr;
 	CTexture*				m_pTextureCom2 = nullptr; 

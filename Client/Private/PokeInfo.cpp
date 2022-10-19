@@ -47,6 +47,15 @@ HRESULT CPokeInfo::Initialize(void * pArg)
 	m_pTransformCom2->Set_Scale(XMLoadFloat3(&vScale));
 	m_pTransformCom2->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fButtonX - g_iWinSizeX * 0.5f, -m_fButtonY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 
+	m_fSizeX = 100.f;
+	m_fSizeY = 100.f;
+	_float fX = 305.f;
+	_float fY = 270.f;
+	vScale = { m_fSizeX,m_fSizeY,0.f };
+	m_pTransformCom4->Set_Scale(XMLoadFloat3(&vScale));
+	m_pTransformCom4->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(fX - g_iWinSizeX * 0.5f, -fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
+
+
 	Set_SkillPos();
 	Set_InfoPos();
 	return S_OK;
@@ -106,12 +115,16 @@ HRESULT CPokeInfo::Ready_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Components(TEXT("Com_Transform3"), LEVEL_STATIC, TEXT("Prototype_Component_Transform"), (CComponent**)&m_pTransformCom3)))
 		return E_FAIL;
+	if (FAILED(__super::Add_Components(TEXT("Com_Transform4"), LEVEL_STATIC, TEXT("Prototype_Component_Transform"), (CComponent**)&m_pTransformCom4)))
+		return E_FAIL;
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Components(TEXT("Com_Shader"), LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 	if (FAILED(__super::Add_Components(TEXT("Com_Shader2"), LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), (CComponent**)&m_pShaderCom2)))
 		return E_FAIL;
 	if (FAILED(__super::Add_Components(TEXT("Com_Shader3"), LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), (CComponent**)&m_pShaderCom3)))
+		return E_FAIL;
+	if (FAILED(__super::Add_Components(TEXT("Com_Shader4"), LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), (CComponent**)&m_pShaderCom4)))
 		return E_FAIL;
 	/* For.Com_Texture */
 	if (FAILED(__super::Add_Components(TEXT("Com_Texture"), LEVEL_STATIC, TEXT("Prototype_Component_Texture_UI"), (CComponent**)&m_pTextureCom)))
@@ -122,13 +135,15 @@ HRESULT CPokeInfo::Ready_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Components(TEXT("Com_Texture4"), LEVEL_STATIC, TEXT("Prototype_Component_Texture_Item"), (CComponent**)&m_pTextureCom4)))
 		return E_FAIL;
-
+	
 	/* For.Com_VIBuffer */
 	if (FAILED(__super::Add_Components(TEXT("Com_VIBuffer"), LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), (CComponent**)&m_pVIBufferCom)))
 		return E_FAIL;
 	if (FAILED(__super::Add_Components(TEXT("Com_VIBuffer2"), LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), (CComponent**)&m_pVIBufferCom2)))
 		return E_FAIL;
 	if (FAILED(__super::Add_Components(TEXT("Com_VIBuffer3"), LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), (CComponent**)&m_pVIBufferCom3)))
+		return E_FAIL;
+	if (FAILED(__super::Add_Components(TEXT("Com_VIBufferHexagon"), LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Hexagon"), (CComponent**)&m_pVIBufferHexagonCom)))
 		return E_FAIL;
 
 	wstring szBuffer[4];
@@ -194,6 +209,16 @@ HRESULT CPokeInfo::SetUp_ShaderResources()
 
 		m_pShaderCom->Begin();
 		m_pVIBufferCom->Render();
+
+		if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom4->Get_World4x4_TP(), sizeof(_float4x4))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+			return E_FAIL;
+	
+		m_pShaderCom4->Begin(2);
+		m_pVIBufferHexagonCom->Render();
 	}
 	else if (m_bSelect)
 	{
@@ -638,6 +663,7 @@ HRESULT CPokeInfo::CheckSkillType(_int _iIndex)
 	default:
 		break;
 	}
+	return S_OK;
 }
 
 CPokeInfo * CPokeInfo::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -688,8 +714,11 @@ void CPokeInfo::Free()
 	Safe_Release(m_pTextureCom4);
 	Safe_Release(m_pTransformCom2);
 	Safe_Release(m_pTransformCom3);
+	Safe_Release(m_pTransformCom4);
 	Safe_Release(m_pShaderCom2);
 	Safe_Release(m_pShaderCom3);
+	Safe_Release(m_pShaderCom4);
 	Safe_Release(m_pVIBufferCom2);
 	Safe_Release(m_pVIBufferCom3);
+	Safe_Release(m_pVIBufferHexagonCom);
 }

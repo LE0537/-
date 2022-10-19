@@ -83,6 +83,17 @@ PS_OUT PS_HP(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_Hexagon(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vColor.a = 0.6f;
+	Out.vColor.r = 0.f;
+	Out.vColor.g = 0.3f;
+	Out.vColor.b = 1.f;
+
+	return Out;
+}
 
 technique11 DefaultTechnique
 {
@@ -106,5 +117,16 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_HP();
+	}
+
+	pass Hexagon
+	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 0.1f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_Hexagon();
 	}
 }

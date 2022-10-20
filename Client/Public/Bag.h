@@ -24,7 +24,7 @@ private:
 	virtual ~CBag() = default;
 public:
 	enum ButtonDir {DIR_UP,DIR_DOWN,DIR_LEFT,DIR_END};
-
+	enum UseButton { ITEM_BUTTON, POKE_BUTTON, BUTTON_END };
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
@@ -94,7 +94,7 @@ private:
 	HRESULT SetUp_UseResources();
 	HRESULT SetSelectButton(_int iIndex, ButtonDir _eDir);
 	HRESULT SetSelectButtonPoke(_int iIndex, ButtonDir _eDir);
-	HRESULT SetSelectButtonUse(_int iIndex, ButtonDir _eDir);
+	HRESULT SetSelectButtonUse(_int iIndex, ButtonDir _eDir , UseButton _eButton);
 	void	Key_Input();
 	void	Key_UseInput();
 	void	Key_PokeInput();
@@ -105,6 +105,7 @@ private:
 	void	Set_UsePokePos(_int _iIndex);
 	void	UseItem();
 	void	GiveItem();
+	void	ClearItem();
 	void	SwapPoke(_int _iSwapPoke);
 	void	RenderFonts();
 	_bool	CheckUseItem();

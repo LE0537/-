@@ -59,17 +59,17 @@ VS_OUT VS_HEXAGON(VS_IN In)
 	if (In.vTexUV.x == 0.f)
 		Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
 	if (In.vTexUV.x == 1.f)
-		Out.vPosition = mul(vector(In.vPosition * g_fStatHp, 1.f), matWVP);
+		Out.vPosition = mul(vector(In.vPosition * min(g_fStatHp,1.f), 1.f), matWVP);
 	if (In.vTexUV.x == 2.f)
-		Out.vPosition = mul(vector(In.vPosition * g_fStatDmg, 1.f), matWVP);
+		Out.vPosition = mul(vector(In.vPosition * min(g_fStatDmg,1.f), 1.f), matWVP);
 	if (In.vTexUV.x == 3.f)
-		Out.vPosition = mul(vector(In.vPosition * g_fStatDef, 1.f), matWVP);
+		Out.vPosition = mul(vector(In.vPosition * min(g_fStatDef,1.f), 1.f), matWVP);
 	if (In.vTexUV.x == 4.f)
-		Out.vPosition = mul(vector(In.vPosition * g_fStatSpeed, 1.f), matWVP);
+		Out.vPosition = mul(vector(In.vPosition * min(g_fStatSpeed,1.f), 1.f), matWVP);
 	if (In.vTexUV.x == 5.f)
-		Out.vPosition = mul(vector(In.vPosition * g_fStatSDef, 1.f), matWVP);
+		Out.vPosition = mul(vector(In.vPosition * min(g_fStatSDef,1.f), 1.f), matWVP);
 	if (In.vTexUV.x == 6.f)
-		Out.vPosition = mul(vector(In.vPosition * g_fStatSDmg, 1.f), matWVP);
+		Out.vPosition = mul(vector(In.vPosition * min(g_fStatSDmg,1.f), 1.f), matWVP);
 
 	return Out;
 }

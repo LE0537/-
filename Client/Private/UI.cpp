@@ -76,7 +76,8 @@ void CUI::Tick(_float fTimeDelta)
 			m_bInven = !m_bInven;
 			if(m_bSelect)
 				g_bBag = true;
-			
+			if (!m_bSelect)
+				g_bPokeDeck = true;
 		}
 		if (pGameInstance->Key_Down(DIK_BACKSPACE))
 			m_bInven = !m_bInven;

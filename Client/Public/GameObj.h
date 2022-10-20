@@ -73,6 +73,7 @@ public:
 		_int		iExp;
 		_int		iSex;
 		_int		iBallNum;
+		_bool		bRide;
 		ITEMINFO*		eItem;
 		SKILLINFO*		eSkillNum1;
 		SKILLINFO*		eSkillNum2;

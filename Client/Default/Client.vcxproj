@@ -189,6 +189,7 @@
     <ClInclude Include="..\public\NonePoke.h" />
     <ClInclude Include="..\public\NoneSkill.h" />
     <ClInclude Include="..\public\Pikachu.h" />
+    <ClInclude Include="..\public\PokeDeck.h" />
     <ClInclude Include="..\public\PokeInfo.h" />
     <ClInclude Include="..\public\Tackle.h" />
     <ClInclude Include="..\Public\Terrain.h" />
@@ -217,6 +218,7 @@
     <ClCompile Include="..\private\NonePoke.cpp" />
     <ClCompile Include="..\private\NoneSkill.cpp" />
     <ClCompile Include="..\private\Pikachu.cpp" />
+    <ClCompile Include="..\private\PokeDeck.cpp" />
     <ClCompile Include="..\private\PokeInfo.cpp" />
     <ClCompile Include="..\private\Tackle.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />

@@ -486,6 +486,7 @@ void CPokeInfo::Set_InfoPos()
 void CPokeInfo::RenderFonts()
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	
 	_vector vPos = {70.f,100.f,0.f,1.f };
 	_vector vPos2 = { 515.f,100.f,0.f,1.f };
 	_vector vDmgPos = { 108.f,614.f,0.f,1.f };

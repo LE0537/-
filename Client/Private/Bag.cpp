@@ -44,6 +44,7 @@ HRESULT CBag::Initialize(void * pArg)
 		ITEMINFO* tInfo;
 		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_HpPotion"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfo)))
 			return E_FAIL;
+		tInfo->iNum = 5;
 		m_vecItem.push_back(tInfo);
 	}
 	for (_int i = 15; i < 20; ++i)
@@ -566,17 +567,23 @@ HRESULT CBag::SetSelectButtonPoke(_int iIndex, ButtonDir _eDir)
 	return S_OK;
 }
 
-HRESULT CBag::SetSelectButtonUse(_int iIndex, ButtonDir _eDir)
+HRESULT CBag::SetSelectButtonUse(_int iIndex, ButtonDir _eDir, UseButton _eButton)
 {
 	_vector vPos = m_pTransformCom5->Get_State(CTransform::STATE_TRANSLATION);
 	switch (_eDir)
 	{
 	case CBag::DIR_UP:
-		vPos.m128_f32[1] += 22;
+		if(_eButton == ITEM_BUTTON)
+			vPos.m128_f32[1] += 22;
+		else
+			vPos.m128_f32[1] += 23;
 		m_pTransformCom5->Set_State(CTransform::STATE_TRANSLATION, vPos);
 		break;
 	case CBag::DIR_DOWN:
-		vPos.m128_f32[1] -= 22;
+		if (_eButton == ITEM_BUTTON)
+			vPos.m128_f32[1] -= 22;
+		else
+			vPos.m128_f32[1] -= 23;
 		m_pTransformCom5->Set_State(CTransform::STATE_TRANSLATION, vPos);
 		break;
 	default:
@@ -642,11 +649,19 @@ void CBag::Key_Input()
 				}
 			}
 		}
-		if (m_bUseItem || m_bUsePoke)
+		if (m_bUseItem)
 		{
 			if (m_UsePos != 0)
 			{
-				SetSelectButtonUse(m_UsePos, DIR_UP);
+				SetSelectButtonUse(m_UsePos, DIR_UP,ITEM_BUTTON);
+				--m_UsePos;
+			}
+		}
+		if (m_bUsePoke)
+		{
+			if (m_UsePos != 0)
+			{
+				SetSelectButtonUse(m_UsePos, DIR_UP,POKE_BUTTON);
 				--m_UsePos;
 			}
 		}
@@ -660,7 +675,7 @@ void CBag::Key_Input()
 			{
 				if (m_iSelect == 7)
 				{
-					if (m_vecItem[m_iItemPos + 1]->iItemNum != 99 && m_iItemScoll != 50)
+					if (m_vecItem[m_iItemPos + 1]->iItemNum != 99 && m_iItemScoll != 42)
 					{
 						++m_iItemScoll;
 						++m_iItemPos;
@@ -685,11 +700,19 @@ void CBag::Key_Input()
 				}
 			}
 		}
-		if (m_bUseItem || m_bUsePoke)
+		if (m_bUseItem)
 		{
 			if (m_UsePos != 2)
 			{
-				SetSelectButtonUse(m_UsePos, DIR_DOWN);
+				SetSelectButtonUse(m_UsePos, DIR_DOWN,ITEM_BUTTON);
+				++m_UsePos;
+			}
+		}
+		if (m_bUsePoke)
+		{
+			if (m_UsePos != 4)
+			{
+				SetSelectButtonUse(m_UsePos, DIR_DOWN,POKE_BUTTON);
 				++m_UsePos;
 			}
 		}
@@ -772,6 +795,16 @@ void CBag::Key_Input()
 					return;
 					break;
 				case 2:
+					ClearItem();
+					m_bUsePoke = false;
+					m_UsePos = 0;
+					m_bUse = false;
+					Safe_Release(pGameInstance);
+					return;
+					break;
+				case 3:
+					break;
+				case 4:
 					m_bUsePoke = false;
 					m_UsePos = 0;
 					m_bUse = false;
@@ -999,8 +1032,8 @@ void CBag::Set_UseItemPos(_int _iIndex)
 	m_pTransformCom4->Set_Scale(vScale);
 	m_pTransformCom4->Set_State(CTransform::STATE_TRANSLATION, vPos);
 
-	vPos.m128_f32[0] -= 60.f;
-	vPos.m128_f32[1] += 20.f;
+	vPos.m128_f32[0] -= 63.f;
+	vPos.m128_f32[1] += 22.f;
 	vScale = { 20.f,20.f,0.f,0.f };
 	m_pTransformCom5->Set_Scale(vScale);
 	m_pTransformCom5->Set_State(CTransform::STATE_TRANSLATION, vPos);
@@ -1008,16 +1041,16 @@ void CBag::Set_UseItemPos(_int _iIndex)
 
 void CBag::Set_UsePokePos(_int _iIndex)
 {
-	_vector vScale = { 120.f,80.f,0.f,0.f };
+	_vector vScale = { 140.f,140.f,0.f,0.f };
 	_vector vPos = m_pTransformPoke[_iIndex]->Get_State(CTransform::STATE_TRANSLATION);
 
-	vPos.m128_f32[0] += 350.f;
-	vPos.m128_f32[1] -= 10.f;
+	vPos.m128_f32[0] += 370.f;
+	vPos.m128_f32[1] -= 40.f;
 	m_pTransformCom4->Set_Scale(vScale);
 	m_pTransformCom4->Set_State(CTransform::STATE_TRANSLATION, vPos);
 
-	vPos.m128_f32[0] -= 60.f;
-	vPos.m128_f32[1] += 20.f;
+	vPos.m128_f32[0] -= 68.f;
+	vPos.m128_f32[1] += 47.f;
 	vScale = { 20.f,20.f,0.f,0.f };
 	m_pTransformCom5->Set_Scale(vScale);
 	m_pTransformCom5->Set_State(CTransform::STATE_TRANSLATION, vPos);
@@ -1032,48 +1065,13 @@ void CBag::UseItem()
 	{
 	case 4:
 		dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_PokeHp(30);
+		--(*iter)->iNum;
 		break;
 	default:
 		break;
 	}
-	
-	m_vecItem.erase(iter);
-
-	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-	ITEMINFO* tInfo;
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_None"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfo)))
-		return;
-	m_vecItem.push_back(tInfo);
-	
-	RELEASE_INSTANCE(CGameInstance);
-
-	
-	if (m_iSelect == 0)
+	if ((*iter)->iNum <= 0)
 	{
-		if (m_iItemScoll != 0)
-		{
-			--m_iItemScoll;
-			--m_iItemPos;
-		}
-	}
-	else if(m_vecItem[m_iItemPos]->iItemNum == 99)
-	{
-		SetSelectButton(m_iSelect, DIR_UP);
-		--m_iSelect;
-		--m_iItemPos;
-	}
-	
-}
-
-void CBag::GiveItem()
-{
-	if (dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().eItem->iItemNum == 99)
-	{
-		dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_PokeItem(m_vecItem[m_iItemPos]);
-
-		auto& iter = m_vecItem.begin();
-		iter += m_iItemPos;
-		
 		m_vecItem.erase(iter);
 
 		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
@@ -1081,8 +1079,9 @@ void CBag::GiveItem()
 		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_None"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfo)))
 			return;
 		m_vecItem.push_back(tInfo);
-		
+
 		RELEASE_INSTANCE(CGameInstance);
+
 
 		if (m_iSelect == 0)
 		{
@@ -1098,7 +1097,79 @@ void CBag::GiveItem()
 			--m_iSelect;
 			--m_iItemPos;
 		}
+	}
+}
 
+void CBag::GiveItem()
+{
+	if (dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().eItem->iItemNum == 99)
+	{
+		dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_PokeItem(m_vecItem[m_iItemPos]);
+		--m_vecItem[m_iItemPos]->iNum;
+		if (m_vecItem[m_iItemPos]->iNum <= 0)
+		{
+			auto& iter = m_vecItem.begin();
+			iter += m_iItemPos;
+
+			m_vecItem.erase(iter);
+
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+			ITEMINFO* tInfo;
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_None"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfo)))
+				return;
+			m_vecItem.push_back(tInfo);
+
+			RELEASE_INSTANCE(CGameInstance);
+
+			if (m_iSelect == 0)
+			{
+				if (m_iItemScoll != 0)
+				{
+					--m_iItemScoll;
+					--m_iItemPos;
+				}
+			}
+			else if (m_vecItem[m_iItemPos]->iItemNum == 99)
+			{
+				SetSelectButton(m_iSelect, DIR_UP);
+				--m_iSelect;
+				--m_iItemPos;
+			}
+		}
+	}
+}
+void CBag::ClearItem()
+{
+	if (dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().eItem->iItemNum != 99)
+	{
+		_int iItem = dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().eItem->iItemNum;
+		for (_int i = 0; i < 50; ++i)
+		{
+			if (iItem < 99 && m_vecItem[i]->iItemNum == iItem)
+			{
+				++m_vecItem[i]->iNum;
+				CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+				ITEMINFO* tInfo;
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_None"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfo)))
+					return;
+				dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_PokeItem(tInfo);
+				RELEASE_INSTANCE(CGameInstance);
+				return;;
+			}
+			else if (m_vecItem[i]->iItemNum == 99)
+			{
+				m_vecItem[i] = dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().eItem;
+				m_vecItem[i]->iNum = 1;
+				CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+				ITEMINFO* tInfo;
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_None"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfo)))
+					return;
+				dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_PokeItem(tInfo);
+				RELEASE_INSTANCE(CGameInstance);
+				return;
+			}
+		}
+	
 	}
 }
 void CBag::SwapPoke(_int _iSwapPoke)

@@ -91,6 +91,9 @@
     <Filter Include="02.GameObjects\99.GameObj\05.Skill\99.NoneSkill">
       <UniqueIdentifier>{f1f0fd47-1539-4262-88a1-8905a8a648d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\02.PokeDeck">
+      <UniqueIdentifier>{fdacc3f3-73d0-4e0f-9788-82a0012ff1bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -180,6 +183,9 @@
     <ClInclude Include="..\public\NoneSkill.h">
       <Filter>02.GameObjects\99.GameObj\05.Skill\99.NoneSkill</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\PokeDeck.h">
+      <Filter>02.GameObjects\99.GameObj\04.UI\02.PokeDeck</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -253,6 +259,9 @@
     </ClCompile>
     <ClCompile Include="..\private\NoneSkill.cpp">
       <Filter>02.GameObjects\99.GameObj\05.Skill\99.NoneSkill</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PokeDeck.cpp">
+      <Filter>02.GameObjects\99.GameObj\04.UI\02.PokeDeck</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

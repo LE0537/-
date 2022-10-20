@@ -39,6 +39,7 @@ HRESULT CPikachu::Initialize(void * pArg)
 	m_PokemonInfo.iExp = 0;
 	m_PokemonInfo.iSex = 0;
 	m_PokemonInfo.iBallNum = 0;
+	m_PokemonInfo.bRide = false;
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tackle"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum1)))

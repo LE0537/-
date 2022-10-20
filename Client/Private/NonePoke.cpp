@@ -38,7 +38,7 @@ HRESULT CNonePoke::Initialize(void * pArg)
 	m_PokemonInfo.iExp = 0;
 	m_PokemonInfo.iSex = 99;
 	m_PokemonInfo.iBallNum = 99;
-
+	m_PokemonInfo.bRide = false;
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NoneSkill"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum1)))

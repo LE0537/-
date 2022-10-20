@@ -6,6 +6,7 @@
 
 bool		g_bBag = false;
 bool		g_PokeInfo = false;
+bool		g_bPokeDeck = false;
 
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::Get_Instance())

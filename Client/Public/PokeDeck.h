@@ -35,6 +35,7 @@ public:
 private:
 	CTexture*				m_pTextureCom2 = nullptr;
 	CTexture*				m_pTextureCom3 = nullptr;
+	CTexture*				m_pTextureCom4 = nullptr;
 	CTransform*				m_pTransformCom2 = nullptr;
 	CShader*				m_pShaderCom2 = nullptr;
 	CVIBuffer_Rect*			m_pVIBufferCom2 = nullptr;
@@ -44,7 +45,9 @@ private:
 	CTransform*				m_pTransformPoke[6] = { nullptr };
 	CShader*				m_pShaderPoke[6] = { nullptr };
 	CVIBuffer_Rect*			m_pVIBufferPoke[6] = { nullptr };
-
+	CTransform*				m_pTransformType[3] = { nullptr };
+	CShader*				m_pShaderType[3] = { nullptr };
+	CVIBuffer_Rect*			m_pVIBufferType[3] = { nullptr };
 private:
 	_float					m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_float4x4				m_ViewMatrix, m_ProjMatrix;
@@ -62,6 +65,8 @@ private:
 	HRESULT SetUp_ShaderResources(); /* 셰이더 전역변수에 값을 전달한다. */
 	HRESULT SetSelectButton(CBag::ButtonDir _eDir);
 	void	Key_Input();
+	void	Set_PokePos();
+	void	Set_TypePos();
 	void	RenderFonts();
 	void	RenderFonts2();
 public:

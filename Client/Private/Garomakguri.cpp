@@ -23,7 +23,7 @@ HRESULT CGaromakguri::Initialize(void * pArg)
 	*(CGameObject**)pArg = this;
 
 	m_PokemonInfo.strName = TEXT("해월가로막구리");
-	m_PokemonInfo.strInfo = TEXT("쥬신 130기 배해월, 난폭운전으로 유명하다.");
+	m_PokemonInfo.strInfo = TEXT("쥬신 130기 배해월, 난폭운전으로 유명하다.\n2022년10월20일 최우진 암살시도.\n결과는 성공적...");
 	m_PokemonInfo.strChar = TEXT("난폭");
 	m_PokemonInfo.iPokeNum = 152;
 	m_PokemonInfo.iMaxHp = 250;

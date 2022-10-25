@@ -780,6 +780,8 @@ void CBag::Key_Input()
 				switch (m_UsePos)
 				{
 				case 0:
+					dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_PokeUIOnOff();
+					dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_DeckInfoOff();
 					g_bBag = false;
 					g_PokeInfo = true;
 					m_bUse = false;

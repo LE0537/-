@@ -2,6 +2,8 @@
 #include "..\Public\PokeDeck.h"
 
 #include "GameInstance.h"
+#include "Pikachu.h"
+
 
 CPokeDeck::CPokeDeck(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -319,6 +321,9 @@ void CPokeDeck::Key_Input()
 			{
 				--m_iPokeScroll;
 				--m_iPokePos;
+				dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Set_PokeUIOnOff();
+				dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Set_DeckInfoOn();
+				dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos + 1])->Set_PokeUIOnOff();
 			}
 		}
 		else
@@ -326,6 +331,9 @@ void CPokeDeck::Key_Input()
 			SetSelectButton(CBag::DIR_UP);
 			--m_iSelect;
 			--m_iPokePos;
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Set_PokeUIOnOff();
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Set_DeckInfoOn();
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos + 1])->Set_PokeUIOnOff();
 		}
 	}
 	else if (!m_bSelect && pGameInstance->Key_Down(DIK_UP))
@@ -336,6 +344,9 @@ void CPokeDeck::Key_Input()
 			{
 				--m_iPokeScroll;
 				--m_iPokePos;
+				dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Set_PokeUIOnOff();
+				dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Set_DeckInfoOn();
+				dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos + 1])->Set_PokeUIOnOff();
 			}
 		}
 		else
@@ -343,6 +354,9 @@ void CPokeDeck::Key_Input()
 			SetSelectButton(CBag::DIR_UP);
 			--m_iSelect;
 			--m_iPokePos;
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Set_PokeUIOnOff();
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Set_DeckInfoOn();
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos + 1])->Set_PokeUIOnOff();
 		}
 	}
 	if (!m_bSelect && pGameInstance->Key_Pressing(DIK_LSHIFT) && pGameInstance->Key_Pressing(DIK_DOWN))
@@ -353,6 +367,9 @@ void CPokeDeck::Key_Input()
 			{
 				++m_iPokeScroll;
 				++m_iPokePos;
+				dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Set_PokeUIOnOff();
+				dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Set_DeckInfoOn();
+				dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos - 1])->Set_PokeUIOnOff();
 			}
 		}
 		else
@@ -360,6 +377,9 @@ void CPokeDeck::Key_Input()
 			SetSelectButton(CBag::DIR_DOWN);
 			++m_iSelect;
 			++m_iPokePos;
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Set_PokeUIOnOff();
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Set_DeckInfoOn();
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos - 1])->Set_PokeUIOnOff();
 		}
 	}
 	else if (!m_bSelect && pGameInstance->Key_Down(DIK_DOWN))
@@ -370,6 +390,9 @@ void CPokeDeck::Key_Input()
 			{
 				++m_iPokeScroll;
 				++m_iPokePos;
+				dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Set_PokeUIOnOff();
+				dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Set_DeckInfoOn();
+				dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos - 1])->Set_PokeUIOnOff();
 			}
 		}
 		else
@@ -377,6 +400,9 @@ void CPokeDeck::Key_Input()
 			SetSelectButton(CBag::DIR_DOWN);
 			++m_iSelect;
 			++m_iPokePos;
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Set_PokeUIOnOff();
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Set_DeckInfoOn();
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos - 1])->Set_PokeUIOnOff();
 		}
 	}
 
@@ -389,6 +415,7 @@ void CPokeDeck::Key_Input()
 	m_bUseKey = true;
 	if (!m_bSelect && pGameInstance->Key_Down(DIK_BACKSPACE))
 	{
+		dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Set_PokeUIOnOff();
 		g_bPokeDeck = false;
 		m_bUseKey = false;
 		m_iSelect = 0;
@@ -401,7 +428,6 @@ void CPokeDeck::Key_Input()
 		_float3 vScale = { m_fSizeX,m_fSizeY,0.f };
 		m_pTransformCom2->Set_Scale(XMLoadFloat3(&vScale));
 		m_pTransformCom2->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
-
 	}
 	else if (m_bSelect && pGameInstance->Key_Down(DIK_BACKSPACE))
 		m_bSelect = false;

@@ -164,6 +164,13 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		CExpShare::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	/* Æ÷ÄÏ¸ó °´Ã¼ */
+	_matrix			PivotMatrix = XMMatrixIdentity();
+	
+	PivotMatrix = XMMatrixScaling(0.1f,0.1f,0.1f) * XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixTranslation(0.f,0.f,0.f);
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Pikachu"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Pikachu/Pikachu.fbx", PivotMatrix))))
+		return E_FAIL;
+
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Pikachu"),
 		CPikachu::Create(m_pDevice, m_pContext))))
 		return E_FAIL;

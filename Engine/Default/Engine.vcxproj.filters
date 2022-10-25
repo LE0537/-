@@ -91,6 +91,15 @@
     <ClCompile Include="..\private\VIBuffer_Hexagon.cpp">
       <Filter>01.Utility\03.Components\02.VIBuffer\03.Hexagon</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Channel.cpp">
+      <Filter>01.Utility\03.Components\06.Model\Animation\Channel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Animation.cpp">
+      <Filter>01.Utility\03.Components\06.Model\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HierarchyNode.cpp">
+      <Filter>01.Utility\03.Components\06.Model\HierarchyNode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -195,6 +204,15 @@
     <ClInclude Include="..\public\VIBuffer_Hexagon.h">
       <Filter>01.Utility\03.Components\02.VIBuffer\03.Hexagon</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Channel.h">
+      <Filter>01.Utility\03.Components\06.Model\Animation\Channel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Animation.h">
+      <Filter>01.Utility\03.Components\06.Model\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\HierarchyNode.h">
+      <Filter>01.Utility\03.Components\06.Model\HierarchyNode</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.System">
@@ -289,6 +307,15 @@
     </Filter>
     <Filter Include="01.Utility\03.Components\02.VIBuffer\03.Hexagon">
       <UniqueIdentifier>{c51ab10c-5f8a-43d3-aae1-77c9f0cb4513}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Components\06.Model\Animation">
+      <UniqueIdentifier>{db2f7453-653b-4877-9cd8-6e60fe6c4157}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Components\06.Model\HierarchyNode">
+      <UniqueIdentifier>{02801115-4a34-45ba-9d03-2e4509283f9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Components\06.Model\Animation\Channel">
+      <UniqueIdentifier>{df8d62e8-742c-4d74-a668-243f4be5625a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

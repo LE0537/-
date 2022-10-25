@@ -291,6 +291,27 @@ _float4 CGameInstance::Get_CamPosition()
 
 	return m_pPipeLine->Get_CamPosition();
 }
+_float4 CGameInstance::Get_CamRight()
+{
+	if (nullptr == m_pPipeLine)
+		return _float4();
+
+	return m_pPipeLine->Get_CamRight();
+}
+_float4 CGameInstance::Get_CamUp()
+{
+	if (nullptr == m_pPipeLine)
+		return _float4();
+
+	return m_pPipeLine->Get_CamUp();
+}
+_float4 CGameInstance::Get_CamLook()
+{
+	if (nullptr == m_pPipeLine)
+		return _float4();
+
+	return m_pPipeLine->Get_CamLook();
+}
 
 const LIGHTDESC * CGameInstance::Get_LightDesc(_uint iIndex)
 {

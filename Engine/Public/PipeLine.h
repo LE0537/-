@@ -34,7 +34,15 @@ public:
 		return m_vCamPosition;
 	}
 
-
+	_float4 Get_CamRight() {
+		return m_vCamRight;
+	}
+	_float4 Get_CamUp() {
+		return m_vCamUp;
+	}
+	_float4 Get_CamLook() {
+		return m_vCamLook;
+	}
 
 public:
 	void Update();
@@ -43,7 +51,9 @@ private:
 	_float4x4			m_PipeLineMatrix[D3DTS_END];
 	_float4x4			m_PipeLineMatrix_TP[D3DTS_END];
 	_float4				m_vCamPosition;
-
+	_float4				m_vCamRight;
+	_float4				m_vCamUp;
+	_float4				m_vCamLook;
 public:
 	virtual void Free() override;
 };

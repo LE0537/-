@@ -39,7 +39,8 @@ HRESULT CRenderer::Render_GameObjects()
 		return E_FAIL;
 	if (FAILED(Render_UI()))
 		return E_FAIL;
-
+	if (FAILED(Render_UIPOKE()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -111,7 +112,20 @@ HRESULT CRenderer::Render_UI()
 	m_GameObjects[RENDER_UI].clear();
 	return S_OK;
 }
+HRESULT CRenderer::Render_UIPOKE()
+{
+	for (auto& pGameObject : m_GameObjects[RENDER_UIPOKE])
+	{
+		if (nullptr != pGameObject)
+		{
+			pGameObject->Render();
+			Safe_Release(pGameObject);
+		}
+	}
 
+	m_GameObjects[RENDER_UIPOKE].clear();
+	return S_OK;
+}
 CRenderer * CRenderer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CRenderer*	pInstance = new CRenderer(pDevice, pContext);

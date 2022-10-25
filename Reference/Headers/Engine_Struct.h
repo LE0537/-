@@ -2,6 +2,19 @@
 
 namespace Engine
 {
+	typedef struct tagKeyframe
+	{
+		float				fTime;
+		XMFLOAT3			vScale;
+		XMFLOAT4			vRotation;
+		XMFLOAT3			vPosition;
+	}KEYFRAME;
+
+	typedef struct tagModelMaterial
+	{
+		class CTexture*		pMaterials[AI_TEXTURE_TYPE_MAX];
+	}MODELMATERIAL;
+
 	typedef struct tagLightDesc
 	{
 		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
@@ -85,6 +98,22 @@ namespace Engine
 		static const unsigned int iNumElements = 4;
 		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
 	}VTXMODEL_DECLARATION;
+
+	typedef struct tagVertexAnimModel
+	{
+		XMFLOAT3			vPosition;
+		XMFLOAT3			vNormal;
+		XMFLOAT2			vTexUV;
+		XMFLOAT3			vTangent;
+		XMUINT4				vBlendIndex;  /* 정점에게 영향을 주는 뼈(최대 네개)의 인덱스*/
+		XMFLOAT4			vBlendWeight; /* 정점에게 영향을 주는 뼈상태의 비율 */
+	}VTXANIMMODEL;
+
+	typedef struct ENGINE_DLL tagVertexAnimModel_Declaration
+	{
+		static const unsigned int iNumElements = 6;
+		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
+	}VTXANIMMODEL_DECLARATION;
 
 
 	typedef struct tagGraphicDesc

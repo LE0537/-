@@ -10,7 +10,7 @@ class CTexture;
 class CRenderer;
 class CTransform;
 class CVIBuffer_Rect;
-
+class CModel;
 END
 
 
@@ -32,8 +32,14 @@ public:
 	virtual HRESULT Render();
 
 private:
+	HRESULT SetUp_ShaderResources();
+	HRESULT Ready_Components();
+	void	Set_DeckPos();
+	void	Key_Input(_float fTimeDelta);
+private:
+	CModel*					m_pModelCom = nullptr;
 
-
+	_int					m_iAnim = 0.f;
 
 public:
 	static CPikachu* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -34,46 +34,47 @@ HRESULT CCamera_Dynamic::Initialize(void* pArg)
 void CCamera_Dynamic::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
-	if (GetKeyState('W') < 0)
+	if (!g_bBag && !g_bPokeDeck && !g_PokeInfo)
 	{
-		m_pTransform->Go_Straight(fTimeDelta);
+		if (GetKeyState('W') < 0)
+		{
+			m_pTransform->Go_Straight(fTimeDelta);
+		}
+
+		if (GetKeyState('S') < 0)
+		{
+			m_pTransform->Go_Backward(fTimeDelta);
+		}
+
+		if (GetKeyState('A') < 0)
+		{
+
+			m_pTransform->Go_Left(fTimeDelta);
+		}
+
+		if (GetKeyState('D') < 0)
+		{
+
+			m_pTransform->Go_Right(fTimeDelta);
+		}
+
+		CGameInstance*			pGameInstance = CGameInstance::Get_Instance();
+		Safe_AddRef(pGameInstance);
+
+		_long			MouseMove = 0;
+
+		if (MouseMove = pGameInstance->Get_DIMMoveState(DIMM_X))
+		{
+			m_pTransform->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * MouseMove * 0.1f);
+		}
+
+		if (MouseMove = pGameInstance->Get_DIMMoveState(DIMM_Y))
+		{
+			m_pTransform->Turn(m_pTransform->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * 0.1f);
+		}
+
+		Safe_Release(pGameInstance);
 	}
-
-	if (GetKeyState('S') < 0)
-	{
-		m_pTransform->Go_Backward(fTimeDelta);
-	}
-
-	if (GetKeyState('A') < 0)
-	{
-		
-		m_pTransform->Go_Left(fTimeDelta);
-	}
-
-	if (GetKeyState('D') < 0)
-	{
-		
-		m_pTransform->Go_Right(fTimeDelta);
-	}
-
-	CGameInstance*			pGameInstance = CGameInstance::Get_Instance();
-	Safe_AddRef(pGameInstance);
-
-	_long			MouseMove = 0;
-
-	if (MouseMove = pGameInstance->Get_DIMMoveState(DIMM_X))
-	{
-		m_pTransform->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * MouseMove * 0.1f);
-	}
-
-	if (MouseMove = pGameInstance->Get_DIMMoveState(DIMM_Y))
-	{
-		m_pTransform->Turn(m_pTransform->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * 0.1f);
-	}
-
-	Safe_Release(pGameInstance);
-
 	if (FAILED(Bind_OnPipeLine()))
 		return;
 

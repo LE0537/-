@@ -84,6 +84,15 @@ void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 	Set_State(CTransform::STATE_LOOK, XMVector3TransformNormal(Get_State(CTransform::STATE_LOOK), RotationMatrix));
 }
 
+void CTransform::Turn2(_fvector vAxis, _float fAngle)
+{
+	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fAngle);
+
+	Set_State(CTransform::STATE_RIGHT, XMVector3TransformNormal(Get_State(CTransform::STATE_RIGHT), RotationMatrix));
+	Set_State(CTransform::STATE_UP, XMVector3TransformNormal(Get_State(CTransform::STATE_UP), RotationMatrix));
+	Set_State(CTransform::STATE_LOOK, XMVector3TransformNormal(Get_State(CTransform::STATE_LOOK), RotationMatrix));
+}
+
 void CTransform::LookAt(_fvector vAt)
 {
 	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);

@@ -1,5 +1,4 @@
 #pragma once
-/* »À. */
 #include "Base.h"
 
 BEGIN(Engine)

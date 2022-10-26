@@ -10,7 +10,7 @@ class CTexture;
 class CRenderer;
 class CTransform;
 class CVIBuffer_Rect;
-
+class CModel;
 END
 
 
@@ -30,8 +30,19 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
-
 private:
+	HRESULT SetUp_ShaderResources();
+	HRESULT Ready_Components();
+	void	Set_DeckPos();
+	void	Key_Input(_float fTimeDelta);
+private:
+	CModel*					m_pModelCom = nullptr;
+
+	_int					m_iAnim = 0;
+	_bool					m_bSetPos = false;
+
+	_float					m_fX, m_fY, m_fSizeX, m_fSizeY;
+	_float4x4				m_ViewMatrix, m_ProjMatrix;
 
 
 

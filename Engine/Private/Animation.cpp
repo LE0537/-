@@ -71,8 +71,8 @@ CAnimation * CAnimation::Create(CModel* pModel, aiAnimation * pAIAnimation)
 
 void CAnimation::Free()
 {
-	for (auto& pChannels : m_Channels)
-		Safe_Release(pChannels);
+	for (auto& pChannel : m_Channels)
+		Safe_Release(pChannel);
 
 	m_Channels.clear();
 }

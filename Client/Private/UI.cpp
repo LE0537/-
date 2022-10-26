@@ -29,7 +29,7 @@ HRESULT CUI::Initialize(void * pArg)
 	m_fY = 600;
 
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixTranspose(XMMatrixIdentity()));
-	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, 0.f, 1.f)));
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY,-200.f, 100.f)));
 
 	_float3 vScale = { m_fSizeX,m_fSizeY,0.f };
 

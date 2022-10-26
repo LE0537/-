@@ -61,21 +61,32 @@ HRESULT CBag::Initialize(void * pArg)
 			return E_FAIL;
 		m_vecItem.push_back(tInfo);
 	}
-	for (_int i = 0; i < 3; ++i)
-	{
-		CGameObject* tInfo;
-		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
-			return E_FAIL;
-		m_vecPoke.push_back(tInfo);
-	}
+	CGameObject* tInfo;
 
-	for (_int i = 3; i < 6; ++i)
-	{
-		CGameObject* tInfo;
-		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Garomakguri"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
-			return E_FAIL;
-		m_vecPoke.push_back(tInfo);
-	}
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Wigglytuff"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+		return E_FAIL;
+	m_vecPoke.push_back(tInfo);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Squirtle"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+		return E_FAIL;
+	m_vecPoke.push_back(tInfo);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+		return E_FAIL;
+	m_vecPoke.push_back(tInfo);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Meowth"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+		return E_FAIL;
+	m_vecPoke.push_back(tInfo);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Slowbro"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+		return E_FAIL;
+	m_vecPoke.push_back(tInfo);
+	
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Garomakguri"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+		return E_FAIL;
+	m_vecPoke.push_back(tInfo);
+	
 
 	
 	m_fSizeX = g_iWinSizeX;

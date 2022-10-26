@@ -13,7 +13,12 @@
 #include "PokeInfo.h"
 #include "PokeDeck.h"
 //Pokemon 헤더
+#include "Charmander.h"
+#include "Squirtle.h"
 #include "Pikachu.h"
+#include "Wigglytuff.h"
+#include "Meowth.h"
+#include "Slowbro.h"
 #include "Garomakguri.h"
 #include "NonePoke.h"
 //Item 헤더
@@ -167,16 +172,56 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	_matrix			PivotMatrix = XMMatrixIdentity();
 	
 	PivotMatrix = XMMatrixScaling(0.1f,0.1f,0.1f) * XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixTranslation(0.f,0.f,0.f);
+	
+	/*if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Charmander"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Charmander/Charmander.fbx", PivotMatrix))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Charmander"),
+		CCharmander::Create(m_pDevice, m_pContext))))
+		return E_FAIL;*/
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Squirtle"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Squirtle/Squirtle.fbx", PivotMatrix))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Squirtle"),
+		CSquirtle::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Pikachu"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Pikachu/Pikachu.fbx", PivotMatrix))))
 		return E_FAIL;
-
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Pikachu"),
 		CPikachu::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Wigglytuff"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Wigglytuff/Wigglytuff.fbx", PivotMatrix))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Wigglytuff"),
+		CWigglytuff::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Meowth"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Meowth/Meowth.fbx", PivotMatrix))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Meowth"),
+		CMeowth::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Slowbro"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Slowbro/Slowbro.fbx", PivotMatrix))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Slowbro"),
+		CSlowbro::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Garomakguri"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Garomakguri/Garomakguri.fbx", PivotMatrix))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Garomakguri"),
 		CGaromakguri::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_NonePoke"),
 		CNonePoke::Create(m_pDevice, m_pContext))))
 		return E_FAIL;

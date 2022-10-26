@@ -13,24 +13,16 @@ CModel::CModel(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 CModel::CModel(const CModel & rhs)
 	: CComponent(rhs)
 	, m_pAIScene(rhs.m_pAIScene)
-	, m_Meshes(rhs.m_Meshes)
 	, m_Materials(rhs.m_Materials)
 	, m_iNumMeshes(rhs.m_iNumMeshes)
 	, m_iNumMaterials(rhs.m_iNumMaterials)
-	, m_Bones(rhs.m_Bones)
 	, m_iNumBones(rhs.m_iNumBones)
 	, m_PivotMatrix(rhs.m_PivotMatrix)
-	, m_Animations(rhs.m_Animations)
-	, m_iNumAnimations(rhs.m_iNumAnimations)
 {
-	for (auto& pAnimation : m_Animations)
-		Safe_AddRef(pAnimation);
-
-	for (auto& pBoneNode : m_Bones)
-		Safe_AddRef(pBoneNode);
-
-	for (auto& pMeshContainer : m_Meshes)
-		Safe_AddRef(pMeshContainer);
+	for (auto& pMeshContainer : rhs.m_Meshes)
+	{
+		m_Meshes.push_back((CMeshContainer*)pMeshContainer->Clone());
+	}
 
 	for (auto& Material : m_Materials)
 	{
@@ -46,11 +38,16 @@ CHierarchyNode * CModel::Get_BonePtr(const char * pBoneName) const
 		return !strcmp(pNode->Get_Name(), pBoneName);
 	});
 
+	if (iter == m_Bones.end())
+		return nullptr;
+
 	return *iter;
 }
 
 HRESULT CModel::Initialize_Prototype(TYPE eModelType, const char * pModelFilePath, _fmatrix PivotMatrix)
 {
+	m_eModelType = eModelType;
+
 	XMStoreFloat4x4(&m_PivotMatrix, PivotMatrix);
 
 	_uint			iFlag = 0;
@@ -64,24 +61,30 @@ HRESULT CModel::Initialize_Prototype(TYPE eModelType, const char * pModelFilePat
 	if (nullptr == m_pAIScene)
 		return E_FAIL;
 
-	if (FAILED(Create_HierarchyNodes(m_pAIScene->mRootNode)))
-		return E_FAIL;
-
 	if (FAILED(Create_MeshContainer()))
 		return E_FAIL;
 
 	if (FAILED(Create_Materials(pModelFilePath)))
 		return E_FAIL;
 
-	if (FAILED(Create_Animations()))
-		return E_FAIL;
+
 
 	return S_OK;
 }
 
 HRESULT CModel::Initialize(void * pArg)
 {
+	if (FAILED(Create_HierarchyNodes(m_pAIScene->mRootNode)))
+		return E_FAIL;
+
+	for (auto& pMeshContainer : m_Meshes)
+		pMeshContainer->SetUp_Bones(this);
+	
+	if (FAILED(Create_Animations()))
+		return E_FAIL;
+
 	return S_OK;
+
 }
 
 HRESULT CModel::SetUp_Material(CShader * pShader, const char * pConstantName, _uint iMeshIndex, aiTextureType eType)
@@ -166,7 +169,7 @@ HRESULT CModel::Create_Materials(const char* pModelFilePath)
 		for (_uint j = 0; j < AI_TEXTURE_TYPE_MAX; ++j)
 		{
 			aiString		strPath;
-
+		
 			if (FAILED(pAIMaterial->GetTexture(aiTextureType(j), 0, &strPath)))
 				continue;
 
@@ -188,7 +191,7 @@ HRESULT CModel::Create_Materials(const char* pModelFilePath)
 
 			_tchar			szRealPath[MAX_PATH] = TEXT("");
 
-			MultiByteToWideChar(CP_ACP, 0, szFullPath, (_int)strlen(szFullPath), szRealPath, MAX_PATH);
+			MultiByteToWideChar(CP_ACP, 0, szFullPath, strlen(szFullPath), szRealPath, MAX_PATH);
 
 			ModelMaterial.pMaterials[j] = CTexture::Create(m_pDevice, m_pContext, szRealPath);
 			if (nullptr == ModelMaterial.pMaterials[j])
@@ -286,9 +289,6 @@ void CModel::Free()
 	}
 	m_Materials.clear();
 
-
-
-
 	m_Importer.FreeScene();
-
 }
+

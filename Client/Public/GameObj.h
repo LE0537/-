@@ -98,6 +98,8 @@ protected:
 	ITEMINFO				m_ItemInfo;
 	_bool					m_bOnOff = false;
 	_bool					m_bDeckInfo = false;
+	_bool					m_bDeckPoke = false;
+
 public:
 	POKEINFO Get_PokeInfo() {return m_PokemonInfo;}
 	PLAYERINFO Get_PalyerInfo() { return m_PlayerInfo; }
@@ -110,7 +112,8 @@ public:
 	}
 	void	Set_PokeItem(ITEMINFO* _eItem) { m_PokemonInfo.eItem = _eItem; }
 
-	void	Set_PokeUIOnOff() { m_bOnOff = !m_bOnOff; }
+	void	Set_DeckPoke() { m_bDeckPoke = true; }
+	void	Set_PokeUIOnOff(){ m_bOnOff = !m_bOnOff; }
 	void	Set_DeckInfoOn() { m_bDeckInfo = false; }
 	void	Set_DeckInfoOff() { m_bDeckInfo = true; }
 public:

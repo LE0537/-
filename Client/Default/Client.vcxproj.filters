@@ -79,20 +79,35 @@
     <Filter Include="02.GameObjects\99.GameObj\04.UI\01.PokeInfo">
       <UniqueIdentifier>{5f2484c2-abcf-4b9c-965f-5931d7403b4b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\05.Skill">
-      <UniqueIdentifier>{675e24cd-5dd4-453b-b7bc-30b4cccef3d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\05.Skill\00.Tackle">
-      <UniqueIdentifier>{6546a350-35c7-4418-b50f-d8f23b01b75c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\05.Skill\98.BreakCar">
-      <UniqueIdentifier>{f69ea6e8-551f-4fff-9bde-e08225a1532d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\05.Skill\99.NoneSkill">
-      <UniqueIdentifier>{f1f0fd47-1539-4262-88a1-8905a8a648d0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\99.GameObj\04.UI\02.PokeDeck">
       <UniqueIdentifier>{fdacc3f3-73d0-4e0f-9788-82a0012ff1bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\05.Skill">
+      <UniqueIdentifier>{675e24cd-5dd4-453b-b7bc-30b4cccef3d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\05.Skill\00.Tackle">
+      <UniqueIdentifier>{6546a350-35c7-4418-b50f-d8f23b01b75c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\05.Skill\98.BreakCar">
+      <UniqueIdentifier>{f69ea6e8-551f-4fff-9bde-e08225a1532d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\05.Skill\99.NoneSkill">
+      <UniqueIdentifier>{f1f0fd47-1539-4262-88a1-8905a8a648d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\07.Squirtle">
+      <UniqueIdentifier>{cfb1faf2-5950-4e91-a225-58e86decdbcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\52.Meowth">
+      <UniqueIdentifier>{9956e4b2-445e-44bb-91cb-60cda0027e83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\80.Slowbro">
+      <UniqueIdentifier>{7504cef0-ed43-4f9c-93ce-08731ba6c064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\04.Charmander">
+      <UniqueIdentifier>{395cdd0f-013a-44ff-98e4-2dfba64400ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\40.Wigglytuff">
+      <UniqueIdentifier>{8253f5c8-b571-4145-a67f-b2ea57c357e3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -175,16 +190,31 @@
       <Filter>97.ShaderFiles</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Tackle.h">
-      <Filter>02.GameObjects\99.GameObj\05.Skill\00.Tackle</Filter>
+      <Filter>02.GameObjects\99.GameObj\04.UI\05.Skill\00.Tackle</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BreakCar.h">
-      <Filter>02.GameObjects\99.GameObj\05.Skill\98.BreakCar</Filter>
+      <Filter>02.GameObjects\99.GameObj\04.UI\05.Skill\98.BreakCar</Filter>
     </ClInclude>
     <ClInclude Include="..\public\NoneSkill.h">
-      <Filter>02.GameObjects\99.GameObj\05.Skill\99.NoneSkill</Filter>
+      <Filter>02.GameObjects\99.GameObj\04.UI\05.Skill\99.NoneSkill</Filter>
     </ClInclude>
     <ClInclude Include="..\public\PokeDeck.h">
       <Filter>02.GameObjects\99.GameObj\04.UI\02.PokeDeck</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Squirtle.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\07.Squirtle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Meowth.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\52.Meowth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Slowbro.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\80.Slowbro</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Charmander.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\04.Charmander</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Wigglytuff.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\40.Wigglytuff</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -252,16 +282,31 @@
       <Filter>02.GameObjects\99.GameObj\04.UI\01.PokeInfo</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Tackle.cpp">
-      <Filter>02.GameObjects\99.GameObj\05.Skill\00.Tackle</Filter>
+      <Filter>02.GameObjects\99.GameObj\04.UI\05.Skill\00.Tackle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BreakCar.cpp">
-      <Filter>02.GameObjects\99.GameObj\05.Skill\98.BreakCar</Filter>
+      <Filter>02.GameObjects\99.GameObj\04.UI\05.Skill\98.BreakCar</Filter>
     </ClCompile>
     <ClCompile Include="..\private\NoneSkill.cpp">
-      <Filter>02.GameObjects\99.GameObj\05.Skill\99.NoneSkill</Filter>
+      <Filter>02.GameObjects\99.GameObj\04.UI\05.Skill\99.NoneSkill</Filter>
     </ClCompile>
     <ClCompile Include="..\private\PokeDeck.cpp">
       <Filter>02.GameObjects\99.GameObj\04.UI\02.PokeDeck</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Squirtle.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\07.Squirtle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Meowth.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\52.Meowth</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Slowbro.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\80.Slowbro</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Charmander.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\04.Charmander</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Wigglytuff.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\40.Wigglytuff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

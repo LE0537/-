@@ -23,7 +23,11 @@ public:
 	virtual HRESULT Initialize_Prototype(CModel::TYPE eModelType, const aiMesh* pAIMesh, class CModel* pModel, _fmatrix PivotMatrix);
 	virtual HRESULT Initialize(void* pArg);
 
+public:
+	HRESULT SetUp_Bones(class CModel* pModel);
+
 private:
+	char						m_szName[MAX_PATH] = "";
 	const aiMesh*				m_pAIMesh = nullptr;
 	_uint						m_iMaterialIndex = 0;
 

@@ -1,5 +1,4 @@
 #include "..\Public\MeshContainer.h"
-
 #include "HierarchyNode.h"
 
 CMeshContainer::CMeshContainer(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -10,8 +9,10 @@ CMeshContainer::CMeshContainer(ID3D11Device * pDevice, ID3D11DeviceContext * pCo
 CMeshContainer::CMeshContainer(const CMeshContainer & rhs)
 	: CVIBuffer(rhs)
 	, m_pAIMesh(rhs.m_pAIMesh)
+	, m_iMaterialIndex(rhs.m_iMaterialIndex)
+	, m_iNumBones(rhs.m_iNumBones)
 {
-
+	strcpy_s(m_szName, rhs.m_szName);
 }
 
 void CMeshContainer::Get_BoneMatrices(_float4x4 * pBoneMatrices, _fmatrix PivotMatrix)
@@ -33,6 +34,7 @@ void CMeshContainer::Get_BoneMatrices(_float4x4 * pBoneMatrices, _fmatrix PivotM
 
 HRESULT CMeshContainer::Initialize_Prototype(CModel::TYPE eModelType, const aiMesh * pAIMesh, CModel* pModel, _fmatrix PivotMatrix)
 {
+	strcpy_s(m_szName, pAIMesh->mName.data);
 	m_iMaterialIndex = pAIMesh->mMaterialIndex;
 	m_pAIMesh = pAIMesh;
 
@@ -94,6 +96,43 @@ HRESULT CMeshContainer::Initialize_Prototype(CModel::TYPE eModelType, const aiMe
 
 HRESULT CMeshContainer::Initialize(void * pArg)
 {
+	return S_OK;
+}
+
+HRESULT CMeshContainer::SetUp_Bones(CModel * pModel)
+{
+	for (_uint i = 0; i < m_iNumBones; ++i)
+	{
+		aiBone*		pAIBone = m_pAIMesh->mBones[i];
+
+		CHierarchyNode*	pBoneNode = pModel->Get_BonePtr(pAIBone->mName.data);
+		if (nullptr == pBoneNode)
+			return E_FAIL;
+
+		m_Bones.push_back(pBoneNode);
+
+		Safe_AddRef(pBoneNode);
+
+		_float4x4		OffsetMatrix;
+
+		memcpy(&OffsetMatrix, &pAIBone->mOffsetMatrix, sizeof(_float4x4));
+
+		pBoneNode->Set_OffsetMatrix(XMMatrixTranspose(XMLoadFloat4x4(&OffsetMatrix)));
+	}
+
+
+	if (0 == m_iNumBones)
+	{
+		CHierarchyNode*		pNode = pModel->Get_BonePtr(m_szName);
+		if (nullptr == pNode)
+			return S_OK;
+
+		m_iNumBones = 1;
+
+		m_Bones.push_back(pNode);
+		Safe_AddRef(pNode);
+	}
+
 	return S_OK;
 }
 
@@ -178,20 +217,6 @@ HRESULT CMeshContainer::Create_VertexBuffer_AnimModel(const aiMesh* pAIMesh, CMo
 	{
 		aiBone*		pAIBone = pAIMesh->mBones[i];
 
-		CHierarchyNode*	pBoneNode = pModel->Get_BonePtr(pAIBone->mName.data);
-		if (nullptr == pBoneNode)
-			return E_FAIL;
-
-		m_Bones.push_back(pBoneNode);
-
-		Safe_AddRef(pBoneNode);
-
-		_float4x4		OffsetMatrix;
-
-		memcpy(&OffsetMatrix, &pAIBone->mOffsetMatrix, sizeof(_float4x4));
-
-		pBoneNode->Set_OffsetMatrix(XMMatrixTranspose(XMLoadFloat4x4(&OffsetMatrix)));
-
 		// pAIBone->mNumWeights : 몇개의 정점에 영향을 주고 있는지? 
 		for (_uint j = 0; j < pAIBone->mNumWeights; ++j)
 		{
@@ -223,6 +248,7 @@ HRESULT CMeshContainer::Create_VertexBuffer_AnimModel(const aiMesh* pAIMesh, CMo
 			}
 		}
 	}
+
 
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
 	m_SubResourceData.pSysMem = pVertices;

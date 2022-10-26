@@ -27,7 +27,7 @@ HRESULT CChannel::Initialize(CModel* pModel, aiNodeAnim * pAIChannel)
 		if (i < pAIChannel->mNumScalingKeys)
 		{
 			memcpy(&vScale, &pAIChannel->mScalingKeys[i].mValue, sizeof(_float3));
-			Keyframe.fTime = (_float)pAIChannel->mScalingKeys[i].mTime;
+			Keyframe.fTime = pAIChannel->mScalingKeys[i].mTime;
 		}
 
 		if (i < pAIChannel->mNumRotationKeys)
@@ -37,13 +37,13 @@ HRESULT CChannel::Initialize(CModel* pModel, aiNodeAnim * pAIChannel)
 			vRotation.y = pAIChannel->mRotationKeys[i].mValue.y;
 			vRotation.z = pAIChannel->mRotationKeys[i].mValue.z;
 			vRotation.w = pAIChannel->mRotationKeys[i].mValue.w;
-			Keyframe.fTime = (_float)pAIChannel->mRotationKeys[i].mTime;
+			Keyframe.fTime = pAIChannel->mRotationKeys[i].mTime;
 		}
 
 		if (i < pAIChannel->mNumPositionKeys)
 		{
 			memcpy(&vPosition, &pAIChannel->mPositionKeys[i].mValue, sizeof(_float3));
-			Keyframe.fTime = (_float)pAIChannel->mPositionKeys[i].mTime;
+			Keyframe.fTime = pAIChannel->mPositionKeys[i].mTime;
 		}
 
 		Keyframe.vScale = vScale;
@@ -61,6 +61,9 @@ HRESULT CChannel::Initialize(CModel* pModel, aiNodeAnim * pAIChannel)
 
 void CChannel::Invalidate_TransformationMatrix(_float fCurrentTime)
 {
+	//	for (_uint i = 0; i < 999999; ++i)
+	//		int a = 10;
+
 	_vector			vScale, vRotation, vPosition;
 
 	KEYFRAME		LastKeyframe = m_KeyFrames.back();

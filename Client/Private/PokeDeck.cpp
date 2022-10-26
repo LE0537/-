@@ -30,11 +30,46 @@ HRESULT CPokeDeck::Initialize(void * pArg)
 	{
 		CGameObject* tInfo;
 
+		if (i == 6)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Squirtle"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+
 		if (i == 24)
 		{
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 				return E_FAIL;
 			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 39)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Wigglytuff"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+
+		if (i == 51)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Meowth"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 79)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Slowbro"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
 			continue;
 		}
 		if (i == 151)
@@ -42,6 +77,7 @@ HRESULT CPokeDeck::Initialize(void * pArg)
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Garomakguri"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 				return E_FAIL;
 			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
 			continue;
 		}
 		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
@@ -60,12 +96,12 @@ HRESULT CPokeDeck::Initialize(void * pArg)
 	m_fY = g_iWinSizeY >> 1;
 
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixTranspose(XMMatrixIdentity()));
-	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, 0.f, 1.f)));
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -800.f, 500.f)));
 
 	_float3 vScale = { m_fSizeX,m_fSizeY,0.f };
 
 	m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 300.f, 1.f));
 
 	m_fSizeX = 60.f;
 	m_fSizeY = 60.f;

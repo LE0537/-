@@ -39,7 +39,13 @@ private:
 private:
 	CModel*					m_pModelCom = nullptr;
 
-	_int					m_iAnim = 0.f;
+	_int					m_iAnim = 0;
+	_bool					m_bSetPos = false;
+
+	_float					m_fX, m_fY, m_fSizeX, m_fSizeY;
+	_float4x4				m_ViewMatrix, m_ProjMatrix;
+
+
 
 public:
 	static CPikachu* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

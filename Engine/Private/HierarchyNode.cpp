@@ -1,4 +1,5 @@
 #include "..\Public\HierarchyNode.h"
+
 CHierarchyNode::CHierarchyNode()
 {
 }

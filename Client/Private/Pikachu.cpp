@@ -27,8 +27,8 @@ HRESULT CPikachu::Initialize(void * pArg)
 		return E_FAIL;
 
 	m_PokemonInfo.strName = TEXT("피카츄");
-	m_PokemonInfo.strInfo = TEXT("볼에 전기를 저장하는 주머니가 있다. 숲을 거처로 삼으며,\n 단단한 나무열매를 전기로 익혀 먹는 등의 지혜를 가졌다.");
-	m_PokemonInfo.strChar = TEXT("온순함");
+	m_PokemonInfo.strInfo = TEXT("재벌3세 석카츄...삼성게임즈를 위하여!\n최근 나이키 지디포스 화이트사고 자존감업됨.\n제발 코딩력도 업되자.");
+	m_PokemonInfo.strChar = TEXT("부유함");
 	m_PokemonInfo.iPokeNum = 25;
 	m_PokemonInfo.iMaxHp = 200;
 	m_PokemonInfo.iHp = m_PokemonInfo.iMaxHp;
@@ -40,7 +40,7 @@ HRESULT CPikachu::Initialize(void * pArg)
 	m_PokemonInfo.iLv = 5;
 	m_PokemonInfo.iMaxExp = 20;
 	m_PokemonInfo.iExp = 0;
-	m_PokemonInfo.iSex = 0;
+	m_PokemonInfo.iSex = rand() % 2;
 	m_PokemonInfo.iBallNum = 0;
 	m_PokemonInfo.bRide = false;
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
@@ -58,8 +58,6 @@ HRESULT CPikachu::Initialize(void * pArg)
 	
 	
 	RELEASE_INSTANCE(CGameInstance);
-
-	
 
 	m_PokemonInfo.eType = THUNDER;
 	m_PokemonInfo.eType2 = POKETYPE_END;
@@ -81,14 +79,17 @@ void CPikachu::Tick(_float fTimeDelta)
 		}
 	}
 	m_pModelCom->Play_Animation(fTimeDelta);
+	if(!m_bOnOff)
+		m_bSetPos = false;
+
 }
 
 void CPikachu::Late_Tick(_float fTimeDelta)
 {
 	if((g_PokeInfo || g_bPokeDeck) && m_bOnOff && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UIPOKE, this);
-//	else if (!g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
-	//	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+//	else if (!g_PokeInfo && !g_bPokeDeck && !m_bDeckPoke && nullptr != m_pRendererCom)
+//		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 }
 
 HRESULT CPikachu::Render()
@@ -109,16 +110,10 @@ HRESULT CPikachu::Render()
 	{
 		if (FAILED(m_pModelCom->SetUp_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
-		if ((g_PokeInfo || g_bPokeDeck))
-		{
-			if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 1)))
-				return E_FAIL;
-		}
-		else
-		{
-			if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 0)))
-				return E_FAIL;
-		}
+	
+		if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 0)))
+			return E_FAIL;
+		
 	}
 
 	RELEASE_INSTANCE(CGameInstance);
@@ -147,46 +142,66 @@ HRESULT CPikachu::Ready_Components()
 void CPikachu::Set_DeckPos()
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-	
-	_vector vPos = XMLoadFloat4(&pGameInstance->Get_CamPosition());
-	vPos.m128_f32[3] = 1.f;
-	_vector vRight = XMLoadFloat4(&pGameInstance->Get_CamRight());
-	_vector vUp = XMLoadFloat4(&pGameInstance->Get_CamUp());
-	_vector vLook = XMLoadFloat4(&pGameInstance->Get_CamLook());
-
-
-	XMVector4Normalize(vRight);
-	XMVector4Normalize(vUp);
-	XMVector4Normalize(vLook);
-	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight);
-	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
-	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
 
 	if (m_bDeckInfo)
 	{
-		vRight *= -10.f;
-		vUp *= 15.f;
-		vLook *= 30.f;
-		vPos += vRight;
-		vPos += vUp;
-		vPos += vLook;
+		if (!m_bSetPos)
+		{
+			_vector		vLook = { -0.3f,0.f,-1.f,0.f };
 
-		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
-		m_pTransformCom->Turn2(m_pTransformCom->Get_State(CTransform::STATE_LOOK), XMConvertToRadians(90.f));
-		m_pModelCom->Set_CurrentAnimIndex(2);
+			_vector		vAxisY = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+
+			_vector		vRight = XMVector3Cross(vAxisY, vLook);
+
+			_vector		vUp = XMVector3Cross(vLook, vRight);
+
+			m_pTransformCom->Set_State(CTransform::STATE_RIGHT, XMVector3Normalize(vRight));
+			m_pTransformCom->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp));
+			m_pTransformCom->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
+			m_bSetPos = true;
+		}
+
+		m_fSizeX = 20.f;
+		m_fSizeY = 20.f;
+		m_fX = 1000;
+		m_fY = 550;
+
+		XMStoreFloat4x4(&m_ViewMatrix, XMMatrixTranspose(XMMatrixIdentity()));
+		XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -500.f, 100.f)));
+		_float3 vScale = { m_fSizeX,m_fSizeY,20.f };
+		m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, -200.f, 1.f));
+
 	}
 	else if (!m_bDeckInfo)
 	{
-		vRight *= -10.f;
-		vUp *= -17.f;
-		vLook *= 30.f;
-		vPos += vRight;
-		vPos += vUp;
-		vPos += vLook;
+		if (!m_bSetPos)
+		{
+			_vector		vLook = { 0.f,0.f,-1.f,0.f };
 
-		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
-		m_pTransformCom->Turn2(m_pTransformCom->Get_State(CTransform::STATE_LOOK), XMConvertToRadians(90.f));
-		
+			_vector		vAxisY = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+
+			_vector		vRight = XMVector3Cross(vAxisY, vLook);
+
+			_vector		vUp = XMVector3Cross(vLook, vRight);
+
+			m_pTransformCom->Set_State(CTransform::STATE_RIGHT, XMVector3Normalize(vRight));
+			m_pTransformCom->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp));
+			m_pTransformCom->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
+			m_bSetPos = true;
+		}
+
+		m_fSizeX =	20.f;
+		m_fSizeY = 20.f;
+		m_fX = 280;
+		m_fY = 550;
+
+		XMStoreFloat4x4(&m_ViewMatrix, XMMatrixTranspose(XMMatrixIdentity()));
+		XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -500.f, 100.f)));
+		_float3 vScale = { m_fSizeX,m_fSizeY,20.f };
+		m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, -200.f, 1.f));
+
 	}
 	
 	RELEASE_INSTANCE(CGameInstance);
@@ -213,11 +228,11 @@ void CPikachu::Key_Input(_float fTimeDelta)
 	}
 	else if (pGameInstance->Key_Pressing(DIK_A))
 	{
-		m_pTransformCom->Turn2(m_pTransformCom->Get_State(CTransform::STATE_UP), XMConvertToRadians(130.f));
+		m_pTransformCom->Turn2(m_pTransformCom->Get_State(CTransform::STATE_UP), XMConvertToRadians(3.f));
 	}
 	else if (pGameInstance->Key_Pressing(DIK_D))
 	{
-		m_pTransformCom->Turn2(m_pTransformCom->Get_State(CTransform::STATE_UP), XMConvertToRadians(-30.f));
+		m_pTransformCom->Turn2(m_pTransformCom->Get_State(CTransform::STATE_UP), XMConvertToRadians(-3.f));
 	}
 
 	RELEASE_INSTANCE(CGameInstance);
@@ -226,17 +241,35 @@ HRESULT CPikachu::SetUp_ShaderResources()
 {
 	if (nullptr == m_pShaderCom)
 		return E_FAIL;
-
-	if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
-		return E_FAIL;
-
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &pGameInstance->Get_TransformFloat4x4_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
+	if (FAILED(m_pShaderCom->Set_RawValue("g_vCamPosition", &pGameInstance->Get_CamPosition(), sizeof(_float4))))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &pGameInstance->Get_TransformFloat4x4_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
-		return E_FAIL;
+	if (!m_bOnOff)
+	{
+		if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
+			return E_FAIL;
+
+		if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &pGameInstance->Get_TransformFloat4x4_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
+			return E_FAIL;
+
+		if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &pGameInstance->Get_TransformFloat4x4_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
+			return E_FAIL;
+	}
+	else if (m_bOnOff)
+	{
+		
+		if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
+			return E_FAIL;
+
+		if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+			return E_FAIL;
+
+		if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+			return E_FAIL;
+
+	}
 
 	RELEASE_INSTANCE(CGameInstance);
 

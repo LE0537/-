@@ -114,12 +114,12 @@ HRESULT CModel::Play_Animation(_float fTimeDelta)
 
 HRESULT CModel::Render(CShader * pShader, _uint iMeshIndex, _uint iPassIndex)
 {
-	_float4x4		BoneMatrix[256];
-
-	m_Meshes[iMeshIndex]->Get_BoneMatrices(BoneMatrix, XMLoadFloat4x4(&m_PivotMatrix));
-
-	pShader->Set_MatrixArray("g_BoneMatrices", BoneMatrix, 256);
-
+	if (m_eModelType == TYPE_ANIM)
+	{
+		_float4x4		BoneMatrix[256];
+		m_Meshes[iMeshIndex]->Get_BoneMatrices(BoneMatrix, XMLoadFloat4x4(&m_PivotMatrix));
+		pShader->Set_MatrixArray("g_BoneMatrices", BoneMatrix, 256);
+	}
 	pShader->Begin(iPassIndex);
 
 	m_Meshes[iMeshIndex]->Render();

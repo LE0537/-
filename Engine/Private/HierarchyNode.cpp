@@ -6,6 +6,7 @@ CHierarchyNode::CHierarchyNode()
 
 HRESULT CHierarchyNode::Initialize(const aiNode * pNode, CHierarchyNode* pParent)
 {
+
 	strcpy_s(m_szName, pNode->mName.data);
 
 	XMStoreFloat4x4(&m_OffsetMatrix, XMMatrixIdentity());
@@ -16,8 +17,6 @@ HRESULT CHierarchyNode::Initialize(const aiNode * pNode, CHierarchyNode* pParent
 	XMStoreFloat4x4(&m_TransformationMatrix, XMMatrixTranspose(XMLoadFloat4x4(&m_TransformationMatrix)));
 
 	XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMMatrixIdentity());
-
-
 
 
 	m_pParent = pParent;

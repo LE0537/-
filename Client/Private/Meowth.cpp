@@ -30,7 +30,7 @@ HRESULT CMeowth::Initialize(void * pArg)
 	m_PokemonInfo.strInfo = TEXT("가보자고가보자고가보자고가보자고가보자고가보자고\n가보자고가보자고가보자고가보자고가보자고가보자고\n가보자고가보자고가보자고가보자고가보자고가보자고");
 	m_PokemonInfo.strChar = TEXT("민준나옹이다옹");
 	m_PokemonInfo.iPokeNum = 52;
-	m_PokemonInfo.iMaxHp = 1500;
+	m_PokemonInfo.iMaxHp = 150;
 	m_PokemonInfo.iHp = m_PokemonInfo.iMaxHp;
 	m_PokemonInfo.iDmg = 80;
 	m_PokemonInfo.iSDmg = 50;

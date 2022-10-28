@@ -109,6 +109,18 @@
     <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\40.Wigglytuff">
       <UniqueIdentifier>{8253f5c8-b571-4145-a67f-b2ea57c357e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\02.Map">
+      <UniqueIdentifier>{02cbd942-76bf-4716-ab1d-88fbc83ee3e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Map\00.Field">
+      <UniqueIdentifier>{a785f116-403b-49bd-a7fd-c337348d03aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Map\02.BattleField">
+      <UniqueIdentifier>{4baccdec-6f70-4d67-b21d-587b1aa08110}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\143.Snorlax">
+      <UniqueIdentifier>{7c7d5a8a-9791-402a-83fd-32f40bffa7ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -216,6 +228,18 @@
     <ClInclude Include="..\public\Wigglytuff.h">
       <Filter>02.GameObjects\99.GameObj\01.Pokemon\40.Wigglytuff</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Player.h">
+      <Filter>02.GameObjects\99.GameObj\00.Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Field.h">
+      <Filter>02.GameObjects\02.Map\00.Field</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BattleField.h">
+      <Filter>02.GameObjects\02.Map\02.BattleField</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Snorlax.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\143.Snorlax</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -307,6 +331,18 @@
     </ClCompile>
     <ClCompile Include="..\private\Wigglytuff.cpp">
       <Filter>02.GameObjects\99.GameObj\01.Pokemon\40.Wigglytuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Player.cpp">
+      <Filter>02.GameObjects\99.GameObj\00.Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Field.cpp">
+      <Filter>02.GameObjects\02.Map\00.Field</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BattleField.cpp">
+      <Filter>02.GameObjects\02.Map\02.BattleField</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Snorlax.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\143.Snorlax</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

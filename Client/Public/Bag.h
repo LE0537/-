@@ -80,7 +80,7 @@ private:
 	_bool					m_bSwap = false;
 	_int					m_iSwapPoke = 99;
 
-
+	CGameObject*			m_pPlayer;
 	vector<ITEMINFO*>    m_vecItem;
 	vector<CGameObject*>    m_vecPoke;
 public:
@@ -110,6 +110,8 @@ private:
 	void	RenderFonts();
 	_bool	CheckUseItem();
 	_bool	CheckGiveItem();
+	void	ClearBag();
+	void	RidePoke();
 public:
 	static CBag* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

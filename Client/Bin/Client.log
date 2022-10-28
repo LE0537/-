@@ -1,35 +1,3 @@
-﻿  Client.cpp
-  Wigglytuff.cpp
-  UI.cpp
-  Tackle.cpp
-  Squirtle.cpp
-  Slowbro.cpp
-  PokeInfo.cpp
-  PokeDeck.cpp
-  Pikachu.cpp
-  NoneSkill.cpp
-  NonePoke.cpp
-  None.cpp
-  MonsterBall.cpp
-  HpPotion.cpp
-  Garomakguri.cpp
-  GameObj.cpp
-  ExpShare.cpp
-  Charmander.cpp
-  Bag.cpp
-  BackGround.cpp
-  코드를 생성하고 있습니다...
-  컴파일하고 있습니다...
-  Terrain.cpp
-  Meowth.cpp
-  MainApp.cpp
-  Loader.cpp
-  Level_Logo.cpp
-  Level_Loading.cpp
-  Level_GamePlay.cpp
-  Camera_Dynamic.cpp
-  BreakCar.cpp
-  코드를 생성하고 있습니다...
-  LINK : ..\Bin\Client.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
+﻿  Player.cpp
   Client.vcxproj -> C:\Users\shout\Desktop\과제\Pokemon\갠폴\Client\Default\..\Bin\Client.exe
   Client.vcxproj -> ..\Bin\Client.pdb (Full PDB)

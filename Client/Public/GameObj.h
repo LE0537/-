@@ -34,7 +34,8 @@ public:
 		wstring		strName;
 		_int		iMoney;
 		_int		iLevelIndex;
-
+		_bool		bRide;
+		_int		iRideNum;
 	}PLAYERINFO;
 	typedef struct tagInfo2 {
 		wstring		strName;
@@ -99,13 +100,22 @@ protected:
 	_bool					m_bOnOff = false;
 	_bool					m_bDeckInfo = false;
 	_bool					m_bDeckPoke = false;
-
+	CGameObject*			m_pTarget = nullptr;
 public:
 	POKEINFO Get_PokeInfo() {return m_PokemonInfo;}
 	PLAYERINFO Get_PalyerInfo() { return m_PlayerInfo; }
 	SKILLINFO Get_SkillInfo() { return m_SkillInfo; }
 	ITEMINFO Get_ItemInfo() { return m_ItemInfo; }
 
+	void Set_Target(CGameObject* pTarget) { m_pTarget = pTarget; }
+	CTransform* Get_Transfrom() { return m_pTransformCom; }
+	//PlayerInfo
+	_bool Get_Ride() { return m_PlayerInfo.bRide; }
+	void OnOffRide() { m_PlayerInfo.bRide = !m_PlayerInfo.bRide; }
+	void Set_RideIndex(_int iIndex) { m_PlayerInfo.iRideNum = iIndex; }
+
+
+	//PokeInfo
 	void	Set_PokeHp(_int _iDmg) { m_PokemonInfo.iHp += _iDmg;
 	if (m_PokemonInfo.iHp > m_PokemonInfo.iMaxHp) { m_PokemonInfo.iHp = m_PokemonInfo.iMaxHp; }
 	else if (m_PokemonInfo.iHp < 0) { m_PokemonInfo.iHp = 0; }

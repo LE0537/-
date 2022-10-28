@@ -21,6 +21,8 @@ HRESULT CBag::Initialize_Prototype()
 
 HRESULT CBag::Initialize(void * pArg)
 {
+	m_pPlayer = *(CGameObject**)pArg;
+
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 	m_vecPoke.reserve(6);
@@ -71,8 +73,9 @@ HRESULT CBag::Initialize(void * pArg)
 		return E_FAIL;
 	m_vecPoke.push_back(tInfo);
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Snorlax"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
+	dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_pPlayer);
 	m_vecPoke.push_back(tInfo);
 
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Meowth"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
@@ -609,26 +612,7 @@ void CBag::Key_Input()
 	Safe_AddRef(pGameInstance);
 	if (pGameInstance->Key_Down(DIK_BACKSPACE) && !m_bUseItem && !m_bUsePoke)
 	{
-		m_bItem = false;
-		m_bUseItem = false;
-		m_bUsePoke = false;
-		m_bUseKey = false;
-		m_UsePos = 0;
-		m_bItemSelect = true;
-		m_iPokeSelect = 0;
-		m_iSelect = 0;
-		m_iItemPos = 0;
-		m_iItemScoll = 0;
-		m_fSizeX = 500;
-		m_fSizeY = 45;
-		m_fX = 900;
-		m_fY = 170;
-		_float3 vScale = { m_fSizeX,m_fSizeY,0.f };
-
-		m_pTransformCom2->Set_Scale(XMLoadFloat3(&vScale));
-		m_pTransformCom2->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
-
-		g_bBag = false;
+		ClearBag();
 	}
 	if (pGameInstance->Key_Down(DIK_UP))
 	{
@@ -816,6 +800,14 @@ void CBag::Key_Input()
 					return;
 					break;
 				case 3:
+					if (!dynamic_cast<CGameObj*>(m_pPlayer)->Get_Ride() && dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().bRide)
+					{
+						RidePoke();
+						ClearBag();
+						m_bUse = false;
+						Safe_Release(pGameInstance);
+						return;
+					}
 					break;
 				case 4:
 					m_bUsePoke = false;
@@ -1290,6 +1282,37 @@ _bool CBag::CheckGiveItem()
 		break;
 	}
 	return false;
+}
+
+void CBag::ClearBag()
+{
+	m_bItem = false;
+	m_bUseItem = false;
+	m_bUsePoke = false;
+	m_bUseKey = false;
+	m_UsePos = 0;
+	m_bItemSelect = true;
+	m_iPokeSelect = 0;
+	m_iSelect = 0;
+	m_iItemPos = 0;
+	m_iItemScoll = 0;
+	m_fSizeX = 500;
+	m_fSizeY = 45;
+	m_fX = 900;
+	m_fY = 170;
+	_float3 vScale = { m_fSizeX,m_fSizeY,0.f };
+
+	m_pTransformCom2->Set_Scale(XMLoadFloat3(&vScale));
+	m_pTransformCom2->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
+
+	g_bBag = false;
+}
+
+void CBag::RidePoke()
+{
+	dynamic_cast<CGameObj*>(m_pPlayer)->OnOffRide();
+	dynamic_cast<CGameObj*>(m_pPlayer)->Set_RideIndex(dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().iPokeNum);
+	dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->OnOffRide();
 }
 
 CBag * CBag::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

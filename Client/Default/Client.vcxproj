@@ -172,11 +172,13 @@
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\Bag.h" />
+    <ClInclude Include="..\public\BattleField.h" />
     <ClInclude Include="..\Public\BreakCar.h" />
     <ClInclude Include="..\Public\Camera_Dynamic.h" />
     <ClInclude Include="..\public\Charmander.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\public\ExpShare.h" />
+    <ClInclude Include="..\public\Field.h" />
     <ClInclude Include="..\public\GameObj.h" />
     <ClInclude Include="..\public\Garomakguri.h" />
     <ClInclude Include="..\public\HpPotion.h" />
@@ -191,9 +193,11 @@
     <ClInclude Include="..\public\NonePoke.h" />
     <ClInclude Include="..\public\NoneSkill.h" />
     <ClInclude Include="..\public\Pikachu.h" />
+    <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\PokeDeck.h" />
     <ClInclude Include="..\public\PokeInfo.h" />
     <ClInclude Include="..\public\Slowbro.h" />
+    <ClInclude Include="..\public\Snorlax.h" />
     <ClInclude Include="..\public\Squirtle.h" />
     <ClInclude Include="..\public\Tackle.h" />
     <ClInclude Include="..\Public\Terrain.h" />
@@ -207,10 +211,12 @@
   <ItemGroup>
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\private\Bag.cpp" />
+    <ClCompile Include="..\private\BattleField.cpp" />
     <ClCompile Include="..\Private\BreakCar.cpp" />
     <ClCompile Include="..\Private\Camera_Dynamic.cpp" />
     <ClCompile Include="..\private\Charmander.cpp" />
     <ClCompile Include="..\private\ExpShare.cpp" />
+    <ClCompile Include="..\private\Field.cpp" />
     <ClCompile Include="..\private\GameObj.cpp" />
     <ClCompile Include="..\private\Garomakguri.cpp" />
     <ClCompile Include="..\private\HpPotion.cpp" />
@@ -225,9 +231,11 @@
     <ClCompile Include="..\private\NonePoke.cpp" />
     <ClCompile Include="..\private\NoneSkill.cpp" />
     <ClCompile Include="..\private\Pikachu.cpp" />
+    <ClCompile Include="..\private\Player.cpp" />
     <ClCompile Include="..\private\PokeDeck.cpp" />
     <ClCompile Include="..\private\PokeInfo.cpp" />
     <ClCompile Include="..\private\Slowbro.cpp" />
+    <ClCompile Include="..\private\Snorlax.cpp" />
     <ClCompile Include="..\private\Squirtle.cpp" />
     <ClCompile Include="..\private\Tackle.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />

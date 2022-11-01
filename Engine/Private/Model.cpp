@@ -100,8 +100,9 @@ HRESULT CModel::SetUp_Material(CShader * pShader, const char * pConstantName, _u
 
 HRESULT CModel::Play_Animation(_float fTimeDelta)
 {
+
 	/* 뼈의 m_TransformationMatrix행렬을 갱신한다. */
-	m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(fTimeDelta);
+	m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(fTimeDelta * 1.3f);
 
 	for (auto& pBoneNode : m_Bones)
 	{
@@ -125,7 +126,6 @@ HRESULT CModel::Render(CShader * pShader, _uint iMeshIndex, _uint iPassIndex)
 
 	return S_OK;
 }
-
 
 
 HRESULT CModel::Create_MeshContainer()

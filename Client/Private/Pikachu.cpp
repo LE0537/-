@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "..\Public\Pikachu.h"
 #include "GameInstance.h"
-
+#include "Level_GamePlay.h"
 
 CPikachu::CPikachu(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -21,7 +21,7 @@ HRESULT CPikachu::Initialize_Prototype()
 HRESULT CPikachu::Initialize(void * pArg)
 {
 
-	*(CGameObject**)pArg = this;
+
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -65,6 +65,9 @@ HRESULT CPikachu::Initialize(void * pArg)
 
 	m_pModelCom->Set_CurrentAnimIndex(2);
 
+	m_pTransformCom->Set_Scale(XMLoadFloat3((&((CLevel_GamePlay::LOADFILE*)pArg)->vScale)));
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4((&((CLevel_GamePlay::LOADFILE*)pArg)->vPos)));
+
 	return S_OK;
 }
 
@@ -88,8 +91,8 @@ void CPikachu::Late_Tick(_float fTimeDelta)
 {
 	if((g_PokeInfo || g_bPokeDeck) && m_bOnOff && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UIPOKE, this);
-//	else if (!g_PokeInfo && !g_bPokeDeck && !m_bDeckPoke && nullptr != m_pRendererCom)
-//		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	else if (!g_PokeInfo && !g_bPokeDeck && !m_bDeckPoke && nullptr != m_pRendererCom)
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 }
 
 HRESULT CPikachu::Render()

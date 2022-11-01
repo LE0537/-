@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 
+
 BEGIN(Engine)
 
 class ENGINE_DLL CModel final : public CComponent
@@ -19,10 +20,6 @@ public:
 
 	class CHierarchyNode* Get_BonePtr(const char* pBoneName) const;
 
-public:
-	void Set_CurrentAnimIndex(_uint iAnimIndex) {
-		m_iCurrentAnimIndex = iAnimIndex;
-	}
 
 public:
 	virtual HRESULT Initialize_Prototype(TYPE eModelType, const char* pModelFilePath, _fmatrix PivotMatrix);
@@ -59,9 +56,12 @@ private:
 	vector<class CAnimation*>			m_Animations;
 
 	_uint								m_iCurrentAnimIndex = 0;
-
+	_uint								m_iPrevAnimIndex = 0;
 private:
 	_float4x4				m_PivotMatrix;
+
+public:
+	void Set_CurrentAnimIndex(_uint iAnimIndex){ m_iCurrentAnimIndex = iAnimIndex; }
 
 private:
 	HRESULT Create_MeshContainer();

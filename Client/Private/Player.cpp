@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "..\Public\Player.h"
 #include "GameInstance.h"
-
+#include "Level_GamePlay.h"
 
 CPlayer::CPlayer(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -21,8 +21,7 @@ HRESULT CPlayer::Initialize_Prototype()
 HRESULT CPlayer::Initialize(void * pArg)
 {
 
-	*(CGameObject**)pArg = this;
-
+	*(CGameObject**)(&((CLevel_GamePlay::LOADFILE*)pArg)->pTarget) = this;
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
@@ -33,16 +32,16 @@ HRESULT CPlayer::Initialize(void * pArg)
 	m_PlayerInfo.bRide = false;
 
 	RELEASE_INSTANCE(CGameInstance);
-
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	m_pTransformCom->Set_Scale(XMLoadFloat3((&((CLevel_GamePlay::LOADFILE*)pArg)->vScale)));
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4((&((CLevel_GamePlay::LOADFILE*)pArg)->vPos)));
 	m_pModelCom->Set_CurrentAnimIndex(IDLE);
-
+	
 	return S_OK;
 }
 
 void CPlayer::Tick(_float fTimeDelta)
 {
-	if(!m_PlayerInfo.bRide)
+	if (!m_PlayerInfo.bRide)
 		m_pModelCom->Set_CurrentAnimIndex(IDLE);
 	if (m_PlayerInfo.bRide)
 		CheckRideIDLE();
@@ -53,7 +52,6 @@ void CPlayer::Tick(_float fTimeDelta)
 
 void CPlayer::Late_Tick(_float fTimeDelta)
 {
-	
 	if (!g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 }
@@ -95,7 +93,7 @@ HRESULT CPlayer::Ready_Components()
 	CTransform::TRANSFORMDESC		TransformDesc;
 	ZeroMemory(&TransformDesc, sizeof(CTransform::TRANSFORMDESC));
 
-	TransformDesc.fSpeedPerSec = 40.f;
+	TransformDesc.fSpeedPerSec = 5.f;
 	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
 	if (FAILED(__super::Add_Components(TEXT("Com_Transform"), LEVEL_STATIC, TEXT("Prototype_Component_Transform"), (CComponent**)&m_pTransformCom,&TransformDesc)))
@@ -129,38 +127,21 @@ void CPlayer::Key_Input(_float fTimeDelta)
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 	if (!m_PlayerInfo.bRide)
 	{
-		if (pGameInstance->Key_Pressing(DIK_LSHIFT) && pGameInstance->Key_Pressing(DIK_UP))
+		if (pGameInstance->Key_Pressing(DIK_LSHIFT) && pGameInstance->Key_Pressing(DIK_W))
 		{
 			m_pTransformCom->Go_Straight(fTimeDelta * 1.3f);
 			m_pModelCom->Set_CurrentAnimIndex(RUN);
 		}
-		else if (pGameInstance->Key_Pressing(DIK_UP))
+		else if (pGameInstance->Key_Pressing(DIK_W))
 		{
 			m_pTransformCom->Go_Straight(fTimeDelta);
 			m_pModelCom->Set_CurrentAnimIndex(WALK);
 		}
-		else if (pGameInstance->Key_Pressing(DIK_LSHIFT) && pGameInstance->Key_Pressing(DIK_DOWN))
-		{
-			if (!m_bBackMove)
-			{
-				_vector vRight = m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
-				_vector vUp = m_pTransformCom->Get_State(CTransform::STATE_UP);
-				_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
-				vRight *= -1.f;
-				vUp *= -1.f;
-				vLook *= -1.f;
-				m_pTransformCom->Set_State(CTransform::STATE_LOOK, vRight);
-				m_pTransformCom->Set_State(CTransform::STATE_LOOK, vUp);
-				m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
-				m_bBackMove = true;
-			}
-			m_pTransformCom->Go_Straight(fTimeDelta);
-			m_pModelCom->Set_CurrentAnimIndex(RUN);
-		}
+
 	}
 	if (m_PlayerInfo.bRide)
 	{
-		if (pGameInstance->Key_Pressing(DIK_UP))
+		if (pGameInstance->Key_Pressing(DIK_W))
 		{
 			m_pTransformCom->Go_Straight(fTimeDelta * 1.8f);
 			switch (m_PlayerInfo.iRideNum)
@@ -177,33 +158,12 @@ void CPlayer::Key_Input(_float fTimeDelta)
 			m_PlayerInfo.bRide = false;
 		}
 	}
-	//else if (pGameInstance->Key_Pressing(DIK_DOWN))
-	//{
-	//	if (!m_bBackMove)
-	//	{
-	//		_vector vRight = m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
-	//		_vector vUp = m_pTransformCom->Get_State(CTransform::STATE_UP);
-	//		_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
-	//		vRight *= -1.f;
-	//		vUp *= -1.f;
-	//		vLook *= -1.f;
-	//		m_pTransformCom->Set_State(CTransform::STATE_LOOK, vRight);
-	//		m_pTransformCom->Set_State(CTransform::STATE_LOOK, vUp);
-	//		m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
-	//		m_bBackMove = true;
-	//	}
-	//	m_pTransformCom->Go_Straight(fTimeDelta);
-	//	m_pModelCom->Set_CurrentAnimIndex(WALK);
-	//}
-	//if (pGameInstance->Key_Up(DIK_DOWN))
-	//{
-	//	m_bBackMove = false;
-	//}
-	if (pGameInstance->Key_Pressing(DIK_LEFT))
+
+	if (pGameInstance->Key_Pressing(DIK_A))
 	{
 		m_pTransformCom->Turn2(m_pTransformCom->Get_State(CTransform::STATE_UP), XMConvertToRadians(-3.f));
 	}
-	else if (pGameInstance->Key_Pressing(DIK_RIGHT))
+	else if (pGameInstance->Key_Pressing(DIK_D))
 	{
 		m_pTransformCom->Turn2(m_pTransformCom->Get_State(CTransform::STATE_UP), XMConvertToRadians(3.f));
 	}
@@ -221,6 +181,7 @@ void CPlayer::Key_Input(_float fTimeDelta)
 			m_iAnim = 12;
 		m_pModelCom->Set_CurrentAnimIndex(m_iAnim);
 	}
+
 	RELEASE_INSTANCE(CGameInstance);
 }
 HRESULT CPlayer::SetUp_ShaderResources()

@@ -249,12 +249,8 @@ void CSnorlax::Key_Input(_float fTimeDelta)
 void CSnorlax::Set_RidePos()
 {
 	m_pModelCom->Set_CurrentAnimIndex(2);
-	if (GetKeyState(VK_UP) & 0x8000)
+	if (GetKeyState('W') & 0x8000)
 		m_pModelCom->Set_CurrentAnimIndex(8);
-	//if(GetKeyState(VK_LEFT) & 0x8000)
-	//	m_pTransformCom->Turn2(m_pTransformCom->Get_State(CTransform::STATE_UP), XMConvertToRadians(-3.f));
-	//else if (GetKeyState(VK_RIGHT) & 0x8000)
-	//	m_pTransformCom->Turn2(m_pTransformCom->Get_State(CTransform::STATE_UP), XMConvertToRadians(3.f));
 
 	_vector vRight = dynamic_cast<CGameObj*>(m_pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_RIGHT);
 	_vector vUp = dynamic_cast<CGameObj*>(m_pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_UP);

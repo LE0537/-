@@ -2,7 +2,7 @@
 
 #include "Client_Defines.h"
 #include "Level.h"
-
+#include "GameObject.h"
 
 BEGIN(Client)
 
@@ -11,7 +11,18 @@ class CLevel_GamePlay final : public CLevel
 private:
 	CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CLevel_GamePlay() = default;
-
+public:
+	struct SaveInfo {
+		_float4  vPos;
+		_float3	 vScale;
+		_int	 iType;
+	};
+	typedef struct tagLoad
+	{
+		_float4  vPos;
+		_float3	 vScale;
+		CGameObject* pTarget;
+	}LOADFILE;
 public:
 	virtual HRESULT Initialize();
 	virtual void Tick(_float fTimeDelta);
@@ -23,9 +34,13 @@ public:
 	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Effect(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Camera(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Monster(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_UI(const _tchar* pLayerTag);
 private:
-	class	CGameObject*		m_pPlayer;
+	void Load();
+private:
+	LOADFILE			m_LoadFile;
+	vector<SaveInfo>	m_vecSave;
 public:
 	static CLevel_GamePlay* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;

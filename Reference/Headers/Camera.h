@@ -19,7 +19,7 @@ public:
 		_float				fFar;
 
 		CTransform::TRANSFORMDESC		TransformDesc;
-
+		CGameObject*		pTarget;
 	}CAMERADESC;
 protected:
 	CCamera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

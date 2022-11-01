@@ -13,6 +13,7 @@
 #include "PokeInfo.h"
 #include "PokeDeck.h"
 //Map
+#include "Field.h"
 #include "BattleField.h"
 //Player 헤더
 #include "Player.h"
@@ -176,7 +177,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	/* 포켓몬 객체 */
 	_matrix			PivotMatrix = XMMatrixIdentity();
 	
-	PivotMatrix = XMMatrixScaling(0.1f,0.1f,0.1f) * XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixTranslation(0.f,0.f,0.f);
+	PivotMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 	
 	/*if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Charmander"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Charmander/Charmander.fbx", PivotMatrix))))
@@ -245,6 +246,13 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		CPlayer::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	//Map
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Field"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/Field/Field.fbx"))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Field"),
+		CField::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_BattleField"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/BattleField/BattleField.fbx"))))
 		return E_FAIL;

@@ -39,7 +39,6 @@ void CAnimation::Invalidate_TransformationMatrix(_float fTimeDelta)
 		m_fCurrentTime = 0.f;
 
 		m_isFinished = true;
-
 	}
 
 	for (auto& pChannel : m_Channels)

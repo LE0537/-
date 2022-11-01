@@ -10,7 +10,6 @@ namespace Client
 	enum STATINFO {STUN,SHOCK,FREEZ,BURN,POISONING,SLEEP,STATINFO_END};
 
 
-
 }
 
 #include <process.h>

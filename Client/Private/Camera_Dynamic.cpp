@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Public\Camera_Dynamic.h"
 #include "GameInstance.h"
+#include "GameObj.h"
 
 CCamera_Dynamic::CCamera_Dynamic(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
@@ -23,11 +24,10 @@ HRESULT CCamera_Dynamic::Initialize_Prototype()
 HRESULT CCamera_Dynamic::Initialize(void* pArg)
 {
 	
-
 	if (FAILED(__super::Initialize(&((CAMERADESC_DERIVED*)pArg)->CameraDesc)))
 		return E_FAIL;
 	
-
+	m_FovAngle = XMConvertToRadians(60.f);
 	return S_OK;
 }
 
@@ -36,44 +36,7 @@ void CCamera_Dynamic::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 	if (!g_bBag && !g_bPokeDeck && !g_PokeInfo)
 	{
-		if (GetKeyState('W') < 0)
-		{
-			m_pTransform->Go_Straight(fTimeDelta * 5.f);
-		}
-
-		if (GetKeyState('S') < 0)
-		{
-			m_pTransform->Go_Backward(fTimeDelta* 5.f);
-		}
-
-		if (GetKeyState('A') < 0)
-		{
-
-			m_pTransform->Go_Left(fTimeDelta* 5.f);
-		}
-
-		if (GetKeyState('D') < 0)
-		{
-
-			m_pTransform->Go_Right(fTimeDelta* 5.f);
-		}
-
-		CGameInstance*			pGameInstance = CGameInstance::Get_Instance();
-		Safe_AddRef(pGameInstance);
-
-		_long			MouseMove = 0;
-
-		if (MouseMove = pGameInstance->Get_DIMMoveState(DIMM_X))
-		{
-			m_pTransform->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * MouseMove * 0.1f);
-		}
-
-		if (MouseMove = pGameInstance->Get_DIMMoveState(DIMM_Y))
-		{
-			m_pTransform->Turn(m_pTransform->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * 0.1f);
-		}
-
-		Safe_Release(pGameInstance);
+		Key_Input(fTimeDelta);
 	}
 	if (FAILED(Bind_OnPipeLine()))
 		return;
@@ -95,7 +58,84 @@ HRESULT CCamera_Dynamic::Render()
 	
 	return S_OK;
 }
+void CCamera_Dynamic::Key_Input(_float fTimeDelta)
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
+	_long MouseMove = 0;
+
+	if (MouseMove = pGameInstance->Get_DIMMoveState(DIMM_WHEEL))
+	{
+		m_FovAngle += XMConvertToRadians(-MouseMove * fTimeDelta * 0.4f);
+		if ((XMConvertToRadians(80.f) < m_CameraDesc.fFovy))
+		{
+			m_CameraDesc.fFovy = XMConvertToRadians(80.f);
+			m_FovAngle = XMConvertToRadians(80.f);
+		}
+		else if ((XMConvertToRadians(45.f) > m_CameraDesc.fFovy))
+		{
+			m_CameraDesc.fFovy = XMConvertToRadians(45.f);
+			m_FovAngle = XMConvertToRadians(45.f);
+		}
+	}
+	m_CameraDesc.fFovy = m_FovAngle;
+
+	if (GetKeyState(VK_LSHIFT) & 0x8000 && GetKeyState(VK_LEFT) & 0x8000)
+		CameraRotationX(fTimeDelta, -30.f);
+	if (GetKeyState(VK_LSHIFT) & 0x8000 && GetKeyState(VK_RIGHT) & 0x8000)
+		CameraRotationX(fTimeDelta, 30.f);
+	if (GetKeyState(VK_LSHIFT) & 0x8000 && GetKeyState(VK_UP) & 0x8000)
+		CameraRotationY(fTimeDelta, 20.f);
+	if (GetKeyState(VK_LSHIFT) & 0x8000 && GetKeyState(VK_DOWN) & 0x8000)
+		CameraRotationY(fTimeDelta, -20.f);
+
+	Check_Pos();
+
+	RELEASE_INSTANCE(CGameInstance);
+}
+
+void CCamera_Dynamic::CameraRotationX(_float fTimeDelta, _float fIncrease)
+{
+	m_XfAngle += XMConvertToRadians(180.f) * fIncrease * fTimeDelta;
+}
+
+void CCamera_Dynamic::CameraRotationY(_float fTimeDelta, _float fIncrease)
+{
+	m_YfAngle += XMConvertToRadians(90.f) * fIncrease * fTimeDelta;
+	if (m_YfAngle > XMConvertToRadians(1000.f))
+		m_YfAngle = XMConvertToRadians(1000.f);
+	if (m_YfAngle < XMConvertToRadians(-1000.f))
+		m_YfAngle = XMConvertToRadians(-1000.f);
+}
+
+void CCamera_Dynamic::Check_Pos()
+{
+	_vector vTargetPos = dynamic_cast<CGameObj*>(m_CameraDesc.pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
+	_vector vPos = dynamic_cast<CGameObj*>(m_CameraDesc.pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
+
+	_vector	vRight = dynamic_cast<CGameObj*>(m_CameraDesc.pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_RIGHT);
+	_vector	vUp = dynamic_cast<CGameObj*>(m_CameraDesc.pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_UP);
+	_vector	vLook = dynamic_cast<CGameObj*>(m_CameraDesc.pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_LOOK);
+
+	_matrix	RotationMatrixX = XMMatrixRotationAxis(vRight, XMConvertToRadians(m_YfAngle));
+
+	vRight = XMVector3TransformNormal(vRight, RotationMatrixX);
+	vUp = XMVector3TransformNormal(vUp, RotationMatrixX);
+	vLook = XMVector3TransformNormal(vLook, RotationMatrixX);
+
+	_matrix	RotationMatrixY = XMMatrixRotationAxis(vUp, XMConvertToRadians(m_XfAngle));
+
+	vRight = XMVector3TransformNormal(vRight, RotationMatrixY);
+	vUp = XMVector3TransformNormal(vUp, RotationMatrixY);
+	vLook = XMVector3TransformNormal(vLook, RotationMatrixY);
+
+	
+	vPos = vPos + (XMVector3Normalize(vLook) * -5.f);
+	vPos = vPos + (XMVector3Normalize(vUp) * 2.f);
+	m_pTransform->Set_State(CTransform::CTransform::STATE_TRANSLATION, vPos);
+	vTargetPos.m128_f32[1] += 2.f;
+	m_pTransform->LookAt(vTargetPos);
+}
 CCamera_Dynamic * CCamera_Dynamic::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CCamera_Dynamic*	pInstance = new CCamera_Dynamic(pDevice, pContext);

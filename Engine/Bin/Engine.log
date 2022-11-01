@@ -1,3 +1,39 @@
-﻿  Transform.cpp
+﻿  VIBuffer_Rect.cpp
+  VIBuffer_Hexagon.cpp
+  VIBuffer.cpp
+  Transform.cpp
+  Texture.cpp
+  Shader.cpp
+  PipeLine.cpp
+  Model.cpp
+c:\users\shout\desktop\과제\pokemon\갠폴\engine\private\model.cpp(193): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  MeshContainer.cpp
+  Light_Manager.cpp
+  Light.cpp
+  HierarchyNode.cpp
+  Font_Manager.cpp
+  CustomFont.cpp
+  Channel.cpp
+  Animation.cpp
+  Engine_Struct.cpp
+  VIBuffer_Terrain.cpp
+  Timer_Manager.cpp
+  Timer.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  Renderer.cpp
+  Object_Manager.cpp
+  Level_Manager.cpp
+  Level.cpp
+  Layer.cpp
+  Input_Device.cpp
+  Graphic_Device.cpp
+  GameObject.cpp
+  GameInstance.cpp
+  Component_Manager.cpp
+  Component.cpp
+  Camera.cpp
+  Base.cpp
+  코드를 생성하고 있습니다...
   Engine.vcxproj -> C:\Users\shout\Desktop\과제\Pokemon\갠폴\Engine\Default\..\Bin\Engine.dll
   Engine.vcxproj -> ..\Bin\Engine.pdb (Full PDB)

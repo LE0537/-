@@ -41,7 +41,6 @@ private:
 
 	_int					m_iAnim = 0;
 
-	_bool					m_bBackMove = false;
 public:
 	static CPlayer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

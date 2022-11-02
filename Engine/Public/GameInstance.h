@@ -10,6 +10,7 @@
 #include "Component_Manager.h"
 #include "Light_Manager.h"
 #include "Font_Manager.h"
+#include "Frustum.h"
 
 BEGIN(Engine)
 
@@ -79,7 +80,8 @@ public: /* For.Font_Manager */
 	HRESULT Add_Fonts(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pFontTag, const _tchar* pFontFilePath);
 	HRESULT Render_Font(const _tchar* pFontTag, const _tchar* pText, _fvector vPos, _fvector vColor, _fvector vScale);
 
-
+public:	/* for. Frustum*/
+	_bool	IsInFrustum(_vector vPos, _float3 vScale);
 
 public:
 	static void Release_Engine();
@@ -94,7 +96,7 @@ private:
 	CPipeLine*						m_pPipeLine = nullptr;
 	CLight_Manager*					m_pLight_Manager = nullptr;
 	CFont_Manager*					m_pFont_Manager = nullptr;
-
+	CFrustum*						m_pFrustum = nullptr;
 public:
 	virtual void Free() override;
 };

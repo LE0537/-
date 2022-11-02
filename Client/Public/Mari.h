@@ -11,6 +11,7 @@ class CRenderer;
 class CTransform;
 class CVIBuffer_Rect;
 class CModel;
+class CCollider;
 END
 
 
@@ -34,16 +35,17 @@ public:
 private:
 	HRESULT SetUp_ShaderResources();
 	HRESULT Ready_Components();
-	void	Set_DeckPos();
-	void	Key_Input(_float fTimeDelta);
+	void	Move(_float fTimeDelta);
 private:
 	CModel*					m_pModelCom = nullptr;
+	CCollider*				m_pAABBCom = nullptr;
+	CCollider*				m_pOBBCom = nullptr;
+	CCollider*				m_pSPHERECom = nullptr;
 
 	_int					m_iAnim = 0;
-	_bool					m_bSetPos = false;
+	_bool					m_bFindPlayer = false;
 
-	_float					m_fX, m_fY, m_fSizeX, m_fSizeY;
-	_float4x4				m_ViewMatrix, m_ProjMatrix;
+
 
 
 

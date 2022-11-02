@@ -11,6 +11,7 @@ class CRenderer;
 class CTransform;
 class CVIBuffer_Rect;
 class CModel;
+class CCollider;
 END
 
 
@@ -38,6 +39,9 @@ private:
 	void	Key_Input(_float fTimeDelta);
 private:
 	CModel*					m_pModelCom = nullptr;
+	CCollider*				m_pAABBCom = nullptr;
+	CCollider*				m_pOBBCom = nullptr;
+	CCollider*				m_pSPHERECom = nullptr;
 
 	_int					m_iAnim = 0;
 

@@ -78,7 +78,8 @@ void CSquirtle::Tick(_float fTimeDelta)
 			Key_Input(fTimeDelta);
 		}
 	}
-	m_pModelCom->Play_Animation(fTimeDelta);
+	if(g_PokeInfo || g_bPokeDeck)
+		m_pModelCom->Play_Animation(fTimeDelta);
 	if (!m_bOnOff)
 		m_bSetPos = false;
 

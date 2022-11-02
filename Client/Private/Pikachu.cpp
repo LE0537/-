@@ -44,7 +44,7 @@ HRESULT CPikachu::Initialize(void * pArg)
 	m_PokemonInfo.iBallNum = 0;
 	m_PokemonInfo.bRide = false;
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-
+	
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tackle"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum1)))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NoneSkill"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum2)))
@@ -81,7 +81,8 @@ void CPikachu::Tick(_float fTimeDelta)
 			Key_Input(fTimeDelta);
 		}
 	}
-	m_pModelCom->Play_Animation(fTimeDelta);
+	if (g_PokeInfo || g_bPokeDeck)
+		m_pModelCom->Play_Animation(fTimeDelta);
 	if(!m_bOnOff)
 		m_bSetPos = false;
 
@@ -89,10 +90,16 @@ void CPikachu::Tick(_float fTimeDelta)
 
 void CPikachu::Late_Tick(_float fTimeDelta)
 {
-	if((g_PokeInfo || g_bPokeDeck) && m_bOnOff && nullptr != m_pRendererCom)
-		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UIPOKE, this);
-	else if (!g_PokeInfo && !g_bPokeDeck && !m_bDeckPoke && nullptr != m_pRendererCom)
-		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	
+	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), m_pTransformCom->Get_Scale()))
+	{
+		if ((g_PokeInfo || g_bPokeDeck) && m_bOnOff && nullptr != m_pRendererCom)
+			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UIPOKE, this);
+		else if (!g_PokeInfo && !g_bPokeDeck && !m_bDeckPoke && nullptr != m_pRendererCom)
+			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	}
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 HRESULT CPikachu::Render()

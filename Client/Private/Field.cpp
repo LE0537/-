@@ -48,7 +48,7 @@ void CField::Tick(_float fTimeDelta)
 void CField::Late_Tick(_float fTimeDelta)
 {
 
-	if (!g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
+	if (!g_bBag && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 }
 

@@ -50,9 +50,14 @@ void CTree::Tick(_float fTimeDelta)
 
 void CTree::Late_Tick(_float fTimeDelta)
 {
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-	if (!g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
-		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), m_pTransformCom->Get_Scale()))
+	{
+		if (!g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
+			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	}
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 HRESULT CTree::Render()

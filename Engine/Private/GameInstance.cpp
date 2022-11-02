@@ -12,7 +12,9 @@ CGameInstance::CGameInstance()
 	, m_pPipeLine(CPipeLine::Get_Instance())
 	, m_pLight_Manager(CLight_Manager::Get_Instance())
 	, m_pFont_Manager(CFont_Manager::Get_Instance())
+	, m_pFrustum(CFrustum::Get_Instance())
 {
+	Safe_AddRef(m_pFrustum);
 	Safe_AddRef(m_pFont_Manager);
 	Safe_AddRef(m_pLight_Manager);
 	Safe_AddRef(m_pPipeLine);
@@ -48,7 +50,8 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, cons
 	if (FAILED(m_pComponent_Manager->Reserve_Container(iNumLevels)))
 		return E_FAIL;
 
-	
+	if (FAILED(m_pFrustum->Initialize()))
+		return E_FAIL;
 
 
 	return S_OK;
@@ -66,7 +69,7 @@ void CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pObject_Manager->Tick(fTimeDelta);
 
 	m_pPipeLine->Update();
-
+	m_pFrustum->Tick();
 	m_pLevel_Manager->Late_Tick(fTimeDelta);
 	m_pObject_Manager->Late_Tick(fTimeDelta);
 }
@@ -335,7 +338,13 @@ HRESULT CGameInstance::Add_Fonts(ID3D11Device * pDevice, ID3D11DeviceContext * p
 
 	return m_pFont_Manager->Add_Fonts(pDevice, pContext, pFontTag, pFontFilePath);
 }
+_bool CGameInstance::IsInFrustum(_vector vPos, _float3 vScale)
+{
+	if (nullptr == m_pFrustum)
+		return false;
 
+	return m_pFrustum->IsinFrustum(vPos, vScale);
+}
 HRESULT CGameInstance::Render_Font(const _tchar * pFontTag, const _tchar * pText, _fvector vPos, _fvector vColor, _fvector vScale)
 {
 	if (nullptr == m_pFont_Manager)
@@ -359,6 +368,8 @@ void CGameInstance::Release_Engine()
 
 	CTimer_Manager::Get_Instance()->Destroy_Instance();
 
+	CFrustum::Get_Instance()->Destroy_Instance();
+
 	CInput_Device::Get_Instance()->Destroy_Instance();
 
 	CFont_Manager::Get_Instance()->Destroy_Instance();
@@ -368,6 +379,7 @@ void CGameInstance::Release_Engine()
 
 void CGameInstance::Free()
 {	
+	Safe_Release(m_pFrustum);
 	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pComponent_Manager);

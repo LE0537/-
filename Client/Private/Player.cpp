@@ -48,7 +48,9 @@ void CPlayer::Tick(_float fTimeDelta)
 		CheckRideIDLE();
 	Key_Input(fTimeDelta);
 	m_pModelCom->Play_Animation(fTimeDelta);
-	
+	m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
+	m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+	m_pSPHERECom->Update(m_pTransformCom->Get_WorldMatrix());
 }
 
 void CPlayer::Late_Tick(_float fTimeDelta)
@@ -82,6 +84,11 @@ HRESULT CPlayer::Render()
 	}
 
 	RELEASE_INSTANCE(CGameInstance);
+
+	m_pAABBCom->Render();
+	m_pOBBCom->Render();
+	m_pSPHERECom->Render();
+
 	return S_OK;
 }
 HRESULT CPlayer::Ready_Components()
@@ -106,6 +113,30 @@ HRESULT CPlayer::Ready_Components()
 
 	/* For.Com_Model*/
 	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Prototype_Component_Model_Player"), (CComponent**)&m_pModelCom)))
+		return E_FAIL;
+
+
+	CCollider::COLLIDERDESC		ColliderDesc;
+
+	/* For.Com_AABB */
+	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+	ColliderDesc.vScale = _float3(20.f, 50.f, 20.f);
+	ColliderDesc.vPosition = _float3(0.f, 10.f, 0.f);
+	if (FAILED(__super::Add_Components(TEXT("Com_AABB"), LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"), (CComponent**)&m_pAABBCom, &ColliderDesc)))
+		return E_FAIL;
+
+	/* For.Com_OBB*/
+	ColliderDesc.vScale = _float3(20.f, 50.f, 20.f);
+	ColliderDesc.vPosition = _float3(0.f, 10.f, 0.f);
+	if (FAILED(__super::Add_Components(TEXT("Com_OBB"), LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+		return E_FAIL;
+
+	/* For.Com_SPHERE */
+	ColliderDesc.vScale = _float3(100.f, 100.f, 100.f);
+	ColliderDesc.vRotation = _float3(0.f, 0.f, 0.f);
+	ColliderDesc.vPosition = _float3(0.f, 10.f, 0.f);
+	if (FAILED(__super::Add_Components(TEXT("Com_SPHERE"), LEVEL_STATIC, TEXT("Prototype_Component_Collider_SPHERE"), (CComponent**)&m_pSPHERECom, &ColliderDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -202,7 +233,6 @@ HRESULT CPlayer::SetUp_ShaderResources()
 
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &pGameInstance->Get_TransformFloat4x4_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
 		return E_FAIL;
-	
 
 
 	RELEASE_INSTANCE(CGameInstance);
@@ -241,5 +271,8 @@ void CPlayer::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pAABBCom);
+	Safe_Release(m_pOBBCom);
+	Safe_Release(m_pSPHERECom);
 	Safe_Release(m_pModelCom);
 }

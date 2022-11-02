@@ -98,7 +98,7 @@ PS_OUT PS_MAIN(PS_IN In)
 	Out.vColor = (g_vLightDiffuse * vDiffuse) *saturate(In.fShade + g_vLightAmbient * g_vMtrlAmbient)
 		+ (g_vLightSpecular * g_vMtrlSpecular) * In.fSpecular;
 
-	if (Out.vColor.a <= 0.1f)
+	if (Out.vColor.a <= 0.3f)
 		discard;
 
 	return Out;
@@ -123,7 +123,7 @@ technique11 DefaultTechnique
 
 	pass Map
 	{
-		SetRasterizerState(RS_Map);
+		SetRasterizerState(RS_Default);
 		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_Default, 0);
 
@@ -131,4 +131,5 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
+	
 }

@@ -28,9 +28,8 @@ HRESULT CMari::Initialize(void * pArg)
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-
-
-
+	m_pTarget = *(&((CLevel_GamePlay::LOADFILE*)pArg)->pTarget);
+	
 	RELEASE_INSTANCE(CGameInstance);
 
 
@@ -45,24 +44,36 @@ HRESULT CMari::Initialize(void * pArg)
 
 void CMari::Tick(_float fTimeDelta)
 {
-	if (m_bOnOff)
-	{
-		Set_DeckPos();
-		if (!m_bDeckInfo)
-		{
-			Key_Input(fTimeDelta);
-		}
-	}
-	m_pModelCom->Play_Animation(fTimeDelta);
-	if (!m_bOnOff)
-		m_bSetPos = false;
+	m_pModelCom->Set_CurrentAnimIndex(0);
+	if (m_bFindPlayer)
+		Move(fTimeDelta);
 
+	m_pModelCom->Play_Animation(fTimeDelta);
+	m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
+	m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+	m_pSPHERECom->Update(m_pTransformCom->Get_WorldMatrix());
 }
 
 void CMari::Late_Tick(_float fTimeDelta)
 {
-	if (!g_PokeInfo && !g_bPokeDeck && !m_bDeckPoke && nullptr != m_pRendererCom)
-		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	m_bFindPlayer = false;
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	CCollider*	pTargetCollider = (CCollider*)pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("Com_SPHERE"));
+	CCollider*	pTargetCollider2 = (CCollider*)pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("Com_OBB"));
+	if (nullptr == pTargetCollider)
+		return;
+
+	if (m_pSPHERECom->Collision(pTargetCollider))
+		m_bFindPlayer = true;
+	if (m_pOBBCom->Collision(pTargetCollider2))
+		m_bFindPlayer = false;
+	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), m_pTransformCom->Get_Scale()))
+	{
+		if (!g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
+			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	}
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 HRESULT CMari::Render()
@@ -90,6 +101,11 @@ HRESULT CMari::Render()
 	}
 
 	RELEASE_INSTANCE(CGameInstance);
+
+	m_pAABBCom->Render();
+	m_pOBBCom->Render();
+	m_pSPHERECom->Render();
+
 	return S_OK;
 }
 HRESULT CMari::Ready_Components()
@@ -110,106 +126,43 @@ HRESULT CMari::Ready_Components()
 	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Prototype_Component_Model_Mari"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
+	CCollider::COLLIDERDESC		ColliderDesc;
+
+	/* For.Com_AABB */
+	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+	ColliderDesc.vScale = _float3(20.f, 50.f, 20.f);
+	ColliderDesc.vPosition = _float3(0.f, 10.f, 0.f);
+	if (FAILED(__super::Add_Components(TEXT("Com_AABB"), LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"), (CComponent**)&m_pAABBCom, &ColliderDesc)))
+		return E_FAIL;
+
+	/* For.Com_OBB*/
+	ColliderDesc.vScale = _float3(20.f, 50.f, 20.f);
+	ColliderDesc.vPosition = _float3(0.f, 10.f, 0.f);
+	if (FAILED(__super::Add_Components(TEXT("Com_OBB"), LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+		return E_FAIL;
+
+	/* For.Com_SPHERE */
+	ColliderDesc.vScale = _float3(200.f, 200.f, 200.f);
+	ColliderDesc.vRotation = _float3(0.f, 0.f, 0.f);
+	ColliderDesc.vPosition = _float3(0.f, 10.f, 0.f);
+	if (FAILED(__super::Add_Components(TEXT("Com_SPHERE"), LEVEL_STATIC, TEXT("Prototype_Component_Collider_SPHERE"), (CComponent**)&m_pSPHERECom, &ColliderDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
-void CMari::Set_DeckPos()
+
+void CMari::Move(_float fTimeDelta)
 {
-	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-
-	if (m_bDeckInfo)
-	{
-		if (!m_bSetPos)
-		{
-			_vector		vLook = { -0.3f,0.f,-1.f,0.f };
-
-			_vector		vAxisY = XMVectorSet(0.f, 1.f, 0.f, 0.f);
-
-			_vector		vRight = XMVector3Cross(vAxisY, vLook);
-
-			_vector		vUp = XMVector3Cross(vLook, vRight);
-
-			m_pTransformCom->Set_State(CTransform::STATE_RIGHT, XMVector3Normalize(vRight));
-			m_pTransformCom->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp));
-			m_pTransformCom->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
-			m_bSetPos = true;
-		}
-
-		m_fSizeX = 20.f;
-		m_fSizeY = 20.f;
-		m_fX = 1000;
-		m_fY = 550;
-
-		XMStoreFloat4x4(&m_ViewMatrix, XMMatrixTranspose(XMMatrixIdentity()));
-		XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -500.f, 100.f)));
-		_float3 vScale = { m_fSizeX,m_fSizeY,20.f };
-		m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
-		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, -200.f, 1.f));
-
-	}
-	else if (!m_bDeckInfo)
-	{
-		if (!m_bSetPos)
-		{
-			_vector		vLook = { 0.f,0.f,-1.f,0.f };
-
-			_vector		vAxisY = XMVectorSet(0.f, 1.f, 0.f, 0.f);
-
-			_vector		vRight = XMVector3Cross(vAxisY, vLook);
-
-			_vector		vUp = XMVector3Cross(vLook, vRight);
-
-			m_pTransformCom->Set_State(CTransform::STATE_RIGHT, XMVector3Normalize(vRight));
-			m_pTransformCom->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp));
-			m_pTransformCom->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
-			m_bSetPos = true;
-		}
-
-		m_fSizeX = 20.f;
-		m_fSizeY = 20.f;
-		m_fX = 280;
-		m_fY = 550;
-
-		XMStoreFloat4x4(&m_ViewMatrix, XMMatrixTranspose(XMMatrixIdentity()));
-		XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -500.f, 100.f)));
-		_float3 vScale = { m_fSizeX,m_fSizeY,20.f };
-		m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
-		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, -200.f, 1.f));
-
-	}
-
-	RELEASE_INSTANCE(CGameInstance);
+	m_pModelCom->Set_CurrentAnimIndex(2);
+	_vector vTargetPos = dynamic_cast<CGameObj*>(m_pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
+	_vector vLook = vTargetPos - m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+	vPos += XMVector3Normalize(vLook) * 4.f * fTimeDelta;
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
+	m_pTransformCom->LookAt(vTargetPos);
 }
-void CMari::Key_Input(_float fTimeDelta)
-{
-	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-	if (pGameInstance->Key_Down(DIK_W))
-	{
-		++m_iAnim;
-		if (m_iAnim > 9)
-			m_iAnim = 9;
-
-		m_pModelCom->Set_CurrentAnimIndex(m_iAnim);
-	}
-	else if (pGameInstance->Key_Down(DIK_S))
-	{
-		--m_iAnim;
-		if (m_iAnim < 0)
-			m_iAnim = 0;
-
-		m_pModelCom->Set_CurrentAnimIndex(m_iAnim);
-	}
-	else if (pGameInstance->Key_Pressing(DIK_A))
-	{
-		m_pTransformCom->Turn2(m_pTransformCom->Get_State(CTransform::STATE_UP), XMConvertToRadians(3.f));
-	}
-	else if (pGameInstance->Key_Pressing(DIK_D))
-	{
-		m_pTransformCom->Turn2(m_pTransformCom->Get_State(CTransform::STATE_UP), XMConvertToRadians(-3.f));
-	}
-
-	RELEASE_INSTANCE(CGameInstance);
-}
 HRESULT CMari::SetUp_ShaderResources()
 {
 	if (nullptr == m_pShaderCom)
@@ -219,30 +172,17 @@ HRESULT CMari::SetUp_ShaderResources()
 	if (FAILED(m_pShaderCom->Set_RawValue("g_vCamPosition", &pGameInstance->Get_CamPosition(), sizeof(_float4))))
 		return E_FAIL;
 
-	if (!m_bOnOff)
-	{
-		if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
-			return E_FAIL;
+	
+	if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
+		return E_FAIL;
 
-		if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &pGameInstance->Get_TransformFloat4x4_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
-			return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &pGameInstance->Get_TransformFloat4x4_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
+		return E_FAIL;
 
-		if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &pGameInstance->Get_TransformFloat4x4_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
-			return E_FAIL;
-	}
-	else if (m_bOnOff)
-	{
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &pGameInstance->Get_TransformFloat4x4_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
+		return E_FAIL;
+	
 
-		if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
-			return E_FAIL;
-
-		if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
-			return E_FAIL;
-
-		if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
-			return E_FAIL;
-
-	}
 
 	RELEASE_INSTANCE(CGameInstance);
 
@@ -280,5 +220,8 @@ void CMari::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pAABBCom);
+	Safe_Release(m_pOBBCom);
+	Safe_Release(m_pSPHERECom);
 	Safe_Release(m_pModelCom);
 }

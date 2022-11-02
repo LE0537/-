@@ -121,6 +121,12 @@
     <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\143.Snorlax">
       <UniqueIdentifier>{7c7d5a8a-9791-402a-83fd-32f40bffa7ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\02.Trainer\00.Mari">
+      <UniqueIdentifier>{bd1d203b-67b1-420b-9f39-f1484de78819}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Map\03.Tree">
+      <UniqueIdentifier>{065667ef-f62c-4650-b107-69951db3cd6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -240,6 +246,12 @@
     <ClInclude Include="..\public\Snorlax.h">
       <Filter>02.GameObjects\99.GameObj\01.Pokemon\143.Snorlax</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Mari.h">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\00.Mari</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tree.h">
+      <Filter>02.GameObjects\02.Map\03.Tree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -343,6 +355,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Snorlax.cpp">
       <Filter>02.GameObjects\99.GameObj\01.Pokemon\143.Snorlax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Mari.cpp">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\00.Mari</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tree.cpp">
+      <Filter>02.GameObjects\02.Map\03.Tree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

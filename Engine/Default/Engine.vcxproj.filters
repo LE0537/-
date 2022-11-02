@@ -100,6 +100,15 @@
     <ClCompile Include="..\private\HierarchyNode.cpp">
       <Filter>01.Utility\03.Components\06.Model\HierarchyNode</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Collider.cpp">
+      <Filter>01.Utility\03.Components\07.Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DebugDraw.cpp">
+      <Filter>01.Utility\03.Components\07.Collider\DebugDraw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SoundMgr.cpp">
+      <Filter>01.Utility\99.SoundMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -213,6 +222,15 @@
     <ClInclude Include="..\public\HierarchyNode.h">
       <Filter>01.Utility\03.Components\06.Model\HierarchyNode</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Collider.h">
+      <Filter>01.Utility\03.Components\07.Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DebugDraw.h">
+      <Filter>01.Utility\03.Components\07.Collider\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SoundMgr.h">
+      <Filter>01.Utility\99.SoundMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.System">
@@ -316,6 +334,15 @@
     </Filter>
     <Filter Include="01.Utility\03.Components\06.Model\Animation\Channel">
       <UniqueIdentifier>{df8d62e8-742c-4d74-a668-243f4be5625a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Components\07.Collider">
+      <UniqueIdentifier>{77215e44-78a0-4f0b-b70a-a476e25af444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Components\07.Collider\DebugDraw">
+      <UniqueIdentifier>{8ce3c2cc-a788-49bf-81a2-64f0f838619d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\99.SoundMgr">
+      <UniqueIdentifier>{0aa43919-f248-4c2d-b106-78d6c1762ee6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 #include "..\Public\BattleField.h"
 
 #include "GameInstance.h"
-
+#include "Level_GamePlay.h"
 
 CBattleField::CBattleField(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -22,8 +22,6 @@ HRESULT CBattleField::Initialize_Prototype()
 HRESULT CBattleField::Initialize(void * pArg)
 {
 
-	//	*(CGameObject**)pArg = this;
-
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
@@ -35,7 +33,8 @@ HRESULT CBattleField::Initialize(void * pArg)
 
 	RELEASE_INSTANCE(CGameInstance);
 
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	m_pTransformCom->Set_Scale(XMLoadFloat3((&((CLevel_GamePlay::LOADFILE*)pArg)->vScale)));
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4((&((CLevel_GamePlay::LOADFILE*)pArg)->vPos)));
 
 	return S_OK;
 }

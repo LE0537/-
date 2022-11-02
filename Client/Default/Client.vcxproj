@@ -107,7 +107,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../Public/;../../Reference/Headers/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Public/;../../Reference/Headers/;../Default/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -148,7 +148,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../Public/;../../Reference/Headers/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Public/;../../Reference/Headers/;../Default/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -187,6 +187,7 @@
     <ClInclude Include="..\Public\Level_Logo.h" />
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\MainApp.h" />
+    <ClInclude Include="..\public\Mari.h" />
     <ClInclude Include="..\public\Meowth.h" />
     <ClInclude Include="..\public\MonsterBall.h" />
     <ClInclude Include="..\public\None.h" />
@@ -201,6 +202,7 @@
     <ClInclude Include="..\public\Squirtle.h" />
     <ClInclude Include="..\public\Tackle.h" />
     <ClInclude Include="..\Public\Terrain.h" />
+    <ClInclude Include="..\public\Tree.h" />
     <ClInclude Include="..\public\UI.h" />
     <ClInclude Include="..\public\Wigglytuff.h" />
     <ClInclude Include="Client.h" />
@@ -225,6 +227,7 @@
     <ClCompile Include="..\Private\Level_Logo.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
+    <ClCompile Include="..\private\Mari.cpp" />
     <ClCompile Include="..\Private\Meowth.cpp" />
     <ClCompile Include="..\private\MonsterBall.cpp" />
     <ClCompile Include="..\private\None.cpp" />
@@ -239,6 +242,7 @@
     <ClCompile Include="..\private\Squirtle.cpp" />
     <ClCompile Include="..\private\Tackle.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
+    <ClCompile Include="..\private\Tree.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
     <ClCompile Include="..\private\Wigglytuff.cpp" />
     <ClCompile Include="Client.cpp" />

@@ -2,6 +2,8 @@
 
 namespace Engine
 {
+	enum CHANNELID { SOUND_EFFECT, SOUND_BGM, MAXCHANNEL };
+
 	typedef struct tagKeyframe
 	{
 		float				fTime;

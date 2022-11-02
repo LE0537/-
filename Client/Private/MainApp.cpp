@@ -68,9 +68,9 @@ HRESULT CMainApp::Render()
 	if (m_fTimeAcc > 1.0f)
 	{
 		wsprintf(m_szFPS, TEXT("FPS : %d"), m_iNumRender);		
-
-		OutputDebugString(m_szFPS);
-
+		
+	//	OutputDebugString(m_szFPS);
+		SetWindowText(g_hWnd, m_szFPS);
 		m_fTimeAcc = 0.f;
 		m_iNumRender = 0;
 	}

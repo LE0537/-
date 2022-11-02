@@ -81,13 +81,13 @@ void CCamera_Dynamic::Key_Input(_float fTimeDelta)
 	m_CameraDesc.fFovy = m_FovAngle;
 
 	if (GetKeyState(VK_LSHIFT) & 0x8000 && GetKeyState(VK_LEFT) & 0x8000)
-		CameraRotationX(fTimeDelta, -30.f);
+		CameraRotationX(fTimeDelta, -3.f);
 	if (GetKeyState(VK_LSHIFT) & 0x8000 && GetKeyState(VK_RIGHT) & 0x8000)
-		CameraRotationX(fTimeDelta, 30.f);
-	if (GetKeyState(VK_LSHIFT) & 0x8000 && GetKeyState(VK_UP) & 0x8000)
-		CameraRotationY(fTimeDelta, 20.f);
-	if (GetKeyState(VK_LSHIFT) & 0x8000 && GetKeyState(VK_DOWN) & 0x8000)
-		CameraRotationY(fTimeDelta, -20.f);
+		CameraRotationX(fTimeDelta, 3.f);
+	//if (GetKeyState(VK_LSHIFT) & 0x8000 && GetKeyState(VK_UP) & 0x8000)
+	//	CameraRotationY(fTimeDelta, 3.f);
+	//if (GetKeyState(VK_LSHIFT) & 0x8000 && GetKeyState(VK_DOWN) & 0x8000)
+	//	CameraRotationY(fTimeDelta, -3.f);
 
 	Check_Pos();
 
@@ -96,16 +96,16 @@ void CCamera_Dynamic::Key_Input(_float fTimeDelta)
 
 void CCamera_Dynamic::CameraRotationX(_float fTimeDelta, _float fIncrease)
 {
-	m_XfAngle += XMConvertToRadians(180.f) * fIncrease * fTimeDelta;
+	m_XfAngle += XMConvertToRadians(90.f) * fIncrease * fTimeDelta;
 }
 
 void CCamera_Dynamic::CameraRotationY(_float fTimeDelta, _float fIncrease)
 {
 	m_YfAngle += XMConvertToRadians(90.f) * fIncrease * fTimeDelta;
-	if (m_YfAngle > XMConvertToRadians(1000.f))
-		m_YfAngle = XMConvertToRadians(1000.f);
-	if (m_YfAngle < XMConvertToRadians(-1000.f))
-		m_YfAngle = XMConvertToRadians(-1000.f);
+	//if (m_YfAngle > XMConvertToRadians(1000.f))
+	//	m_YfAngle = XMConvertToRadians(1000.f);
+	//if (m_YfAngle < XMConvertToRadians(-1000.f))
+	//	m_YfAngle = XMConvertToRadians(-1000.f);
 }
 
 void CCamera_Dynamic::Check_Pos()
@@ -117,23 +117,29 @@ void CCamera_Dynamic::Check_Pos()
 	_vector	vUp = dynamic_cast<CGameObj*>(m_CameraDesc.pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_UP);
 	_vector	vLook = dynamic_cast<CGameObj*>(m_CameraDesc.pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_LOOK);
 
-	_matrix	RotationMatrixX = XMMatrixRotationAxis(vRight, XMConvertToRadians(m_YfAngle));
 
-	vRight = XMVector3TransformNormal(vRight, RotationMatrixX);
-	vUp = XMVector3TransformNormal(vUp, RotationMatrixX);
-	vLook = XMVector3TransformNormal(vLook, RotationMatrixX);
+	XMVector3Normalize(vRight);
+	XMVector3Normalize(vUp);
+	XMVector3Normalize(vLook);
 
-	_matrix	RotationMatrixY = XMMatrixRotationAxis(vUp, XMConvertToRadians(m_XfAngle));
+	//_matrix	RotationMatrixX = XMMatrixRotationAxis(vRight,m_YfAngle);
+
+	//vRight = XMVector3TransformNormal(vRight, RotationMatrixX);
+	//vUp = XMVector3TransformNormal(vUp, RotationMatrixX);
+	//vLook = XMVector3TransformNormal(vLook, RotationMatrixX);
+
+	_matrix	RotationMatrixY = XMMatrixRotationAxis(vUp, m_XfAngle);
 
 	vRight = XMVector3TransformNormal(vRight, RotationMatrixY);
 	vUp = XMVector3TransformNormal(vUp, RotationMatrixY);
 	vLook = XMVector3TransformNormal(vLook, RotationMatrixY);
 
-	
+	vPos = vPos + XMVector3Normalize(vRight);
 	vPos = vPos + (XMVector3Normalize(vLook) * -5.f);
 	vPos = vPos + (XMVector3Normalize(vUp) * 2.f);
+
 	m_pTransform->Set_State(CTransform::CTransform::STATE_TRANSLATION, vPos);
-	vTargetPos.m128_f32[1] += 2.f;
+	vTargetPos.m128_f32[1] += 2.5f;
 	m_pTransform->LookAt(vTargetPos);
 }
 CCamera_Dynamic * CCamera_Dynamic::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

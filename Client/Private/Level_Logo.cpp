@@ -42,7 +42,7 @@ void CLevel_Logo::Late_Tick(_float fTimeDelta)
 {
 	__super::Late_Tick(fTimeDelta);
 
-	SetWindowText(g_hWnd, TEXT("로고레벨입니다."));
+//	SetWindowText(g_hWnd, TEXT("로고레벨입니다."));
 }
 
 HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)

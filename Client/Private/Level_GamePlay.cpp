@@ -54,7 +54,7 @@ void CLevel_GamePlay::Late_Tick(_float fTimeDelta)
 {
 	__super::Late_Tick(fTimeDelta);
 
-	SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
+	//SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
 }
 
 HRESULT CLevel_GamePlay::Ready_Lights()
@@ -117,15 +117,21 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar * pLayerTag)
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Field"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
 				return E_FAIL;
 		}
+		if (iter.iType == 0)
+		{
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = iter.vScale;
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BattleField"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
+		if (iter.iType == 4)
+		{
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = iter.vScale;
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tree"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
 	}
-//	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BattleField"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
-//		return E_FAIL;
-
-	//if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Terrain"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
-	//	return E_FAIL;
-
-	//if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Sky"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
-	//	return E_FAIL;
 
 	Safe_Release(pGameInstance);
 
@@ -134,16 +140,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar * pLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Effect(const _tchar * pLayerTag)
 {
-	CGameInstance*			pGameInstance = CGameInstance::Get_Instance();
-	Safe_AddRef(pGameInstance);
-
-	for (_uint i = 0; i < 20; ++i)
-	{
-		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Effect"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
-			return E_FAIL;
-	}	
-
-	Safe_Release(pGameInstance);
+	
 	
 	return S_OK;
 }
@@ -190,6 +187,14 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar * pLayerTag)
 			m_LoadFile.vScale = iter.vScale;
 
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
+		if (iter.iType == 5)
+		{
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = iter.vScale;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Mari"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
 				return E_FAIL;
 		}
 	}

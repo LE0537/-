@@ -12,6 +12,9 @@
 #include <DirectXTK/DDSTextureLoader.h>
 #include <DirectXTK/WICTextureLoader.h>
 #include <DirectXTK/ScreenGrab.h>
+#include <DirectXTK/VertexTypes.h>
+#include <DirectXTK/PrimitiveBatch.h>
+#include <DirectXTK/Effects.h>
 #include <directXTK/SpriteFont.h>
 #include <directXTK/SpriteBatch.h>
 
@@ -19,6 +22,13 @@
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 #include <d3dcompiler.h>
+
+#include <io.h>
+#include <process.h>
+#include "../../Engine/inc/fmod.h"
+#include "../../Engine/inc/fmod.hpp"
+#pragma comment (lib, "../../Engine/lib/x64/fmod_vc.lib")
+using namespace FMOD;
 
 using namespace DirectX;
 

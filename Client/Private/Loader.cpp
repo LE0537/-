@@ -15,8 +15,11 @@
 //Map
 #include "Field.h"
 #include "BattleField.h"
+#include "Tree.h"
 //Player 헤더
 #include "Player.h"
+//Trainer
+#include "Mari.h"
 //Pokemon 헤더
 #include "Charmander.h"
 #include "Squirtle.h"
@@ -90,7 +93,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	Safe_AddRef(pGameInstance);
 
 	/* 텍스쳐 로딩 중. */
-	lstrcpy(m_szLoadingText, TEXT("텍스쳐 로딩 중."));
+	lstrcpy(m_szLoadingText, TEXT("                       텍스쳐 로딩 중."));
 	/* 백그 텍스쳐 */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BackGround"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
@@ -125,12 +128,12 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 
 	/* 모델 로딩 중. */
-	lstrcpy(m_szLoadingText, TEXT("모델 로딩 중."));
+	lstrcpy(m_szLoadingText, TEXT("                     모델 로딩 중."));
 	
 	/* 셰이더 로딩 중. */
-	lstrcpy(m_szLoadingText, TEXT("셰이더 로딩 중."));
+	lstrcpy(m_szLoadingText, TEXT("                     셰이더 로딩 중."));
 	
-	lstrcpy(m_szLoadingText, TEXT("객체 생성 중."));
+	lstrcpy(m_szLoadingText, TEXT("                     객체 생성 중."));
 
 	/* 백그 객체 */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BackGround"),
@@ -176,9 +179,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	/* 포켓몬 객체 */
 	_matrix			PivotMatrix = XMMatrixIdentity();
-	
-	PivotMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	
+
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+
 	/*if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Charmander"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Charmander/Charmander.fbx", PivotMatrix))))
 		return E_FAIL;
@@ -245,6 +248,13 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Player"),
 		CPlayer::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	//Trainer
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Mari"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Mari/Mari.fbx", PivotMatrix))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Mari"),
+		CMari::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	//Map
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Field"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/Field/Field.fbx"))))
@@ -259,6 +269,14 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BattleField"),
 		CBattleField::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Tree"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/Tree/Tree.fbx"))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Tree"),
+		CTree::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* 스킬 객체 */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Tackle"),
 		CTackle::Create(m_pDevice, m_pContext))))
@@ -269,7 +287,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_NoneSkill"),
 		CNoneSkill::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
+	lstrcpy(m_szLoadingText, TEXT("                        로딩이 완료되었습니다."));
 
 	m_isFinished = true;
 

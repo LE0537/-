@@ -2,6 +2,7 @@
 #include "..\Public\Player.h"
 #include "GameInstance.h"
 #include "Level_GamePlay.h"
+#include "SoundMgr.h"
 
 CPlayer::CPlayer(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -24,7 +25,7 @@ HRESULT CPlayer::Initialize(void * pArg)
 	*(CGameObject**)(&((CLevel_GamePlay::LOADFILE*)pArg)->pTarget) = this;
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
-
+	
 	
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 

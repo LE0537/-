@@ -123,8 +123,8 @@ technique11 DefaultTechnique
 
 	pass Map
 	{
-		SetRasterizerState(RS_Default);
-		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetRasterizerState(RS_Map);
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_Default, 0);
 
 		VertexShader = compile vs_5_0 VS_MAIN();

@@ -12,7 +12,9 @@ private:
 public:
 	HRESULT Initialize(class CModel* pModel, aiNodeAnim* pAIChannel);
 	void Invalidate_TransformationMatrix(_float fCurrentTime);
+	void Invalidate_TransformationMatrix2(_float fCurrentTime, KEYFRAME _key);
 	void Reset();
+	vector<KEYFRAME> Get_Key() { return m_KeyFrames; }
 
 private:
 	char					m_szName[MAX_PATH] = "";

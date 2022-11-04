@@ -36,6 +36,8 @@ public:
 		_int		iLevelIndex;
 		_bool		bRide;
 		_int		iRideNum;
+		_bool		bEvent;
+		_bool		bBattle;
 	}PLAYERINFO;
 	typedef struct tagInfo2 {
 		wstring		strName;
@@ -101,6 +103,9 @@ protected:
 	_bool					m_bDeckInfo = false;
 	_bool					m_bDeckPoke = false;
 	CGameObject*			m_pTarget = nullptr;
+	CGameObject*			m_pCamera = nullptr;
+	_float4					m_vMyBattlePos;
+	_float4					m_vTargetBattlePos;
 public:
 	POKEINFO Get_PokeInfo() {return m_PokemonInfo;}
 	PLAYERINFO Get_PalyerInfo() { return m_PlayerInfo; }
@@ -109,10 +114,17 @@ public:
 
 	void Set_Target(CGameObject* pTarget) { m_pTarget = pTarget; }
 	CTransform* Get_Transfrom() { return m_pTransformCom; }
+	_float4 Get_TargetBattlePos() { return m_vTargetBattlePos; }
 	//PlayerInfo
 	_bool Get_Ride() { return m_PlayerInfo.bRide; }
 	void OnOffRide() { m_PlayerInfo.bRide = !m_PlayerInfo.bRide; }
 	void Set_RideIndex(_int iIndex) { m_PlayerInfo.iRideNum = iIndex; }
+
+	_bool Get_Event() { return m_PlayerInfo.bEvent; }
+	void OnOffEvent() { m_PlayerInfo.bEvent = !m_PlayerInfo.bEvent; }
+	_bool Get_bBattle() { return m_PlayerInfo.bBattle; }
+	void OnOffbBattle() { m_PlayerInfo.bBattle = !m_PlayerInfo.bBattle; }
+	
 
 
 	//PokeInfo

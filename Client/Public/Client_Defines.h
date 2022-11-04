@@ -21,5 +21,7 @@ extern HINSTANCE	g_hInst;
 extern bool		g_bBag;
 extern bool		g_PokeInfo;
 extern bool		g_bPokeDeck;
+extern bool     g_CollBox;
+extern bool		g_Battle;
 
 using namespace Client;

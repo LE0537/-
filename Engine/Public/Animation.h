@@ -13,6 +13,10 @@ private:
 public:
 	HRESULT Initialize(class CModel* pModel, aiAnimation* pAIAnimation);
 	void Invalidate_TransformationMatrix(_float fTimeDelta);
+	void Invalidate_TransformationMatrix2(_float fTimeDelta, vector<class CChannel*> _Channel);
+	_bool	Get_AnimEnd() { return m_bAnimEnd; }
+	void	Set_AnimEnd() { m_bAnimEnd = false; }
+	vector<class CChannel*> Get_Channel() { return m_Channels; }
 private:
 	char				m_szName[MAX_PATH] = "";
 
@@ -31,6 +35,7 @@ private:
 	vector<class CChannel*>			m_Channels;
 
 	_bool							m_isFinished = false;
+	_bool							m_bAnimEnd = false;
 
 	_bool							m_isLoop = true;
 

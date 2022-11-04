@@ -3,6 +3,9 @@
 
 #include "GameInstance.h"
 #include "Level_GamePlay.h"
+#include "Camera_Dynamic.h"
+#include "TextBox.h"
+#include "SoundMgr.h"
 
 CMari::CMari(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -24,50 +27,58 @@ HRESULT CMari::Initialize(void * pArg)
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
-
+	
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
 	m_pTarget = *(&((CLevel_GamePlay::LOADFILE*)pArg)->pTarget);
-	
+	m_pCamera = *(&((CLevel_GamePlay::LOADFILE*)pArg)->pCamera);
+	m_vMyBattlePos = dynamic_cast<CGameObj*>(m_pTarget)->Get_TargetBattlePos();
+	XMStoreFloat4(&m_vTargetBattlePos,dynamic_cast<CGameObj*>(m_pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION));
 	RELEASE_INSTANCE(CGameInstance);
 
+	m_PlayerInfo.strName = L"마리";
+ 	m_PlayerInfo.bEvent = false;
+	m_PlayerInfo.bBattle = false;
 
 	m_pModelCom->Set_CurrentAnimIndex(0);
-
+	m_pTransformCom->Turn2(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.f));
 	m_pTransformCom->Set_Scale(XMLoadFloat3((&((CLevel_GamePlay::LOADFILE*)pArg)->vScale)));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4((&((CLevel_GamePlay::LOADFILE*)pArg)->vPos)));
 
+	Ready_Script();
 
 	return S_OK;
 }
 
 void CMari::Tick(_float fTimeDelta)
 {
-	m_pModelCom->Set_CurrentAnimIndex(0);
-	if (m_bFindPlayer)
-		Move(fTimeDelta);
+	if (g_Battle)
+		Battle();
+	else
+	{
+		m_fEventTime += fTimeDelta;
+		if (!m_bFindPlayer)
+			m_pModelCom->Set_CurrentAnimIndex(0);
+		if (m_bFindPlayer && !m_PlayerInfo.bEvent)
+			Move(fTimeDelta);
 
+		if (m_bFindPlayer && m_fEventTime > 1.5f)
+		{
+			m_PlayerInfo.bEvent = false;
+		}
+		m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
+		m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+	}
 	m_pModelCom->Play_Animation(fTimeDelta);
-	m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
-	m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
-	m_pSPHERECom->Update(m_pTransformCom->Get_WorldMatrix());
 }
 
 void CMari::Late_Tick(_float fTimeDelta)
 {
-	m_bFindPlayer = false;
+	if(!g_Battle)
+		Check_Coll();
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-	CCollider*	pTargetCollider = (CCollider*)pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("Com_SPHERE"));
-	CCollider*	pTargetCollider2 = (CCollider*)pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("Com_OBB"));
-	if (nullptr == pTargetCollider)
-		return;
-
-	if (m_pSPHERECom->Collision(pTargetCollider))
-		m_bFindPlayer = true;
-	if (m_pOBBCom->Collision(pTargetCollider2))
-		m_bFindPlayer = false;
 	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), m_pTransformCom->Get_Scale()))
 	{
 		if (!g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
@@ -102,10 +113,11 @@ HRESULT CMari::Render()
 
 	RELEASE_INSTANCE(CGameInstance);
 
-	m_pAABBCom->Render();
-	m_pOBBCom->Render();
-	m_pSPHERECom->Render();
-
+	if (g_CollBox)
+	{
+		m_pAABBCom->Render();
+		m_pOBBCom->Render();
+	}
 	return S_OK;
 }
 HRESULT CMari::Ready_Components()
@@ -131,22 +143,15 @@ HRESULT CMari::Ready_Components()
 	/* For.Com_AABB */
 	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-	ColliderDesc.vScale = _float3(20.f, 50.f, 20.f);
-	ColliderDesc.vPosition = _float3(0.f, 10.f, 0.f);
+	ColliderDesc.vScale = _float3(20.f, 40.f, 20.f);
+	ColliderDesc.vPosition = _float3(0.f, 20.f, 0.f);
 	if (FAILED(__super::Add_Components(TEXT("Com_AABB"), LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"), (CComponent**)&m_pAABBCom, &ColliderDesc)))
 		return E_FAIL;
 
 	/* For.Com_OBB*/
-	ColliderDesc.vScale = _float3(20.f, 50.f, 20.f);
-	ColliderDesc.vPosition = _float3(0.f, 10.f, 0.f);
+	ColliderDesc.vScale = _float3(40.f, 40.f, 200.f);
+	ColliderDesc.vPosition = _float3(0.f, 20.f, 80.f);
 	if (FAILED(__super::Add_Components(TEXT("Com_OBB"), LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
-		return E_FAIL;
-
-	/* For.Com_SPHERE */
-	ColliderDesc.vScale = _float3(200.f, 200.f, 200.f);
-	ColliderDesc.vRotation = _float3(0.f, 0.f, 0.f);
-	ColliderDesc.vPosition = _float3(0.f, 10.f, 0.f);
-	if (FAILED(__super::Add_Components(TEXT("Com_SPHERE"), LEVEL_STATIC, TEXT("Prototype_Component_Collider_SPHERE"), (CComponent**)&m_pSPHERECom, &ColliderDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -163,6 +168,63 @@ void CMari::Move(_float fTimeDelta)
 	m_pTransformCom->LookAt(vTargetPos);
 }
 
+void CMari::Ready_Script()
+{
+	m_vNormalScript.push_back(TEXT("거기 잠깐!!"));
+	m_vNormalScript.push_back(TEXT("내 앞을 지나가려면 UI를 다 해야한다고!"));
+	m_vNormalScript.push_back(TEXT("난 너가 UI를 다 했는지 안했는지 알 수 있는 방법이 있다고!"));
+	m_vNormalScript.push_back(TEXT("바로! 포켓몬 승부다!"));
+}
+
+void CMari::Check_Coll()
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	
+	CCollider*	pTargetCollider = (CCollider*)pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("Com_AABB"));
+	CCollider*	pTargetCollider2 = (CCollider*)pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("Com_OBB"));
+	if (nullptr == pTargetCollider)
+		return;
+
+	if (!m_bEvent && m_pOBBCom->Collision(pTargetCollider2))
+	{
+		CSoundMgr::Get_Instance()->SetSoundVolume(SOUND_BGM, 0.3f);
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Battle0.wav"),1.f);
+		m_bFindPlayer = true;
+		m_PlayerInfo.bEvent = true;
+		m_bEvent = true;
+		m_fEventTime = 0.f;
+		if (!dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
+			dynamic_cast<CGameObj*>(m_pTarget)->OnOffEvent();
+		dynamic_cast<CCamera_Dynamic*>(m_pCamera)->Set_Target(this);
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BattleEvent"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"), this)))
+			return;
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Screen"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"), this)))
+			return;
+		CTextBox::TINFO tTInfo;
+
+		tTInfo.iScriptSize = (_int)m_vNormalScript.size();
+		tTInfo.pTarget = this;
+		tTInfo.pScript = new wstring[m_vNormalScript.size()];
+		for (_int i = 0; i < m_vNormalScript.size(); ++i)
+			tTInfo.pScript[i] = m_vNormalScript[i];
+
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
+			return;
+	}
+	if (m_pAABBCom->Collision(pTargetCollider))
+	{
+		m_bFindPlayer = false;
+
+	}
+	RELEASE_INSTANCE(CGameInstance);
+}
+
+void CMari::Battle()
+{
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_vMyBattlePos));
+	m_pTransformCom->LookAt(XMLoadFloat4(&m_vTargetBattlePos));
+}
+
 HRESULT CMari::SetUp_ShaderResources()
 {
 	if (nullptr == m_pShaderCom)
@@ -172,7 +234,6 @@ HRESULT CMari::SetUp_ShaderResources()
 	if (FAILED(m_pShaderCom->Set_RawValue("g_vCamPosition", &pGameInstance->Get_CamPosition(), sizeof(_float4))))
 		return E_FAIL;
 
-	
 	if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
 		return E_FAIL;
 
@@ -220,8 +281,13 @@ void CMari::Free()
 {
 	__super::Free();
 
+	for (auto iter = m_vNormalScript.begin(); iter != m_vNormalScript.end();)
+		iter = m_vNormalScript.erase(iter);
+
+	m_vNormalScript.clear();
+
+
 	Safe_Release(m_pAABBCom);
 	Safe_Release(m_pOBBCom);
-	Safe_Release(m_pSPHERECom);
 	Safe_Release(m_pModelCom);
 }

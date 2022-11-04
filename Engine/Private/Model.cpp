@@ -4,6 +4,7 @@
 #include "Shader.h"
 #include "HierarchyNode.h"
 #include "Animation.h"
+#include "Channel.h"
 
 CModel::CModel(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
@@ -18,6 +19,7 @@ CModel::CModel(const CModel & rhs)
 	, m_iNumMaterials(rhs.m_iNumMaterials)
 	, m_iNumBones(rhs.m_iNumBones)
 	, m_PivotMatrix(rhs.m_PivotMatrix)
+	, m_eModelType(rhs.m_eModelType)
 {
 	for (auto& pMeshContainer : rhs.m_Meshes)
 	{
@@ -38,8 +40,6 @@ CHierarchyNode * CModel::Get_BonePtr(const char * pBoneName) const
 		return !strcmp(pNode->Get_Name(), pBoneName);
 	});
 
-	if (iter == m_Bones.end())
-		return nullptr;
 
 	return *iter;
 }
@@ -74,6 +74,9 @@ HRESULT CModel::Initialize_Prototype(TYPE eModelType, const char * pModelFilePat
 
 HRESULT CModel::Initialize(void * pArg)
 {
+	if (TYPE_NONANIM == m_eModelType)
+		return S_OK;
+
 	if (FAILED(Create_HierarchyNodes(m_pAIScene->mRootNode)))
 		return E_FAIL;
 
@@ -100,10 +103,21 @@ HRESULT CModel::SetUp_Material(CShader * pShader, const char * pConstantName, _u
 
 HRESULT CModel::Play_Animation(_float fTimeDelta)
 {
-
-	/* 뼈의 m_TransformationMatrix행렬을 갱신한다. */
-	m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(fTimeDelta * 1.3f);
-
+	//if (m_iCurrentAnimIndex != m_iPrevAnimIndex)
+	//{
+	//	if (m_Animations[m_iCurrentAnimIndex]->Get_AnimEnd())
+	//	{
+	//		m_iCurrentAnimIndex = m_iPrevAnimIndex;
+	//		m_Animations[m_iCurrentAnimIndex]->Set_AnimEnd();
+	//		m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(fTimeDelta * 1.3f);
+	//	}
+	//	else
+	//		m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix2(fTimeDelta * 1.3f, m_Animations[m_iPrevAnimIndex]->Get_Channel());
+	//}
+	//else
+	//{
+		m_Animations[m_iPrevAnimIndex]->Invalidate_TransformationMatrix(fTimeDelta * 1.3f);
+//	}
 	for (auto& pBoneNode : m_Bones)
 	{
 		/* 뼈의 m_CombinedTransformationMatrix행렬을 갱신한다. */
@@ -115,11 +129,12 @@ HRESULT CModel::Play_Animation(_float fTimeDelta)
 
 HRESULT CModel::Render(CShader * pShader, _uint iMeshIndex, _uint iPassIndex)
 {
-	
-	_float4x4		BoneMatrix[256];
-	m_Meshes[iMeshIndex]->Get_BoneMatrices(BoneMatrix, XMLoadFloat4x4(&m_PivotMatrix));
-	pShader->Set_MatrixArray("g_BoneMatrices", BoneMatrix, 256);
-	
+	if (TYPE_ANIM == m_eModelType)
+	{
+		_float4x4		BoneMatrix[256];
+		m_Meshes[iMeshIndex]->Get_BoneMatrices(BoneMatrix, XMLoadFloat4x4(&m_PivotMatrix));
+		pShader->Set_MatrixArray("g_BoneMatrices", BoneMatrix, 256);
+	}
 	pShader->Begin(iPassIndex);
 
 	m_Meshes[iMeshIndex]->Render();
@@ -237,6 +252,7 @@ HRESULT CModel::Create_Animations()
 
 	return S_OK;
 }
+
 
 CModel * CModel::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, TYPE eModelType, const char * pModelFilePath, _fmatrix PivotMatrix)
 {

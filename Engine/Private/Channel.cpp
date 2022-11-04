@@ -101,6 +101,48 @@ void CChannel::Invalidate_TransformationMatrix(_float fCurrentTime)
 
 }
 
+void CChannel::Invalidate_TransformationMatrix2(_float fCurrentTime, KEYFRAME _key)
+{
+	_vector			vScale, vRotation, vPosition;
+
+	KEYFRAME		LastKeyframe = m_KeyFrames.back();
+	//m_KeyFrames[m_iCurrentKeyFrameIndex];//m_KeyFrames.back();
+
+	if (fCurrentTime >= LastKeyframe.fTime)
+	{
+		vScale = XMLoadFloat3(&LastKeyframe.vScale);
+		vRotation = XMLoadFloat4(&LastKeyframe.vRotation);
+		vPosition = XMLoadFloat3(&LastKeyframe.vPosition);
+		vPosition = XMVectorSetW(vPosition, 1.f);
+	}
+	else
+	{
+		
+		_vector		vSourScale, vSourRotation, vSourPosition;
+		_vector		vDestScale, vDestRotation, vDestPosition;
+
+		vSourScale = XMLoadFloat3(&m_KeyFrames[m_iCurrentKeyFrameIndex].vScale);
+		vSourRotation = XMLoadFloat4(&m_KeyFrames[m_iCurrentKeyFrameIndex].vRotation);
+		vSourPosition = XMLoadFloat3(&m_KeyFrames[m_iCurrentKeyFrameIndex].vPosition);
+
+		vDestScale = XMLoadFloat3(&_key.vScale);
+		vDestRotation = XMLoadFloat4(&_key.vRotation);
+		vDestPosition = XMLoadFloat3(&_key.vPosition);
+
+		_float		fRatio = (fCurrentTime - m_KeyFrames[m_iCurrentKeyFrameIndex].fTime) / 0.2f;
+
+		vScale = XMVectorLerp(vSourScale, vDestScale, fRatio);
+		vRotation = XMQuaternionSlerp(vSourRotation, vDestRotation, fRatio);
+		vPosition = XMVectorLerp(vSourPosition, vDestPosition, fRatio);
+		vPosition = XMVectorSetW(vPosition, 1.f);
+	}
+
+	_matrix		TransformationMatrix = XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vPosition);
+
+	m_pBoneNode->Set_TransformationMatrix(TransformationMatrix);
+
+}
+
 void CChannel::Reset()
 {
 	m_iCurrentKeyFrameIndex = 0;

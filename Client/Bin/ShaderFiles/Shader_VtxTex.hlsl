@@ -103,12 +103,43 @@ PS_OUT PS_MAIN(PS_IN In)
 
 	Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
 
-//	if (Out.vColor.a == 0.f)
-//		discard;
+
 
 	return Out;
 }
+PS_OUT PS_Screen(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
 
+	Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
+
+	if (Out.vColor.a < 0.3f)
+	{
+		discard;
+		return Out;
+	}
+	Out.vColor.a = 0.4f;
+
+	return Out;
+}
+PS_OUT PS_BattleIntro(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
+
+	Out.vColor.a = 0.6f;
+
+	return Out;
+}
+PS_OUT PS_BattleLight(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vColor = 1.f;
+
+	return Out;
+}
 PS_OUT PS_HP(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
@@ -165,5 +196,36 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_HEXAGON();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_Hexagon();
+	}
+
+	pass Screen
+	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 0.1f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_Screen();
+	}
+	pass BattleIntro
+	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 0.1f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_BattleIntro();
+	}
+	pass BattleLight
+	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 0.1f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_BattleLight();
 	}
 }

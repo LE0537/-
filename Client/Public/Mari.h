@@ -36,18 +36,20 @@ private:
 	HRESULT SetUp_ShaderResources();
 	HRESULT Ready_Components();
 	void	Move(_float fTimeDelta);
+	void	Ready_Script();
+	void	Check_Coll();
+	void	Battle();
 private:
 	CModel*					m_pModelCom = nullptr;
 	CCollider*				m_pAABBCom = nullptr;
 	CCollider*				m_pOBBCom = nullptr;
-	CCollider*				m_pSPHERECom = nullptr;
+
+	vector<wstring>		    m_vNormalScript;
 
 	_int					m_iAnim = 0;
 	_bool					m_bFindPlayer = false;
-
-
-
-
+	_float					m_fEventTime = 0.f;
+	_bool					m_bEvent = false;
 
 public:
 	static CMari* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

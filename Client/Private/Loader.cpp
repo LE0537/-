@@ -12,6 +12,7 @@
 #include "Bag.h"
 #include "PokeInfo.h"
 #include "PokeDeck.h"
+#include "TextBox.h"
 //Map
 #include "Field.h"
 #include "BattleField.h"
@@ -39,6 +40,10 @@
 #include "Tackle.h"
 #include "BreakCar.h"
 #include "NoneSkill.h"
+//Effect 헤더
+#include "BattleEvent.h"
+#include "Screen.h"
+#include "BattleIntro.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -112,7 +117,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/StatInfo/%d.dds"), 6))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Battle"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Battle/%d.dds"), 2))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Battle/%d.dds"), 18))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Type"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Type/%d.dds"), 18))))
@@ -163,7 +168,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_PokeDeck"),
 		CPokeDeck::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_TextBox"),
+		CTextBox::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	/* 아이템 객체 */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_None"),
 		CNone::Create(m_pDevice, m_pContext))))
@@ -287,6 +294,17 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_NoneSkill"),
 		CNoneSkill::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	/* Effect 객체 */
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BattleEvent"),
+		CBattleEvent::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Screen"),
+		CScreen::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BattleIntro"),
+		CBattleIntro::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("                        로딩이 완료되었습니다."));
 
 	m_isFinished = true;

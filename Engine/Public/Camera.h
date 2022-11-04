@@ -20,6 +20,7 @@ public:
 
 		CTransform::TRANSFORMDESC		TransformDesc;
 		CGameObject*		pTarget;
+		CGameObject*		pCamera;
 	}CAMERADESC;
 protected:
 	CCamera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

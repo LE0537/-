@@ -3,6 +3,7 @@
 #include "Client_Defines.h"
 #include "Level.h"
 #include "GameObject.h"
+#include "Camera_Dynamic.h"
 
 BEGIN(Client)
 
@@ -20,8 +21,11 @@ public:
 	typedef struct tagLoad
 	{
 		_float4  vPos;
+		_float4  vMyPos;
+		_float4  vTargetPos;
 		_float3	 vScale;
 		CGameObject* pTarget;
+		CGameObject* pCamera;
 	}LOADFILE;
 public:
 	virtual HRESULT Initialize();
@@ -38,9 +42,12 @@ public:
 	HRESULT Ready_Layer_UI(const _tchar* pLayerTag);
 private:
 	void Load();
+	void LoadBattle();
 private:
 	LOADFILE			m_LoadFile;
 	vector<SaveInfo>	m_vecSave;
+	vector<SaveInfo>	m_vecSaveBattle;
+	CCamera_Dynamic::CAMERADESC_DERIVED			CameraDesc;
 public:
 	static CLevel_GamePlay* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;

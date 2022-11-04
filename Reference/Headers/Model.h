@@ -61,13 +61,14 @@ private:
 	_float4x4				m_PivotMatrix;
 
 public:
-	void Set_CurrentAnimIndex(_uint iAnimIndex){ m_iCurrentAnimIndex = iAnimIndex; }
+	void Set_CurrentAnimIndex(_uint iAnimIndex){ m_iPrevAnimIndex = iAnimIndex; }
 
 private:
 	HRESULT Create_MeshContainer();
 	HRESULT Create_Materials(const char* pModelFilePath);
 	HRESULT Create_HierarchyNodes(const aiNode* pNode, CHierarchyNode* pParent = nullptr);
 	HRESULT Create_Animations();
+	
 public:
 	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eModelType, const char* pModelFilePath, _fmatrix PivotMatrix = XMMatrixIdentity());
 	virtual CComponent* Clone(void* pArg = nullptr) override;

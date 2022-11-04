@@ -1,4 +1,5 @@
 #include "..\Public\GameInstance.h"
+#include "SoundMgr.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -354,6 +355,9 @@ HRESULT CGameInstance::Render_Font(const _tchar * pFontTag, const _tchar * pText
 }
 void CGameInstance::Release_Engine()
 {
+	CSoundMgr::Get_Instance()->Free();
+	CSoundMgr::Get_Instance()->Destroy_Instance();
+
 	CGameInstance::Get_Instance()->Destroy_Instance();
 
 	CLevel_Manager::Get_Instance()->Destroy_Instance();

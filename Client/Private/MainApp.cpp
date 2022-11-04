@@ -3,10 +3,13 @@
 
 #include "GameInstance.h"
 #include "Level_Loading.h"
+#include "SoundMgr.h"
 
 bool		g_bBag = false;
 bool		g_PokeInfo = false;
 bool		g_bPokeDeck = false;
+bool		g_CollBox = false;
+bool		g_Battle = false;
 
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::Get_Instance())
@@ -37,6 +40,8 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(m_pGameInstance->Add_Fonts(m_pDevice, m_pContext, TEXT("Font_Nexon"), TEXT("../Bin/Resources/Fonts/130.spritefont"))))
 		return E_FAIL;
+
+	CSoundMgr::Get_Instance()->Initialize();
 
 	return S_OK;
 }

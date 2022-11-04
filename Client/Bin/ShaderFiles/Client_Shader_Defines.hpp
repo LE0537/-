@@ -22,7 +22,7 @@ RasterizerState RS_Default
 RasterizerState RS_Map
 {
 	FillMode = solid;
-	CullMode = none;
+	CullMode = back;
 	FrontCounterClockwise = false;
 };
 RasterizerState RS_Wireframe

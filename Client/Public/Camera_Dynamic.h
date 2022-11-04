@@ -28,15 +28,20 @@ public:
 	virtual HRESULT Render() override;
 private:
 	void	Key_Input(_float fTimeDelta);
-	void	CameraRotationX(_float fTimeDelta, _float fIncrease);
-	void	CameraRotationY(_float fTimeDelta, _float fIncrease);
-	void	Check_Pos();
+	void	EventCam(_float fTimeDelta);
 private:
 	_float		 m_YfAngle = 0.f;
 	_float		 m_XfAngle = 0.f;
 
 	_float		 m_FovAngle = 0.f;
 
+	_bool		 m_bEvent = false;
+
+	CGameObject*	m_pTarget = nullptr;
+	_float4		 m_TargetPos;
+	_float			m_fOriginY = 0.f;
+public:
+	void	Set_Target(CGameObject* _pTarget);
 public:
 	static CCamera_Dynamic* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr) override;

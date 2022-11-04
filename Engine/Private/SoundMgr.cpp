@@ -98,9 +98,9 @@ void CSoundMgr::LoadBGMFile()
 	_finddatai64_t fd;
 	intptr_t hFile;
 
-	char szCurPath[128] = "../Sound/BGM/";
+	char szCurPath[128] = "../../Client/Sound/BGM/";
 	char szFullPath[128] = "";
-	hFile = _findfirsti64("../Sound/BGM/*.*", &fd);
+	hFile = _findfirsti64("../../Client/Sound/BGM/*.*", &fd);
 
 	do {
 		strcpy_s(szFullPath, szCurPath);
@@ -119,7 +119,7 @@ void CSoundMgr::LoadBGMFile()
 		MultiByteToWideChar(CP_ACP, 0, fd.name, iLength, pSoundKey, iLength);
 
 		m_mapSound.emplace(pSoundKey, m_Sound);
-
+		
 	} while (_findnexti64(hFile, &fd) == 0);
 		_findclose(hFile); 
 
@@ -132,9 +132,9 @@ void CSoundMgr::LoadSoundFile()
 	_finddatai64_t fd;
 	intptr_t hFile;
 
-	char szCurPath[128] = "../Sound/effectSound/";
+	char szCurPath[128] = "../../Client/Sound/effectSound/";
 	char szFullPath[128] = "";
-	hFile = _findfirsti64("../Sound/effectSound/*.*", &fd);
+	hFile = _findfirsti64("../../Client/Sound/effectSound/*.*", &fd);
 	
 	do {
 			strcpy_s(szFullPath, szCurPath);
@@ -153,10 +153,10 @@ void CSoundMgr::LoadSoundFile()
 			MultiByteToWideChar(CP_ACP, 0, fd.name, iLength, pSoundKey, iLength);
 
 			m_mapSound.emplace(pSoundKey, m_Sound);
-
+			
 		} while (_findnexti64(hFile, &fd) == 0);
 		_findclose(hFile); 
-
+		
 	m_System->update();
 
 }

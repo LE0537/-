@@ -37,11 +37,11 @@ private:
 	HRESULT Ready_Components();
 	void	CheckRideIDLE();
 	void	Key_Input(_float fTimeDelta);
+	void	Battle();
 private:
 	CModel*					m_pModelCom = nullptr;
 	CCollider*				m_pAABBCom = nullptr;
 	CCollider*				m_pOBBCom = nullptr;
-	CCollider*				m_pSPHERECom = nullptr;
 
 	_int					m_iAnim = 0;
 

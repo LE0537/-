@@ -23,13 +23,17 @@ HRESULT CPlayer::Initialize(void * pArg)
 {
 
 	*(CGameObject**)(&((CLevel_GamePlay::LOADFILE*)pArg)->pTarget) = this;
+
+	m_vMyBattlePos = *(_float4*)&((CLevel_GamePlay::LOADFILE*)pArg)->vMyPos;
+	m_vTargetBattlePos = *(_float4*)&((CLevel_GamePlay::LOADFILE*)pArg)->vTargetPos;
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 	
 	
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-
-
+	m_PlayerInfo.strName = L"Áê½Å";
+	m_PlayerInfo.bEvent = false;
+	m_PlayerInfo.bBattle = false;
 	m_PlayerInfo.bRide = false;
 
 	RELEASE_INSTANCE(CGameInstance);
@@ -42,15 +46,26 @@ HRESULT CPlayer::Initialize(void * pArg)
 
 void CPlayer::Tick(_float fTimeDelta)
 {
-	if (!m_PlayerInfo.bRide)
-		m_pModelCom->Set_CurrentAnimIndex(IDLE);
-	if (m_PlayerInfo.bRide)
-		CheckRideIDLE();
-	Key_Input(fTimeDelta);
+	if(g_Battle)
+		Battle();
+	else
+	{
+		if (!m_PlayerInfo.bRide)
+			m_pModelCom->Set_CurrentAnimIndex(IDLE);
+		if (m_PlayerInfo.bRide)
+			CheckRideIDLE();
+		if (m_PlayerInfo.bEvent)
+		{
+			m_pModelCom->Set_CurrentAnimIndex(IDLE);
+		}
+		else
+		{
+			Key_Input(fTimeDelta);
+		}
+		m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
+		m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+	}
 	m_pModelCom->Play_Animation(fTimeDelta);
-	m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
-	m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
-	m_pSPHERECom->Update(m_pTransformCom->Get_WorldMatrix());
 }
 
 void CPlayer::Late_Tick(_float fTimeDelta)
@@ -85,10 +100,11 @@ HRESULT CPlayer::Render()
 
 	RELEASE_INSTANCE(CGameInstance);
 
-	m_pAABBCom->Render();
-	m_pOBBCom->Render();
-	m_pSPHERECom->Render();
-
+	if (g_CollBox)
+	{
+		m_pAABBCom->Render();
+		m_pOBBCom->Render();
+	}
 	return S_OK;
 }
 HRESULT CPlayer::Ready_Components()
@@ -121,22 +137,15 @@ HRESULT CPlayer::Ready_Components()
 	/* For.Com_AABB */
 	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-	ColliderDesc.vScale = _float3(20.f, 50.f, 20.f);
-	ColliderDesc.vPosition = _float3(0.f, 10.f, 0.f);
+	ColliderDesc.vScale = _float3(20.f, 40.f, 20.f);
+	ColliderDesc.vPosition = _float3(0.f, 20.f, 0.f);
 	if (FAILED(__super::Add_Components(TEXT("Com_AABB"), LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"), (CComponent**)&m_pAABBCom, &ColliderDesc)))
 		return E_FAIL;
 
 	/* For.Com_OBB*/
-	ColliderDesc.vScale = _float3(20.f, 50.f, 20.f);
-	ColliderDesc.vPosition = _float3(0.f, 10.f, 0.f);
+	ColliderDesc.vScale = _float3(20.f, 40.f, 20.f);
+	ColliderDesc.vPosition = _float3(0.f, 20.f, 0.f);
 	if (FAILED(__super::Add_Components(TEXT("Com_OBB"), LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
-		return E_FAIL;
-
-	/* For.Com_SPHERE */
-	ColliderDesc.vScale = _float3(100.f, 100.f, 100.f);
-	ColliderDesc.vRotation = _float3(0.f, 0.f, 0.f);
-	ColliderDesc.vPosition = _float3(0.f, 10.f, 0.f);
-	if (FAILED(__super::Add_Components(TEXT("Com_SPHERE"), LEVEL_STATIC, TEXT("Prototype_Component_Collider_SPHERE"), (CComponent**)&m_pSPHERECom, &ColliderDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -216,6 +225,11 @@ void CPlayer::Key_Input(_float fTimeDelta)
 
 	RELEASE_INSTANCE(CGameInstance);
 }
+void CPlayer::Battle()
+{
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION,XMLoadFloat4(&m_vMyBattlePos));
+	m_pTransformCom->LookAt(XMLoadFloat4(&m_vTargetBattlePos));
+}
 HRESULT CPlayer::SetUp_ShaderResources()
 {
 	if (nullptr == m_pShaderCom)
@@ -273,6 +287,5 @@ void CPlayer::Free()
 
 	Safe_Release(m_pAABBCom);
 	Safe_Release(m_pOBBCom);
-	Safe_Release(m_pSPHERECom);
 	Safe_Release(m_pModelCom);
 }

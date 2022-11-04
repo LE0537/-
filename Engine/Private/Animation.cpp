@@ -55,6 +55,33 @@ void CAnimation::Invalidate_TransformationMatrix(_float fTimeDelta)
 
 }
 
+void CAnimation::Invalidate_TransformationMatrix2(_float fTimeDelta, vector<class CChannel*> _Channel)
+{
+	/* 현재 재생중인 시간. */
+	m_fCurrentTime += m_fTickPerSecond * fTimeDelta;
+
+	if (m_fCurrentTime >= m_fDuration)
+	{
+		m_fCurrentTime = 0.f;
+
+		m_isFinished = true;
+	}
+	auto& Currentiter = m_Channels.begin();
+	auto& Previter = _Channel.begin();
+	for (_uint i = 0; i < m_Channels.size();++i)
+	{
+		if (true == m_isFinished && true == m_isLoop)
+			m_bAnimEnd = true;
+		
+		Currentiter[i]->Invalidate_TransformationMatrix2(m_fCurrentTime, Previter[i]->Get_Key()[0]);
+	}
+
+	if (true == m_isFinished && true == m_isLoop)
+		m_isFinished = false;
+
+
+}
+
 CAnimation * CAnimation::Create(CModel* pModel, aiAnimation * pAIAnimation)
 {
 	CAnimation*	pInstance = new CAnimation();

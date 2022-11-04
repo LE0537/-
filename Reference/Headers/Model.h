@@ -59,9 +59,11 @@ private:
 	_uint								m_iPrevAnimIndex = 0;
 private:
 	_float4x4				m_PivotMatrix;
-
+	_bool					m_bAnimReset = false;
 public:
-	void Set_CurrentAnimIndex(_uint iAnimIndex){ m_iPrevAnimIndex = iAnimIndex; }
+	void Set_CurrentAnimIndex(_uint iAnimIndex){
+		if (m_iPrevAnimIndex != iAnimIndex) { m_bAnimReset = true; }
+		m_iPrevAnimIndex = iAnimIndex; }
 
 private:
 	HRESULT Create_MeshContainer();

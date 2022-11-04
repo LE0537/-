@@ -1,11 +1,46 @@
-﻿  TextBox.cpp
+﻿  Client.cpp
+  Wigglytuff.cpp
+  UI.cpp
+  Tree.cpp
+  TextBox.cpp
+  Tackle.cpp
+  Squirtle.cpp
+  Snorlax.cpp
+  Slowbro.cpp
+  Screen.cpp
+  PokeInfo.cpp
+  PokeDeck.cpp
   Player.cpp
-  BattleIntro.cpp
-  MainApp.cpp
-  Level_GamePlay.cpp
+  Pikachu.cpp
+  NoneSkill.cpp
+  NonePoke.cpp
+  None.cpp
+  MonsterBall.cpp
+  Mari.cpp
+  HpPotion.cpp
   코드를 생성하고 있습니다...
   컴파일하고 있습니다...
-  Mari.cpp
+  Garomakguri.cpp
+  GameObj.cpp
+  Field.cpp
+  ExpShare.cpp
+  Charmander.cpp
+  BattleIntro.cpp
+  BattleField.cpp
+  BattleEvent.cpp
+  Bag.cpp
+  BackGround.cpp
+  Terrain.cpp
+  Meowth.cpp
+  MainApp.cpp
+  Loader.cpp
+  Level_Logo.cpp
+  Level_Loading.cpp
+  Level_GamePlay.cpp
+  Camera_Dynamic.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  BreakCar.cpp
   코드를 생성하고 있습니다...
   Client.vcxproj -> C:\Users\shout\Desktop\과제\Pokemon\갠폴\Client\Default\..\Bin\Client.exe
   Client.vcxproj -> ..\Bin\Client.pdb (Full PDB)

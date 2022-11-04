@@ -103,21 +103,26 @@ HRESULT CModel::SetUp_Material(CShader * pShader, const char * pConstantName, _u
 
 HRESULT CModel::Play_Animation(_float fTimeDelta)
 {
-	//if (m_iCurrentAnimIndex != m_iPrevAnimIndex)
-	//{
-	//	if (m_Animations[m_iCurrentAnimIndex]->Get_AnimEnd())
-	//	{
-	//		m_iCurrentAnimIndex = m_iPrevAnimIndex;
-	//		m_Animations[m_iCurrentAnimIndex]->Set_AnimEnd();
-	//		m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(fTimeDelta * 1.3f);
-	//	}
-	//	else
-	//		m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix2(fTimeDelta * 1.3f, m_Animations[m_iPrevAnimIndex]->Get_Channel());
-	//}
-	//else
-	//{
-		m_Animations[m_iPrevAnimIndex]->Invalidate_TransformationMatrix(fTimeDelta * 1.3f);
-//	}
+	if (m_iCurrentAnimIndex != m_iPrevAnimIndex)
+	{
+		if (m_bAnimReset)
+		{
+			m_Animations[m_iCurrentAnimIndex]->Reset2();
+			m_bAnimReset = false;
+		}
+		if(!m_Animations[m_iCurrentAnimIndex]->Get_AnimEnd())
+			m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix2(fTimeDelta, m_Animations[m_iPrevAnimIndex]->Get_Channel());
+		if (m_Animations[m_iCurrentAnimIndex]->Get_AnimEnd())
+		{
+			m_Animations[m_iCurrentAnimIndex]->Set_AnimEnd();
+			m_iCurrentAnimIndex = m_iPrevAnimIndex;
+			m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(fTimeDelta);
+		}
+	}
+	else
+	{
+		m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(fTimeDelta);
+	}
 	for (auto& pBoneNode : m_Bones)
 	{
 		/* 뼈의 m_CombinedTransformationMatrix행렬을 갱신한다. */

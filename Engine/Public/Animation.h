@@ -17,6 +17,7 @@ public:
 	_bool	Get_AnimEnd() { return m_bAnimEnd; }
 	void	Set_AnimEnd() { m_bAnimEnd = false; }
 	vector<class CChannel*> Get_Channel() { return m_Channels; }
+	void	Reset2();
 private:
 	char				m_szName[MAX_PATH] = "";
 
@@ -26,7 +27,7 @@ private:
 	/* 1초에 재생되어야할 애니메이션의 속도. */
 	_float				m_fTickPerSecond = 0.f;
 	_float				m_fCurrentTime = 0.f;
-
+	_float				m_fCurrentTime2 = 0.f;
 	/* Channel : 뼈. */
 
 	/* 이 애니메이션을 구동하는데 필요한 뼈의 갯수. */

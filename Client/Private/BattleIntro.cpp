@@ -171,23 +171,23 @@ HRESULT CBattleIntro::SetUp_ShaderResources()
 
 void CBattleIntro::Set_Pos()
 {
-	m_fX[0] += 8.f;
+	m_fX[0] += 16.f;
 	if (m_fX[0] > 1920)
-		m_fX[0] = -1912.f;
+		m_fX[0] = -1904.f;
 
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX[0] - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 	m_pTransform[2]->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX[0] - g_iWinSizeX * 0.5f, -m_fY2 + g_iWinSizeY * 0.5f, 0.f, 1.f));
 
-	m_fX[1] += 8.f;
+	m_fX[1] += 16.f;
 	if (m_fX[1] > 1920)
-		m_fX[1] = -1912.f;
+		m_fX[1] = -1904.f;
 
 	m_pTransform[0]->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX[1] - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 	m_pTransform[3]->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX[1] - g_iWinSizeX * 0.5f, -m_fY2 + g_iWinSizeY * 0.5f, 0.f, 1.f));
 
-	m_fX[2] += 8.f;
+	m_fX[2] += 16.f;
 	if (m_fX[2] > 1920)
-		m_fX[2] = -1912.f;
+		m_fX[2] = -1904.f;
 
 	m_pTransform[1]->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX[2] - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 	m_pTransform[4]->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX[2] - g_iWinSizeX * 0.5f, -m_fY2 + g_iWinSizeY * 0.5f, 0.f, 1.f));
@@ -240,8 +240,8 @@ void CBattleIntro::Set_Pos2()
 
 void CBattleIntro::RatBall(_float fTimeDelta)
 {
-	_float fAngleZ = 3.f;
-	m_fDist -= 1.f;
+	_float fAngleZ = 12.f;
+	m_fDist -= 2.f;
 	if (m_fDist < 0.f)
 	{
 		m_fDist = 0.f;
@@ -258,7 +258,7 @@ void CBattleIntro::RatBall(_float fTimeDelta)
 		m_pTransformCom2->Turn2(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(fAngleZ));
 		m_pTransformCom2->Set_State(CTransform::STATE_TRANSLATION, vPos);
 	}
-	if (!m_bEnd && m_fDeadtime > 0.7f)
+	if (!m_bEnd && m_fDeadtime > 0.35f)
 	{
 		_float3 vScale2 = { 5000.f,5000.f,0.f };
 		m_pTransformCom3->Set_Scale(XMLoadFloat3(&vScale2));

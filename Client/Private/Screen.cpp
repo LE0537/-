@@ -138,8 +138,8 @@ HRESULT CScreen::SetUp_ShaderResources()
 
 void CScreen::Set_Pos()
 {
-	m_fX += 6.f;
-	m_fX2 -= 6.f;
+	m_fX += 12.f;
+	m_fX2 -= 12.f;
 
 	if (m_fX > 320.f)
 		m_fX = 320.f;
@@ -154,8 +154,8 @@ void CScreen::Set_Pos()
 
 void CScreen::Set_Pos2()
 {
-	m_fX -= 6.f;
-	m_fX2 += 6.f;
+	m_fX -= 12.f;
+	m_fX2 += 12.f;
 
 	if (m_fX < -320.f)
 		m_bDead = true;

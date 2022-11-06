@@ -34,7 +34,7 @@ HRESULT CMari::Initialize(void * pArg)
 	m_pTarget = *(&((CLevel_GamePlay::LOADFILE*)pArg)->pTarget);
 	m_pCamera = *(&((CLevel_GamePlay::LOADFILE*)pArg)->pCamera);
 	m_vMyBattlePos = dynamic_cast<CGameObj*>(m_pTarget)->Get_TargetBattlePos();
-	XMStoreFloat4(&m_vTargetBattlePos,dynamic_cast<CGameObj*>(m_pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION));
+
 	RELEASE_INSTANCE(CGameInstance);
 
 	m_PlayerInfo.strName = L"¸¶¸®";
@@ -54,7 +54,7 @@ HRESULT CMari::Initialize(void * pArg)
 void CMari::Tick(_float fTimeDelta)
 {
 	if (g_Battle)
-		Battle();
+		Battle(fTimeDelta);
 	else
 	{
 		m_fEventTime += fTimeDelta;
@@ -69,8 +69,9 @@ void CMari::Tick(_float fTimeDelta)
 		}
 		m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
 		m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+		m_pModelCom->Play_Animation(fTimeDelta);
 	}
-	m_pModelCom->Play_Animation(fTimeDelta);
+	
 }
 
 void CMari::Late_Tick(_float fTimeDelta)
@@ -219,10 +220,34 @@ void CMari::Check_Coll()
 	RELEASE_INSTANCE(CGameInstance);
 }
 
-void CMari::Battle()
+void CMari::BattleStart(_float fTimeDelta)
 {
+	m_fStartBattle += fTimeDelta;
+	if (!m_bBattle)
+	{
+		m_pModelCom->Set_CurrentAnimIndex(1);
+		m_pModelCom->Play_Animation(fTimeDelta * 1.25f);
+		if ((m_fStartBattle > 0.2f) && m_pModelCom->Get_End())
+		{
+			m_bBattle = true;
+			m_pModelCom->Set_End();
+		}
+	}
+	else if(m_bBattle)
+	{
+		m_pModelCom->Set_CurrentAnimIndex(0);
+		m_pModelCom->Play_Animation(fTimeDelta);
+	}
+
+}
+
+void CMari::Battle(_float fTimeDelta)
+{
+	BattleStart(fTimeDelta);
+
+	_vector vTargetPos = dynamic_cast<CGameObj*>(m_pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_vMyBattlePos));
-	m_pTransformCom->LookAt(XMLoadFloat4(&m_vTargetBattlePos));
+	m_pTransformCom->LookAt(vTargetPos);
 }
 
 HRESULT CMari::SetUp_ShaderResources()

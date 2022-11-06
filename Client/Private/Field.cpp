@@ -50,7 +50,10 @@ void CField::Late_Tick(_float fTimeDelta)
 	if (!g_Battle)
 	{
 		if (!g_bBag && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
+		{
 			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_ALPHABLEND, this);
+			Compute_CamDistance(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+		}
 	}
 }
 

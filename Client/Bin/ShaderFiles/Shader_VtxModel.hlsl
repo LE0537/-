@@ -103,8 +103,40 @@ PS_OUT PS_MAIN(PS_IN In)
 
 	return Out;
 }
+PS_OUT PS_Tree(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	vector		vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
 
 
+	Out.vColor = (g_vLightDiffuse * vDiffuse) *saturate(In.fShade + g_vLightAmbient * g_vMtrlAmbient)
+		+ (g_vLightSpecular * g_vMtrlSpecular) * In.fSpecular;
+
+	Out.vColor.a = Out.vColor.g;
+
+	if (Out.vColor.a <= 0.15f)
+		discard;
+
+	return Out;
+}
+PS_OUT PS_Map(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	vector		vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
+
+
+	Out.vColor = (g_vLightDiffuse * vDiffuse) *saturate(In.fShade + g_vLightAmbient * g_vMtrlAmbient)
+		+ (g_vLightSpecular * g_vMtrlSpecular) * In.fSpecular;
+
+
+	if (Out.vColor.a <= 0.6f)
+		discard;
+
+
+	return Out;
+}
 
 
 
@@ -129,7 +161,17 @@ technique11 DefaultTechnique
 
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN();
+		PixelShader = compile ps_5_0 PS_Map();
 	}
 	
+	pass Tree
+	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_Tree();
+	}
 }

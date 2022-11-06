@@ -49,8 +49,10 @@ void CBattleField::Tick(_float fTimeDelta)
 void CBattleField::Late_Tick(_float fTimeDelta)
 {
 	if (g_Battle)
-		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-
+	{
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_ALPHABLEND, this);
+		Compute_CamDistance(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+	}
 }
 
 HRESULT CBattleField::Render()
@@ -72,7 +74,7 @@ HRESULT CBattleField::Render()
 		if (FAILED(m_pModelCom->SetUp_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 
-		if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 0)))
+		if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 1)))
 			return E_FAIL;
 
 	}

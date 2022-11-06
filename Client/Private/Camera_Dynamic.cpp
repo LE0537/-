@@ -2,6 +2,7 @@
 #include "..\Public\Camera_Dynamic.h"
 #include "GameInstance.h"
 #include "GameObj.h"
+#include "Level_GamePlay.h"
 
 CCamera_Dynamic::CCamera_Dynamic(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
@@ -24,23 +25,40 @@ HRESULT CCamera_Dynamic::Initialize_Prototype()
 HRESULT CCamera_Dynamic::Initialize(void* pArg)
 {
 	*((CGameObject**)&((CAMERADESC_DERIVED*)pArg)->CameraDesc.pCamera) = this;
+	
 	if (FAILED(__super::Initialize(&((CAMERADESC_DERIVED*)pArg)->CameraDesc)))
 		return E_FAIL;
 	
 	m_FovAngle = XMConvertToRadians(60.f);
+	Load();
+	m_vTargetBattlePos = dynamic_cast<CGameObj*>(m_CameraDesc.pTarget)->Get_TargetBattlePos();
+	camLookPos.y += 3.f;
+
+
 	return S_OK;
 }
 
 void CCamera_Dynamic::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-	if (!m_bEvent && !g_bBag && !g_bPokeDeck && !g_PokeInfo)
+	if (!g_Battle)
 	{
-		Key_Input(fTimeDelta);
+		if (!m_bEvent && !g_bBag && !g_bPokeDeck && !g_PokeInfo)
+		{
+			Key_Input(fTimeDelta);
+		}
+		if (m_bEvent)
+		{
+			EventCam(fTimeDelta);
+		}
 	}
-	if (m_bEvent)
+	else
 	{
-		EventCam(fTimeDelta);
+		if (fSpeed < 2.f)
+			BattleEventcam(fTimeDelta);
+		else
+			Battlecam(fTimeDelta);
+	
 	}
 	if (FAILED(Bind_OnPipeLine()))
 		return;
@@ -139,6 +157,32 @@ void CCamera_Dynamic::EventCam(_float fTimeDelta)
 
 }
 
+void CCamera_Dynamic::BattleEventcam(_float fTimeDelta)
+{
+	_vector TargetPos;
+	fSpeed += 0.2f * fTimeDelta;
+
+	_vector vPos = XMVectorCatmullRom(XMLoadFloat4(&camPos1), XMLoadFloat4(&camPos4)
+		, XMLoadFloat4(&camPos3), XMLoadFloat4(&camPos2), fSpeed);
+
+	if (fSpeed < 0.7f)
+		TargetPos = XMLoadFloat4(&m_vTargetBattlePos);
+	else
+		TargetPos = dynamic_cast<CGameObj*>(m_CameraDesc.pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
+	
+	TargetPos.m128_f32[1] += 2.f;
+	vPos.m128_f32[1] += 3.f;
+	m_pTransform->Set_State(CTransform::STATE_TRANSLATION, vPos);
+	m_pTransform->LookAt(TargetPos);
+}
+
+void CCamera_Dynamic::Battlecam(_float fTimeDelta)
+{
+	
+	m_pTransform->Set_State(CTransform::STATE_TRANSLATION,XMLoadFloat4(&camLookPos));
+	m_pTransform->LookAt(XMLoadFloat4(&camAt));
+}
+
 void CCamera_Dynamic::Set_Target(CGameObject * _pTarget)
 {
 	m_pTarget = _pTarget;
@@ -156,6 +200,65 @@ void CCamera_Dynamic::Set_Target(CGameObject * _pTarget)
 	m_pTransform->Set_State(CTransform::STATE_TRANSLATION, vPos);
 	vTargetPos += vUp * 10.f;
 	m_pTransform->LookAt(vTargetPos);
+}
+
+void CCamera_Dynamic::Load()
+{
+	HANDLE		hFile = CreateFile(L"../Data/BattlePos.dat",			// 파일 경로와 이름 명시
+		GENERIC_READ,				// 파일 접근 모드 (GENERIC_WRITE 쓰기 전용, GENERIC_READ 읽기 전용)
+		NULL,						// 공유방식, 파일이 열려있는 상태에서 다른 프로세스가 오픈할 때 허용할 것인가, NULL인 경우 공유하지 않는다
+		NULL,						// 보안 속성, 기본값	
+		OPEN_EXISTING,				// 생성 방식, CREATE_ALWAYS는 파일이 없다면 생성, 있다면 덮어 쓰기, OPEN_EXISTING 파일이 있을 경우에면 열기
+		FILE_ATTRIBUTE_NORMAL,		// 파일 속성(읽기 전용, 숨기 등), FILE_ATTRIBUTE_NORMAL 아무런 속성이 없는 일반 파일 생성
+		NULL);						// 생성도리 파일의 속성을 제공할 템플릿 파일, 우리는 사용하지 않아서 NULL
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		// 팝업 창을 출력해주는 기능의 함수
+		// 1. 핸들 2. 팝업 창에 띄우고자하는 메시지 3. 팝업 창 이름 4. 버튼 속성
+		MessageBox(g_hWnd, TEXT("Load File"), TEXT("Fail"), MB_OK);
+		return;
+	}
+
+	// 2. 파일 쓰기
+
+	DWORD		dwByte = 0;
+	CLevel_GamePlay::SaveInfo		tInfo;
+	
+	CGameInstance* pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+	while (true)
+	{
+		ReadFile(hFile, &tInfo, sizeof(CLevel_GamePlay::SaveInfo), &dwByte, nullptr);
+
+		if (0 == dwByte)	// 더이상 읽을 데이터가 없을 경우
+			break;
+		
+		
+		if (tInfo.iType == 2)
+		{
+			if (tInfo.vScale.y == 0.01f)
+				camPos1 = tInfo.vPos;
+			else if (tInfo.vScale.y == 0.02f)
+				camPos2 = tInfo.vPos;
+			else if (tInfo.vScale.y == 0.03f)
+				camPos3 = tInfo.vPos;
+			else if (tInfo.vScale.y == 0.04f)
+				camPos4 = tInfo.vPos;
+		}
+		else if (tInfo.iType == 4)
+		{
+			if (tInfo.vScale.y == 0.005f)
+				camLookPos = tInfo.vPos;
+			else if (tInfo.vScale.y == 0.01f)
+				camAt = tInfo.vPos;
+		}
+	}
+
+	Safe_Release(pGameInstance);
+	// 3. 파일 소멸
+	CloseHandle(hFile);
 }
 
 CCamera_Dynamic * CCamera_Dynamic::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

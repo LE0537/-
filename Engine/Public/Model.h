@@ -64,7 +64,8 @@ public:
 	void Set_CurrentAnimIndex(_uint iAnimIndex){
 		if (m_iPrevAnimIndex != iAnimIndex) { m_bAnimReset = true; }
 		m_iPrevAnimIndex = iAnimIndex; }
-
+	_bool	Get_End();
+	void	Set_End();
 private:
 	HRESULT Create_MeshContainer();
 	HRESULT Create_Materials(const char* pModelFilePath);

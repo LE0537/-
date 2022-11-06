@@ -3,6 +3,7 @@
 #include "Client_Defines.h"
 #include "Camera.h"
 
+
 BEGIN(Engine)
 END
 
@@ -27,8 +28,11 @@ public:
 	virtual void Late_Tick(_float fTimeDelta)override;
 	virtual HRESULT Render() override;
 private:
+	void	Load();
 	void	Key_Input(_float fTimeDelta);
 	void	EventCam(_float fTimeDelta);
+	void	BattleEventcam(_float fTimeDelta);
+	void	Battlecam(_float fTimeDelta);
 private:
 	_float		 m_YfAngle = 0.f;
 	_float		 m_XfAngle = 0.f;
@@ -38,8 +42,13 @@ private:
 	_bool		 m_bEvent = false;
 
 	CGameObject*	m_pTarget = nullptr;
-	_float4		 m_TargetPos;
+	_float4			 m_TargetPos;
 	_float			m_fOriginY = 0.f;
+
+	_float4			camPos1, camPos2, camPos3, camPos4, camLookPos, camAt;
+	_float4			m_vTargetBattlePos;
+	_float			fSpeed = 0.f;
+	_float			m_fBattletime = 0.f;
 public:
 	void	Set_Target(CGameObject* _pTarget);
 public:

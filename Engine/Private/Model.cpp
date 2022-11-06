@@ -111,17 +111,17 @@ HRESULT CModel::Play_Animation(_float fTimeDelta)
 			m_bAnimReset = false;
 		}
 		if(!m_Animations[m_iCurrentAnimIndex]->Get_AnimEnd())
-			m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix2(fTimeDelta, m_Animations[m_iPrevAnimIndex]->Get_Channel());
+			m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix2(fTimeDelta * 1.3f, m_Animations[m_iPrevAnimIndex]->Get_Channel());
 		if (m_Animations[m_iCurrentAnimIndex]->Get_AnimEnd())
 		{
 			m_Animations[m_iCurrentAnimIndex]->Set_AnimEnd();
 			m_iCurrentAnimIndex = m_iPrevAnimIndex;
-			m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(fTimeDelta);
+			m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(fTimeDelta * 1.3f);
 		}
 	}
 	else
 	{
-		m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(fTimeDelta);
+		m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(fTimeDelta * 1.3f);
 	}
 	for (auto& pBoneNode : m_Bones)
 	{
@@ -147,6 +147,16 @@ HRESULT CModel::Render(CShader * pShader, _uint iMeshIndex, _uint iPassIndex)
 	return S_OK;
 }
 
+
+_bool CModel::Get_End()
+{
+	return m_Animations[m_iCurrentAnimIndex]->Get_End();
+}
+
+void CModel::Set_End()
+{
+	m_Animations[m_iCurrentAnimIndex]->Set_End();
+}
 
 HRESULT CModel::Create_MeshContainer()
 {

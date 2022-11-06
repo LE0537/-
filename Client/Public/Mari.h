@@ -38,7 +38,8 @@ private:
 	void	Move(_float fTimeDelta);
 	void	Ready_Script();
 	void	Check_Coll();
-	void	Battle();
+	void	Battle(_float fTimeDelta);
+	void	BattleStart(_float fTimeDelta);
 private:
 	CModel*					m_pModelCom = nullptr;
 	CCollider*				m_pAABBCom = nullptr;
@@ -50,7 +51,10 @@ private:
 	_bool					m_bFindPlayer = false;
 	_float					m_fEventTime = 0.f;
 	_bool					m_bEvent = false;
+	//Battle
 
+	_bool					m_bBattle = false;
+	_float					m_fStartBattle = 0.f;
 public:
 	static CMari* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

@@ -15,7 +15,9 @@ public:
 	void Invalidate_TransformationMatrix(_float fTimeDelta);
 	void Invalidate_TransformationMatrix2(_float fTimeDelta, vector<class CChannel*> _Channel);
 	_bool	Get_AnimEnd() { return m_bAnimEnd; }
+	_bool	Get_End() { return m_bEnd; }
 	void	Set_AnimEnd() { m_bAnimEnd = false; }
+	void	Set_End() { m_bEnd = false; }
 	vector<class CChannel*> Get_Channel() { return m_Channels; }
 	void	Reset2();
 private:
@@ -39,7 +41,7 @@ private:
 	_bool							m_bAnimEnd = false;
 
 	_bool							m_isLoop = true;
-
+	_bool							m_bEnd = false;
 public:
 	static CAnimation* Create(class CModel* pModel, aiAnimation* pAIAnimation);
 	virtual void Free() override;

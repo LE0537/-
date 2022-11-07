@@ -158,6 +158,11 @@ void CModel::Set_End()
 	m_Animations[m_iCurrentAnimIndex]->Set_End();
 }
 
+void CModel::Set_Loop(_uint iAnimIndex)
+{
+	m_Animations[iAnimIndex]->Set_Loop();
+}
+
 HRESULT CModel::Create_MeshContainer()
 {
 	if (nullptr == m_pAIScene)

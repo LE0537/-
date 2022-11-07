@@ -51,6 +51,7 @@ void CTextBox::Tick(_float fTimeDelta)
 	Running_TextBox();
 	Print_Text();
 	m_fTimeDelta += fTimeDelta;
+	m_fDeadTime += fTimeDelta;
 }
 
 void CTextBox::Late_Tick(_float fTimeDelta)
@@ -109,7 +110,7 @@ HRESULT CTextBox::SetUp_ShaderResources()
 	if (FAILED(m_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(15))))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(0);
+	m_pShaderCom->Begin(6);
 	m_pVIBufferCom->Render();
 
 	RenderFonts();
@@ -120,23 +121,35 @@ HRESULT CTextBox::SetUp_ShaderResources()
 void CTextBox::Running_TextBox()
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-	
-	if (pGameInstance->Key_Down(DIK_SPACE))
+	if (m_tTInfo.iType == 0)
 	{
-		if (m_iScriptIndex < m_tTInfo.iScriptSize - 1)
+		if (pGameInstance->Key_Down(DIK_SPACE))
 		{
-			++m_iScriptIndex;
-			m_wstr = TEXT("");
-			m_iIndex = 0;
+			if (m_iScriptIndex < m_tTInfo.iScriptSize - 1)
+			{
+				++m_iScriptIndex;
+				m_wstr = TEXT("");
+				m_iIndex = 0;
+			}
+			else if (m_iScriptIndex == m_tTInfo.iScriptSize - 1)
+			{
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BattleIntro"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"))))
+					return;
+				CSoundMgr::Get_Instance()->BGM_Stop();
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Battle1.wav"), 1.f);
+				m_bDead = true;
+			}
 		}
-		else if (m_iScriptIndex == m_tTInfo.iScriptSize - 1)
-		{
-			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BattleIntro"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"))))
-				return;
-			CSoundMgr::Get_Instance()->BGM_Stop();
-			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Battle1.wav"), 1.f);
+	}
+	else if (m_tTInfo.iType == 1)
+	{
+		if (m_fDeadTime > 3.f)
 			m_bDead = true;
-		}
+	}
+	else if (m_tTInfo.iType == 2)
+	{
+		if (m_fDeadTime > 2.5f)
+			m_bDead = true;
 	}
 	RELEASE_INSTANCE(CGameInstance);
 }

@@ -396,11 +396,7 @@ void CPokeInfo::Key_Input()
 	{
 		m_bSelect = !m_bSelect;
 	}
-	if (pGameInstance->Key_Down(DIK_RETURN))
-	{
 
-
-	}
 	if (pGameInstance->Key_Down(DIK_BACKSPACE))
 	{
 		dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Set_PokeUIOnOff();

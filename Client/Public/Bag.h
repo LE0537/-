@@ -85,6 +85,7 @@ private:
 	vector<CGameObject*>    m_vecPoke;
 public:
 	CGameObject* Get_SelectPoke() { return m_vecPoke[m_iPokeSelect]; }
+	CGameObject* Get_FirstPoke() { return m_vecPoke[0]; }
 private:
 	HRESULT Ready_Components();
 	HRESULT SetUp_ShaderResources(); /* 셰이더 전역변수에 값을 전달한다. */

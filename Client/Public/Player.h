@@ -37,14 +37,28 @@ private:
 	HRESULT Ready_Components();
 	void	CheckRideIDLE();
 	void	Key_Input(_float fTimeDelta);
-	void	Battle();
+	void	Battle(_float fTimeDelta);
+	void	BattleStart(_float fTimeDelta);
+	void	Ready_Script();
+public:
+	void	Set_BattleStart() { m_bBattleStart = true; }
+	void	Set_Bag(class CBag* _Bag) { m_pBag = _Bag; }
 private:
 	CModel*					m_pModelCom = nullptr;
 	CCollider*				m_pAABBCom = nullptr;
 	CCollider*				m_pOBBCom = nullptr;
 
-	_int					m_iAnim = 0;
+	class CBag*				m_pBag = nullptr;
 
+	vector<wstring>		    m_vBattleScript;
+
+	_int					m_iAnim = 0;
+	_bool					m_bBattleText = false;
+	_bool					m_bBattleStart = false;
+	_bool					m_bBattle = false;
+	_float					m_fStartBattle = 0.f;
+	_float					m_fBattleUITime = 0.f;
+	_bool					m_bBattleUI = false;
 public:
 	static CPlayer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

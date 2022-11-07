@@ -142,6 +142,9 @@
     <Filter Include="02.GameObjects\99.GameObj\06.Effect\02.BattleIntro">
       <UniqueIdentifier>{3071df74-8d95-49a1-9b6d-4ea4a82c4dc9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\04.BattleUI">
+      <UniqueIdentifier>{1f15b8b4-4280-4516-921b-098039c4a793}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -279,6 +282,9 @@
     <ClInclude Include="..\public\BattleIntro.h">
       <Filter>02.GameObjects\99.GameObj\06.Effect\02.BattleIntro</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\BattleUI.h">
+      <Filter>02.GameObjects\99.GameObj\04.UI\04.BattleUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -400,6 +406,9 @@
     </ClCompile>
     <ClCompile Include="..\private\BattleIntro.cpp">
       <Filter>02.GameObjects\99.GameObj\06.Effect\02.BattleIntro</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BattleUI.cpp">
+      <Filter>02.GameObjects\99.GameObj\04.UI\04.BattleUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

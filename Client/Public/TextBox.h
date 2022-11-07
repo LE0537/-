@@ -29,6 +29,7 @@ public:
 		wstring*		pScript;
 		_int			iScriptSize;
 		CGameObject*	pTarget;
+		_int			iType;
 	}TINFO;
 
 public:
@@ -50,6 +51,8 @@ private:
 	_bool					m_bFontRender = false;
 	wstring*				m_pScript = nullptr;
 
+
+	_float					m_fDeadTime = 0.f;
 
 	TINFO					m_tTInfo;
 private:

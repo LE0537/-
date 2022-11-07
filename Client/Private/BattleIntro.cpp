@@ -240,8 +240,8 @@ void CBattleIntro::Set_Pos2()
 
 void CBattleIntro::RatBall(_float fTimeDelta)
 {
-	_float fAngleZ = 12.f;
-	m_fDist -= 2.f;
+	_float fAngleZ = 9.f;
+	m_fDist -= 4.f;
 	if (m_fDist < 0.f)
 	{
 		m_fDist = 0.f;
@@ -255,7 +255,7 @@ void CBattleIntro::RatBall(_float fTimeDelta)
 		XMVector3Normalize(vRight);
 		_vector vPos = m_pTransformCom3->Get_State(CTransform::STATE_TRANSLATION) + (vRight * m_fDist);
 
-		m_pTransformCom2->Turn2(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(fAngleZ));
+		m_pTransformCom2->Turn2(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(fAngleZ + 6.f));
 		m_pTransformCom2->Set_State(CTransform::STATE_TRANSLATION, vPos);
 	}
 	if (!m_bEnd && m_fDeadtime > 0.35f)
@@ -264,7 +264,7 @@ void CBattleIntro::RatBall(_float fTimeDelta)
 		m_pTransformCom3->Set_Scale(XMLoadFloat3(&vScale2));
 		m_bEnd = true;
 	}
-	if (m_fDeadtime > 1.f)
+	if (m_fDeadtime > 0.5f)
 	{
 		CSoundMgr::Get_Instance()->BGM_Stop();
 		CSoundMgr::Get_Instance()->PlayBGM(TEXT("Battle.wav"), 1.f);

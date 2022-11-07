@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 #include "MonsterBall.h"
+#include "Player.h"
 
 CBag::CBag(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -22,7 +23,7 @@ HRESULT CBag::Initialize_Prototype()
 HRESULT CBag::Initialize(void * pArg)
 {
 	m_pPlayer = *(CGameObject**)pArg;
-
+	dynamic_cast<CPlayer*>(m_pPlayer)->Set_Bag(this);
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 	m_vecPoke.reserve(6);

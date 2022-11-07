@@ -81,8 +81,12 @@ void CAnimation::Invalidate_TransformationMatrix2(_float fTimeDelta, vector<clas
 void CAnimation::Reset2()
 {
 	for (auto& pChannel : m_Channels)
-		pChannel->Reset();
+	{
+		if (!m_isLoop)
+			break;
 
+		pChannel->Reset();
+	}
 	m_fCurrentTime = 0.f;
 }
 

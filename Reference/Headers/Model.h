@@ -66,6 +66,7 @@ public:
 		m_iPrevAnimIndex = iAnimIndex; }
 	_bool	Get_End();
 	void	Set_End();
+	void	Set_Loop(_uint iAnimIndex);
 private:
 	HRESULT Create_MeshContainer();
 	HRESULT Create_Materials(const char* pModelFilePath);

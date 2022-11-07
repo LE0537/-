@@ -6,6 +6,7 @@
 #include "Camera_Dynamic.h"
 #include "TextBox.h"
 #include "SoundMgr.h"
+#include "Player.h"
 
 CMari::CMari(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -43,7 +44,8 @@ HRESULT CMari::Initialize(void * pArg)
 
 	m_pModelCom->Set_CurrentAnimIndex(0);
 	m_pTransformCom->Turn2(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.f));
-	m_pTransformCom->Set_Scale(XMLoadFloat3((&((CLevel_GamePlay::LOADFILE*)pArg)->vScale)));
+	//m_pTransformCom->Set_Scale(XMLoadFloat3((&((CLevel_GamePlay::LOADFILE*)pArg)->vScale)));
+	m_pTransformCom->Set_Scale(XMVectorSet(0.055f,0.055f,0.055f,0.f));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4((&((CLevel_GamePlay::LOADFILE*)pArg)->vPos)));
 
 	Ready_Script();
@@ -175,6 +177,8 @@ void CMari::Ready_Script()
 	m_vNormalScript.push_back(TEXT("내 앞을 지나가려면 UI를 다 해야한다고!"));
 	m_vNormalScript.push_back(TEXT("난 너가 UI를 다 했는지 안했는지 알 수 있는 방법이 있다고!"));
 	m_vNormalScript.push_back(TEXT("바로! 포켓몬 승부다!"));
+
+	m_vBattleScript.push_back(TEXT("봐주지 않겠어 전력으로 간다!!\n가라!!      해월막구리!!     너로 정했다!"));
 }
 
 void CMari::Check_Coll()
@@ -206,6 +210,7 @@ void CMari::Check_Coll()
 		tTInfo.iScriptSize = (_int)m_vNormalScript.size();
 		tTInfo.pTarget = this;
 		tTInfo.pScript = new wstring[m_vNormalScript.size()];
+		tTInfo.iType = 0;
 		for (_int i = 0; i < m_vNormalScript.size(); ++i)
 			tTInfo.pScript[i] = m_vNormalScript[i];
 
@@ -225,12 +230,33 @@ void CMari::BattleStart(_float fTimeDelta)
 	m_fStartBattle += fTimeDelta;
 	if (!m_bBattle)
 	{
+		m_pModelCom->Set_Loop(1);
 		m_pModelCom->Set_CurrentAnimIndex(1);
 		m_pModelCom->Play_Animation(fTimeDelta * 1.25f);
 		if ((m_fStartBattle > 0.2f) && m_pModelCom->Get_End())
 		{
 			m_bBattle = true;
 			m_pModelCom->Set_End();
+			dynamic_cast<CPlayer*>(m_pTarget)->Set_BattleStart();
+		}
+		if (!m_bBattleText)
+		{
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+			CTextBox::TINFO tTInfo;
+
+			tTInfo.iScriptSize = (_int)m_vBattleScript.size();
+			tTInfo.pTarget = this;
+			tTInfo.pScript = new wstring[m_vBattleScript.size()];
+			tTInfo.iType = 1;
+			for (_int i = 0; i < m_vBattleScript.size(); ++i)
+				tTInfo.pScript[i] = m_vBattleScript[i];
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
+				return;
+
+			RELEASE_INSTANCE(CGameInstance);
+			m_bBattleText = true;
 		}
 	}
 	else if(m_bBattle)
@@ -255,7 +281,7 @@ HRESULT CMari::SetUp_ShaderResources()
 	if (nullptr == m_pShaderCom)
 		return E_FAIL;
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-
+	
 	if (FAILED(m_pShaderCom->Set_RawValue("g_vCamPosition", &pGameInstance->Get_CamPosition(), sizeof(_float4))))
 		return E_FAIL;
 

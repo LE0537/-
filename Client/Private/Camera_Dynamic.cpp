@@ -54,7 +54,7 @@ void CCamera_Dynamic::Tick(_float fTimeDelta)
 	}
 	else
 	{
-		if (fSpeed < 2.f)
+		if (fSpeed < 1.4f)
 			BattleEventcam(fTimeDelta);
 		else
 			Battlecam(fTimeDelta);
@@ -166,10 +166,16 @@ void CCamera_Dynamic::BattleEventcam(_float fTimeDelta)
 		, XMLoadFloat4(&camPos3), XMLoadFloat4(&camPos2), fSpeed);
 
 	if (fSpeed < 0.7f)
+	{
 		TargetPos = XMLoadFloat4(&m_vTargetBattlePos);
+		m_CameraDesc.fFovy = XMConvertToRadians(50.f);
+	}
 	else
+	{
 		TargetPos = dynamic_cast<CGameObj*>(m_CameraDesc.pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
-	
+		m_CameraDesc.fFovy = XMConvertToRadians(90.f);
+	}
+
 	TargetPos.m128_f32[1] += 2.f;
 	vPos.m128_f32[1] += 3.f;
 	m_pTransform->Set_State(CTransform::STATE_TRANSLATION, vPos);
@@ -178,7 +184,7 @@ void CCamera_Dynamic::BattleEventcam(_float fTimeDelta)
 
 void CCamera_Dynamic::Battlecam(_float fTimeDelta)
 {
-	
+	m_CameraDesc.fFovy = XMConvertToRadians(60.f);
 	m_pTransform->Set_State(CTransform::STATE_TRANSLATION,XMLoadFloat4(&camLookPos));
 	m_pTransform->LookAt(XMLoadFloat4(&camAt));
 }

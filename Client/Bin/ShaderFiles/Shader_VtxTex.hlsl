@@ -103,8 +103,7 @@ PS_OUT PS_MAIN(PS_IN In)
 
 	Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
 
-
-
+	
 	return Out;
 }
 PS_OUT PS_Screen(PS_IN In)
@@ -163,10 +162,36 @@ PS_OUT PS_Hexagon(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_TextBox(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
+
+	if (Out.vColor.a < 0.1f)
+		discard;
+
+	return Out;
+}
+
+PS_OUT PS_BattleInfo(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
+
+	if (Out.vColor.a < 0.1f)
+		discard;
+
+	Out.vColor.a = 0.85f;
+
+	return Out;
+}
+
 technique11 DefaultTechnique
 {
-	pass Default
-	{
+	pass Default //0
+	{ 
 		SetRasterizerState(RS_Default);
 		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_Default, 0);
@@ -176,7 +201,7 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
 
-	pass PokeHp
+	pass PokeHp //1
 	{
 		SetRasterizerState(RS_Default);
 		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
@@ -187,7 +212,7 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_HP();
 	}
 
-	pass Hexagon
+	pass Hexagon //2
 	{
 		SetRasterizerState(RS_Default);
 		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 0.1f), 0xffffffff);
@@ -198,7 +223,7 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_Hexagon();
 	}
 
-	pass Screen
+	pass Screen //3
 	{
 		SetRasterizerState(RS_Default);
 		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 0.1f), 0xffffffff);
@@ -208,7 +233,7 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_Screen();
 	}
-	pass BattleIntro
+	pass BattleIntro //4
 	{
 		SetRasterizerState(RS_Default);
 		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 0.1f), 0xffffffff);
@@ -218,7 +243,7 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_BattleIntro();
 	}
-	pass BattleLight
+	pass BattleLight //5
 	{
 		SetRasterizerState(RS_Default);
 		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 0.1f), 0xffffffff);
@@ -227,5 +252,27 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_BattleLight();
+	}
+
+	pass TextBox //6
+	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_TextBox();
+	}
+
+	pass BattleInfo //7
+	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_BattleInfo();
 	}
 }

@@ -13,6 +13,7 @@
 #include "PokeInfo.h"
 #include "PokeDeck.h"
 #include "TextBox.h"
+#include "BattleUI.h"
 //Map
 #include "Field.h"
 #include "BattleField.h"
@@ -117,10 +118,13 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/StatInfo/%d.dds"), 6))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Battle"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Battle/%d.dds"), 18))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Battle/%d.dds"), 20))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Type"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Type/%d.dds"), 18))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_TypeSmall"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/TypeSmall/%d.dds"), 18))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_PokeDeck"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/PokeDeck/%d.dds"), 2))))
@@ -170,6 +174,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_TextBox"),
 		CTextBox::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BattleUI"),
+		CBattleUI::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	/* ¾ÆÀÌÅÛ °´Ã¼ */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_None"),

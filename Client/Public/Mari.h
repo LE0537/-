@@ -46,13 +46,15 @@ private:
 	CCollider*				m_pOBBCom = nullptr;
 
 	vector<wstring>		    m_vNormalScript;
+	vector<wstring>		    m_vBattleScript;
 
 	_int					m_iAnim = 0;
 	_bool					m_bFindPlayer = false;
 	_float					m_fEventTime = 0.f;
 	_bool					m_bEvent = false;
+	
 	//Battle
-
+	_bool					m_bBattleText = false;
 	_bool					m_bBattle = false;
 	_float					m_fStartBattle = 0.f;
 public:

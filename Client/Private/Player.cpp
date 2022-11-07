@@ -3,6 +3,8 @@
 #include "GameInstance.h"
 #include "Level_GamePlay.h"
 #include "SoundMgr.h"
+#include "Bag.h"
+#include "TextBox.h"
 
 CPlayer::CPlayer(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -47,7 +49,7 @@ HRESULT CPlayer::Initialize(void * pArg)
 void CPlayer::Tick(_float fTimeDelta)
 {
 	if(g_Battle)
-		Battle();
+		Battle(fTimeDelta);
 	else
 	{
 		if (!m_PlayerInfo.bRide)
@@ -225,10 +227,85 @@ void CPlayer::Key_Input(_float fTimeDelta)
 
 	RELEASE_INSTANCE(CGameInstance);
 }
-void CPlayer::Battle()
+void CPlayer::Battle(_float fTimeDelta)
 {
+	if(m_bBattleStart)
+		BattleStart(fTimeDelta);
+	else
+	{
+		m_pModelCom->Set_CurrentAnimIndex(0);
+		m_pModelCom->Play_Animation(fTimeDelta);
+	}
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION,XMLoadFloat4(&m_vMyBattlePos));
 	m_pTransformCom->LookAt(XMLoadFloat4(&m_vTargetBattlePos));
+}
+void CPlayer::BattleStart(_float fTimeDelta)
+{
+	m_fStartBattle += fTimeDelta;
+	if (!m_bBattle)
+	{
+		m_pModelCom->Set_Loop(2);
+		m_pModelCom->Set_CurrentAnimIndex(2);
+		m_pModelCom->Play_Animation(fTimeDelta*0.8f);
+		if ((m_fStartBattle > 0.2f) && m_pModelCom->Get_End())
+		{
+			m_bBattle = true;
+			m_pModelCom->Set_End();
+			m_fBattleUITime = 0.f;
+		}
+		if (!m_bBattleText)
+		{
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+			Ready_Script();
+			CTextBox::TINFO tTInfo;
+
+			tTInfo.iScriptSize = (_int)m_vBattleScript.size();
+			tTInfo.pTarget = this;
+			tTInfo.pScript = new wstring[m_vBattleScript.size()];
+			tTInfo.iType = 2;
+			for (_int i = 0; i < m_vBattleScript.size(); ++i)
+				tTInfo.pScript[i] = m_vBattleScript[i];
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
+				return;
+
+			RELEASE_INSTANCE(CGameInstance);
+			m_bBattleText = true;
+		}
+	}
+	else if (m_bBattle)
+	{
+		m_fBattleUITime += fTimeDelta;
+		if (m_fBattleUITime > 1.5f)
+		{
+			if (!m_bBattleUI)
+			{	
+				CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BattleUI"), LEVEL_GAMEPLAY, TEXT("Layer_UI"))))
+					return;
+
+				RELEASE_INSTANCE(CGameInstance);
+				m_bBattleUI = true;
+			}
+		}
+		
+		m_pModelCom->Set_CurrentAnimIndex(0);
+		m_pModelCom->Play_Animation(fTimeDelta);
+	}
+	//배틀 종료할때 m_fStartBattle,m_bBattle,m_bBattleStart,m_bBattleText,m_bBattleUI 초기화 필수로해줘야함
+}
+void CPlayer::Ready_Script()
+{
+	wstring strTextBegin = TEXT("가랏 !!   '");
+	wstring strTextEnd = TEXT("'   너로 정했다!!");
+
+	
+	strTextBegin += dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().strName;
+	strTextBegin += strTextEnd;
+
+	m_vBattleScript.push_back(strTextBegin);
+
 }
 HRESULT CPlayer::SetUp_ShaderResources()
 {

@@ -18,6 +18,7 @@ public:
 	_bool	Get_End() { return m_bEnd; }
 	void	Set_AnimEnd() { m_bAnimEnd = false; }
 	void	Set_End() { m_bEnd = false; }
+	void	Set_Loop() { m_isLoop = false; }
 	vector<class CChannel*> Get_Channel() { return m_Channels; }
 	void	Reset2();
 private:

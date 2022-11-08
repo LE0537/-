@@ -172,6 +172,7 @@
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\Bag.h" />
+    <ClInclude Include="..\public\Ball.h" />
     <ClInclude Include="..\public\BattleEvent.h" />
     <ClInclude Include="..\public\BattleField.h" />
     <ClInclude Include="..\public\BattleIntro.h" />
@@ -218,6 +219,7 @@
   <ItemGroup>
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\private\Bag.cpp" />
+    <ClCompile Include="..\private\Ball.cpp" />
     <ClCompile Include="..\private\BattleEvent.cpp" />
     <ClCompile Include="..\private\BattleField.cpp" />
     <ClCompile Include="..\private\BattleIntro.cpp" />

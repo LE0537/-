@@ -7,6 +7,7 @@
 #include "TextBox.h"
 #include "SoundMgr.h"
 #include "Player.h"
+#include "Ball.h"
 
 CMari::CMari(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -29,6 +30,8 @@ HRESULT CMari::Initialize(void * pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 	
+	if (FAILED(Ready_Parts()))
+		return E_FAIL;
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
@@ -233,11 +236,17 @@ void CMari::BattleStart(_float fTimeDelta)
 		m_pModelCom->Set_Loop(1);
 		m_pModelCom->Set_CurrentAnimIndex(1);
 		m_pModelCom->Play_Animation(fTimeDelta * 1.25f);
+		dynamic_cast<CBall*>(m_pBall)->Set_Render(true, 0);
+		m_pBall->Tick(fTimeDelta);
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, m_pBall);
+		
+		
 		if ((m_fStartBattle > 0.2f) && m_pModelCom->Get_End())
 		{
 			m_bBattle = true;
 			m_pModelCom->Set_End();
 			dynamic_cast<CPlayer*>(m_pTarget)->Set_BattleStart();
+			dynamic_cast<CBall*>(m_pBall)->Set_Render(false, 0);
 		}
 		if (!m_bBattleText)
 		{
@@ -263,6 +272,7 @@ void CMari::BattleStart(_float fTimeDelta)
 	{
 		m_pModelCom->Set_CurrentAnimIndex(0);
 		m_pModelCom->Play_Animation(fTimeDelta);
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, m_pBall);
 	}
 
 }
@@ -274,6 +284,30 @@ void CMari::Battle(_float fTimeDelta)
 	_vector vTargetPos = dynamic_cast<CGameObj*>(m_pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_vMyBattlePos));
 	m_pTransformCom->LookAt(vTargetPos);
+}
+HRESULT CMari::Ready_Parts()
+{
+	
+	/* For.Weapon */
+	CHierarchyNode*		pSocket = m_pModelCom->Get_BonePtr("loc_ob_ball");
+	if (nullptr == pSocket)
+		return E_FAIL;
+
+	CBall::WEAPONDESC		WeaponDesc;
+	WeaponDesc.pSocket = pSocket;
+	WeaponDesc.SocketPivotMatrix = m_pModelCom->Get_PivotFloat4x4();
+	WeaponDesc.pParentWorldMatrix = m_pTransformCom->Get_World4x4Ptr();
+	Safe_AddRef(pSocket);
+
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	m_pBall = pGameInstance->Clone_GameObject(TEXT("Prototype_GameObject_Ball"), &WeaponDesc);
+	if (nullptr == m_pBall)
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
+
+	return S_OK;
 }
 
 HRESULT CMari::SetUp_ShaderResources()
@@ -337,7 +371,7 @@ void CMari::Free()
 
 	m_vNormalScript.clear();
 
-
+	Safe_Release(m_pBall);
 	Safe_Release(m_pAABBCom);
 	Safe_Release(m_pOBBCom);
 	Safe_Release(m_pModelCom);

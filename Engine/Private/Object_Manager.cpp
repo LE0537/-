@@ -63,9 +63,16 @@ HRESULT CObject_Manager::Add_GameObject(const _tchar * pPrototypeTag, _uint iLev
 		pLayer->Add_GameObject(pGameObject);
 	}
 
-
-
 	return S_OK;
+}
+
+CGameObject * CObject_Manager::Clone_GameObject(const _tchar * pPrototypeTag, void* pArg)
+{
+	CGameObject*		pPrototype = Find_Prototype(pPrototypeTag);
+	if (nullptr == pPrototype)
+		return nullptr;
+
+	return pPrototype->Clone(pArg);
 }
 
 void CObject_Manager::Tick(_float fTimeDelta)

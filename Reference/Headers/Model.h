@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-
+#include "HierarchyNode.h"
 
 BEGIN(Engine)
 
@@ -16,6 +16,10 @@ private:
 public:
 	_uint	Get_NumMeshContainers() const {
 		return m_iNumMeshes;
+	}
+
+	_float4x4 Get_PivotFloat4x4() const {
+		return m_PivotMatrix;
 	}
 
 	class CHierarchyNode* Get_BonePtr(const char* pBoneName) const;

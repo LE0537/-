@@ -33,6 +33,7 @@ public:
 	virtual HRESULT Render();
 
 private:
+	HRESULT Ready_Parts();
 	HRESULT SetUp_ShaderResources();
 	HRESULT Ready_Components();
 	void	Move(_float fTimeDelta);
@@ -47,6 +48,8 @@ private:
 
 	vector<wstring>		    m_vNormalScript;
 	vector<wstring>		    m_vBattleScript;
+
+	CGameObject*			m_pBall = nullptr;
 
 	_int					m_iAnim = 0;
 	_bool					m_bFindPlayer = false;

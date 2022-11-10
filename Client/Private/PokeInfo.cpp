@@ -212,19 +212,15 @@ HRESULT CPokeInfo::SetUp_ShaderResources()
 		m_pShaderCom->Begin();
 		m_pVIBufferCom->Render();
 
-	//	g_fStatHp; 350.f
-	//	g_fStatDmg; 200.f
-	//	g_fStatSDmg; 200.f
-	//	g_fStatDef; 200.f
-	//	g_fStatSDef; 200.f
-	//	g_fStatSpeed; 200.f
+		
+		
 
-		_float fHP = dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().iMaxHp / 350.f;
-		_float fDmg = dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().iDmg / 200.f;
-		_float fSDmg = dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().iSDmg / 200.f;
-		_float fDef = dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().iDef / 200.f;
-		_float fSDef = dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().iSDef / 200.f;
-		_float fSpeed = dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().iSpeed / 200.f;
+		_float fHP = (_float)dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().iMaxHp / (((250.f * 2.f) + 31.f + 100.f) * (dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().iLv / 100.f) + 10.f);
+		_float fDmg = (_float)dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().iDmg / (((180.f * 2.f) + 31.f) * (dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().iLv / 100.f) + 5.f);
+		_float fSDmg = (_float)dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().iSDmg / (((180.f * 2.f) + 31.f) * (dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().iLv / 100.f) + 5.f);
+		_float fDef = (_float)dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().iDef / (((230.f * 2.f) + 31.f) * (dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().iLv / 100.f) + 5.f);
+		_float fSDef = (_float)dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().iSDef / (((230.f * 2.f) + 31.f) * (dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().iLv / 100.f) + 5.f);
+		_float fSpeed = (_float)dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().iSpeed / (((160.f * 2.f) + 31.f) * (dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().iLv / 100.f) + 5.f);
 
 		if (FAILED(m_pShaderCom4->Set_RawValue("g_fStatHp", &fHP, sizeof(_float))))
 			return E_FAIL;

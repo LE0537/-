@@ -149,7 +149,16 @@ PS_OUT PS_HP(PS_IN In)
 
 	return Out;
 }
+PS_OUT PS_EXP(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
 
+	Out.vColor.g = 0.5f;
+	Out.vColor.b = 1.f;
+	Out.vColor.r = 0.f;
+
+	return Out;
+}
 PS_OUT PS_Hexagon(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
@@ -274,5 +283,16 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_BattleInfo();
+	}
+
+	pass PokeEXP //8
+	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_EXP();
 	}
 }

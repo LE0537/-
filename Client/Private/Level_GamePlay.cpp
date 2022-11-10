@@ -129,7 +129,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar * pLayerTag)
 		{
 			m_LoadFile.vPos = iter.vPos;
 			m_LoadFile.vScale = iter.vScale;
-			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Field"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Field"), LEVEL_GAMEPLAY, TEXT("Layer_Field"), &m_LoadFile)))
 				return E_FAIL;
 		}
 		if (iter.iType == 4)

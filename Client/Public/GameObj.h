@@ -77,6 +77,7 @@ public:
 		_int		iSex;
 		_int		iBallNum;
 		_bool		bRide;
+		_bool		bEvolution;
 		ITEMINFO*		eItem;
 		SKILLINFO*		eSkillNum1;
 		SKILLINFO*		eSkillNum2;
@@ -106,15 +107,26 @@ protected:
 	CGameObject*			m_pCamera = nullptr;
 	_float4					m_vMyBattlePos;
 	_float4					m_vTargetBattlePos;
+	_int					m_iAnimIndex = 0;
+	_bool					m_bBattleMap = false;
+	_float					m_fBattleMapTime = 0.f;
+	_int					m_iPokeSize = 0;
+	_int					m_iPokeMaxSize = 0;
 public:
 	POKEINFO Get_PokeInfo() {return m_PokemonInfo;}
 	PLAYERINFO Get_PalyerInfo() { return m_PlayerInfo; }
 	SKILLINFO Get_SkillInfo() { return m_SkillInfo; }
 	ITEMINFO Get_ItemInfo() { return m_ItemInfo; }
 
+	CGameObject* Get_Target() {	return m_pTarget;}
 	void Set_Target(CGameObject* pTarget) { m_pTarget = pTarget; }
 	CTransform* Get_Transfrom() { return m_pTransformCom; }
+	_float4 Get_MyBattlePos() { return m_vMyBattlePos; }
 	_float4 Get_TargetBattlePos() { return m_vTargetBattlePos; }
+	void	Set_AnimIndex(_int _iAnimIndex) { m_iAnimIndex = _iAnimIndex; }
+	void	Set_BattleMap(_bool _bBattle, _float _fTime) { m_bBattleMap = _bBattle; m_fBattleMapTime = _fTime; }
+	void	Set_PokeSize() { ++m_iPokeSize; }
+	_int	Get_PokeMaxSize() { return m_iPokeMaxSize; }
 	//PlayerInfo
 	_bool Get_Ride() { return m_PlayerInfo.bRide; }
 	void OnOffRide() { m_PlayerInfo.bRide = !m_PlayerInfo.bRide; }
@@ -133,11 +145,16 @@ public:
 	else if (m_PokemonInfo.iHp < 0) { m_PokemonInfo.iHp = 0; }
 	}
 	void	Set_PokeItem(ITEMINFO* _eItem) { m_PokemonInfo.eItem = _eItem; }
+	void	Set_StatInfo(STATINFO eStatInfo) { m_PokemonInfo.eStatInfo = eStatInfo; }
+
+
 
 	void	Set_DeckPoke() { m_bDeckPoke = true; }
 	void	Set_PokeUIOnOff(){ m_bOnOff = !m_bOnOff; }
 	void	Set_DeckInfoOn() { m_bDeckInfo = false; }
 	void	Set_DeckInfoOff() { m_bDeckInfo = true; }
+
+
 public:
 	static CGameObj* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

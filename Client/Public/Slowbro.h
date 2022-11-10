@@ -36,11 +36,20 @@ private:
 	HRESULT Ready_Components();
 	void	Set_DeckPos();
 	void	Key_Input(_float fTimeDelta);
+	void	Battle(_float fTimeDelta);
+	void	Set_Stats();
 private:
 	CModel*					m_pModelCom = nullptr;
 
 	_int					m_iAnim = 0;
 	_bool					m_bSetPos = false;
+	_bool					m_bBrath = false;
+	_bool					m_bBattle = false;
+	_float					m_fStartBattle = 0.f;
+	_bool					m_bAttack = false;
+	_bool					m_bHit = false;
+	_bool					m_bDown = false;
+	_bool					m_bStopAnim = false;
 
 	_float					m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_float4x4				m_ViewMatrix, m_ProjMatrix;

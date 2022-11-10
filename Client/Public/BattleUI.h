@@ -25,6 +25,14 @@ private:
 public:
 	enum ButtonDir { DIR_UP, DIR_DOWN, DIR_LEFT, DIR_END };
 	enum CHECKPOS { CHECKPOS_INFO,CHECKPOS_SKILL, CHECKPOS_END };
+
+	typedef struct tagBattleInfo
+	{
+		CGameObject* pPlayer_Orgin;
+		CGameObject* pBattleTarget;
+		class CBag* pPlayer;
+		vector<CGameObject*>* pvecTargetPoke;
+	}BATTLEINFO;
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
@@ -56,12 +64,45 @@ private:
 	_float					m_PokefX, m_PokefY, m_PokefSizeX, m_PokefSizeY;
 	_float4x4				m_ViewMatrix, m_ProjMatrix;
 
+	wstring					m_szPlayerName;
 	_bool					m_bSkill = false;
 	_int					m_iSelect = 0;
 
-	CGameObject*			m_pPlayer;
+	BATTLEINFO				m_tInfo;
+	_int					m_iPlayerIndex = 0;
+	_int					m_iTargetIndex = 0;
+	_int					m_iTargetHPIndex = 0;
+	//Battle
+	_int					m_iPlayerFinalDmg = 0;
+	_bool					m_bPlayerHit = false;
+	_bool					m_bPlayerCri = false;
+	_int					m_bPlayerSkillIndex = 0;
+	_float					m_fPlayerType = 0.f;
 
-	vector<CGameObject*>    m_vecPoke;
+	_int					m_iTargetFinalDmg = 0;
+	_bool					m_bTargetHit = false;
+	_bool					m_bTargetCri = false;
+	_int					m_bTargetSkillIndex = 0;
+	_float					m_fTargetType = 0.f;
+
+	_bool					m_bPlayerAttack = false;
+	_bool					m_bCheckAttack = false;
+	_bool					m_bCheckAttack2 = false;
+	_bool					m_bCheckAttack3 = false;
+
+	_bool					m_bCreateTextBox = false;
+	_bool					m_bCreateTextBox2 = false;
+
+	_int					m_fDotDeal = 0;
+	_float					m_fHPTime = 0.f;
+	_float					m_fDelayTime = 0.f;
+	_bool					m_bPokeDead = false;
+
+	_bool					m_bBattleBagPoke = false;
+
+
+	_float					m_fTextSizeTime = 0.f;
+	vector<wstring>		    m_vBattleScript;
 
 private:
 	HRESULT Ready_Components();
@@ -71,13 +112,27 @@ private:
 	HRESULT SetUp_ShaderTarget();
 	HRESULT SetUp_ShaderBall();
 	HRESULT SetSelectButton(ButtonDir _eDir);
+	void	Ready_PlayerScript();
+	void	Ready_TargetScript();
+	void	Ready_PlayerChange_Poke();
+	void	Ready_TargetChange_Poke();
+	void	Render_Fonts();
+	void	Render_AttackFonts();
 	void	Set_Pos();
 	void	Set_PlayerPos();
 	void	Set_TargetPos();
 	void	Set_BallPos();
 	void	Key_Input();
+	void	BattleFrame();
+	void	BattleDelay(_float fTimeDelta);
 	void	Check_Selected();
+	_int	Check_TargetSkill();
 	void	Set_CheckPos(CHECKPOS eType);
+	void	Use_PlayerSkill(_int _iSkillIndex);
+	void	Use_TargetSkill(_int _iSkillIndex);
+	_float	Check_Type(POKETYPE _eType, POKETYPE _eTargetType);
+	void	Change_PlayerPoke(_float fTimeDelta);
+	void	Change_TargetPoke(_float fTimeDelta);
 public:
 	static CBattleUI* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

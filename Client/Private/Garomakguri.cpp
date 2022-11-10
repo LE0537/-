@@ -25,24 +25,9 @@ HRESULT CGaromakguri::Initialize(void * pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	Set_Stats();
 
-	m_PokemonInfo.strName = TEXT("해월막구리");
-	m_PokemonInfo.strInfo = TEXT("쥬신 130기 배해월, 난폭운전으로 유명하다.\n2022년10월20일 최우진 암살시도.\n결과는 성공적...");
-	m_PokemonInfo.strChar = TEXT("난폭");
-	m_PokemonInfo.iPokeNum = 152;
-	m_PokemonInfo.iMaxHp = 250;
-	m_PokemonInfo.iHp = 30;
-	m_PokemonInfo.iDmg = 130;
-	m_PokemonInfo.iSDmg = 180;
-	m_PokemonInfo.iDef = 150;
-	m_PokemonInfo.iSDef = 150;
-	m_PokemonInfo.iSpeed = 130;
-	m_PokemonInfo.iLv = 5;
-	m_PokemonInfo.iMaxExp = 20;
-	m_PokemonInfo.iExp = 0;
-	m_PokemonInfo.iSex = rand() % 2;
-	m_PokemonInfo.iBallNum = 2;
-	m_PokemonInfo.bRide = false;
+
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tackle"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum1)))
@@ -61,7 +46,7 @@ HRESULT CGaromakguri::Initialize(void * pArg)
 
 	m_PokemonInfo.eType = EVIL;
 	m_PokemonInfo.eType2 = NORMAL;
-	m_PokemonInfo.eStatInfo = BURN;
+	m_PokemonInfo.eStatInfo = STATINFO_END;
 
 	m_pModelCom->Set_CurrentAnimIndex(2);
 
@@ -83,14 +68,26 @@ void CGaromakguri::Tick(_float fTimeDelta)
 	if (!m_bOnOff)
 		m_bSetPos = false;
 
+	if (m_bBattleMap)
+	{
+		Battle(fTimeDelta);
+	}
 }
 
 void CGaromakguri::Late_Tick(_float fTimeDelta)
 {
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), m_pTransformCom->Get_Scale()))
+	{
+		
+	}
+
 	if ((g_PokeInfo || g_bPokeDeck) && m_bOnOff && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UIPOKE, this);
-	//	else if (!g_PokeInfo && !g_bPokeDeck && !m_bDeckPoke && nullptr != m_pRendererCom)
-	//		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	else if (m_bBattleMap && g_Battle && nullptr != m_pRendererCom)
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 HRESULT CGaromakguri::Render()
@@ -237,6 +234,106 @@ void CGaromakguri::Key_Input(_float fTimeDelta)
 	}
 
 	RELEASE_INSTANCE(CGameInstance);
+}
+void CGaromakguri::Battle(_float fTimeDelta)
+{
+	if (!m_bBattle)
+	{
+		m_pTransformCom->Set_Scale(XMVectorSet(0.075f, 0.075f, 0.075f,0.f));
+		m_fStartBattle += fTimeDelta;
+		if (m_iAnimIndex == 0)
+		{
+			m_pModelCom->Set_Loop(m_iAnimIndex);
+			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+		}
+		if (!m_bBrath && (m_fStartBattle > m_fBattleMapTime) && m_pModelCom->Get_End(m_iAnimIndex))
+		{
+			m_pModelCom->Set_End(m_iAnimIndex);
+			m_iAnimIndex = 1;
+			m_pModelCom->Set_Loop(m_iAnimIndex);
+			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+			m_bBrath = true;
+		}
+		if (m_bBattleMap)
+		{
+			if (m_bBrath && m_pModelCom->Get_End(m_iAnimIndex))
+			{
+				m_pModelCom->Set_End(m_iAnimIndex);
+				m_iAnimIndex = 2;
+				m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+				m_bBattle = true;
+			}
+			
+		}
+	}
+	if (m_bAttack && m_pModelCom->Get_End(m_iAnimIndex))
+	{
+		m_pModelCom->Set_End(m_iAnimIndex);
+		m_iAnimIndex = 2;
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+		m_bAttack = false;
+	}
+	if (m_iAnimIndex == 3 || m_iAnimIndex == 4)
+	{
+		m_pModelCom->Set_Loop(m_iAnimIndex);
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+		m_bAttack = true;
+	}
+	if (m_bHit && m_pModelCom->Get_End(m_iAnimIndex))
+	{
+		m_pModelCom->Set_End(m_iAnimIndex);
+		m_iAnimIndex = 2;
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+		m_bHit = false;
+	}
+	if (m_iAnimIndex == 5)
+	{
+		m_pModelCom->Set_Loop(m_iAnimIndex);
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+		m_bHit = true;
+	}
+	if (m_bDown && m_pModelCom->Get_End(m_iAnimIndex))
+	{
+		m_pModelCom->Set_End(m_iAnimIndex);
+		m_bStopAnim = true;
+	}
+	if (!m_bDown && m_iAnimIndex == 6)
+	{
+		m_pModelCom->Set_Loop(m_iAnimIndex);
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+		m_bDown = true;
+	}
+
+	if(!m_bStopAnim)
+		m_pModelCom->Play_Animation(fTimeDelta * 1.1f);
+}
+void CGaromakguri::Set_Stats()
+{
+	_float fHp = 93.f;
+	_float fDmg = 90.f;
+	_float fDef = 101.f;
+	_float fSDmg = 60.f;
+	_float fSDef = 81.f;
+	_float fSpeed = 95.f;
+
+	m_PokemonInfo.strName = TEXT("해월막구리");
+	m_PokemonInfo.strInfo = TEXT("쥬신 130기 배해월, 난폭운전으로 유명하다.\n2022년10월20일 최우진 암살시도.\n결과는 성공적...");
+	m_PokemonInfo.strChar = TEXT("난폭");
+	m_PokemonInfo.iPokeNum = 152;
+	m_PokemonInfo.iLv = 10;
+	m_PokemonInfo.iMaxHp = _int(((fHp * 2.f) + 31.f + 100) * (m_PokemonInfo.iLv / 100.f) + 10.f);
+	m_PokemonInfo.iHp = m_PokemonInfo.iMaxHp;
+	m_PokemonInfo.iDmg = _int(((fDmg * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
+	m_PokemonInfo.iSDmg = _int(((fSDmg * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
+	m_PokemonInfo.iDef = _int(((fDef * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
+	m_PokemonInfo.iSDef = _int(((fSDef * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
+	m_PokemonInfo.iSpeed = _int(((fSpeed * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
+	m_PokemonInfo.iMaxExp = 20;
+	m_PokemonInfo.iExp = 0;
+	m_PokemonInfo.iSex = rand() % 2;
+	m_PokemonInfo.iBallNum = 2;
+	m_PokemonInfo.bRide = false;
+	m_PokemonInfo.bEvolution = false;
 }
 HRESULT CGaromakguri::SetUp_ShaderResources()
 {

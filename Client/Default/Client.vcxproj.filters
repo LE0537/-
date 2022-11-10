@@ -213,9 +213,6 @@
     <ClInclude Include="..\public\NonePoke.h">
       <Filter>02.GameObjects\99.GameObj\01.Pokemon\999.NonePoke</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Garomakguri.h">
-      <Filter>02.GameObjects\99.GameObj\01.Pokemon\152.Garomakguri</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\HpPotion.h">
       <Filter>02.GameObjects\99.GameObj\03.Item\04.HpPotion</Filter>
     </ClInclude>
@@ -290,6 +287,9 @@
     </ClInclude>
     <ClInclude Include="..\public\Ball.h">
       <Filter>02.GameObjects\99.GameObj\07.Ball</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Garomakguri.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\152.Garomakguri</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

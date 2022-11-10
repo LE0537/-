@@ -83,9 +83,14 @@ private:
 	CGameObject*			m_pPlayer;
 	vector<ITEMINFO*>    m_vecItem;
 	vector<CGameObject*>    m_vecPoke;
+
+	//BattlePoke
+	_bool					m_bStart = false;
+	_int					m_iChangePoke = 0;
 public:
+	_int		 Get_iChangePoke() { return m_iChangePoke; }
 	CGameObject* Get_SelectPoke() { return m_vecPoke[m_iPokeSelect]; }
-	CGameObject* Get_FirstPoke() { return m_vecPoke[0]; }
+	CGameObject* Get_vecPoke(_int _iIndex) { return m_vecPoke[_iIndex]; }
 private:
 	HRESULT Ready_Components();
 	HRESULT SetUp_ShaderResources(); /* 셰이더 전역변수에 값을 전달한다. */
@@ -113,6 +118,8 @@ private:
 	_bool	CheckGiveItem();
 	void	ClearBag();
 	void	RidePoke();
+
+	void	BattlePokeKey();
 public:
 	static CBag* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

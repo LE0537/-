@@ -12,6 +12,7 @@ class CTransform;
 class CVIBuffer_Rect;
 class CModel;
 class CCollider;
+class CNavigation;
 END
 
 
@@ -33,6 +34,7 @@ public:
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
 private:
+	void	OnNavi();
 	HRESULT SetUp_ShaderResources();
 	HRESULT Ready_Components();
 	void	CheckRideIDLE();
@@ -43,15 +45,23 @@ private:
 public:
 	void	Set_BattleStart() { m_bBattleStart = true; }
 	void	Set_Bag(class CBag* _Bag) { m_pBag = _Bag; }
+	void	Set_TargetPoke(vector<CGameObject*>* _pvecPoke) { m_pvecTargetPoke = _pvecPoke; }
+	void	Set_BattleTarget(CGameObject* _pTarget) { m_pBattleTarget = _pTarget; }
+	void	Battle_Win();
+	void	Check_Anim(_float fTimeDelta);
 private:
 	CModel*					m_pModelCom = nullptr;
 	CCollider*				m_pAABBCom = nullptr;
 	CCollider*				m_pOBBCom = nullptr;
+	CNavigation*			m_pNavigationCom = nullptr;
 
 	class CBag*				m_pBag = nullptr;
-
+	
+	CGameObject*			m_pBattleTarget = nullptr;
 	vector<wstring>		    m_vBattleScript;
+	vector<CGameObject*>*    m_pvecTargetPoke;
 
+	wstring					m_szTargetName;
 	_int					m_iAnim = 0;
 	_bool					m_bBattleText = false;
 	_bool					m_bBattleStart = false;
@@ -59,6 +69,12 @@ private:
 	_float					m_fStartBattle = 0.f;
 	_float					m_fBattleUITime = 0.f;
 	_bool					m_bBattleUI = false;
+
+	_bool					m_bPrevPos = false;
+	_float4					m_vPrevPos;
+	//Battle
+	_bool					m_ChangePoke = false;
+	_bool					m_bChangeAnim = false;
 public:
 	static CPlayer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

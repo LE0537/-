@@ -151,12 +151,40 @@ void CTextBox::Running_TextBox()
 		if (m_fDeadTime > 2.5f)
 			m_bDead = true;
 	}
+	else if (m_tTInfo.iType == 3)
+	{
+		if (m_fDeadTime > 2.0f)
+		{
+			if (m_iScriptIndex < m_tTInfo.iScriptSize - 1)
+			{
+				++m_iScriptIndex;
+				m_wstr = TEXT("");
+				m_iIndex = 0;
+			}
+			else if (m_iScriptIndex == m_tTInfo.iScriptSize - 1)
+			{
+				m_bDead = true;
+			}
+			m_fDeadTime = 0.f;
+		}
+	}
+	else if (m_tTInfo.iType == 4)
+	{
+		if (m_fDeadTime > 1.5f)
+		{
+		
+			m_bDead = true;
+			
+			m_fDeadTime = 0.f;
+		}
+	}
 	RELEASE_INSTANCE(CGameInstance);
 }
 
 void CTextBox::RenderFonts()
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
 	wstring szName = dynamic_cast<CGameObj*>(m_tTInfo.pTarget)->Get_PalyerInfo().strName;
 	_vector vPos = { 210.f,550.f,0.f,1.f };
 	pGameInstance->Render_Font(TEXT("Font_Nexon"), m_wstr.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(1.2f, 1.2f, 1.2f, 1.f));

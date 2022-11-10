@@ -41,6 +41,8 @@ void CAnimation::Invalidate_TransformationMatrix(_float fTimeDelta)
 		m_isFinished = true;
 		m_bEnd = true;
 	}
+	if (!m_isLoop && m_bEnd)
+		return;
 
 	for (auto& pChannel : m_Channels)
 	{
@@ -89,7 +91,14 @@ void CAnimation::Reset2()
 	}
 	m_fCurrentTime = 0.f;
 }
-
+void CAnimation::Reset3()
+{
+	for (auto& pChannel : m_Channels)
+	{
+		pChannel->Reset();
+	}
+	m_fCurrentTime = 0.f;
+}
 CAnimation * CAnimation::Create(CModel* pModel, aiAnimation * pAIAnimation)
 {
 	CAnimation*	pInstance = new CAnimation();

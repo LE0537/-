@@ -68,8 +68,8 @@ public:
 	void Set_CurrentAnimIndex(_uint iAnimIndex){
 		if (m_iPrevAnimIndex != iAnimIndex) { m_bAnimReset = true; }
 		m_iPrevAnimIndex = iAnimIndex; }
-	_bool	Get_End();
-	void	Set_End();
+	_bool	Get_End(_int iAnimIndex);
+	void	Set_End(_int iAnimIndex);
 	void	Set_Loop(_uint iAnimIndex);
 private:
 	HRESULT Create_MeshContainer();

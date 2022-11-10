@@ -1,35 +1,90 @@
-d:\jung\130\framework\client\bin\client.pch
-d:\jung\130\framework\client\bin\vc140.pdb
-d:\jung\130\framework\client\bin\vc140.idb
-d:\jung\130\framework\client\bin\stdafx.obj
-d:\jung\130\framework\client\bin\client.obj
-d:\jung\130\framework\client\bin\mainapp.obj
-d:\jung\130\framework\client\bin\level_loading.obj
-d:\jung\130\framework\client\bin\loader.obj
-d:\jung\130\framework\client\bin\level_gameplay.obj
-d:\jung\130\framework\client\bin\level_logo.obj
-d:\jung\130\framework\client\bin\background.obj
-d:\jung\130\framework\client\bin\camera_dynamic.obj
-d:\jung\130\framework\client\bin\terrain.obj
-d:\jung\130\framework\client\bin\shader_vtxtex.cso
-d:\jung\130\framework\client\bin\shader_vtxnortex.cso
-d:\jung\130\framework\client\bin\client.ilk
-d:\jung\130\framework\client\bin\client.exe
-d:\jung\130\framework\client\bin\client.pdb
-d:\jung\130\framework\client\bin\client.res
-d:\jung\130\framework\client\bin\..\bin\client.pdb
-d:\jung\130\framework\client\default\..\bin\client.exe
-d:\jung\130\framework\client\bin\..\bin\client.ilk
-d:\jung\130\framework\client\bin\client.tlog\cl.command.1.tlog
-d:\jung\130\framework\client\bin\client.tlog\cl.read.1.tlog
-d:\jung\130\framework\client\bin\client.tlog\cl.write.1.tlog
-d:\jung\130\framework\client\bin\client.tlog\client.write.1u.tlog
-d:\jung\130\framework\client\bin\client.tlog\fxc.command.1.tlog
-d:\jung\130\framework\client\bin\client.tlog\fxc.read.1.tlog
-d:\jung\130\framework\client\bin\client.tlog\fxc.write.1.tlog
-d:\jung\130\framework\client\bin\client.tlog\link.command.1.tlog
-d:\jung\130\framework\client\bin\client.tlog\link.read.1.tlog
-d:\jung\130\framework\client\bin\client.tlog\link.write.1.tlog
-d:\jung\130\framework\client\bin\client.tlog\rc.command.1.tlog
-d:\jung\130\framework\client\bin\client.tlog\rc.read.1.tlog
-d:\jung\130\framework\client\bin\client.tlog\rc.write.1.tlog
+c:\users\shout\desktop\과제\7개월차\6days - camera\client\bin\client.pch
+c:\users\shout\desktop\과제\7개월차\6days - camera\client\bin\vc140.pdb
+c:\users\shout\desktop\과제\7개월차\6days - camera\client\bin\vc140.idb
+c:\users\shout\desktop\과제\7개월차\6days - camera\client\bin\stdafx.obj
+c:\users\shout\desktop\과제\7개월차\6days - camera\client\bin\background.obj
+c:\users\shout\desktop\과제\7개월차\6days - camera\client\bin\camera_dynamic.obj
+c:\users\shout\desktop\과제\7개월차\6days - camera\client\bin\level_gameplay.obj
+c:\users\shout\desktop\과제\7개월차\6days - camera\client\bin\level_loading.obj
+c:\users\shout\desktop\과제\7개월차\6days - camera\client\bin\level_logo.obj
+c:\users\shout\desktop\과제\7개월차\6days - camera\client\bin\loader.obj
+c:\users\shout\desktop\과제\7개월차\6days - camera\client\bin\mainapp.obj
+c:\users\shout\desktop\과제\7개월차\6days - camera\client\bin\terrain.obj
+c:\users\shout\desktop\과제\7개월차\6days - camera\client\bin\client.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\vc140.pdb
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\vc140.idb
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\camera_dynamic.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\level_gameplay.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\level_loading.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\level_logo.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\loader.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\mainapp.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\terrain.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\background.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\expshare.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\gameobj.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\garomakguri.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\hppotion.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\monsterball.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\none.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\nonepoke.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\pikachu.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\pokeinfo.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\ui.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\client.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\bag.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\tackle.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\breakcar.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\noneskill.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\pokedeck.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\squirtle.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\meowth.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\slowbro.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\charmander.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\wigglytuff.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\player.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\battlefield.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\field.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\snorlax.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\client.pch
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\stdafx.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\mari.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\tree.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\battleevent.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\screen.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\textbox.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\battleintro.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\battleui.obj
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\ball.obj
+c:\users\shout\desktop\과제\7개월차\6days - camera\client\bin\shader_vtxnortex.cso
+c:\users\shout\desktop\과제\7개월차\6days - camera\client\bin\shader_vtxtex.cso
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\shader_vtxnortex.cso
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\shader_vtxtex.cso
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\shader_vtxmodel.cso
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\shader_vtxanimmodel.cso
+c:\users\shout\desktop\과제\7개월차\6days - camera\client\bin\client.ilk
+c:\users\shout\desktop\과제\7개월차\6days - camera\client\bin\client.exe
+c:\users\shout\desktop\과제\7개월차\6days - camera\client\bin\client.pdb
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\client.ilk
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\client.exe
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\client.pdb
+c:\users\shout\desktop\과제\7개월차\6days - camera\client\bin\client.res
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\client.res
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\bag.obj.enc
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\pokeinfo.obj.enc
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\..\bin\client.pdb
+c:\users\shout\desktop\과제\pokemon\갠폴\client\default\..\bin\client.exe
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\..\bin\client.ilk
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\client.tlog\cl.command.1.tlog
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\client.tlog\cl.read.1.tlog
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\client.tlog\cl.write.1.tlog
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\client.tlog\client.write.1u.tlog
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\client.tlog\fxc.command.1.tlog
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\client.tlog\fxc.read.1.tlog
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\client.tlog\fxc.write.1.tlog
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\client.tlog\link.command.1.tlog
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\client.tlog\link.read.1.tlog
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\client.tlog\link.write.1.tlog
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\client.tlog\rc.command.1.tlog
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\client.tlog\rc.read.1.tlog
+c:\users\shout\desktop\과제\pokemon\갠폴\client\bin\client.tlog\rc.write.1.tlog

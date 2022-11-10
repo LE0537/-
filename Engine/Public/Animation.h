@@ -21,6 +21,7 @@ public:
 	void	Set_Loop() { m_isLoop = false; }
 	vector<class CChannel*> Get_Channel() { return m_Channels; }
 	void	Reset2();
+	void	Reset3();
 private:
 	char				m_szName[MAX_PATH] = "";
 

@@ -38,9 +38,11 @@ private:
 	HRESULT Ready_Components();
 	void	Move(_float fTimeDelta);
 	void	Ready_Script();
+	void	Ready_LoseText();
 	void	Check_Coll();
 	void	Battle(_float fTimeDelta);
 	void	BattleStart(_float fTimeDelta);
+	void	Check_Anim(_float fTimeDelta);
 private:
 	CModel*					m_pModelCom = nullptr;
 	CCollider*				m_pAABBCom = nullptr;
@@ -48,6 +50,8 @@ private:
 
 	vector<wstring>		    m_vNormalScript;
 	vector<wstring>		    m_vBattleScript;
+
+	vector<CGameObject*>    m_vecPoke;
 
 	CGameObject*			m_pBall = nullptr;
 
@@ -59,7 +63,13 @@ private:
 	//Battle
 	_bool					m_bBattleText = false;
 	_bool					m_bBattle = false;
+	_bool					m_bChangeAnim = false;
 	_float					m_fStartBattle = 0.f;
+	_bool					m_ChangePoke = false;
+	_bool					m_bLose = false;
+	//BattleEnd
+	_float4					m_vPrevPos;
+	_bool					m_bPrevPos = false;
 public:
 	static CMari* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

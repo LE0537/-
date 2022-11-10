@@ -138,11 +138,15 @@ void CBag::Tick(_float fTimeDelta)
 		else if (m_bSwap)
 			Key_PokeInput();
 	}
+	if (g_BattleBag)
+	{
+		BattlePokeKey();
+	}
 }
 
 void CBag::Late_Tick(_float fTimeDelta)
 {
-	if (g_bBag)
+	if (g_bBag || g_BattleBag)
 	{
 		if (nullptr != m_pRendererCom)
 			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
@@ -151,7 +155,7 @@ void CBag::Late_Tick(_float fTimeDelta)
 
 HRESULT CBag::Render()
 {
-	if (g_bBag)
+	if (g_bBag || g_BattleBag)
 	{
 		if (nullptr == m_pShaderCom || nullptr == m_pVIBufferCom || nullptr == m_pShaderCom2 || nullptr == m_pVIBufferCom2 || nullptr == m_pShaderCom3 || nullptr == m_pVIBufferCom3)
 			return E_FAIL;
@@ -1314,6 +1318,51 @@ void CBag::RidePoke()
 	dynamic_cast<CGameObj*>(m_pPlayer)->OnOffRide();
 	dynamic_cast<CGameObj*>(m_pPlayer)->Set_RideIndex(dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().iPokeNum);
 	dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->OnOffRide();
+}
+
+void CBag::BattlePokeKey()
+{
+	if (!m_bStart)
+	{
+		m_bItemSelect = !m_bItemSelect;
+		SetSelectButtonPoke(m_iPokeSelect, DIR_LEFT);
+		m_bStart = true;
+	}
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	if (pGameInstance->Key_Down(DIK_UP))
+	{
+		if (m_iPokeSelect != 0)
+		{
+			SetSelectButtonPoke(m_iPokeSelect, DIR_UP);
+			--m_iPokeSelect;
+		}
+	}
+	if (pGameInstance->Key_Down(DIK_DOWN))
+	{
+		if (m_iPokeSelect != 5 && dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect + 1])->Get_PokeInfo().iPokeNum != 999)
+		{
+			SetSelectButtonPoke(m_iPokeSelect, DIR_DOWN);
+			++m_iPokeSelect;
+		}
+	}
+	if (pGameInstance->Key_Down(DIK_RETURN))
+	{
+		if (dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().eStatInfo != STUN)
+		{
+			m_iChangePoke = m_iPokeSelect;
+			m_bStart = false;
+			m_iPokeSelect = 0;
+			m_bItem = false;
+			m_bUsePoke = false;
+			m_bItemSelect = true;
+			m_bUseItem = false;
+			m_UsePos = 0;
+			m_bUse = false;
+			m_iSwapPoke = 99;
+			g_BattleBag = false;
+		}
+	}
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 CBag * CBag::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

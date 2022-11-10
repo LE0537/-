@@ -165,7 +165,7 @@ void CCamera_Dynamic::BattleEventcam(_float fTimeDelta)
 	_vector vPos = XMVectorCatmullRom(XMLoadFloat4(&camPos1), XMLoadFloat4(&camPos4)
 		, XMLoadFloat4(&camPos3), XMLoadFloat4(&camPos2), fSpeed);
 
-	if (fSpeed < 0.7f)
+	if (fSpeed < 0.8f)
 	{
 		TargetPos = XMLoadFloat4(&m_vTargetBattlePos);
 		m_CameraDesc.fFovy = XMConvertToRadians(50.f);

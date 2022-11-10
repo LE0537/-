@@ -14,6 +14,7 @@ namespace Client
 
 #include <process.h>
 #include <string>
+#include <time.h>
 // Client_Defines.h
 
 extern HWND			g_hWnd;
@@ -23,5 +24,6 @@ extern bool		g_PokeInfo;
 extern bool		g_bPokeDeck;
 extern bool     g_CollBox;
 extern bool		g_Battle;
+extern bool		g_BattleBag;
 
 using namespace Client;

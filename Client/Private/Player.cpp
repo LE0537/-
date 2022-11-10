@@ -5,6 +5,8 @@
 #include "SoundMgr.h"
 #include "Bag.h"
 #include "TextBox.h"
+#include "VIBuffer_Navigation.h"
+#include "BattleUI.h"
 
 CPlayer::CPlayer(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -52,18 +54,15 @@ void CPlayer::Tick(_float fTimeDelta)
 		Battle(fTimeDelta);
 	else
 	{
+		OnNavi();
 		if (!m_PlayerInfo.bRide)
 			m_pModelCom->Set_CurrentAnimIndex(IDLE);
 		if (m_PlayerInfo.bRide)
 			CheckRideIDLE();
-		if (m_PlayerInfo.bEvent)
-		{
-			m_pModelCom->Set_CurrentAnimIndex(IDLE);
-		}
-		else
-		{
+	
+		if (!m_PlayerInfo.bEvent)
 			Key_Input(fTimeDelta);
-		}
+		
 		m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
 		m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	}
@@ -72,6 +71,9 @@ void CPlayer::Tick(_float fTimeDelta)
 
 void CPlayer::Late_Tick(_float fTimeDelta)
 {
+	if (g_Battle && m_PlayerInfo.bRide)
+		m_PlayerInfo.bRide = false;
+
 	if (!g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 }
@@ -106,6 +108,7 @@ HRESULT CPlayer::Render()
 	{
 		m_pAABBCom->Render();
 		m_pOBBCom->Render();
+		m_pNavigationCom->Render_Navigation();
 	}
 	return S_OK;
 }
@@ -150,6 +153,14 @@ HRESULT CPlayer::Ready_Components()
 	if (FAILED(__super::Add_Components(TEXT("Com_OBB"), LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
 		return E_FAIL;
 
+	CNavigation::NAVIDESC			NaviDesc;
+	ZeroMemory(&NaviDesc, sizeof NaviDesc);
+
+	NaviDesc.iCurrentCellIndex = 0;
+
+	if (FAILED(__super::Add_Components(TEXT("Com_Navigation"), LEVEL_STATIC, TEXT("Prototype_Component_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -172,12 +183,12 @@ void CPlayer::Key_Input(_float fTimeDelta)
 	{
 		if (pGameInstance->Key_Pressing(DIK_LSHIFT) && pGameInstance->Key_Pressing(DIK_W))
 		{
-			m_pTransformCom->Go_Straight(fTimeDelta * 1.3f);
+			m_pTransformCom->Go_Straight(fTimeDelta * 1.3f, m_pNavigationCom);
 			m_pModelCom->Set_CurrentAnimIndex(RUN);
 		}
 		else if (pGameInstance->Key_Pressing(DIK_W))
 		{
-			m_pTransformCom->Go_Straight(fTimeDelta);
+			m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
 			m_pModelCom->Set_CurrentAnimIndex(WALK);
 		}
 
@@ -186,7 +197,7 @@ void CPlayer::Key_Input(_float fTimeDelta)
 	{
 		if (pGameInstance->Key_Pressing(DIK_W))
 		{
-			m_pTransformCom->Go_Straight(fTimeDelta * 1.8f);
+			m_pTransformCom->Go_Straight(fTimeDelta * 1.8f, m_pNavigationCom);
 			switch (m_PlayerInfo.iRideNum)
 			{
 			case 143:
@@ -229,15 +240,24 @@ void CPlayer::Key_Input(_float fTimeDelta)
 }
 void CPlayer::Battle(_float fTimeDelta)
 {
-	if(m_bBattleStart)
-		BattleStart(fTimeDelta);
-	else
+	Check_Anim(fTimeDelta);
+	if (!m_bChangeAnim)
 	{
-		m_pModelCom->Set_CurrentAnimIndex(0);
-		m_pModelCom->Play_Animation(fTimeDelta);
+		if (!m_bPrevPos)
+		{
+			XMStoreFloat4(&m_vPrevPos, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+			m_bPrevPos = true;
+		}
+		if (m_bBattleStart)
+			BattleStart(fTimeDelta);
+		else
+		{
+			m_pModelCom->Set_CurrentAnimIndex(0);
+			m_pModelCom->Play_Animation(fTimeDelta);
+		}
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_vMyBattlePos));
+		m_pTransformCom->LookAt(XMLoadFloat4(&m_vTargetBattlePos));
 	}
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION,XMLoadFloat4(&m_vMyBattlePos));
-	m_pTransformCom->LookAt(XMLoadFloat4(&m_vTargetBattlePos));
 }
 void CPlayer::BattleStart(_float fTimeDelta)
 {
@@ -247,10 +267,22 @@ void CPlayer::BattleStart(_float fTimeDelta)
 		m_pModelCom->Set_Loop(2);
 		m_pModelCom->Set_CurrentAnimIndex(2);
 		m_pModelCom->Play_Animation(fTimeDelta*0.8f);
-		if ((m_fStartBattle > 0.2f) && m_pModelCom->Get_End())
+
+		if (m_fStartBattle > 1.8f)
+		{
+			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+			XMVector3Normalize(vLook);
+			_vector vPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 35.f;
+			_vector vTargetPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 200.f;
+			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(0))->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, vPos);
+			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(0))->Get_Transfrom()->LookAt(vTargetPos);
+			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(0))->Set_AnimIndex(0);
+			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(0))->Set_BattleMap(true,2.f);
+		}
+		if ((m_fStartBattle > 0.2f) && m_pModelCom->Get_End(2))
 		{
 			m_bBattle = true;
-			m_pModelCom->Set_End();
+			m_pModelCom->Set_End(2);
 			m_fBattleUITime = 0.f;
 		}
 		if (!m_bBattleText)
@@ -282,7 +314,13 @@ void CPlayer::BattleStart(_float fTimeDelta)
 			{	
 				CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BattleUI"), LEVEL_GAMEPLAY, TEXT("Layer_UI"))))
+				CBattleUI::BATTLEINFO tInfo;
+				tInfo.pPlayer = m_pBag;
+				tInfo.pvecTargetPoke = m_pvecTargetPoke;
+				tInfo.pPlayer_Orgin = this;
+				tInfo.pBattleTarget = m_pBattleTarget;
+
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BattleUI"), LEVEL_GAMEPLAY, TEXT("Layer_UI"),&tInfo)))
 					return;
 
 				RELEASE_INSTANCE(CGameInstance);
@@ -293,7 +331,7 @@ void CPlayer::BattleStart(_float fTimeDelta)
 		m_pModelCom->Set_CurrentAnimIndex(0);
 		m_pModelCom->Play_Animation(fTimeDelta);
 	}
-	//배틀 종료할때 m_fStartBattle,m_bBattle,m_bBattleStart,m_bBattleText,m_bBattleUI 초기화 필수로해줘야함
+	//배틀 종료할때 m_bPrevPos,m_fStartBattle,m_bBattle,m_bBattleStart,m_bBattleText,m_bBattleUI 초기화 필수로해줘야함
 }
 void CPlayer::Ready_Script()
 {
@@ -306,6 +344,76 @@ void CPlayer::Ready_Script()
 
 	m_vBattleScript.push_back(strTextBegin);
 
+}
+void CPlayer::Battle_Win()
+{
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION,XMLoadFloat4(&m_vPrevPos));
+	m_bBattleText = false;
+	m_bBattleStart = false;
+	m_bBattle = false;
+	m_fStartBattle = 0.f;
+	m_fBattleUITime = 0.f;
+	m_bBattleUI = false;
+	m_bPrevPos = false;
+	m_PlayerInfo.bEvent = false;
+}
+void CPlayer::Check_Anim(_float fTimeDelta)
+{
+	if (m_iAnimIndex == 2)
+	{
+		m_fStartBattle += fTimeDelta;
+		m_bChangeAnim = true;
+		if (m_ChangePoke && m_pModelCom->Get_End(m_iAnimIndex))
+		{
+			m_pModelCom->Set_End(m_iAnimIndex);
+			m_iAnimIndex = 0;
+			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+			m_bChangeAnim = false;
+			m_ChangePoke = false;
+		}
+		if (!m_ChangePoke && m_iAnimIndex == 2)
+		{
+			m_pModelCom->Set_Loop(m_iAnimIndex);
+			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+			m_ChangePoke = true;
+			m_fStartBattle = 0.f;
+		}
+	}
+	if (m_ChangePoke && m_bChangeAnim)
+	{
+		m_pModelCom->Play_Animation(fTimeDelta*0.8f);
+		if (m_fStartBattle > 1.8f)
+		{
+			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+			XMVector3Normalize(vLook);
+			_vector vPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 35.f;
+			_vector vTargetPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 200.f;
+			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(m_pBag->Get_iChangePoke()))->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, vPos);
+			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(m_pBag->Get_iChangePoke()))->Get_Transfrom()->LookAt(vTargetPos);
+			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(m_pBag->Get_iChangePoke()))->Set_AnimIndex(0);
+			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(m_pBag->Get_iChangePoke()))->Set_BattleMap(true, 0.f);
+		}
+	}
+}
+void CPlayer::OnNavi()
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	CVIBuffer_Navigation*		pVIBuffer_Navigation = (CVIBuffer_Navigation*)pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Field"), TEXT("Com_Navigation"), 0);
+	if (nullptr == pVIBuffer_Navigation)
+		return;
+
+	CTransform*		pTransform_Navigation = (CTransform*)pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Field"), TEXT("Com_Transform"), 0);
+	if (nullptr == pTransform_Navigation)
+		return;
+
+	_vector		vPosition = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+	
+	vPosition.m128_f32[1] = pVIBuffer_Navigation->Compute_Height(vPosition, pTransform_Navigation->Get_WorldMatrix(), m_pNavigationCom->Get_CellPoints());
+
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPosition);
+
+	RELEASE_INSTANCE(CGameInstance);
 }
 HRESULT CPlayer::SetUp_ShaderResources()
 {
@@ -362,6 +470,12 @@ void CPlayer::Free()
 {
 	__super::Free();
 
+	for (auto iter = m_vBattleScript.begin(); iter != m_vBattleScript.end();)
+		iter = m_vBattleScript.erase(iter);
+
+	m_vBattleScript.clear();
+
+	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pAABBCom);
 	Safe_Release(m_pOBBCom);
 	Safe_Release(m_pModelCom);

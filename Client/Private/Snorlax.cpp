@@ -27,24 +27,9 @@ HRESULT CSnorlax::Initialize(void * pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_PokemonInfo.strName = TEXT("잠만보");
-	m_PokemonInfo.strInfo = TEXT("잠자고 있을 때 이외에는 계속 먹이를 먹는다.\n 하루에 400kg을 먹지 않으면 배가 부르지 않는다.");
-	m_PokemonInfo.strChar = TEXT("지방러");
-	m_PokemonInfo.iPokeNum = 143;
-	m_PokemonInfo.iMaxHp = 300;
-	m_PokemonInfo.iHp = m_PokemonInfo.iMaxHp;
-	m_PokemonInfo.iDmg = 170;
-	m_PokemonInfo.iSDmg = 100;
-	m_PokemonInfo.iDef = 150;
-	m_PokemonInfo.iSDef = 170;
-	m_PokemonInfo.iSpeed = 80;
-	m_PokemonInfo.iLv = 5;
-	m_PokemonInfo.iMaxExp = 20;
-	m_PokemonInfo.iExp = 0;
-	m_PokemonInfo.iSex = rand() % 2;
-	m_PokemonInfo.iBallNum = 0;
-	m_PokemonInfo.bRide = true;
-	m_PlayerInfo.bRide = false;
+	Set_Stats();
+
+
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tackle"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum1)))
@@ -91,16 +76,28 @@ void CSnorlax::Tick(_float fTimeDelta)
 	if (g_PokeInfo || g_bPokeDeck || m_PlayerInfo.bRide)
 		m_pModelCom->Play_Animation(fTimeDelta);
 
+	if (m_bBattleMap)
+	{
+		Battle(fTimeDelta);
+	}
 }
 
 void CSnorlax::Late_Tick(_float fTimeDelta)
 {
 
-
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	
+	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), m_pTransformCom->Get_Scale()))
+	{
+		
+	}
 	if ((g_PokeInfo || g_bPokeDeck) && m_bOnOff && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UIPOKE, this);
 	else if (m_PlayerInfo.bRide && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	else if (m_bBattleMap && g_Battle && nullptr != m_pRendererCom)
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 HRESULT CSnorlax::Render()
@@ -267,6 +264,107 @@ void CSnorlax::CheckRide()
 {
 	if (!dynamic_cast<CGameObj*>(m_pTarget)->Get_Ride())
 		m_PlayerInfo.bRide = false;
+}
+void CSnorlax::Battle(_float fTimeDelta)
+{
+	if (!m_bBattle)
+	{
+		m_pTransformCom->Set_Scale(XMVectorSet(0.075f, 0.075f, 0.075f, 0.f));
+		m_fStartBattle += fTimeDelta;
+		if (m_iAnimIndex == 0)
+		{
+			m_pModelCom->Set_Loop(m_iAnimIndex);
+			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+		}
+		if (!m_bBrath && (m_fStartBattle > m_fBattleMapTime) && m_pModelCom->Get_End(m_iAnimIndex))
+		{
+			m_pModelCom->Set_End(m_iAnimIndex);
+			m_iAnimIndex = 1;
+			m_pModelCom->Set_Loop(m_iAnimIndex);
+			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+			m_bBrath = true;
+		}
+		if (m_bBattleMap)
+		{
+			if (m_bBrath && m_pModelCom->Get_End(m_iAnimIndex))
+			{
+				m_pModelCom->Set_End(m_iAnimIndex);
+				m_iAnimIndex = 2;
+				m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+				m_bBattle = true;
+			}
+
+		}
+	}
+	if (m_bAttack && m_pModelCom->Get_End(m_iAnimIndex))
+	{
+		m_pModelCom->Set_End(m_iAnimIndex);
+		m_iAnimIndex = 2;
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+		m_bAttack = false;
+	}
+	if (m_iAnimIndex == 3 || m_iAnimIndex == 4)
+	{
+		m_pModelCom->Set_Loop(m_iAnimIndex);
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+		m_bAttack = true;
+	}
+	if (m_bHit && m_pModelCom->Get_End(m_iAnimIndex))
+	{
+		m_pModelCom->Set_End(m_iAnimIndex);
+		m_iAnimIndex = 2;
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+		m_bHit = false;
+	}
+	if (m_iAnimIndex == 5)
+	{
+		m_pModelCom->Set_Loop(m_iAnimIndex);
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+		m_bHit = true;
+	}
+	if (m_bDown && m_pModelCom->Get_End(m_iAnimIndex))
+	{
+		m_pModelCom->Set_End(m_iAnimIndex);
+		m_bStopAnim = true;
+	}
+	if (!m_bDown && m_iAnimIndex == 6)
+	{
+		m_pModelCom->Set_Loop(m_iAnimIndex);
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+		m_bDown = true;
+	}
+
+	if (!m_bStopAnim)
+		m_pModelCom->Play_Animation(fTimeDelta * 1.1f);
+}
+void CSnorlax::Set_Stats()
+{
+	_float fHp = 160.f;
+	_float fDmg = 110.f;
+	_float fDef = 65.f;
+	_float fSDmg = 65.f;
+	_float fSDef = 110.f;
+	_float fSpeed = 30.f;
+
+	m_PokemonInfo.strName = TEXT("잠만보");
+	m_PokemonInfo.strInfo = TEXT("잠자고 있을 때 이외에는 계속 먹이를 먹는다.\n 하루에 400kg을 먹지 않으면 배가 부르지 않는다.");
+	m_PokemonInfo.strChar = TEXT("지방러");
+	m_PokemonInfo.iPokeNum = 143;
+	m_PokemonInfo.iLv = 12;
+	m_PokemonInfo.iMaxHp = _int(((fHp * 2.f) + 31.f + 100) * (m_PokemonInfo.iLv / 100.f) + 10.f);
+	m_PokemonInfo.iHp = m_PokemonInfo.iMaxHp;
+	m_PokemonInfo.iDmg = _int(((fDmg * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
+	m_PokemonInfo.iSDmg = _int(((fSDmg * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
+	m_PokemonInfo.iDef = _int(((fDef * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
+	m_PokemonInfo.iSDef = _int(((fSDef * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
+	m_PokemonInfo.iSpeed = _int(((fSpeed * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
+	m_PokemonInfo.iMaxExp = 20;
+	m_PokemonInfo.iExp = 0;
+	m_PokemonInfo.iSex = rand() % 2;
+	m_PokemonInfo.iBallNum = 0;
+	m_PokemonInfo.bRide = true;
+	m_PlayerInfo.bRide = false;
+	m_PokemonInfo.bEvolution = false;
 }
 HRESULT CSnorlax::SetUp_ShaderResources()
 {

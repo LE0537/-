@@ -26,7 +26,7 @@ HRESULT CMari::Initialize_Prototype()
 
 HRESULT CMari::Initialize(void * pArg)
 {
-
+	m_vecPoke.reserve(6);
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 	
@@ -39,8 +39,36 @@ HRESULT CMari::Initialize(void * pArg)
 	m_pCamera = *(&((CLevel_GamePlay::LOADFILE*)pArg)->pCamera);
 	m_vMyBattlePos = dynamic_cast<CGameObj*>(m_pTarget)->Get_TargetBattlePos();
 
+	CGameObject* tInfo;
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+		return E_FAIL;
+	m_vecPoke.push_back(tInfo);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Garomakguri"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+		return E_FAIL;
+	m_vecPoke.push_back(tInfo);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Slowbro"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+		return E_FAIL;
+	m_vecPoke.push_back(tInfo);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Meowth"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+		return E_FAIL;
+	m_vecPoke.push_back(tInfo);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+		return E_FAIL;
+	m_vecPoke.push_back(tInfo);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+		return E_FAIL;
+	m_vecPoke.push_back(tInfo);
+
 	RELEASE_INSTANCE(CGameInstance);
 
+	m_iPokeMaxSize = 3;
+	m_iPokeSize = 0;
 	m_PlayerInfo.strName = L"마리";
  	m_PlayerInfo.bEvent = false;
 	m_PlayerInfo.bBattle = false;
@@ -59,7 +87,11 @@ HRESULT CMari::Initialize(void * pArg)
 void CMari::Tick(_float fTimeDelta)
 {
 	if (g_Battle)
-		Battle(fTimeDelta);
+	{
+		Check_Anim(fTimeDelta);
+		if(!m_bChangeAnim && g_Battle)
+			Battle(fTimeDelta);
+	}
 	else
 	{
 		m_fEventTime += fTimeDelta;
@@ -181,7 +213,23 @@ void CMari::Ready_Script()
 	m_vNormalScript.push_back(TEXT("난 너가 UI를 다 했는지 안했는지 알 수 있는 방법이 있다고!"));
 	m_vNormalScript.push_back(TEXT("바로! 포켓몬 승부다!"));
 
-	m_vBattleScript.push_back(TEXT("봐주지 않겠어 전력으로 간다!!\n가라!!      해월막구리!!     너로 정했다!"));
+	wstring szScriptBegin = TEXT("봐주지 않겠어 전력으로 간다!!\n가라!!     '");
+	wstring szScriptEnd = TEXT("'!!     너로 정했다!");
+	szScriptBegin += dynamic_cast<CGameObj*>(m_vecPoke[0])->Get_PokeInfo().strName;
+	szScriptBegin += szScriptEnd;
+	m_vBattleScript.push_back(szScriptBegin);
+}
+
+void CMari::Ready_LoseText()
+{
+	for (auto iter = m_vBattleScript.begin(); iter != m_vBattleScript.end();)
+		iter = m_vBattleScript.erase(iter);
+
+	m_vBattleScript.clear();
+
+
+	wstring strTextBegin = TEXT("내...내가...지다니...믿을 수 없어...");
+	m_vBattleScript.push_back(strTextBegin);
 }
 
 void CMari::Check_Coll()
@@ -201,6 +249,8 @@ void CMari::Check_Coll()
 		m_PlayerInfo.bEvent = true;
 		m_bEvent = true;
 		m_fEventTime = 0.f;
+		dynamic_cast<CPlayer*>(m_pTarget)->Set_TargetPoke(&m_vecPoke);
+		dynamic_cast<CPlayer*>(m_pTarget)->Set_BattleTarget(this);
 		if (!dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
 			dynamic_cast<CGameObj*>(m_pTarget)->OnOffEvent();
 		dynamic_cast<CCamera_Dynamic*>(m_pCamera)->Set_Target(this);
@@ -236,17 +286,27 @@ void CMari::BattleStart(_float fTimeDelta)
 		m_pModelCom->Set_Loop(1);
 		m_pModelCom->Set_CurrentAnimIndex(1);
 		m_pModelCom->Play_Animation(fTimeDelta * 1.25f);
-		dynamic_cast<CBall*>(m_pBall)->Set_Render(true, 0);
+		dynamic_cast<CBall*>(m_pBall)->Set_Render(true, 2);
 		m_pBall->Tick(fTimeDelta);
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, m_pBall);
-		
-		
-		if ((m_fStartBattle > 0.2f) && m_pModelCom->Get_End())
+		if (m_fStartBattle > 3.25f)
+		{
+			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+			XMVector3Normalize(vLook);
+			_vector vPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 35.f;
+			_vector vTargetPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 200.f;
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSize])->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, vPos);
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSize])->Get_Transfrom()->LookAt(vTargetPos);
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSize])->Set_AnimIndex(0);
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSize])->Set_BattleMap(true,3.7f);
+		}
+		if ((m_fStartBattle > 0.2f) && m_pModelCom->Get_End(1))
 		{
 			m_bBattle = true;
-			m_pModelCom->Set_End();
+			m_pModelCom->Set_End(1);
 			dynamic_cast<CPlayer*>(m_pTarget)->Set_BattleStart();
 			dynamic_cast<CBall*>(m_pBall)->Set_Render(false, 0);
+	
 		}
 		if (!m_bBattleText)
 		{
@@ -272,15 +332,104 @@ void CMari::BattleStart(_float fTimeDelta)
 	{
 		m_pModelCom->Set_CurrentAnimIndex(0);
 		m_pModelCom->Play_Animation(fTimeDelta);
-		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, m_pBall);
 	}
 
+}
+
+void CMari::Check_Anim(_float fTimeDelta)
+{
+	if (m_iAnimIndex == 1 || m_iAnimIndex == 4)
+	{
+		m_fStartBattle += fTimeDelta;
+		m_bChangeAnim = true;
+		if (m_ChangePoke && m_pModelCom->Get_End(m_iAnimIndex))
+		{
+			m_pModelCom->Set_End(m_iAnimIndex);
+			m_iAnimIndex = 0;
+			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+			m_bChangeAnim = false;
+			m_ChangePoke = false;
+		}
+		if (!m_ChangePoke && m_iAnimIndex == 1)
+		{
+			m_pModelCom->Set_Loop(m_iAnimIndex);
+			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+			m_ChangePoke = true;
+			m_fStartBattle = 0.f;
+		}
+
+		if (m_bLose && m_pModelCom->Get_End(m_iAnimIndex))
+		{
+			m_pModelCom->Set_End(m_iAnimIndex);
+			m_iAnimIndex = 0;
+			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+			m_bChangeAnim = false;
+			dynamic_cast<CPlayer*>(m_pTarget)->Battle_Win();
+			m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION,XMLoadFloat4(&m_vPrevPos));
+			m_pTransformCom->LookAt(dynamic_cast<CGameObj*>(m_pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION));
+			m_bBattleText = false;
+			m_bBattle = false;
+			m_fStartBattle = 0.f;
+			m_ChangePoke = false;
+			g_Battle = false;
+			return;
+		}
+		if (!m_bLose && m_iAnimIndex == 4)
+		{
+			m_pModelCom->Set_Loop(m_iAnimIndex);
+			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+			m_bLose = true;
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+			Ready_LoseText();
+			CTextBox::TINFO tTInfo;
+
+			tTInfo.iScriptSize = (_int)m_vBattleScript.size();
+			tTInfo.pTarget = this;
+			tTInfo.pScript = new wstring[m_vBattleScript.size()];
+			tTInfo.iType = 4;
+			for (_int i = 0; i < m_vBattleScript.size(); ++i)
+				tTInfo.pScript[i] = m_vBattleScript[i];
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
+				return;
+
+			RELEASE_INSTANCE(CGameInstance);
+		}
+	}
+
+	if (m_ChangePoke && m_bChangeAnim)
+	{
+		m_pModelCom->Play_Animation(fTimeDelta * 1.25f);
+		dynamic_cast<CBall*>(m_pBall)->Set_Render(true, 2);
+		m_pBall->Tick(fTimeDelta);
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, m_pBall);
+
+		if (m_fStartBattle > 3.25f)
+		{
+			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+			XMVector3Normalize(vLook);
+			_vector vPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 35.f;
+			_vector vTargetPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 200.f;
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSize])->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, vPos);
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSize])->Get_Transfrom()->LookAt(vTargetPos);
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSize])->Set_AnimIndex(0);
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSize])->Set_BattleMap(true, 0.f);
+		}
+	}
+	if (m_bLose && m_bChangeAnim)
+	{
+		m_pModelCom->Play_Animation(fTimeDelta * 1.2f);
+	}
 }
 
 void CMari::Battle(_float fTimeDelta)
 {
 	BattleStart(fTimeDelta);
-
+	if (!m_bPrevPos)
+	{
+		XMStoreFloat4(&m_vPrevPos, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+		m_bPrevPos = true;
+	}
 	_vector vTargetPos = dynamic_cast<CGameObj*>(m_pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_vMyBattlePos));
 	m_pTransformCom->LookAt(vTargetPos);
@@ -370,6 +519,12 @@ void CMari::Free()
 		iter = m_vNormalScript.erase(iter);
 
 	m_vNormalScript.clear();
+
+
+	for (auto iter = m_vBattleScript.begin(); iter != m_vBattleScript.end();)
+		iter = m_vBattleScript.erase(iter);
+
+	m_vBattleScript.clear();
 
 	Safe_Release(m_pBall);
 	Safe_Release(m_pAABBCom);

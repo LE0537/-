@@ -80,7 +80,10 @@ HRESULT CField::Render()
 			return E_FAIL;
 
 	}
-
+	if (g_CollBox)
+	{
+		m_pNavigationCom->Render_Navigation();
+	}
 	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }
@@ -106,6 +109,10 @@ HRESULT CField::Ready_Components()
 
 	/* For.Com_Model*/
 	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Prototype_Component_Model_Field"), (CComponent**)&m_pModelCom)))
+		return E_FAIL;
+
+	/* For.Com_Navigation */
+	if (FAILED(__super::Add_Components(TEXT("Com_Navigation"), LEVEL_STATIC, TEXT("Prototype_Component_Navigation"), (CComponent**)&m_pNavigationCom)))
 		return E_FAIL;
 
 	return S_OK;
@@ -168,5 +175,6 @@ void CField::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pModelCom);
 }

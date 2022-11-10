@@ -115,6 +115,7 @@ HRESULT CModel::Play_Animation(_float fTimeDelta)
 		if (m_Animations[m_iCurrentAnimIndex]->Get_AnimEnd())
 		{
 			m_Animations[m_iCurrentAnimIndex]->Set_AnimEnd();
+			m_Animations[m_iPrevAnimIndex]->Reset3();
 			m_iCurrentAnimIndex = m_iPrevAnimIndex;
 			m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(fTimeDelta * 1.3f);
 		}
@@ -148,14 +149,15 @@ HRESULT CModel::Render(CShader * pShader, _uint iMeshIndex, _uint iPassIndex)
 }
 
 
-_bool CModel::Get_End()
+_bool CModel::Get_End(_int iAnimIndex)
 {
-	return m_Animations[m_iCurrentAnimIndex]->Get_End();
+	return m_Animations[iAnimIndex]->Get_End();
 }
 
-void CModel::Set_End()
+void CModel::Set_End(_int iAnimIndex)
 {
-	m_Animations[m_iCurrentAnimIndex]->Set_End();
+	m_Animations[iAnimIndex]->Set_End();
+//	m_Animations[iAnimIndex]->Reset3();
 }
 
 void CModel::Set_Loop(_uint iAnimIndex)

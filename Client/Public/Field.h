@@ -11,6 +11,7 @@ class CRenderer;
 class CTransform;
 class CVIBuffer_Rect;
 class CModel;
+class CNavigation;
 END
 
 
@@ -36,7 +37,7 @@ private:
 
 private:
 	CModel*					m_pModelCom = nullptr;
-
+	CNavigation*			m_pNavigationCom = nullptr;
 
 
 

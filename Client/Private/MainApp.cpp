@@ -10,6 +10,7 @@ bool		g_PokeInfo = false;
 bool		g_bPokeDeck = false;
 bool		g_CollBox = false;
 bool		g_Battle = false;
+bool		g_BattleBag = false;
 
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::Get_Instance())

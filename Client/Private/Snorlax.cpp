@@ -51,7 +51,7 @@ HRESULT CSnorlax::Initialize(void * pArg)
 	m_PokemonInfo.eStatInfo = STATINFO_END;
 
 	m_pModelCom->Set_CurrentAnimIndex(2);
-
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(-50000.f, -50000.f, -50000.f, 1.f));
 	return S_OK;
 }
 

@@ -70,6 +70,7 @@ private:
 
 	BATTLEINFO				m_tInfo;
 	_int					m_iPlayerIndex = 0;
+	_int					m_iPlayerHPIndex = 0;
 	_int					m_iTargetIndex = 0;
 	_int					m_iTargetHPIndex = 0;
 	//Battle

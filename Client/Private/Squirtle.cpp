@@ -50,7 +50,7 @@ HRESULT CSquirtle::Initialize(void * pArg)
 	m_PokemonInfo.eStatInfo = STATINFO_END;
 
 	m_pModelCom->Set_CurrentAnimIndex(2);
-
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(-50000.f, -50000.f, -50000.f, 1.f));
 	return S_OK;
 }
 
@@ -329,7 +329,7 @@ void CSquirtle::Set_Stats()
 	m_PokemonInfo.iSDef = _int(((fSDef * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
 	m_PokemonInfo.iSpeed = _int(((fSpeed * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
 	m_PokemonInfo.iMaxExp = 20;
-	m_PokemonInfo.iExp = 0;
+	m_PokemonInfo.iExp = 10;
 	m_PokemonInfo.iSex = rand() % 2;
 	m_PokemonInfo.iBallNum = 0;
 	m_PokemonInfo.bRide = false;

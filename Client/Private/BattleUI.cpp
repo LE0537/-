@@ -73,7 +73,6 @@ void CBattleUI::Tick(_float fTimeDelta)
 
 void CBattleUI::Late_Tick(_float fTimeDelta)
 {
-
 	if (!g_BattleBag && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup_Front(CRenderer::RENDER_UI, this);
 	
@@ -419,14 +418,15 @@ HRESULT CBattleUI::SetUp_ShaderPlayer()
 	_float HpfX = 153.f;
 	_float HpfY = 639.f;
 	_float3 HpvScale = { HpfSizeX,HpfSizeY,0.f };
-	_float fShaderHp = (_float)dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_tInfo.pPlayer->Get_iChangePoke()))->Get_PokeInfo().iHp / (_float)dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_tInfo.pPlayer->Get_iChangePoke()))->Get_PokeInfo().iMaxHp;
+	_float fShaderHp = (_float)dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerHPIndex))->Get_PokeInfo().iHp / (_float)dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerHPIndex))->Get_PokeInfo().iMaxHp;
 	fHp = HpfSizeX * fShaderHp;
-
+	if (fHp <= 0)
+		fHp = 1.f;
 	HpfX -= (HpfSizeX - fHp) / 2.f;
 
-	HpvScale = { fHp,HpfSizeY,0.f };
+	HpvScale = { fHp,HpfSizeY,1.f };
 	m_pTransformPlayer[3]->Set_Scale(XMLoadFloat3(&HpvScale));
-	m_pTransformPlayer[3]->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(HpfX - g_iWinSizeX * 0.5f, -HpfY + g_iWinSizeY * 0.5f, 0.f, 1.f));
+	m_pTransformPlayer[3]->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(HpfX - (_float)g_iWinSizeX * 0.5f, -HpfY + (_float)g_iWinSizeY * 0.5f, 0.f, 1.f));
 
 	if (FAILED(m_pShaderPlayer[3]->Set_RawValue("g_fHP", &fShaderHp, sizeof(_float))))
 		return E_FAIL;
@@ -442,7 +442,7 @@ HRESULT CBattleUI::SetUp_ShaderPlayer()
 	m_pShaderPlayer[3]->Begin(1);
 	if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().eStatInfo != STUN)
 		m_pVIBufferPlayer[3]->Render();
-
+	
 	_float fExp = 0.f;
 	_float ExpfSizeX = 116.f;
 	_float ExpfSizeY = 6.f;
@@ -1277,7 +1277,7 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 				}
 				if (m_fDotDeal == m_iPlayerFinalDmg)
 				{
-					if (!m_bPokeDead && m_fDelayTime > 0.8f)
+					if (!m_bPokeDead && m_fDelayTime > m_fTextSizeTime)
 					{
 						m_bCheckAttack2 = true;
 						m_fDelayTime = 0.f;
@@ -1296,7 +1296,7 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 					{
 						dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_StatInfo(STUN);
 						dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_AnimIndex(6);
-			
+					
 						m_bPokeDead = true;
 						m_fDotDeal = m_iTargetFinalDmg - 1;
 						m_fDelayTime = 0.f;
@@ -1305,7 +1305,7 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 				}
 				if (m_fDotDeal == m_iTargetFinalDmg)
 				{
-					if (!m_bPokeDead && m_fDelayTime > 0.8f)
+					if (!m_bPokeDead && m_fDelayTime > m_fTextSizeTime)
 					{
 						m_bCheckAttack2 = true;
 						m_fDelayTime = 0.f;
@@ -1385,7 +1385,7 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 					{
 						dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_StatInfo(STUN);
 						dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_AnimIndex(6);
-				
+					
 						m_bPokeDead = true;
 						m_fDotDeal = m_iTargetFinalDmg - 1;
 						m_fDelayTime = 0.f;
@@ -1435,6 +1435,7 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 	if (m_bBattleBagPoke && !g_BattleBag)
 	{
 		m_iPlayerIndex = m_tInfo.pPlayer->Get_iChangePoke();
+		m_iPlayerHPIndex = m_tInfo.pPlayer->Get_iChangePoke();
 		Ready_PlayerChange_Poke();
 		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 		CTextBox::TINFO tTInfo;

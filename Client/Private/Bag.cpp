@@ -138,7 +138,7 @@ void CBag::Tick(_float fTimeDelta)
 		else if (m_bSwap)
 			Key_PokeInput();
 	}
-	if (g_BattleBag)
+	if (m_bBattlePokeDead)
 	{
 		BattlePokeKey();
 	}
@@ -146,7 +146,7 @@ void CBag::Tick(_float fTimeDelta)
 
 void CBag::Late_Tick(_float fTimeDelta)
 {
-	if (g_bBag || g_BattleBag)
+	if (g_bBag || m_bBattlePokeDead)
 	{
 		if (nullptr != m_pRendererCom)
 			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
@@ -155,7 +155,7 @@ void CBag::Late_Tick(_float fTimeDelta)
 
 HRESULT CBag::Render()
 {
-	if (g_bBag || g_BattleBag)
+	if (g_bBag || m_bBattlePokeDead)
 	{
 		if (nullptr == m_pShaderCom || nullptr == m_pVIBufferCom || nullptr == m_pShaderCom2 || nullptr == m_pVIBufferCom2 || nullptr == m_pShaderCom3 || nullptr == m_pVIBufferCom3)
 			return E_FAIL;
@@ -402,23 +402,26 @@ HRESULT CBag::SetUp_PokeResources()
 		
 		if (dynamic_cast<CGameObj*>(m_vecPoke[i - 6])->Get_PokeInfo().iPokeNum != 999)
 		{
-			_float fShaderHp = (_float)dynamic_cast<CGameObj*>(m_vecPoke[i - 6])->Get_PokeInfo().iHp / (_float)dynamic_cast<CGameObj*>(m_vecPoke[i - 6])->Get_PokeInfo().iMaxHp;
-			fHp = HpfSizeX * fShaderHp;
-		
-			HpfX -= (HpfSizeX - fHp) / 2.f;
-			
-			HpvScale = { fHp,HpfSizeY,0.f };
-			m_pTransformPoke[i]->Set_Scale(XMLoadFloat3(&HpvScale));
-			m_pTransformPoke[i]->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(HpfX - g_iWinSizeX * 0.5f, -HpfY + g_iWinSizeY * 0.5f, 0.f, 1.f));
-			HpfY += 96.f;
-			HpfX = 255.f;
-			
-			if (FAILED(m_pShaderPoke[i]->Set_RawValue("g_fHP", &fShaderHp, sizeof(_float))))
-				return E_FAIL;
-			if (FAILED(m_pShaderPoke[i]->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(7))))
-				return E_FAIL;
-			m_pShaderPoke[i]->Begin(1);
-			m_pVIBufferPoke[i]->Render();
+			if (dynamic_cast<CGameObj*>(m_vecPoke[i - 6])->Get_PokeInfo().iHp > 0)
+			{
+				_float fShaderHp = (_float)dynamic_cast<CGameObj*>(m_vecPoke[i - 6])->Get_PokeInfo().iHp / (_float)dynamic_cast<CGameObj*>(m_vecPoke[i - 6])->Get_PokeInfo().iMaxHp;
+				fHp = HpfSizeX * fShaderHp;
+
+				HpfX -= (HpfSizeX - fHp) / 2.f;
+
+				HpvScale = { fHp,HpfSizeY,0.f };
+				m_pTransformPoke[i]->Set_Scale(XMLoadFloat3(&HpvScale));
+				m_pTransformPoke[i]->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(HpfX - g_iWinSizeX * 0.5f, -HpfY + g_iWinSizeY * 0.5f, 0.f, 1.f));
+				HpfY += 96.f;
+				HpfX = 255.f;
+
+				if (FAILED(m_pShaderPoke[i]->Set_RawValue("g_fHP", &fShaderHp, sizeof(_float))))
+					return E_FAIL;
+				if (FAILED(m_pShaderPoke[i]->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(7))))
+					return E_FAIL;
+				m_pShaderPoke[i]->Begin(1);
+				m_pVIBufferPoke[i]->Render();
+			}
 		}
 	}
 	for (_int i = 12; i < 18; ++i)
@@ -1359,7 +1362,7 @@ void CBag::BattlePokeKey()
 			m_UsePos = 0;
 			m_bUse = false;
 			m_iSwapPoke = 99;
-			g_BattleBag = false;
+			m_bBattlePokeDead = false;
 		}
 	}
 	RELEASE_INSTANCE(CGameInstance);

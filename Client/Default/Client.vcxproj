@@ -190,6 +190,7 @@
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Logo.h" />
     <ClInclude Include="..\Public\Loader.h" />
+    <ClInclude Include="..\Public\Lv_Up.h" />
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\public\Mari.h" />
     <ClInclude Include="..\public\Meowth.h" />
@@ -236,6 +237,7 @@
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
+    <ClCompile Include="..\private\Lv_Up.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\private\Mari.cpp" />
     <ClCompile Include="..\Private\Meowth.cpp" />

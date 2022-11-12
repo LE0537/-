@@ -148,6 +148,9 @@
     <Filter Include="02.GameObjects\99.GameObj\07.Ball">
       <UniqueIdentifier>{e848a78b-1331-44c3-b21e-acfaeb82d4e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\05.Lv_UP">
+      <UniqueIdentifier>{d89197f9-f18f-4c45-8f9a-cd472105b5d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -291,6 +294,9 @@
     <ClInclude Include="..\public\Garomakguri.h">
       <Filter>02.GameObjects\99.GameObj\01.Pokemon\152.Garomakguri</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Lv_Up.h">
+      <Filter>02.GameObjects\99.GameObj\04.UI\05.Lv_UP</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -418,6 +424,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Ball.cpp">
       <Filter>02.GameObjects\99.GameObj\07.Ball</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Lv_Up.cpp">
+      <Filter>02.GameObjects\99.GameObj\04.UI\05.Lv_UP</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

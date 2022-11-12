@@ -40,6 +40,7 @@ private:
 	void	CheckRide();
 	void	Battle(_float fTimeDelta);
 	void	Set_Stats();
+	void	LvUp();
 private:
 	CModel*					m_pModelCom = nullptr;
 

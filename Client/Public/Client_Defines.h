@@ -24,6 +24,6 @@ extern bool		g_PokeInfo;
 extern bool		g_bPokeDeck;
 extern bool     g_CollBox;
 extern bool		g_Battle;
-extern bool		g_BattleBag;
+
 
 using namespace Client;

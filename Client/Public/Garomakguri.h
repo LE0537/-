@@ -37,6 +37,7 @@ private:
 	void	Key_Input(_float fTimeDelta);
 	void	Battle(_float fTimeDelta);
 	void	Set_Stats();
+	void	LvUp();
 private:
 	CModel*					m_pModelCom = nullptr;
 

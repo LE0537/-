@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Bag.h"
 #include "TextBox.h"
+#include "SoundMgr.h"
 
 CBattleUI::CBattleUI(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -54,7 +55,7 @@ HRESULT CBattleUI::Initialize(void * pArg)
 
 void CBattleUI::Tick(_float fTimeDelta)
 {
-	if (!g_BattleBag)
+	if (!m_tInfo.pPlayer->Get_BattlePokeDead())
 	{
 		if (m_bPlayerAttack)
 		{
@@ -67,13 +68,17 @@ void CBattleUI::Tick(_float fTimeDelta)
 			Key_Input();
 		}
 		if (!g_Battle)
+		{
 			m_bDead = true;
+			CSoundMgr::Get_Instance()->BGM_Stop();
+			CSoundMgr::Get_Instance()->PlayBGM(TEXT("hov.wav"), 0.75f);
+		}
 	}
 }
 
 void CBattleUI::Late_Tick(_float fTimeDelta)
 {
-	if (!g_BattleBag && nullptr != m_pRendererCom)
+	if (!m_tInfo.pPlayer->Get_BattlePokeDead() && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup_Front(CRenderer::RENDER_UI, this);
 	
 }
@@ -412,65 +417,67 @@ HRESULT CBattleUI::SetUp_ShaderPlayer()
 		m_pShaderPlayer[2]->Begin(7);
 		m_pVIBufferPlayer[2]->Render();
 	}
-	_float fHp = 0.f;
-	_float HpfSizeX = 258.f;
-	_float HpfSizeY = 16.f;
-	_float HpfX = 153.f;
-	_float HpfY = 639.f;
-	_float3 HpvScale = { HpfSizeX,HpfSizeY,0.f };
-	_float fShaderHp = (_float)dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerHPIndex))->Get_PokeInfo().iHp / (_float)dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerHPIndex))->Get_PokeInfo().iMaxHp;
-	fHp = HpfSizeX * fShaderHp;
-	if (fHp <= 0)
-		fHp = 1.f;
-	HpfX -= (HpfSizeX - fHp) / 2.f;
+	if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerHPIndex))->Get_PokeInfo().iHp > 0)
+	{
+		_float fHp = 0.f;
+		_float HpfSizeX = 258.f;
+		_float HpfSizeY = 16.f;
+		_float HpfX = 153.f;
+		_float HpfY = 639.f;
+		_float3 HpvScale = { HpfSizeX,HpfSizeY,0.f };
+		_float fShaderHp = (_float)dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerHPIndex))->Get_PokeInfo().iHp / (_float)dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerHPIndex))->Get_PokeInfo().iMaxHp;
+		fHp = HpfSizeX * fShaderHp;
+	
+		HpfX -= (HpfSizeX - fHp) / 2.f;
 
-	HpvScale = { fHp,HpfSizeY,1.f };
-	m_pTransformPlayer[3]->Set_Scale(XMLoadFloat3(&HpvScale));
-	m_pTransformPlayer[3]->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(HpfX - (_float)g_iWinSizeX * 0.5f, -HpfY + (_float)g_iWinSizeY * 0.5f, 0.f, 1.f));
+		HpvScale = { fHp,HpfSizeY,1.f };
+		m_pTransformPlayer[3]->Set_Scale(XMLoadFloat3(&HpvScale));
+		m_pTransformPlayer[3]->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(HpfX - (_float)g_iWinSizeX * 0.5f, -HpfY + (_float)g_iWinSizeY * 0.5f, 0.f, 1.f));
 
-	if (FAILED(m_pShaderPlayer[3]->Set_RawValue("g_fHP", &fShaderHp, sizeof(_float))))
-		return E_FAIL;
-	if (FAILED(m_pShaderPlayer[3]->Set_RawValue("g_WorldMatrix", &m_pTransformPlayer[3]->Get_World4x4_TP(), sizeof(_float4x4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderPlayer[3]->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderPlayer[3]->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderPlayer[3]->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom3->Get_SRV(7))))
-		return E_FAIL;
+		if (FAILED(m_pShaderPlayer[3]->Set_RawValue("g_fHP", &fShaderHp, sizeof(_float))))
+			return E_FAIL;
+		if (FAILED(m_pShaderPlayer[3]->Set_RawValue("g_WorldMatrix", &m_pTransformPlayer[3]->Get_World4x4_TP(), sizeof(_float4x4))))
+			return E_FAIL;
+		if (FAILED(m_pShaderPlayer[3]->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+			return E_FAIL;
+		if (FAILED(m_pShaderPlayer[3]->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+			return E_FAIL;
+		if (FAILED(m_pShaderPlayer[3]->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom3->Get_SRV(7))))
+			return E_FAIL;
 
-	m_pShaderPlayer[3]->Begin(1);
-	if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().eStatInfo != STUN)
+		m_pShaderPlayer[3]->Begin(1);
 		m_pVIBufferPlayer[3]->Render();
-	
-	_float fExp = 0.f;
-	_float ExpfSizeX = 116.f;
-	_float ExpfSizeY = 6.f;
-	_float ExpfX = 224.f;
-	_float ExpfY = 655.f;
-	_float3 ExpvScale = { ExpfSizeX,ExpfSizeY,0.f };
-	_float fShaderExp = (_float)dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().iExp / (_float)dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().iMaxExp;
-	
-	fExp = ExpfSizeX * fShaderExp;
+	}
+	if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().iExp > 0)
+	{
+		_float fExp = 0.f;
+		_float ExpfSizeX = 116.f;
+		_float ExpfSizeY = 6.f;
+		_float ExpfX = 224.f;
+		_float ExpfY = 655.f;
+		_float3 ExpvScale = { ExpfSizeX,ExpfSizeY,0.f };
+		_float fShaderExp = (_float)dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().iExp / (_float)dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().iMaxExp;
 
-	ExpfX -= (ExpfSizeX - fExp) / 2.f;
+		fExp = ExpfSizeX * fShaderExp;
 
-	ExpvScale = { fExp,ExpfSizeY,0.f };
-	m_pTransformPlayer[4]->Set_Scale(XMLoadFloat3(&ExpvScale));
-	m_pTransformPlayer[4]->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(ExpfX - g_iWinSizeX * 0.5f, -ExpfY + g_iWinSizeY * 0.5f, 0.f, 1.f));
+		ExpfX -= (ExpfSizeX - fExp) / 2.f;
 
-	if (FAILED(m_pShaderPlayer[4]->Set_RawValue("g_WorldMatrix", &m_pTransformPlayer[4]->Get_World4x4_TP(), sizeof(_float4x4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderPlayer[4]->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderPlayer[4]->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderPlayer[4]->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom3->Get_SRV(7))))
-		return E_FAIL;
+		ExpvScale = { fExp,ExpfSizeY,0.f };
+		m_pTransformPlayer[4]->Set_Scale(XMLoadFloat3(&ExpvScale));
+		m_pTransformPlayer[4]->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(ExpfX - g_iWinSizeX * 0.5f, -ExpfY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 
-	m_pShaderPlayer[4]->Begin(8);
-	m_pVIBufferPlayer[4]->Render();
+		if (FAILED(m_pShaderPlayer[4]->Set_RawValue("g_WorldMatrix", &m_pTransformPlayer[4]->Get_World4x4_TP(), sizeof(_float4x4))))
+			return E_FAIL;
+		if (FAILED(m_pShaderPlayer[4]->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+			return E_FAIL;
+		if (FAILED(m_pShaderPlayer[4]->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+			return E_FAIL;
+		if (FAILED(m_pShaderPlayer[4]->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom3->Get_SRV(7))))
+			return E_FAIL;
 
+		m_pShaderPlayer[4]->Begin(8);
+		m_pVIBufferPlayer[4]->Render();
+	}
 	if (FAILED(m_pShaderPlayer[5]->Set_RawValue("g_WorldMatrix", &m_pTransformPlayer[5]->Get_World4x4_TP(), sizeof(_float4x4))))
 		return E_FAIL;
 	if (FAILED(m_pShaderPlayer[5]->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
@@ -546,35 +553,37 @@ HRESULT CBattleUI::SetUp_ShaderTarget()
 		m_pShaderTarget[2]->Begin(7);
 		m_pVIBufferTarget[2]->Render();
 	}
-	_float fHp = 0.f;
-	_float HpfSizeX = 258.f;
-	_float HpfSizeY = 16.f;
-	_float HpfX = 1127.f;
-	_float HpfY = 79.f;
-	_float3 HpvScale = { HpfSizeX,HpfSizeY,0.f };
-	_float fShaderHp = (_float)dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetHPIndex])->Get_PokeInfo().iHp / (_float)dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetHPIndex])->Get_PokeInfo().iMaxHp;
-	fHp = HpfSizeX * fShaderHp;
+	if (dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().iHp > 0)
+	{
+		_float fHp = 0.f;
+		_float HpfSizeX = 258.f;
+		_float HpfSizeY = 16.f;
+		_float HpfX = 1127.f;
+		_float HpfY = 79.f;
+		_float3 HpvScale = { HpfSizeX,HpfSizeY,0.f };
+		_float fShaderHp = (_float)dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().iHp / (_float)dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().iMaxHp;
+		fHp = HpfSizeX * fShaderHp;
 
-	HpfX -= (HpfSizeX - fHp) / 2.f;
+		HpfX -= (HpfSizeX - fHp) / 2.f;
 
-	HpvScale = { fHp,HpfSizeY,0.f };
-	m_pTransformTarget[3]->Set_Scale(XMLoadFloat3(&HpvScale));
-	m_pTransformTarget[3]->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(HpfX - g_iWinSizeX * 0.5f, -HpfY + g_iWinSizeY * 0.5f, 0.f, 1.f));
+		HpvScale = { fHp,HpfSizeY,0.f };
+		m_pTransformTarget[3]->Set_Scale(XMLoadFloat3(&HpvScale));
+		m_pTransformTarget[3]->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(HpfX - g_iWinSizeX * 0.5f, -HpfY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 
-	if (FAILED(m_pShaderTarget[3]->Set_RawValue("g_fHP", &fShaderHp, sizeof(_float))))
-		return E_FAIL;
-	if (FAILED(m_pShaderTarget[3]->Set_RawValue("g_WorldMatrix", &m_pTransformTarget[3]->Get_World4x4_TP(), sizeof(_float4x4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderTarget[3]->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderTarget[3]->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderTarget[3]->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom3->Get_SRV(7))))
-		return E_FAIL;
+		if (FAILED(m_pShaderTarget[3]->Set_RawValue("g_fHP", &fShaderHp, sizeof(_float))))
+			return E_FAIL;
+		if (FAILED(m_pShaderTarget[3]->Set_RawValue("g_WorldMatrix", &m_pTransformTarget[3]->Get_World4x4_TP(), sizeof(_float4x4))))
+			return E_FAIL;
+		if (FAILED(m_pShaderTarget[3]->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+			return E_FAIL;
+		if (FAILED(m_pShaderTarget[3]->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+			return E_FAIL;
+		if (FAILED(m_pShaderTarget[3]->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom3->Get_SRV(7))))
+			return E_FAIL;
 
-	m_pShaderTarget[3]->Begin(1);
-	if(dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().eStatInfo != STUN)
+		m_pShaderTarget[3]->Begin(1);
 		m_pVIBufferTarget[3]->Render();
+	}
 
 	if (FAILED(m_pShaderTarget[4]->Set_RawValue("g_WorldMatrix", &m_pTransformTarget[4]->Get_World4x4_TP(), sizeof(_float4x4))))
 		return E_FAIL;
@@ -789,6 +798,15 @@ void CBattleUI::Render_AttackFonts()
 {
 }
 
+void CBattleUI::Change_Poke()
+{
+
+}
+
+void CBattleUI::Use_Item()
+{
+}
+
 void CBattleUI::Set_Pos()
 {
 	_float InfoSizeX = 233.f;
@@ -988,8 +1006,21 @@ void CBattleUI::Key_Input()
 	{
 		if (m_iSelect != 3)
 		{
-			SetSelectButton(DIR_DOWN);
-			++m_iSelect;
+			if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().eSkillNum2->iSkillNum != 99 && m_iSelect == 0)
+			{
+				SetSelectButton(DIR_DOWN);
+				++m_iSelect;
+			}
+			else if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().eSkillNum3->iSkillNum != 99 && m_iSelect == 1)
+			{
+				SetSelectButton(DIR_DOWN);
+				++m_iSelect;
+			}
+			else if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().eSkillNum4->iSkillNum != 99 && m_iSelect == 2)
+			{
+				SetSelectButton(DIR_DOWN);
+				++m_iSelect;
+			}
 		}
 	}
 	if (pGameInstance->Key_Down(DIK_RETURN))
@@ -1267,11 +1298,16 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 						dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Set_StatInfo(STUN);
 						dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Set_AnimIndex(6);
 	
-						if (m_iTargetIndex < dynamic_cast<CGameObj*>(m_tInfo.pBattleTarget)->Get_PokeMaxSize())
-							++m_iTargetHPIndex;
 						m_bPokeDead = true;
 						m_fDotDeal = m_iPlayerFinalDmg - 1;
 						m_fDelayTime = 0.f;
+						if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().iLv < 100)
+						{
+							m_fEXPTime = 0.f;
+							m_bGet_EXP = true;
+							m_iDotEXP = 0;
+							m_iTotalEXP = dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().iLv;
+						}
 					}
 					++m_fDotDeal;
 				}
@@ -1345,11 +1381,16 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 						dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Set_StatInfo(STUN);
 						dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Set_AnimIndex(6);
 	
-						if (m_iTargetIndex < dynamic_cast<CGameObj*>(m_tInfo.pBattleTarget)->Get_PokeMaxSize())
-							++m_iTargetHPIndex;
 						m_bPokeDead = true;
 						m_fDotDeal = m_iPlayerFinalDmg - 1;
 						m_fDelayTime = 0.f;
+						if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().iLv < 100)
+						{
+							m_fEXPTime = 0.f;
+							m_bGet_EXP = true;
+							m_iDotEXP = 0;
+							m_iTotalEXP = dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().iLv;
+						}
 					}
 					++m_fDotDeal;
 				}
@@ -1416,7 +1457,21 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 		}
 		m_fHPTime = 0.f;
 	}
-
+	if (m_bGet_EXP)
+	{
+		m_fEXPTime += fTimeDelta;
+		if (m_fEXPTime > 0.05f)
+		{
+			if (m_iDotEXP < m_iTotalEXP)
+				dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_PokeEXP(1);
+			
+			if (m_iDotEXP == m_iTotalEXP)
+				m_bGet_EXP = false;
+			
+			++m_iDotEXP;
+			m_fEXPTime = 0.f;
+		}
+	}
 
 	if (m_bCreateTextBox2 && !m_bCheckAttack3 && m_fHPTime > 1.f)
 	{
@@ -1432,7 +1487,7 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 		}
 		m_bCheckAttack3 = true;
 	}
-	if (m_bBattleBagPoke && !g_BattleBag)
+	if (m_bBattleBagPoke && !m_tInfo.pPlayer->Get_BattlePokeDead())
 	{
 		m_iPlayerIndex = m_tInfo.pPlayer->Get_iChangePoke();
 		m_iPlayerHPIndex = m_tInfo.pPlayer->Get_iChangePoke();
@@ -1494,27 +1549,39 @@ void CBattleUI::Check_Selected()
 		}
 		else
 		{
-			Use_PlayerSkill(m_iSelect);
+			if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().eSkillNum1->iPoint > 0)
+			{
+				Use_PlayerSkill(m_iSelect);
+				dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_PokePP1(-1);
+			}
 		}
 		break;
 	case 1:
 		if (!m_bSkill)
 		{
-		
+			Change_Poke();
 		}
 		else
 		{
-			Use_PlayerSkill(m_iSelect);
+			if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().eSkillNum2->iPoint > 0)
+			{
+				Use_PlayerSkill(m_iSelect);
+				dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_PokePP2(-1);
+			}
 		}
 		break;
 	case 2:
 		if (!m_bSkill)
 		{
-			
+			Use_Item();
 		}
 		else
 		{
-			Use_PlayerSkill(m_iSelect);
+			if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().eSkillNum3->iPoint > 0)
+			{
+				Use_PlayerSkill(m_iSelect);
+				dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_PokePP3(-1);
+			}
 		}
 		break;
 	case 3:
@@ -1524,7 +1591,11 @@ void CBattleUI::Check_Selected()
 		}
 		else
 		{
-			Use_PlayerSkill(m_iSelect);
+			if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().eSkillNum4->iPoint > 0)
+			{
+				Use_PlayerSkill(m_iSelect);
+				dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_PokePP4(-1);
+			}
 		}
 		break;
 	default:
@@ -2352,7 +2423,7 @@ _float CBattleUI::Check_Type(POKETYPE _eType, POKETYPE _eTargetType)
 
 void CBattleUI::Change_PlayerPoke(_float fTimeDelta)
 {
-	if (!g_BattleBag)
+	if (!m_tInfo.pPlayer->Get_BattlePokeDead())
 	{
 		dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(-50000.f, -50000.f, -50000.f, 1.f));
 		_int iHP = 0;
@@ -2367,7 +2438,7 @@ void CBattleUI::Change_PlayerPoke(_float fTimeDelta)
 		}
 		else
 		{
-			g_BattleBag = true;
+			m_tInfo.pPlayer->Set_BattlePokeDead();
 			m_bBattleBagPoke = true;
 		}
 	}

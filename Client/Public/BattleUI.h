@@ -72,7 +72,7 @@ private:
 	_int					m_iPlayerIndex = 0;
 	_int					m_iPlayerHPIndex = 0;
 	_int					m_iTargetIndex = 0;
-	_int					m_iTargetHPIndex = 0;
+	
 	//Battle
 	_int					m_iPlayerFinalDmg = 0;
 	_bool					m_bPlayerHit = false;
@@ -96,6 +96,10 @@ private:
 
 	_int					m_fDotDeal = 0;
 	_float					m_fHPTime = 0.f;
+	_float					m_fEXPTime = 0.f;
+	_bool					m_bGet_EXP = false;
+	_int					m_iDotEXP = 0;
+	_int					m_iTotalEXP = 0;
 	_float					m_fDelayTime = 0.f;
 	_bool					m_bPokeDead = false;
 
@@ -119,6 +123,8 @@ private:
 	void	Ready_TargetChange_Poke();
 	void	Render_Fonts();
 	void	Render_AttackFonts();
+	void	Change_Poke();
+	void	Use_Item();
 	void	Set_Pos();
 	void	Set_PlayerPos();
 	void	Set_TargetPos();

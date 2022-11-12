@@ -87,10 +87,15 @@ private:
 	//BattlePoke
 	_bool					m_bStart = false;
 	_int					m_iChangePoke = 0;
+	_bool					m_bBattlePokeDead = false;
+	_bool					m_bBattleChangePoke = false;
+	_bool					m_bBattleUseItem = false;
 public:
 	_int		 Get_iChangePoke() { return m_iChangePoke; }
 	CGameObject* Get_SelectPoke() { return m_vecPoke[m_iPokeSelect]; }
 	CGameObject* Get_vecPoke(_int _iIndex) { return m_vecPoke[_iIndex]; }
+	_bool		 Get_BattlePokeDead() { return m_bBattlePokeDead; }
+	void		 Set_BattlePokeDead() { m_bBattlePokeDead = true; }
 private:
 	HRESULT Ready_Components();
 	HRESULT SetUp_ShaderResources(); /* 셰이더 전역변수에 값을 전달한다. */

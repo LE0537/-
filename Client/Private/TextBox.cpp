@@ -27,20 +27,38 @@ HRESULT CTextBox::Initialize(void * pArg)
 		return E_FAIL;
 	
 	memcpy(&m_tTInfo, pArg, sizeof(TINFO));
-	
-	m_fSizeX = 1000.f;
-	m_fSizeY = 260.f;
-	m_fX = 640.f;
-	m_fY = 570.f;
 
-	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixTranspose(XMMatrixIdentity()));
-	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -200.f, 100.f)));
+	if (!g_Battle)
+	{
+		m_fSizeX = 1000.f;
+		m_fSizeY = 260.f;
+		m_fX = 640.f;
+		m_fY = 570.f;
 
-	_float3 vScale = { m_fSizeX,m_fSizeY,0.f };
+		XMStoreFloat4x4(&m_ViewMatrix, XMMatrixTranspose(XMMatrixIdentity()));
+		XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -200.f, 100.f)));
 
-	m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
+		_float3 vScale = { m_fSizeX,m_fSizeY,0.f };
 
+		m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
+	}
+	if (g_Battle)
+	{
+		m_fSizeX = 600.f;
+		m_fSizeY = 156.f;
+		m_fX = 640.f;
+		m_fY = 642.f;
+
+		XMStoreFloat4x4(&m_ViewMatrix, XMMatrixTranspose(XMMatrixIdentity()));
+		XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -200.f, 100.f)));
+
+		_float3 vScale = { m_fSizeX,m_fSizeY,0.f };
+
+		m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
+
+	}
 	m_pScript = m_tTInfo.pScript;
 
 	return S_OK;
@@ -136,7 +154,7 @@ void CTextBox::Running_TextBox()
 				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BattleIntro"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"))))
 					return;
 				CSoundMgr::Get_Instance()->BGM_Stop();
-				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Battle1.wav"), 1.f);
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Battle1.wav"), 0.75f);
 				m_bDead = true;
 			}
 		}
@@ -187,12 +205,22 @@ void CTextBox::RenderFonts()
 
 	wstring szName = dynamic_cast<CGameObj*>(m_tTInfo.pTarget)->Get_PalyerInfo().strName;
 	_vector vPos = { 210.f,550.f,0.f,1.f };
-	pGameInstance->Render_Font(TEXT("Font_Nexon"), m_wstr.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(1.2f, 1.2f, 1.2f, 1.f));
-	vPos = { 220.f,460.f,0.f,1.f };
-	pGameInstance->Render_Font(TEXT("Font_Nexon"), szName.c_str(), vPos, XMVectorSet(1.f, 1.f, 1.f, 1.f), XMVectorSet(1.5f, 1.5f, 1.5f, 1.f));
-	
+	if (!g_Battle)
+	{
+		pGameInstance->Render_Font(TEXT("Font_Nexon"), m_wstr.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(1.2f, 1.2f, 1.2f, 1.f));
+		vPos = { 220.f,460.f,0.f,1.f };
+		pGameInstance->Render_Font(TEXT("Font_Nexon"), szName.c_str(), vPos, XMVectorSet(1.f, 1.f, 1.f, 1.f), XMVectorSet(1.5f, 1.5f, 1.5f, 1.f));
+	}
+	if (g_Battle)
+	{
+		vPos = { 380.f,630.f,0.f,1.f };
+		pGameInstance->Render_Font(TEXT("Font_Nexon"), m_wstr.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(0.9f, 0.9f, 0.9f, 1.f));
+		vPos = { 390.f,573.f,0.f,1.f };
+		pGameInstance->Render_Font(TEXT("Font_Nexon"), szName.c_str(), vPos, XMVectorSet(1.f, 1.f, 1.f, 1.f), XMVectorSet(1.1f, 1.1f, 1.1f, 1.f));
+	}
 	RELEASE_INSTANCE(CGameInstance);
 }
+
 
 void CTextBox::Print_Text(void)
 {

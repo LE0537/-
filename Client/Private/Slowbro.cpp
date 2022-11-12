@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "..\Public\Slowbro.h"
 #include "GameInstance.h"
-
+#include "Lv_Up.h"
 
 CSlowbro::CSlowbro(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -48,6 +48,7 @@ HRESULT CSlowbro::Initialize(void * pArg)
 	m_PokemonInfo.eType = WATER;
 	m_PokemonInfo.eType2 = ESPER;
 	m_PokemonInfo.eStatInfo = STATINFO_END;
+	m_PokemonInfo.bLvUp = false;
 
 	m_pModelCom->Set_CurrentAnimIndex(2);
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(-50000.f, -50000.f, -50000.f, 1.f));
@@ -72,6 +73,8 @@ void CSlowbro::Tick(_float fTimeDelta)
 	if (m_bBattleMap)
 	{
 		Battle(fTimeDelta);
+		if (m_PokemonInfo.bLvUp)
+			LvUp();
 	}
 }
 
@@ -239,7 +242,7 @@ void CSlowbro::Battle(_float fTimeDelta)
 {
 	if (!m_bBattle)
 	{
-		m_pTransformCom->Set_Scale(XMVectorSet(0.075f, 0.075f, 0.075f, 0.f));
+		m_pTransformCom->Set_Scale(XMVectorSet(0.05f, 0.05f, 0.05f, 0.f));
 		m_fStartBattle += fTimeDelta;
 		if (m_iAnimIndex == 0)
 		{
@@ -328,12 +331,63 @@ void CSlowbro::Set_Stats()
 	m_PokemonInfo.iDef = _int(((fDef * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
 	m_PokemonInfo.iSDef = _int(((fSDef * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
 	m_PokemonInfo.iSpeed = _int(((fSpeed * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
-	m_PokemonInfo.iMaxExp = 20;
+	m_PokemonInfo.iMaxExp = m_PokemonInfo.iLv * 5;
 	m_PokemonInfo.iExp = 0;
 	m_PokemonInfo.iSex = rand() % 2;
 	m_PokemonInfo.iBallNum = 0;
 	m_PokemonInfo.bRide = false;
 	m_PokemonInfo.bEvolution = false;
+}
+void CSlowbro::LvUp()
+{
+	_float fHp = 95.f;
+	_float fDmg = 75.f;
+	_float fDef = 110.f;
+	_float fSDmg = 100.f;
+	_float fSDef = 80.f;
+	_float fSpeed = 30.f;
+
+	_int iPrevMaxHp = m_PokemonInfo.iMaxHp;
+	_int iPrevHp = m_PokemonInfo.iHp;
+	_int iPrevDmg = m_PokemonInfo.iDmg;
+	_int iPrevDef = m_PokemonInfo.iDef;
+	_int iPrevSDmg = m_PokemonInfo.iSDmg;
+	_int iPrevSDef = m_PokemonInfo.iSDef;
+	_int iPrevSpeed = m_PokemonInfo.iSpeed;
+
+	m_PokemonInfo.iMaxHp = _int(((fHp * 2.f) + 31.f + 100) * (m_PokemonInfo.iLv / 100.f) + 10.f);
+	m_PokemonInfo.iHp = m_PokemonInfo.iMaxHp - iPrevMaxHp + iPrevHp;
+	m_PokemonInfo.iDmg = _int(((fDmg * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
+	m_PokemonInfo.iSDmg = _int(((fSDmg * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
+	m_PokemonInfo.iDef = _int(((fDef * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
+	m_PokemonInfo.iSDef = _int(((fSDef * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
+	m_PokemonInfo.iSpeed = _int(((fSpeed * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
+
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	CLv_Up::LVUPINFO tInfo;
+	tInfo.iPrevMaxHp = iPrevMaxHp;
+	tInfo.iPrevDmg = iPrevDmg;
+	tInfo.iPrevDef = iPrevDef;
+	tInfo.iPrevSDmg = iPrevSDmg;
+	tInfo.iPrevSDef = iPrevSDef;
+	tInfo.iPrevSpeed = iPrevSpeed;
+
+	tInfo.iMaxHp = m_PokemonInfo.iMaxHp;
+	tInfo.iDmg = m_PokemonInfo.iDmg;
+	tInfo.iDef = m_PokemonInfo.iDef;
+	tInfo.iSDmg = m_PokemonInfo.iSDmg;
+	tInfo.iSDef = m_PokemonInfo.iSDef;
+	tInfo.iSpeed = m_PokemonInfo.iSpeed;
+
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Lv_Up"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
+		return;
+
+	RELEASE_INSTANCE(CGameInstance);
+
+
+	m_PokemonInfo.bLvUp = false;
 }
 HRESULT CSlowbro::SetUp_ShaderResources()
 {

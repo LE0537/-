@@ -78,6 +78,7 @@ public:
 		_int		iBallNum;
 		_bool		bRide;
 		_bool		bEvolution;
+		_bool		bLvUp;
 		ITEMINFO*		eItem;
 		SKILLINFO*		eSkillNum1;
 		SKILLINFO*		eSkillNum2;
@@ -140,9 +141,35 @@ public:
 
 
 	//PokeInfo
-	void	Set_PokeHp(_int _iDmg) { m_PokemonInfo.iHp += _iDmg;
-	if (m_PokemonInfo.iHp > m_PokemonInfo.iMaxHp) { m_PokemonInfo.iHp = m_PokemonInfo.iMaxHp; }
-	else if (m_PokemonInfo.iHp < 0) { m_PokemonInfo.iHp = 0; }
+	void	Set_PokeHp(_int _iDmg) {
+		m_PokemonInfo.iHp += _iDmg;
+		if (m_PokemonInfo.iHp > m_PokemonInfo.iMaxHp) { m_PokemonInfo.iHp = m_PokemonInfo.iMaxHp; }
+		else if (m_PokemonInfo.iHp < 0) { m_PokemonInfo.iHp = 0; }
+	}
+	void	Set_PokeEXP(_int _iEXP) { m_PokemonInfo.iExp += _iEXP;
+		if (m_PokemonInfo.iExp >= m_PokemonInfo.iMaxExp) { m_PokemonInfo.iExp = 0;
+		++m_PokemonInfo.iLv; m_PokemonInfo.iMaxExp += 5; m_PokemonInfo.bLvUp = true;
+		}
+	}
+	void	Set_PokePP1(_int _iPP) {
+		m_PokemonInfo.eSkillNum1->iPoint += _iPP;
+		if (m_PokemonInfo.eSkillNum1->iPoint > m_PokemonInfo.eSkillNum1->iMaxPoint) { m_PokemonInfo.eSkillNum1->iPoint = m_PokemonInfo.eSkillNum1->iMaxPoint; }
+		else if (m_PokemonInfo.eSkillNum1->iPoint < 0) { m_PokemonInfo.eSkillNum1->iPoint = 0; }
+	}
+	void	Set_PokePP2(_int _iPP) {
+		m_PokemonInfo.eSkillNum2->iPoint += _iPP;
+		if (m_PokemonInfo.eSkillNum2->iPoint > m_PokemonInfo.eSkillNum2->iMaxPoint) { m_PokemonInfo.eSkillNum2->iPoint = m_PokemonInfo.eSkillNum2->iMaxPoint; }
+		else if (m_PokemonInfo.eSkillNum2->iPoint < 0) { m_PokemonInfo.eSkillNum2->iPoint = 0; }
+	}
+	void	Set_PokePP3(_int _iPP) {
+		m_PokemonInfo.eSkillNum3->iPoint += _iPP;
+		if (m_PokemonInfo.eSkillNum3->iPoint > m_PokemonInfo.eSkillNum3->iMaxPoint) { m_PokemonInfo.eSkillNum3->iPoint = m_PokemonInfo.eSkillNum3->iMaxPoint; }
+		else if (m_PokemonInfo.eSkillNum3->iPoint < 0) { m_PokemonInfo.eSkillNum3->iPoint = 0; }
+	}
+	void	Set_PokePP4(_int _iPP) {
+		m_PokemonInfo.eSkillNum4->iPoint += _iPP;
+		if (m_PokemonInfo.eSkillNum4->iPoint > m_PokemonInfo.eSkillNum4->iMaxPoint) { m_PokemonInfo.eSkillNum4->iPoint = m_PokemonInfo.eSkillNum4->iMaxPoint; }
+		else if (m_PokemonInfo.eSkillNum4->iPoint < 0) { m_PokemonInfo.eSkillNum4->iPoint = 0; }
 	}
 	void	Set_PokeItem(ITEMINFO* _eItem) { m_PokemonInfo.eItem = _eItem; }
 	void	Set_StatInfo(STATINFO eStatInfo) { m_PokemonInfo.eStatInfo = eStatInfo; }

@@ -43,10 +43,11 @@ private:
 	void	BattleStart(_float fTimeDelta);
 	void	Ready_Script();
 public:
+	_bool	Get_Return() { return m_bReturn; }
 	void	Set_BattleStart() { m_bBattleStart = true; }
 	void	Set_Bag(class CBag* _Bag) { m_pBag = _Bag; }
 	void	Set_TargetPoke(vector<CGameObject*>* _pvecPoke) { m_pvecTargetPoke = _pvecPoke; }
-	void	Set_BattleTarget(CGameObject* _pTarget) { m_pBattleTarget = _pTarget; }
+	void	Set_BattleTarget(CGameObject* _pTarget, BATTLETYPE eBattle_Type) { m_pBattleTarget = _pTarget; m_eBattleType = eBattle_Type; }
 	void	Battle_Win();
 	void	Check_Anim(_float fTimeDelta);
 private:
@@ -75,6 +76,9 @@ private:
 	//Battle
 	_bool					m_ChangePoke = false;
 	_bool					m_bChangeAnim = false;
+	_bool					m_bReturnPoke = false;
+	_bool					m_bReturn = false;
+	BATTLETYPE				m_eBattleType = BATTLE_END;
 public:
 	static CPlayer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

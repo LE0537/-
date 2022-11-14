@@ -55,13 +55,33 @@ HRESULT CBattleUI::Initialize(void * pArg)
 
 void CBattleUI::Tick(_float fTimeDelta)
 {
-	if (!m_tInfo.pPlayer->Get_BattlePokeDead())
+	if (!m_tInfo.pPlayer->Get_BattlePokeDead() && !m_tInfo.pPlayer->Get_BattleChangePoke() && !m_tInfo.pPlayer->Get_BattleUseItem())
 	{
 		if (m_bPlayerAttack)
 		{
 			m_fHPTime += fTimeDelta;
 			BattleFrame();
 			BattleDelay(fTimeDelta);
+		}
+		else if (m_bBattleChangePoke)
+		{
+			if (m_tInfo.pPlayer->Get_Close())
+			{
+				m_bBattleChangePoke = false;
+				m_tInfo.pPlayer->Set_Close();
+				return;
+			}
+			Change_Poke(fTimeDelta);
+		}
+		else if (m_bBattleUseItem)
+		{
+			if (m_tInfo.pPlayer->Get_Close())
+			{
+				m_bBattleUseItem = false;
+				m_tInfo.pPlayer->Set_Close();
+				return;
+			}
+			Use_Item(fTimeDelta);
 		}
 		else
 		{
@@ -78,7 +98,7 @@ void CBattleUI::Tick(_float fTimeDelta)
 
 void CBattleUI::Late_Tick(_float fTimeDelta)
 {
-	if (!m_tInfo.pPlayer->Get_BattlePokeDead() && nullptr != m_pRendererCom)
+	if (!m_tInfo.pPlayer->Get_BattlePokeDead() && !m_tInfo.pPlayer->Get_BattleChangePoke() && !m_tInfo.pPlayer->Get_BattleUseItem() && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup_Front(CRenderer::RENDER_UI, this);
 	
 }
@@ -693,6 +713,35 @@ HRESULT CBattleUI::SetSelectButton(ButtonDir _eDir)
 	return S_OK;
 }
 
+void CBattleUI::Ready_RunFAILScript()
+{
+	for (auto iter = m_vBattleScript.begin(); iter != m_vBattleScript.end();)
+		iter = m_vBattleScript.erase(iter);
+
+	m_vBattleScript.clear();
+
+	wstring strTextBegin = TEXT("트레이너와 전투 중에는 도망칠 수 없습니다.");
+
+
+	m_vBattleScript.push_back(strTextBegin);
+}
+
+void CBattleUI::Ready_ChangePokeScript()
+{
+	for (auto iter = m_vBattleScript.begin(); iter != m_vBattleScript.end();)
+		iter = m_vBattleScript.erase(iter);
+
+	m_vBattleScript.clear();
+
+	wstring strTextBegin = TEXT("'");
+	wstring strTextSkillName = TEXT("'  고생했어 이만 돌아와! ");
+
+	strTextBegin += dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().strName;
+	strTextBegin += strTextSkillName;
+
+	m_vBattleScript.push_back(strTextBegin);
+}
+
 void CBattleUI::Render_Fonts()
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
@@ -794,17 +843,387 @@ void CBattleUI::Render_Fonts()
 	RELEASE_INSTANCE(CGameInstance);
 }
 
-void CBattleUI::Render_AttackFonts()
+void CBattleUI::Change_Poke(_float fTimeDelta)
 {
+	if (m_bChangePokeStart)
+	{
+		m_fDelayTime += fTimeDelta;
+		m_fHPTime += fTimeDelta;
+	}
+	//포켓몬 집어넣기
+	if (!m_bChangePokeStart)
+	{
+		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+		CTextBox::TINFO tTInfo;
+		Ready_ChangePokeScript();
+		tTInfo.iScriptSize = (_int)m_vBattleScript.size();
+		tTInfo.pTarget = dynamic_cast<CGameObj*>(m_tInfo.pPlayer_Orgin);
+		tTInfo.pScript = new wstring[m_vBattleScript.size()];
+		tTInfo.iType = 3;
+		for (_int i = 0; i < m_vBattleScript.size(); ++i)
+			tTInfo.pScript[i] = m_vBattleScript[i];
+
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
+			return;
+		RELEASE_INSTANCE(CGameInstance);
+
+		m_fTextSizeTime = (_float)m_vBattleScript.size() * 2.f;
+
+		dynamic_cast<CGameObj*>(m_tInfo.pPlayer_Orgin)->Set_AnimIndex(8);
+		m_bChangePokeStart = true;
+		m_fDelayTime = 0.f;
+	}
+	//포켓몬 집어넣기 확인
+	if (!m_bChangeAttack && m_bChangePokeStart && dynamic_cast<CPlayer*>(m_tInfo.pPlayer_Orgin)->Get_Return())
+	{
+		dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(-50000.f, -50000.f, -50000.f, 1.f));
+		dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Reset_Anim();
+	}
+	//교체 포켓몬 내보내기
+	if (!m_bChangeAttack && m_bChangePokeStart && m_fDelayTime > m_fTextSizeTime)
+	{
+		m_iPlayerIndex = m_tInfo.pPlayer->Get_iChangePoke();
+		m_iPlayerHPIndex = m_tInfo.pPlayer->Get_iChangePoke();
+		Ready_PlayerChange_Poke();
+		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+		CTextBox::TINFO tTInfo;
+
+		tTInfo.iScriptSize = (_int)m_vBattleScript.size();
+		tTInfo.pTarget = dynamic_cast<CGameObj*>(m_tInfo.pPlayer_Orgin);
+		tTInfo.pScript = new wstring[m_vBattleScript.size()];
+		tTInfo.iType = 3;
+		for (_int i = 0; i < m_vBattleScript.size(); ++i)
+			tTInfo.pScript[i] = m_vBattleScript[i];
+
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
+			return;
+		RELEASE_INSTANCE(CGameInstance);
+		m_bChangeAttack = true;
+		m_fTextSizeTime = (_float)m_vBattleScript.size() * 5.f;
+		m_fDelayTime = 0.f;
+		dynamic_cast<CGameObj*>(m_tInfo.pPlayer_Orgin)->Set_AnimIndex(2);
+
+	}
+	//상대포켓몬 공격준비
+	if (!m_bCreateTextBox && m_bChangeAttack && m_fDelayTime > m_fTextSizeTime)
+	{
+		_int iTargetSkill = rand() % Check_TargetSkill();
+
+		Use_TargetSkill(iTargetSkill);
+
+		Ready_TargetScript();
+		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+		CTextBox::TINFO tTInfo;
+
+		tTInfo.iScriptSize = (_int)m_vBattleScript.size();
+		tTInfo.pTarget = dynamic_cast<CGameObj*>(m_tInfo.pBattleTarget);
+		tTInfo.pScript = new wstring[m_vBattleScript.size()];
+		tTInfo.iType = 3;
+		for (_int i = 0; i < m_vBattleScript.size(); ++i)
+			tTInfo.pScript[i] = m_vBattleScript[i];
+
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
+			return;
+		RELEASE_INSTANCE(CGameInstance);
+		m_bCreateTextBox = true;
+		m_fTextSizeTime = (_float)m_vBattleScript.size() * 1.5f;
+		m_fDelayTime = 0.f;
+		_int iAnim = 0;
+
+		switch (m_bTargetSkillIndex)
+		{
+		case 0:
+			if (dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().eSkillNum1->iDmg == 0)
+				iAnim = 4;
+			else
+				iAnim = 3;
+			break;
+		case 1:
+			if (dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().eSkillNum2->iDmg == 0)
+				iAnim = 4;
+			else
+				iAnim = 3;
+			break;
+		case 2:
+			if (dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().eSkillNum3->iDmg == 0)
+				iAnim = 4;
+			else
+				iAnim = 3;
+			break;
+		case 3:
+			if (dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().eSkillNum4->iDmg == 0)
+				iAnim = 4;
+			else
+				iAnim = 3;
+			break;
+		default:
+			break;
+		}
+
+		dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Set_AnimIndex(iAnim);
+		m_bCheckAttack = false;
+		m_fDotDeal = 0.f;
+		m_fHPTime = 0.f;
+	}
+	//상대포켓몬 공격
+	if (m_bCreateTextBox && m_bTargetHit && m_fDelayTime > m_fTextSizeTime && m_fHPTime > 0.05f)
+	{
+		if (m_fDotDeal < m_iTargetFinalDmg)
+		{
+			dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_PokeHp(-1);
+			if (!m_bPokeDead && dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().iHp <= 0)
+			{
+				dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_StatInfo(STUN);
+				dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_AnimIndex(6);
+
+				m_bPokeDead = true;
+				m_fDotDeal = m_iTargetFinalDmg - 1;
+				m_fDelayTime = 0.f;
+			}
+			++m_fDotDeal;
+		}
+		if (m_fDotDeal == m_iTargetFinalDmg)
+		{
+			if (!m_bPokeDead && m_fDelayTime > m_fTextSizeTime)
+			{
+				m_bPokeDead = false;
+
+				m_bCheckAttack = false;
+				m_bChangePokeStart = false;
+				m_bChangeAttack = false;
+				m_bBattleChangePoke = false;
+				m_bCreateTextBox = false;
+				m_fTextSizeTime = 0.f;
+
+				m_fDotDeal = 0;
+				m_fHPTime = 0.f;
+				m_fDelayTime = 0.f;
+				Set_CheckPos(CHECKPOS_INFO);
+				m_bSkill = false;
+			}
+		}
+		m_fHPTime = 0.f;
+	}
+	//포켓몬 히트모션
+	if (!m_bCheckAttack && m_fDelayTime > m_fTextSizeTime)
+	{
+		if (m_bTargetHit)
+			dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_AnimIndex(5);
+
+		m_bCheckAttack = true;
+	}
+	//플레이어 포켓몬 죽어서 교체
+	if (m_bBattleBagPoke && !m_tInfo.pPlayer->Get_BattlePokeDead())
+	{
+		m_iPlayerIndex = m_tInfo.pPlayer->Get_iChangePoke();
+		m_iPlayerHPIndex = m_tInfo.pPlayer->Get_iChangePoke();
+		Ready_PlayerChange_Poke();
+		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+		CTextBox::TINFO tTInfo;
+
+		tTInfo.iScriptSize = (_int)m_vBattleScript.size();
+		tTInfo.pTarget = dynamic_cast<CGameObj*>(m_tInfo.pPlayer_Orgin);
+		tTInfo.pScript = new wstring[m_vBattleScript.size()];
+		tTInfo.iType = 3;
+		for (_int i = 0; i < m_vBattleScript.size(); ++i)
+			tTInfo.pScript[i] = m_vBattleScript[i];
+
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
+			return;
+		RELEASE_INSTANCE(CGameInstance);
+		m_bBattleBagPoke = false;
+		m_fTextSizeTime = (_float)m_vBattleScript.size() * 2.f;
+		m_fDelayTime = 0.f;
+		dynamic_cast<CGameObj*>(m_tInfo.pPlayer_Orgin)->Set_AnimIndex(2);
+	}
+	//플레이어 포켓몬 죽었는지 확인
+	if (m_bPokeDead && m_fDelayTime > m_fTextSizeTime)
+	{
+		if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().eStatInfo == STUN)
+			Change_PlayerPoke(fTimeDelta);
+	}
+	//플레이어 포켓몬 죽어서 교체 후 모션 딜레이 확인후 턴종료
+	if (!m_bBattleBagPoke && m_bPokeDead && m_fDelayTime > m_fTextSizeTime)
+	{
+		m_bPokeDead = false;
+
+		m_bCheckAttack = false;
+		m_bChangePokeStart = false;
+		m_bChangeAttack = false;
+		m_bBattleChangePoke = false;
+		m_bCreateTextBox = false;
+		m_fTextSizeTime = 0.f;
+
+		m_fDotDeal = 0;
+		m_fHPTime = 0.f;
+		m_fDelayTime = 0.f;
+		Set_CheckPos(CHECKPOS_INFO);
+		m_bSkill = false;
+	}
 }
 
-void CBattleUI::Change_Poke()
+void CBattleUI::Use_Item(_float fTimeDelta)
 {
+	m_fDelayTime += fTimeDelta;
+	if(m_bCreateTextBox)
+		m_fHPTime += fTimeDelta;
 
-}
+	//상대포켓몬 공격준비
+	if (!m_bCreateTextBox && m_fDelayTime > 1.5f)
+	{
+		_int iTargetSkill = rand() % Check_TargetSkill();
 
-void CBattleUI::Use_Item()
-{
+		Use_TargetSkill(iTargetSkill);
+
+		Ready_TargetScript();
+		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+		CTextBox::TINFO tTInfo;
+
+		tTInfo.iScriptSize = (_int)m_vBattleScript.size();
+		tTInfo.pTarget = dynamic_cast<CGameObj*>(m_tInfo.pBattleTarget);
+		tTInfo.pScript = new wstring[m_vBattleScript.size()];
+		tTInfo.iType = 3;
+		for (_int i = 0; i < m_vBattleScript.size(); ++i)
+			tTInfo.pScript[i] = m_vBattleScript[i];
+
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
+			return;
+		RELEASE_INSTANCE(CGameInstance);
+		m_bCreateTextBox = true;
+		m_fTextSizeTime = (_float)m_vBattleScript.size() * 1.5f;
+		m_fDelayTime = 0.f;
+		_int iAnim = 0;
+
+		switch (m_bTargetSkillIndex)
+		{
+		case 0:
+			if (dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().eSkillNum1->iDmg == 0)
+				iAnim = 4;
+			else
+				iAnim = 3;
+			break;
+		case 1:
+			if (dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().eSkillNum2->iDmg == 0)
+				iAnim = 4;
+			else
+				iAnim = 3;
+			break;
+		case 2:
+			if (dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().eSkillNum3->iDmg == 0)
+				iAnim = 4;
+			else
+				iAnim = 3;
+			break;
+		case 3:
+			if (dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().eSkillNum4->iDmg == 0)
+				iAnim = 4;
+			else
+				iAnim = 3;
+			break;
+		default:
+			break;
+		}
+
+		dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Set_AnimIndex(iAnim);
+		m_bCheckAttack = false;
+		m_fDotDeal = 0;
+		m_fHPTime = 0.f;
+	}
+	//상대포켓몬 공격
+	if (m_bCreateTextBox && m_bTargetHit && m_fDelayTime > m_fTextSizeTime && m_fHPTime > 0.05f)
+	{
+		if (m_fDotDeal < m_iTargetFinalDmg)
+		{
+			dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_PokeHp(-1);
+			if (!m_bPokeDead && dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().iHp <= 0)
+			{
+				dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_StatInfo(STUN);
+				dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_AnimIndex(6);
+
+				m_bPokeDead = true;
+				m_fDotDeal = m_iTargetFinalDmg - 1;
+				m_fDelayTime = 0.f;
+			}
+			++m_fDotDeal;
+		}
+		if (m_fDotDeal == m_iTargetFinalDmg)
+		{
+			if (!m_bPokeDead && m_fDelayTime > m_fTextSizeTime)
+			{
+				m_bPokeDead = false;
+
+				m_bCheckAttack = false;
+				m_bChangePokeStart = false;
+				m_bChangeAttack = false;
+				m_bBattleUseItem = false;
+				m_bCreateTextBox = false;
+				m_fTextSizeTime = 0.f;
+
+				m_fDotDeal = 0;
+				m_fHPTime = 0.f;
+				m_fDelayTime = 0.f;
+				Set_CheckPos(CHECKPOS_INFO);
+				m_bSkill = false;
+			}
+		}
+		m_fHPTime = 0.f;
+	}
+	//포켓몬 히트모션
+	if (m_bCreateTextBox && !m_bCheckAttack && m_fDelayTime > m_fTextSizeTime)
+	{
+		if (m_bTargetHit)
+			dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_AnimIndex(5);
+
+		m_bCheckAttack = true;
+	}
+	//플레이어 포켓몬 죽어서 교체
+	if (m_bBattleBagPoke && !m_tInfo.pPlayer->Get_BattlePokeDead())
+	{
+		m_iPlayerIndex = m_tInfo.pPlayer->Get_iChangePoke();
+		m_iPlayerHPIndex = m_tInfo.pPlayer->Get_iChangePoke();
+		Ready_PlayerChange_Poke();
+		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+		CTextBox::TINFO tTInfo;
+
+		tTInfo.iScriptSize = (_int)m_vBattleScript.size();
+		tTInfo.pTarget = dynamic_cast<CGameObj*>(m_tInfo.pPlayer_Orgin);
+		tTInfo.pScript = new wstring[m_vBattleScript.size()];
+		tTInfo.iType = 3;
+		for (_int i = 0; i < m_vBattleScript.size(); ++i)
+			tTInfo.pScript[i] = m_vBattleScript[i];
+
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
+			return;
+		RELEASE_INSTANCE(CGameInstance);
+		m_bBattleBagPoke = false;
+		m_fTextSizeTime = (_float)m_vBattleScript.size() * 2.f;
+		m_fDelayTime = 0.f;
+		dynamic_cast<CGameObj*>(m_tInfo.pPlayer_Orgin)->Set_AnimIndex(2);
+	}
+	//플레이어 포켓몬 죽었는지 확인
+	if (m_bPokeDead && m_fDelayTime > m_fTextSizeTime)
+	{
+		if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().eStatInfo == STUN)
+			Change_PlayerPoke(fTimeDelta);
+	}
+	//플레이어 포켓몬 죽어서 교체 후 모션 딜레이 확인후 턴종료
+	if (!m_bBattleBagPoke && m_bPokeDead && m_fDelayTime > m_fTextSizeTime)
+	{
+		m_bPokeDead = false;
+
+		m_bCheckAttack = false;
+		m_bChangePokeStart = false;
+		m_bChangeAttack = false;
+		m_bBattleUseItem = false;
+		m_bCreateTextBox = false;
+		m_fTextSizeTime = 0.f;
+
+		m_fDotDeal = 0;
+		m_fHPTime = 0.f;
+		m_fDelayTime = 0.f;
+		Set_CheckPos(CHECKPOS_INFO);
+		m_bSkill = false;
+	}
 }
 
 void CBattleUI::Set_Pos()
@@ -1006,17 +1425,25 @@ void CBattleUI::Key_Input()
 	{
 		if (m_iSelect != 3)
 		{
-			if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().eSkillNum2->iSkillNum != 99 && m_iSelect == 0)
+			if (m_bSkill)
 			{
-				SetSelectButton(DIR_DOWN);
-				++m_iSelect;
+				if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().eSkillNum2->iSkillNum != 99 && m_iSelect == 0)
+				{
+					SetSelectButton(DIR_DOWN);
+					++m_iSelect;
+				}
+				else if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().eSkillNum3->iSkillNum != 99 && m_iSelect == 1)
+				{
+					SetSelectButton(DIR_DOWN);
+					++m_iSelect;
+				}
+				else if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().eSkillNum4->iSkillNum != 99 && m_iSelect == 2)
+				{
+					SetSelectButton(DIR_DOWN);
+					++m_iSelect;
+				}
 			}
-			else if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().eSkillNum3->iSkillNum != 99 && m_iSelect == 1)
-			{
-				SetSelectButton(DIR_DOWN);
-				++m_iSelect;
-			}
-			else if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().eSkillNum4->iSkillNum != 99 && m_iSelect == 2)
+			else if (!m_bSkill)
 			{
 				SetSelectButton(DIR_DOWN);
 				++m_iSelect;
@@ -1284,6 +1711,7 @@ void CBattleUI::BattleFrame()
 
 void CBattleUI::BattleDelay(_float fTimeDelta)
 {
+	//선공
 	if (!m_bBattleBagPoke && !m_bCreateTextBox2 && m_bCheckAttack && m_fHPTime > 0.05f)
 	{
 		if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().iSpeed >= dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().iSpeed)
@@ -1351,7 +1779,7 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 		}
 		m_fHPTime = 0.f;
 	}
-	
+	//선공 히트모션
 	if (!m_bCheckAttack && m_fHPTime > 1.f)
 	{
 		if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().iSpeed >= dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().iSpeed)
@@ -1366,7 +1794,7 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 		}
 		m_bCheckAttack = true;
 	}
-
+	//후공
 	if (!m_bBattleBagPoke &&m_bCheckAttack3 && m_fHPTime > 0.05f)
 	{
 		if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().iSpeed < dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().iSpeed)
@@ -1457,6 +1885,7 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 		}
 		m_fHPTime = 0.f;
 	}
+	//경치획득
 	if (m_bGet_EXP)
 	{
 		m_fEXPTime += fTimeDelta;
@@ -1472,7 +1901,7 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 			m_fEXPTime = 0.f;
 		}
 	}
-
+	//후공 히트모션
 	if (m_bCreateTextBox2 && !m_bCheckAttack3 && m_fHPTime > 1.f)
 	{
 		if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().iSpeed < dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().iSpeed)
@@ -1487,6 +1916,7 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 		}
 		m_bCheckAttack3 = true;
 	}
+	//플레이어 포켓몬 죽어서 포켓몬 교체
 	if (m_bBattleBagPoke && !m_tInfo.pPlayer->Get_BattlePokeDead())
 	{
 		m_iPlayerIndex = m_tInfo.pPlayer->Get_iChangePoke();
@@ -1510,6 +1940,7 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 
 		dynamic_cast<CGameObj*>(m_tInfo.pPlayer_Orgin)->Set_AnimIndex(2);
 	}
+	//서로 포켓몬 죽었는지 확인
 	m_fDelayTime += fTimeDelta;
 	if (m_bPokeDead && m_fDelayTime > m_fTextSizeTime)
 	{
@@ -1518,6 +1949,7 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 		if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().eStatInfo == STUN)
 			Change_PlayerPoke(fTimeDelta);
 	}
+	//플레이어 포켓몬 죽어서 교체후 모션 딜레이 확인후 턴종료
 	if (!m_bBattleBagPoke && m_bPokeDead && m_fDelayTime > m_fTextSizeTime)
 	{
 		m_bPokeDead = false;
@@ -1559,7 +1991,11 @@ void CBattleUI::Check_Selected()
 	case 1:
 		if (!m_bSkill)
 		{
-			Change_Poke();
+			if (!m_bBattleBagPoke)
+			{
+				m_tInfo.pPlayer->Set_BattleChangePoke();
+				m_bBattleChangePoke = true;
+			}
 		}
 		else
 		{
@@ -1573,7 +2009,13 @@ void CBattleUI::Check_Selected()
 	case 2:
 		if (!m_bSkill)
 		{
-			Use_Item();
+			if (!m_bBattleUseItem)
+			{
+				m_tInfo.pPlayer->Set_BattleUseItem();
+				m_bBattleUseItem = true;
+			}
+			m_fDelayTime = 0.f;
+			m_fHPTime = 0.f;
 		}
 		else
 		{
@@ -1587,7 +2029,25 @@ void CBattleUI::Check_Selected()
 	case 3:
 		if (!m_bSkill)
 		{
-			
+			if (m_tInfo.eBattleType == BATTLE_TRAINER)
+			{
+				Ready_RunFAILScript();
+				CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+				CTextBox::TINFO tTInfo;
+
+				tTInfo.iScriptSize = (_int)m_vBattleScript.size();
+				tTInfo.pTarget = dynamic_cast<CGameObj*>(m_tInfo.pPlayer_Orgin);
+				tTInfo.pScript = new wstring[m_vBattleScript.size()];
+				tTInfo.iType = 3;
+				for (_int i = 0; i < m_vBattleScript.size(); ++i)
+					tTInfo.pScript[i] = m_vBattleScript[i];
+
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
+					return;
+				RELEASE_INSTANCE(CGameInstance);
+			}
+			else
+			{ }
 		}
 		else
 		{
@@ -2426,6 +2886,7 @@ void CBattleUI::Change_PlayerPoke(_float fTimeDelta)
 	if (!m_tInfo.pPlayer->Get_BattlePokeDead())
 	{
 		dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(-50000.f, -50000.f, -50000.f, 1.f));
+		dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Reset_Anim();
 		_int iHP = 0;
 		for (_int i = 0; i < 6; ++i)
 		{

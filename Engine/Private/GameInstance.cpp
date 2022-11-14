@@ -347,12 +347,12 @@ HRESULT CGameInstance::Add_Fonts(ID3D11Device * pDevice, ID3D11DeviceContext * p
 
 	return m_pFont_Manager->Add_Fonts(pDevice, pContext, pFontTag, pFontFilePath);
 }
-_bool CGameInstance::IsInFrustum(_vector vPos, _float3 vScale)
+_bool CGameInstance::IsInFrustum(_vector vPos, _float fLength)
 {
 	if (nullptr == m_pFrustum)
 		return false;
 
-	return m_pFrustum->IsinFrustum(vPos, vScale);
+	return m_pFrustum->IsinFrustum(vPos, fLength);
 }
 HRESULT CGameInstance::Render_Font(const _tchar * pFontTag, const _tchar * pText, _fvector vPos, _fvector vColor, _fvector vScale)
 {

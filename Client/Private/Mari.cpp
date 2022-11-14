@@ -117,7 +117,7 @@ void CMari::Late_Tick(_float fTimeDelta)
 		Check_Coll();
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), m_pTransformCom->Get_Scale()))
+	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION),10.f ))
 	{
 		if (!g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
 			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
@@ -250,7 +250,7 @@ void CMari::Check_Coll()
 		m_bEvent = true;
 		m_fEventTime = 0.f;
 		dynamic_cast<CPlayer*>(m_pTarget)->Set_TargetPoke(&m_vecPoke);
-		dynamic_cast<CPlayer*>(m_pTarget)->Set_BattleTarget(this);
+		dynamic_cast<CPlayer*>(m_pTarget)->Set_BattleTarget(this,BATTLE_TRAINER);
 		if (!dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
 			dynamic_cast<CGameObj*>(m_pTarget)->OnOffEvent();
 		dynamic_cast<CCamera_Dynamic*>(m_pCamera)->Set_Target(this);

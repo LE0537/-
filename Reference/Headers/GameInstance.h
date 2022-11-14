@@ -82,7 +82,7 @@ public: /* For.Font_Manager */
 	HRESULT Render_Font(const _tchar* pFontTag, const _tchar* pText, _fvector vPos, _fvector vColor, _fvector vScale);
 
 public:	/* for. Frustum*/
-	_bool	IsInFrustum(_vector vPos, _float3 vScale);
+	_bool	IsInFrustum(_vector vPos, _float fLength);
 
 public:
 	static void Release_Engine();

@@ -319,7 +319,7 @@ void CPlayer::BattleStart(_float fTimeDelta)
 				tInfo.pvecTargetPoke = m_pvecTargetPoke;
 				tInfo.pPlayer_Orgin = this;
 				tInfo.pBattleTarget = m_pBattleTarget;
-
+				tInfo.eBattleType = m_eBattleType;
 				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BattleUI"), LEVEL_GAMEPLAY, TEXT("Layer_UI"),&tInfo)))
 					return;
 
@@ -347,6 +347,10 @@ void CPlayer::Ready_Script()
 }
 void CPlayer::Battle_Win()
 {
+	for (_uint i = 0; i < 6; ++i)
+	{
+		dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(i))->Reset_Anim();
+	}
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION,XMLoadFloat4(&m_vPrevPos));
 	m_bBattleText = false;
 	m_bBattleStart = false;
@@ -359,7 +363,7 @@ void CPlayer::Battle_Win()
 }
 void CPlayer::Check_Anim(_float fTimeDelta)
 {
-	if (m_iAnimIndex == 2)
+	if (m_iAnimIndex == 2 || m_iAnimIndex == 8)
 	{
 		m_fStartBattle += fTimeDelta;
 		m_bChangeAnim = true;
@@ -378,6 +382,23 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 			m_ChangePoke = true;
 			m_fStartBattle = 0.f;
 		}
+		if (m_bReturnPoke && m_pModelCom->Get_End(m_iAnimIndex))
+		{
+			m_pModelCom->Set_End(m_iAnimIndex);
+			m_iAnimIndex = 0;
+			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+			m_bChangeAnim = false;
+			m_bReturnPoke = false;
+			m_bReturn = false;
+		}
+		if (!m_bReturnPoke && m_iAnimIndex == 8)
+		{
+			m_pModelCom->Set_Loop(m_iAnimIndex);
+			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+			m_bReturnPoke = true;
+			m_fStartBattle = 0.f;
+		}
+
 	}
 	if (m_ChangePoke && m_bChangeAnim)
 	{
@@ -393,6 +414,12 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(m_pBag->Get_iChangePoke()))->Set_AnimIndex(0);
 			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(m_pBag->Get_iChangePoke()))->Set_BattleMap(true, 0.f);
 		}
+	}
+	if (m_bReturnPoke && m_bChangeAnim)
+	{
+		m_pModelCom->Play_Animation(fTimeDelta*0.6f);
+		if (m_fStartBattle > 1.0f)
+			m_bReturn = true;
 	}
 }
 void CPlayer::OnNavi()

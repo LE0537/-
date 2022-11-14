@@ -24,13 +24,14 @@ private:
 	virtual ~CBattleUI() = default;
 public:
 	enum ButtonDir { DIR_UP, DIR_DOWN, DIR_LEFT, DIR_END };
-	enum CHECKPOS { CHECKPOS_INFO,CHECKPOS_SKILL, CHECKPOS_END };
+	enum CHECKPOS { CHECKPOS_INFO,CHECKPOS_SKILL, CHECKPOS_END };	
 
 	typedef struct tagBattleInfo
 	{
 		CGameObject* pPlayer_Orgin;
 		CGameObject* pBattleTarget;
 		class CBag* pPlayer;
+		BATTLETYPE	eBattleType;
 		vector<CGameObject*>* pvecTargetPoke;
 	}BATTLEINFO;
 public:
@@ -103,8 +104,13 @@ private:
 	_float					m_fDelayTime = 0.f;
 	_bool					m_bPokeDead = false;
 
-	_bool					m_bBattleBagPoke = false;
+	_bool					m_bChangePokeStart = false;
+	_bool					m_bChangeAttack = false;
 
+
+	_bool					m_bBattleBagPoke = false;
+	_bool					m_bBattleChangePoke = false;
+	_bool					m_bBattleUseItem = false;
 
 	_float					m_fTextSizeTime = 0.f;
 	vector<wstring>		    m_vBattleScript;
@@ -117,14 +123,15 @@ private:
 	HRESULT SetUp_ShaderTarget();
 	HRESULT SetUp_ShaderBall();
 	HRESULT SetSelectButton(ButtonDir _eDir);
+	void	Ready_RunFAILScript();
+	void	Ready_ChangePokeScript();
 	void	Ready_PlayerScript();
 	void	Ready_TargetScript();
 	void	Ready_PlayerChange_Poke();
 	void	Ready_TargetChange_Poke();
 	void	Render_Fonts();
-	void	Render_AttackFonts();
-	void	Change_Poke();
-	void	Use_Item();
+	void	Change_Poke(_float fTimeDelta);
+	void	Use_Item(_float fTimeDelta);
 	void	Set_Pos();
 	void	Set_PlayerPos();
 	void	Set_TargetPos();

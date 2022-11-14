@@ -41,13 +41,13 @@ void CFrustum::Tick()
 		vProj[i] = XMVector3TransformCoord(vProj[i], matViewInv);
 	}
 	// +z
-	m_vProj2[0][0] = vProj[0];
-	m_vProj2[0][1] = vProj[1];
-	m_vProj2[0][2] = vProj[2];
+	m_vProj2[0][0] = vProj[5];
+	m_vProj2[0][1] = vProj[4];
+	m_vProj2[0][2] = vProj[7];
 	// -z
-	m_vProj2[1][0] = vProj[5];
-	m_vProj2[1][1] = vProj[4];
-	m_vProj2[1][2] = vProj[7];
+	m_vProj2[1][0] = vProj[0];
+	m_vProj2[1][1] = vProj[1];
+	m_vProj2[1][2] = vProj[2];
 
 	// -x
 	m_vProj2[2][0] = vProj[4];
@@ -71,19 +71,16 @@ void CFrustum::Tick()
 	m_vProj2[5][2] = vProj[6];
 }
 
-_bool CFrustum::IsinFrustum(_vector vPos, _float3 vScale)
+_bool CFrustum::IsinFrustum(_vector vPos, _float fLength)
 {
-	_float fLength = XMVectorGetX(XMLoadFloat3(&vScale));
-	
+
 	for (_uint i = 0; i < 6; ++i)
 	{
 		
 		_vector	Plane = XMPlaneFromPoints(m_vProj2[i][0], m_vProj2[i][1], m_vProj2[i][2]);
-	/*	_float4 fPlane,fPos;
-		XMStoreFloat4(&fPlane, Plane);
-		XMStoreFloat4(&fPos, vPos);
-		_float		fHeight = (fPlane.x * fPos.x) + (fPlane.y * fPos.y) + (fPlane.z * fPos.z) + fPlane.w;*/
-		_float		fHeight = (Plane.m128_f32[0] * vPos.m128_f32[0]) + (Plane.m128_f32[1] * vPos.m128_f32[1]) + (Plane.m128_f32[2] * vPos.m128_f32[2]) + Plane.m128_f32[3];
+
+		_float		fHeight = XMVectorGetX(XMPlaneDotCoord(Plane, vPos));
+		//(Plane.m128_f32[0] * vPos.m128_f32[0]) + (Plane.m128_f32[1] * vPos.m128_f32[1]) + (Plane.m128_f32[2] * vPos.m128_f32[2]) + Plane.m128_f32[3];
 		if (fHeight > 0)
 		{
 			if (fHeight > fLength)

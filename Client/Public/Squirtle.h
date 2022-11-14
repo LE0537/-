@@ -39,6 +39,7 @@ private:
 	void	Battle(_float fTimeDelta);
 	void	Set_Stats();
 	void	LvUp();
+	void	Reset_Battle();
 private:
 	CModel*					m_pModelCom = nullptr;
 

@@ -13,7 +13,7 @@ private:
 public:
 	HRESULT Initialize();
 	void Tick();
-	_bool IsinFrustum(_vector vPos, _float3 vScale);
+	_bool IsinFrustum(_vector vPos, _float fLength);
 private:
 	_vector m_vProj[8];
 	_vector m_vProj2[6][3];

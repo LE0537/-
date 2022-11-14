@@ -83,6 +83,8 @@ void CSnorlax::Tick(_float fTimeDelta)
 		if (m_PokemonInfo.bLvUp)
 			LvUp();
 	}
+	if (m_bAnimReset)
+		Reset_Battle();
 }
 
 void CSnorlax::Late_Tick(_float fTimeDelta)
@@ -90,7 +92,7 @@ void CSnorlax::Late_Tick(_float fTimeDelta)
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 	
-	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), m_pTransformCom->Get_Scale()))
+	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), 10.f))
 	{
 		
 	}
@@ -149,6 +151,20 @@ HRESULT CSnorlax::Ready_Components()
 		return E_FAIL;
 
 	return S_OK;
+}
+void CSnorlax::Reset_Battle()
+{
+	m_iAnim = 0;
+	m_bSetPos = false;
+	m_bBrath = false;
+	m_bBattle = false;
+	m_fStartBattle = 0.f;
+	m_bAttack = false;
+	m_bHit = false;
+	m_bDown = false;
+	m_bStopAnim = false;
+	m_bAnimReset = false;
+	m_bBattleMap = false;
 }
 void CSnorlax::Set_DeckPos()
 {

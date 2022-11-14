@@ -113,6 +113,7 @@ protected:
 	_float					m_fBattleMapTime = 0.f;
 	_int					m_iPokeSize = 0;
 	_int					m_iPokeMaxSize = 0;
+	_bool					m_bAnimReset = false;
 public:
 	POKEINFO Get_PokeInfo() {return m_PokemonInfo;}
 	PLAYERINFO Get_PalyerInfo() { return m_PlayerInfo; }
@@ -124,6 +125,7 @@ public:
 	CTransform* Get_Transfrom() { return m_pTransformCom; }
 	_float4 Get_MyBattlePos() { return m_vMyBattlePos; }
 	_float4 Get_TargetBattlePos() { return m_vTargetBattlePos; }
+	void	Reset_Anim() { m_bAnimReset = true; }
 	void	Set_AnimIndex(_int _iAnimIndex) { m_iAnimIndex = _iAnimIndex; }
 	void	Set_BattleMap(_bool _bBattle, _float _fTime) { m_bBattleMap = _bBattle; m_fBattleMapTime = _fTime; }
 	void	Set_PokeSize() { ++m_iPokeSize; }

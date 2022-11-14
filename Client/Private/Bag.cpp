@@ -131,22 +131,45 @@ void CBag::Tick(_float fTimeDelta)
 {
 	if (g_bBag)
 	{
+		if (m_bHeal)
+		{
+			HealPoke(fTimeDelta);
+			return;
+		}
 		if (!m_bItem && !m_bSwap)
 			Key_Input();
 		else if (m_bItem)
 			Key_UseInput();
 		else if (m_bSwap)
 			Key_PokeInput();
+
+
 	}
 	if (m_bBattlePokeDead)
 	{
 		BattlePokeKey();
 	}
+	else if (m_bBattleChangePoke)
+	{
+		BattleChangePokeKey();
+	}
+	else if (m_bBattleUseItem)
+	{
+		if (m_bHeal)
+		{
+			HealPoke(fTimeDelta);
+			return;
+		}
+		if (!m_bItem)
+			BattleUseItemKey();
+		else if (m_bItem)
+			Key_UseInput();
+	}
 }
 
 void CBag::Late_Tick(_float fTimeDelta)
 {
-	if (g_bBag || m_bBattlePokeDead)
+	if (g_bBag || m_bBattlePokeDead || m_bBattleChangePoke || m_bBattleUseItem)
 	{
 		if (nullptr != m_pRendererCom)
 			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
@@ -155,7 +178,7 @@ void CBag::Late_Tick(_float fTimeDelta)
 
 HRESULT CBag::Render()
 {
-	if (g_bBag || m_bBattlePokeDead)
+	if (g_bBag || m_bBattlePokeDead || m_bBattleChangePoke || m_bBattleUseItem)
 	{
 		if (nullptr == m_pShaderCom || nullptr == m_pVIBufferCom || nullptr == m_pShaderCom2 || nullptr == m_pVIBufferCom2 || nullptr == m_pShaderCom3 || nullptr == m_pVIBufferCom3)
 			return E_FAIL;
@@ -393,13 +416,6 @@ HRESULT CBag::SetUp_PokeResources()
 	}
 	for (_int i = 6; i < 12; ++i)
 	{
-		if (FAILED(m_pShaderPoke[i]->Set_RawValue("g_WorldMatrix", &m_pTransformPoke[i]->Get_World4x4_TP(), sizeof(_float4x4))))
-			return E_FAIL;
-		if (FAILED(m_pShaderPoke[i]->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
-			return E_FAIL;
-		if (FAILED(m_pShaderPoke[i]->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
-			return E_FAIL;
-		
 		if (dynamic_cast<CGameObj*>(m_vecPoke[i - 6])->Get_PokeInfo().iPokeNum != 999)
 		{
 			if (dynamic_cast<CGameObj*>(m_vecPoke[i - 6])->Get_PokeInfo().iHp > 0)
@@ -412,9 +428,14 @@ HRESULT CBag::SetUp_PokeResources()
 				HpvScale = { fHp,HpfSizeY,0.f };
 				m_pTransformPoke[i]->Set_Scale(XMLoadFloat3(&HpvScale));
 				m_pTransformPoke[i]->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(HpfX - g_iWinSizeX * 0.5f, -HpfY + g_iWinSizeY * 0.5f, 0.f, 1.f));
-				HpfY += 96.f;
 				HpfX = 255.f;
 
+				if (FAILED(m_pShaderPoke[i]->Set_RawValue("g_WorldMatrix", &m_pTransformPoke[i]->Get_World4x4_TP(), sizeof(_float4x4))))
+					return E_FAIL;
+				if (FAILED(m_pShaderPoke[i]->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+					return E_FAIL;
+				if (FAILED(m_pShaderPoke[i]->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+					return E_FAIL;
 				if (FAILED(m_pShaderPoke[i]->Set_RawValue("g_fHP", &fShaderHp, sizeof(_float))))
 					return E_FAIL;
 				if (FAILED(m_pShaderPoke[i]->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(7))))
@@ -422,6 +443,7 @@ HRESULT CBag::SetUp_PokeResources()
 				m_pShaderPoke[i]->Begin(1);
 				m_pVIBufferPoke[i]->Render();
 			}
+			HpfY += 96.f;
 		}
 	}
 	for (_int i = 12; i < 18; ++i)
@@ -612,6 +634,41 @@ HRESULT CBag::SetSelectButtonUse(_int iIndex, ButtonDir _eDir, UseButton _eButto
 		break;
 	}
 	return S_OK;
+}
+
+void CBag::HealPoke(_float fTimeDelta)
+{
+	m_fHealTime += fTimeDelta;
+
+	if (m_fHealTime > 0.05f)
+	{
+		if (m_iHealHP > m_iHealDot)
+		{
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iHealPokeIndex])->Set_PokeHp(1);
+			if (dynamic_cast<CGameObj*>(m_vecPoke[m_iHealPokeIndex])->Get_PokeInfo().iMaxHp == dynamic_cast<CGameObj*>(m_vecPoke[m_iHealPokeIndex])->Get_PokeInfo().iHp)
+			{
+				m_iHealDot = m_iHealHP - 1;
+			}
+		}
+		++m_iHealDot;
+		m_fHealTime = 0.f;
+	}
+
+	if (m_iHealHP == m_iHealDot)
+	{
+		m_iHealHP = 0;
+		m_iHealDot = 0;
+		m_iHealPokeIndex = 0;
+		m_bHeal = false;
+		m_fHealTime = 0.f;
+
+		if (m_bBattleUseItem)
+		{
+			m_bStart = false;
+			ClearBag();
+			m_bBattleUseItem = false;
+		}
+	}
 }
 
 void CBag::Key_Input()
@@ -1077,7 +1134,10 @@ void CBag::UseItem()
 	switch ((*iter)->iItemNum)
 	{
 	case 4:
-		dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_PokeHp(30);
+		m_iHealHP = 30;
+		m_iHealPokeIndex = m_iPokeSelect;
+		m_fHealTime = 0.f;
+		m_bHeal = true;
 		--(*iter)->iNum;
 		break;
 	default:
@@ -1354,16 +1414,169 @@ void CBag::BattlePokeKey()
 		{
 			m_iChangePoke = m_iPokeSelect;
 			m_bStart = false;
-			m_iPokeSelect = 0;
-			m_bItem = false;
-			m_bUsePoke = false;
-			m_bItemSelect = true;
-			m_bUseItem = false;
-			m_UsePos = 0;
-			m_bUse = false;
+			ClearBag();
 			m_iSwapPoke = 99;
 			m_bBattlePokeDead = false;
 		}
+	}
+	RELEASE_INSTANCE(CGameInstance);
+}
+
+void CBag::BattleChangePokeKey()
+{
+	if (!m_bStart)
+	{
+		m_bItemSelect = !m_bItemSelect;
+		SetSelectButtonPoke(m_iPokeSelect, DIR_LEFT);
+		m_bStart = true;
+	}
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	if (pGameInstance->Key_Down(DIK_UP))
+	{
+		if (m_iPokeSelect != 0)
+		{
+			SetSelectButtonPoke(m_iPokeSelect, DIR_UP);
+			--m_iPokeSelect;
+		}
+	}
+	if (pGameInstance->Key_Down(DIK_DOWN))
+	{
+		if (m_iPokeSelect != 5 && dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect + 1])->Get_PokeInfo().iPokeNum != 999)
+		{
+			SetSelectButtonPoke(m_iPokeSelect, DIR_DOWN);
+			++m_iPokeSelect;
+		}
+	}
+	if (pGameInstance->Key_Down(DIK_RETURN))
+	{
+		if (m_iChangePoke != m_iPokeSelect && dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().eStatInfo != STUN)
+		{
+			m_iChangePoke = m_iPokeSelect;
+			m_bStart = false;
+			ClearBag();
+			m_iSwapPoke = 99;
+			m_bBattleChangePoke = false;
+		}
+	}
+	if (pGameInstance->Key_Down(DIK_BACKSPACE))
+	{
+		m_bStart = false;
+		m_bBattleChangePoke = false;
+		m_bClose = true;
+		ClearBag();
+	}
+	RELEASE_INSTANCE(CGameInstance);
+}
+
+void CBag::BattleUseItemKey()
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	if (pGameInstance->Key_Down(DIK_UP))
+	{
+		if (!m_bUseItem)
+		{
+			if (m_iSelect == 0)
+			{
+				if (m_iItemScoll != 0)
+				{
+					--m_iItemScoll;
+					--m_iItemPos;
+				}
+			}
+			else
+			{
+				SetSelectButton(m_iSelect, DIR_UP);
+				--m_iSelect;
+				--m_iItemPos;
+			}
+		}
+		if (m_bUseItem)
+		{
+			if (m_UsePos != 0)
+			{
+				SetSelectButtonUse(m_UsePos, DIR_UP, ITEM_BUTTON);
+				--m_UsePos;
+			}
+		}
+	}
+	if (pGameInstance->Key_Down(DIK_DOWN))
+	{
+		if (!m_bUseItem)
+		{
+			if (m_iSelect == 7)
+			{
+				if (m_vecItem[m_iItemPos + 1]->iItemNum != 99 && m_iItemScoll != 42)
+				{
+					++m_iItemScoll;
+					++m_iItemPos;
+				}
+			}
+			else
+			{
+				if (m_vecItem[m_iItemPos + 1]->iItemNum != 99)
+				{
+					SetSelectButton(m_iSelect, DIR_DOWN);
+					++m_iSelect;
+					++m_iItemPos;
+				}
+			}
+		}
+		if (m_bUseItem)
+		{
+			if (m_UsePos != 2)
+			{
+				SetSelectButtonUse(m_UsePos, DIR_DOWN, ITEM_BUTTON);
+				++m_UsePos;
+			}
+		}
+	}
+	if (pGameInstance->Key_Down(DIK_RETURN))
+	{
+		if (!m_bUseItem)
+		{
+			if (m_bItemSelect && m_bUseKey)
+			{
+				m_bUseItem = true;
+				Set_UseItemPos(m_iSelect);
+			}
+			m_bUseKey = true;
+		}
+		if (m_bUseItem)
+		{
+			if (m_bUse)
+			{
+				switch (m_UsePos)
+				{
+				case 0:
+					if (CheckUseItem())
+					{
+						SetSelectButtonPoke(m_iPokeSelect, DIR_LEFT);
+						m_bItem = true;
+						m_bItemSelect = false;
+						m_bUseItem = false;
+					}
+					m_bUse = false;
+					break;
+				case 2:
+					m_bUseItem = false;
+					m_UsePos = 0;
+					m_bUse = false;
+					Safe_Release(pGameInstance);
+					return;
+					break;
+				default:
+					break;
+				}
+			}
+			m_bUse = true;
+		}
+	}
+	if (pGameInstance->Key_Down(DIK_BACKSPACE))
+	{
+		m_bStart = false;
+		ClearBag();
+		m_bBattleUseItem = false;
+		m_bClose = true;
 	}
 	RELEASE_INSTANCE(CGameInstance);
 }

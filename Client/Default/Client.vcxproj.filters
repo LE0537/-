@@ -151,6 +151,9 @@
     <Filter Include="02.GameObjects\99.GameObj\04.UI\05.Lv_UP">
       <UniqueIdentifier>{d89197f9-f18f-4c45-8f9a-cd472105b5d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96.Data_Manager">
+      <UniqueIdentifier>{bc13d5da-b1a6-467d-ad39-0f08ad6428fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -297,6 +300,9 @@
     <ClInclude Include="..\Public\Lv_Up.h">
       <Filter>02.GameObjects\99.GameObj\04.UI\05.Lv_UP</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Data_Manager.h">
+      <Filter>96.Data_Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -427,6 +433,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Lv_Up.cpp">
       <Filter>02.GameObjects\99.GameObj\04.UI\05.Lv_UP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Data_Manager.cpp">
+      <Filter>96.Data_Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

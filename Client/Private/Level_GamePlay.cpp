@@ -197,14 +197,14 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar * pLayerTag)
 
 	for (auto& iter : m_vecSave)
 	{
-		if (iter.iType == 2)
+	/*	if (iter.iType == 2)
 		{
 			m_LoadFile.vPos = iter.vPos;
 			m_LoadFile.vScale = iter.vScale;
 
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
 				return E_FAIL;
-		}
+		}*/
 		if (iter.iType == 5)
 		{
 			m_LoadFile.vPos = iter.vPos;

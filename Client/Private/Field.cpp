@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 #include "Level_GamePlay.h"
+#include "Data_Manager.h"	// Ãß°¡
 
 CField::CField(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -27,12 +28,6 @@ HRESULT CField::Initialize(void * pArg)
 		return E_FAIL;
 
 
-	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-
-
-
-
-	RELEASE_INSTANCE(CGameInstance);
 
 	m_pTransformCom->Set_Scale(XMLoadFloat3((&((CLevel_GamePlay::LOADFILE*)pArg)->vScale)));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4((&((CLevel_GamePlay::LOADFILE*)pArg)->vPos)));
@@ -41,7 +36,6 @@ HRESULT CField::Initialize(void * pArg)
 
 void CField::Tick(_float fTimeDelta)
 {
-
 
 }
 
@@ -108,7 +102,7 @@ HRESULT CField::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Model*/
-	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Prototype_Component_Model_Field"), (CComponent**)&m_pModelCom)))
+	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Field"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
 	/* For.Com_Navigation */

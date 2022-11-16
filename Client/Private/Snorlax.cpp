@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 #include "Lv_Up.h"
+#include "Data_Manager.h"	// Ãß°¡
 
 CSnorlax::CSnorlax(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -58,6 +59,7 @@ HRESULT CSnorlax::Initialize(void * pArg)
 
 void CSnorlax::Tick(_float fTimeDelta)
 {
+
 	if (m_bOnOff)
 	{
 		Set_DeckPos();
@@ -147,7 +149,7 @@ HRESULT CSnorlax::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Model*/
-	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Prototype_Component_Model_Snorlax"), (CComponent**)&m_pModelCom)))
+	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Snorlax"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
 	return S_OK;

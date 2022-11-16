@@ -11,6 +11,7 @@ private:
 
 public:
 	HRESULT Initialize(class CModel* pModel, aiNodeAnim* pAIChannel);
+	HRESULT Bin_Initialize(DATA_BINCHANNEL* pAIChannel, class CModel* pModel); // 추가
 	void Invalidate_TransformationMatrix(_float fCurrentTime);
 	void Invalidate_TransformationMatrix2(_float fCurrentTime, KEYFRAME _key);
 	void Reset();
@@ -25,9 +26,11 @@ private:
 	vector<KEYFRAME>		m_KeyFrames;
 
 	_uint					m_iCurrentKeyFrameIndex = 0;
-
+public: // For. Data
+	void Get_ChannelData(DATA_BINCHANNEL* pChannelData);
 public:
 	static CChannel* Create(class CModel* pModel, aiNodeAnim* pAIChannel);
+	static CChannel* Bin_Create(DATA_BINCHANNEL* pAIChannel, class CModel* pModel);	// 추가
 	virtual void Free() override;
 };
 

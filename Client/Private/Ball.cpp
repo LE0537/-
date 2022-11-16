@@ -105,10 +105,10 @@ HRESULT CBall::Ready_Components()
 	/* For.Com_Model*/
 	wstring szModel[4];
 	wstring szBall[4];
-	szBall[0] = TEXT("Prototype_Component_Model_MonsterBall");
-	szBall[1] = TEXT("Prototype_Component_Model_SuperBall");
-	szBall[2] = TEXT("Prototype_Component_Model_HyperBall");
-	szBall[3] = TEXT("Prototype_Component_Model_MasterBall");
+	szBall[0] = TEXT("MonsterBall");
+	szBall[1] = TEXT("SuperBall");
+	szBall[2] = TEXT("HyperBall");
+	szBall[3] = TEXT("MasterBall");
 	for (int i = 0; i < 4; ++i)
 	{
 		szModel[i] = TEXT("Com_ModelCom");

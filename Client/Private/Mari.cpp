@@ -8,6 +8,7 @@
 #include "SoundMgr.h"
 #include "Player.h"
 #include "Ball.h"
+#include "Data_Manager.h"	// Ãß°¡
 
 CMari::CMari(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -108,7 +109,7 @@ void CMari::Tick(_float fTimeDelta)
 		m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 		m_pModelCom->Play_Animation(fTimeDelta);
 	}
-	
+
 }
 
 void CMari::Late_Tick(_float fTimeDelta)
@@ -173,7 +174,7 @@ HRESULT CMari::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Model*/
-	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Prototype_Component_Model_Mari"), (CComponent**)&m_pModelCom)))
+	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Mari"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
 	CCollider::COLLIDERDESC		ColliderDesc;

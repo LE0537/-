@@ -181,6 +181,7 @@
     <ClInclude Include="..\Public\Camera_Dynamic.h" />
     <ClInclude Include="..\public\Charmander.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
+    <ClInclude Include="..\Public\Data_Manager.h" />
     <ClInclude Include="..\public\ExpShare.h" />
     <ClInclude Include="..\public\Field.h" />
     <ClInclude Include="..\public\GameObj.h" />
@@ -228,6 +229,7 @@
     <ClCompile Include="..\Private\BreakCar.cpp" />
     <ClCompile Include="..\Private\Camera_Dynamic.cpp" />
     <ClCompile Include="..\private\Charmander.cpp" />
+    <ClCompile Include="..\Private\Data_Manager.cpp" />
     <ClCompile Include="..\private\ExpShare.cpp" />
     <ClCompile Include="..\private\Field.cpp" />
     <ClCompile Include="..\private\GameObj.cpp" />

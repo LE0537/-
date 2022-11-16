@@ -255,7 +255,13 @@ HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const _tchar * pPrototyp
 
 	return m_pComponent_Manager->Add_Prototype(iLevelIndex, pPrototypeTag, pPrototype);	
 }
+HRESULT CGameInstance::Check_Prototype(_int iLevelIndex, const _tchar * pPrototypeTag)
+{
+	if (nullptr == m_pComponent_Manager)
+		return E_FAIL;
 
+	return m_pComponent_Manager->Check_Prototype(iLevelIndex, pPrototypeTag);
+}
 CComponent * CGameInstance::Clone_Component(_uint iLevelIndex, const _tchar * pPrototypeTag, void * pArg)
 {
 	if (nullptr == m_pComponent_Manager)

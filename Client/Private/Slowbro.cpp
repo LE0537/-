@@ -2,6 +2,7 @@
 #include "..\Public\Slowbro.h"
 #include "GameInstance.h"
 #include "Lv_Up.h"
+#include "Data_Manager.h"	// Ãß°¡
 
 CSlowbro::CSlowbro(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -57,6 +58,7 @@ HRESULT CSlowbro::Initialize(void * pArg)
 
 void CSlowbro::Tick(_float fTimeDelta)
 {
+	
 	if (m_bOnOff)
 	{
 		Set_DeckPos();
@@ -137,7 +139,7 @@ HRESULT CSlowbro::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Model*/
-	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Prototype_Component_Model_Slowbro"), (CComponent**)&m_pModelCom)))
+	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Slowbro"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
 	return S_OK;

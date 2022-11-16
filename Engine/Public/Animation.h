@@ -12,6 +12,7 @@ private:
 
 public:
 	HRESULT Initialize(class CModel* pModel, aiAnimation* pAIAnimation);
+	HRESULT Bin_Initialize(DATA_BINANIM* pAIAnimation, class CModel* pModel); // 추가
 	void Invalidate_TransformationMatrix(_float fTimeDelta);
 	void Invalidate_TransformationMatrix2(_float fTimeDelta, vector<class CChannel*> _Channel);
 	_bool	Get_AnimEnd() { return m_bAnimEnd; }
@@ -44,8 +45,11 @@ private:
 
 	_bool							m_isLoop = true;
 	_bool							m_bEnd = false;
+public: // For. Data 추가
+	void Get_AnimData(DATA_BINANIM* pAnimData);
 public:
 	static CAnimation* Create(class CModel* pModel, aiAnimation* pAIAnimation);
+	static CAnimation* Bin_Create(DATA_BINANIM* pAIAnimation, class CModel* pModel); // 추가
 	virtual void Free() override;
 };
 

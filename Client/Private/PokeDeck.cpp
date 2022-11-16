@@ -39,14 +39,14 @@ HRESULT CPokeDeck::Initialize(void * pArg)
 			continue;
 		}
 
-		//if (i == 24)
-		//{
-		//	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
-		//		return E_FAIL;
-		//	m_vecPoke.push_back(tInfo);
-		//	dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
-		//	continue;
-		//}
+		if (i == 24)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
 		if (i == 39)
 		{
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Wigglytuff"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
@@ -630,10 +630,10 @@ void CPokeDeck::Free()
 
 	if (!m_vecPoke.empty())
 	{
-		for (int i = 0; i < 152; ++i)
+	/*	for (int i = 0; i < 152; ++i)
 		{
 			Safe_Release(m_vecPoke[i]);
-		}
+		}*/
 		m_vecPoke.clear();
 	}
 	for (int i = 0; i < 6; ++i)

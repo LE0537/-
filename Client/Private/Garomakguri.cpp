@@ -2,6 +2,7 @@
 #include "..\Public\Garomakguri.h"
 #include "GameInstance.h"
 #include "Lv_Up.h"
+#include "Data_Manager.h"	// Ãß°¡
 
 CGaromakguri::CGaromakguri(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -58,6 +59,7 @@ HRESULT CGaromakguri::Initialize(void * pArg)
 
 void CGaromakguri::Tick(_float fTimeDelta)
 {
+	
 	if (m_bOnOff)
 	{
 		Set_DeckPos();
@@ -139,7 +141,7 @@ HRESULT CGaromakguri::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Model*/
-	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Prototype_Component_Model_Garomakguri"), (CComponent**)&m_pModelCom)))
+	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Garomakguri"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
 	return S_OK;

@@ -4,6 +4,7 @@
 #include "GameInstance.h"
 #include "Level_Loading.h"
 #include "SoundMgr.h"
+#include "Data_Manager.h"	// 추가
 
 bool		g_bBag = false;
 bool		g_PokeInfo = false;
@@ -32,6 +33,9 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(m_pGameInstance->Initialize_Engine(g_hInst, LEVEL_END, Graphic_Desc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
+
+	if (FAILED(CData_Manager::Get_Instance()->Init(m_pDevice, m_pContext)))
+		return E_FAIL;	// 추가
 
 	if (FAILED(Ready_Prototype_Component()))
 		return E_FAIL;
@@ -170,6 +174,7 @@ CMainApp * CMainApp::Create()
 
 void CMainApp::Free()
 {
+
 	Safe_Release(m_pRenderer);
 
 	Safe_Release(m_pDevice);
@@ -178,5 +183,6 @@ void CMainApp::Free()
 	Safe_Release(m_pGameInstance);
 	
 	CGameInstance::Release_Engine();
+	CData_Manager::Destroy_Instance();	// 추가
 }
 

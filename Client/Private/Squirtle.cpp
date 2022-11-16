@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Lv_Up.h"
 
+
 CSquirtle::CSquirtle(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
 {
@@ -138,7 +139,7 @@ HRESULT CSquirtle::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Model*/
-	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Prototype_Component_Model_Squirtle"), (CComponent**)&m_pModelCom)))
+	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Squirtle"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
 	return S_OK;

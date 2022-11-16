@@ -7,6 +7,8 @@
 #include "TextBox.h"
 #include "VIBuffer_Navigation.h"
 #include "BattleUI.h"
+#include "Data_Manager.h"	// Ãß°¡
+
 
 CPlayer::CPlayer(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -33,14 +35,13 @@ HRESULT CPlayer::Initialize(void * pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 	
-	
-	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
 	m_PlayerInfo.strName = L"Áê½Å";
 	m_PlayerInfo.bEvent = false;
 	m_PlayerInfo.bBattle = false;
 	m_PlayerInfo.bRide = false;
 
-	RELEASE_INSTANCE(CGameInstance);
+	
 	m_pTransformCom->Set_Scale(XMLoadFloat3((&((CLevel_GamePlay::LOADFILE*)pArg)->vScale)));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4((&((CLevel_GamePlay::LOADFILE*)pArg)->vPos)));
 	m_pModelCom->Set_CurrentAnimIndex(IDLE);
@@ -54,7 +55,7 @@ void CPlayer::Tick(_float fTimeDelta)
 		Battle(fTimeDelta);
 	else
 	{
-		OnNavi();
+	//	OnNavi();
 		if (!m_PlayerInfo.bRide)
 			m_pModelCom->Set_CurrentAnimIndex(IDLE);
 		if (m_PlayerInfo.bRide)
@@ -67,6 +68,7 @@ void CPlayer::Tick(_float fTimeDelta)
 		m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	}
 	m_pModelCom->Play_Animation(fTimeDelta);
+
 }
 
 void CPlayer::Late_Tick(_float fTimeDelta)
@@ -133,7 +135,7 @@ HRESULT CPlayer::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Model*/
-	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Prototype_Component_Model_Player"), (CComponent**)&m_pModelCom)))
+	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Player"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
 

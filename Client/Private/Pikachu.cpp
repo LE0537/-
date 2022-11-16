@@ -3,6 +3,8 @@
 #include "GameInstance.h"
 #include "Level_GamePlay.h"
 #include "Lv_Up.h"
+#include "Data_Manager.h"	// Ãß°¡
+
 CPikachu::CPikachu(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
 {
@@ -58,6 +60,7 @@ HRESULT CPikachu::Initialize(void * pArg)
 
 void CPikachu::Tick(_float fTimeDelta)
 {
+	
 	if (m_bOnOff)
 	{
 		Set_DeckPos();
@@ -138,7 +141,7 @@ HRESULT CPikachu::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Model*/
-	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Prototype_Component_Model_Pikachu"), (CComponent**)&m_pModelCom)))
+	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Pikachu"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
 	return S_OK;

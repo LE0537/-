@@ -2,7 +2,7 @@
 #include "..\Public\Loader.h"
 
 #include "GameInstance.h"
-
+#include "Data_Manager.h"	// 추가
 
 #include "Camera_Dynamic.h"
 #include "BackGround.h"
@@ -94,6 +94,7 @@ HRESULT CLoader::Initialize(LEVEL eNextLevel)
 
 HRESULT CLoader::Loading_ForLogoLevel()
 {
+	CData_Manager* pData_Manager = GET_INSTANCE(CData_Manager);
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	if (nullptr == pGameInstance)
 		return E_FAIL;
@@ -213,51 +214,37 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		CCharmander::Create(m_pDevice, m_pContext))))
 		return E_FAIL;*/
 
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Squirtle"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Squirtle/Squirtle.fbx", PivotMatrix))))
-		return E_FAIL;
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Squirtle"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Squirtle"),
 		CSquirtle::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Pikachu"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Pikachu/Pikachu.fbx", PivotMatrix))))
-		return E_FAIL;
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Pikachu"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Pikachu"),
 		CPikachu::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Wigglytuff"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Wigglytuff/Wigglytuff.fbx", PivotMatrix))))
-		return E_FAIL;
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Wigglytuff"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Wigglytuff"),
 		CWigglytuff::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Meowth"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Meowth/Meowth.fbx", PivotMatrix))))
-		return E_FAIL;
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Meowth"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Meowth"),
 		CMeowth::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Slowbro"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Slowbro/Slowbro.fbx", PivotMatrix))))
-		return E_FAIL;
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Slowbro"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Slowbro"),
 		CSlowbro::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Snorlax"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Snorlax/Snorlax.fbx", PivotMatrix))))
-		return E_FAIL;
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Snorlax"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Snorlax"),
 		CSnorlax::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Garomakguri"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Garomakguri/Garomakguri.fbx", PivotMatrix))))
-		return E_FAIL;
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Garomakguri"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Garomakguri"),
 		CGaromakguri::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -266,50 +253,34 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		CNonePoke::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	//Player
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Player"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Player/Player.fbx", PivotMatrix))))
-		return E_FAIL;
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Player"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Player"),
 		CPlayer::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	//Trainer
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Mari"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Mari/Mari.fbx", PivotMatrix))))
-		return E_FAIL;
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Mari"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Mari"),
 		CMari::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_MonsterBall"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/MonsterBall/MonsterBall.fbx", PivotMatrix))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_SuperBall"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/SuperBall/SuperBall.fbx", PivotMatrix))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_HyperBall"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/HyperBall/HyperBall.fbx", PivotMatrix))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_MasterBall"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/MasterBall/MasterBall.fbx", PivotMatrix))))
-		return E_FAIL;
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("MonsterBall"), LEVEL_STATIC, CData_Manager::DATA_PARTS);
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("SuperBall"), LEVEL_STATIC, CData_Manager::DATA_PARTS);
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("HyperBall"), LEVEL_STATIC, CData_Manager::DATA_PARTS);
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("MasterBall"), LEVEL_STATIC, CData_Manager::DATA_PARTS);
+
 	//Map
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Field"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/Field/Field.fbx"))))
-		return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Field"), LEVEL_STATIC, CData_Manager::DATA_NONANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Field"),
 		CField::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_BattleField"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/BattleField/BattleField.fbx"))))
-		return E_FAIL;
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("BattleField"), LEVEL_STATIC, CData_Manager::DATA_NONANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BattleField"),
 		CBattleField::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Tree"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/Tree/Tree.fbx"))))
-		return E_FAIL;
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Tree"), LEVEL_STATIC, CData_Manager::DATA_NONANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Tree"),
 		CTree::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -342,8 +313,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("                        로딩이 완료되었습니다."));
 
 	m_isFinished = true;
-
+	RELEASE_INSTANCE(CData_Manager);
 	Safe_Release(pGameInstance);
+	
 
 	return S_OK;
 }

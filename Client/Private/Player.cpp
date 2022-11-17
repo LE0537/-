@@ -55,7 +55,7 @@ void CPlayer::Tick(_float fTimeDelta)
 		Battle(fTimeDelta);
 	else
 	{
-	//	OnNavi();
+		OnNavi();
 		if (!m_PlayerInfo.bRide)
 			m_pModelCom->Set_CurrentAnimIndex(IDLE);
 		if (m_PlayerInfo.bRide)

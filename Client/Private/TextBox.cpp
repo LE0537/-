@@ -196,6 +196,23 @@ void CTextBox::Running_TextBox()
 			m_fDeadTime = 0.f;
 		}
 	}
+	else if (m_tTInfo.iType == 5)
+	{
+		if (m_fDeadTime > 2.0f)
+		{
+			if (m_iScriptIndex < m_tTInfo.iScriptSize - 1)
+			{
+				++m_iScriptIndex;
+				m_wstr = TEXT("");
+				m_iIndex = 0;
+			}
+			else if (m_iScriptIndex == m_tTInfo.iScriptSize - 1)
+			{
+				m_bDead = true;
+			}
+			m_fDeadTime = 0.f;
+		}
+	}
 	RELEASE_INSTANCE(CGameInstance);
 }
 
@@ -205,19 +222,20 @@ void CTextBox::RenderFonts()
 
 	wstring szName = dynamic_cast<CGameObj*>(m_tTInfo.pTarget)->Get_PalyerInfo().strName;
 	_vector vPos = { 210.f,550.f,0.f,1.f };
-	if (!g_Battle)
+	if (!g_Battle && m_tTInfo.iType != 5)
 	{
 		pGameInstance->Render_Font(TEXT("Font_Nexon"), m_wstr.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(1.2f, 1.2f, 1.2f, 1.f));
 		vPos = { 220.f,460.f,0.f,1.f };
 		pGameInstance->Render_Font(TEXT("Font_Nexon"), szName.c_str(), vPos, XMVectorSet(1.f, 1.f, 1.f, 1.f), XMVectorSet(1.5f, 1.5f, 1.5f, 1.f));
 	}
-	if (g_Battle)
+	if (g_Battle || m_tTInfo.iType == 5)
 	{
 		vPos = { 380.f,630.f,0.f,1.f };
 		pGameInstance->Render_Font(TEXT("Font_Nexon"), m_wstr.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(0.9f, 0.9f, 0.9f, 1.f));
 		vPos = { 390.f,573.f,0.f,1.f };
 		pGameInstance->Render_Font(TEXT("Font_Nexon"), szName.c_str(), vPos, XMVectorSet(1.f, 1.f, 1.f, 1.f), XMVectorSet(1.1f, 1.1f, 1.1f, 1.f));
 	}
+	
 	RELEASE_INSTANCE(CGameInstance);
 }
 

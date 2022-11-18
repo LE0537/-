@@ -48,7 +48,6 @@ private:
 	HANDLE					m_hThread = 0;
 	CRITICAL_SECTION		m_CriticalSection;
 
-
 public:
 	static CLoader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel);
 	virtual void Free();

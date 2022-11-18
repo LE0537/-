@@ -154,6 +154,12 @@
     <Filter Include="96.Data_Manager">
       <UniqueIdentifier>{bc13d5da-b1a6-467d-ad39-0f08ad6428fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\02.Map\04.SkyBox">
+      <UniqueIdentifier>{2d5a3954-592a-4670-b95a-5e962a9b1f65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Map\05.Weed">
+      <UniqueIdentifier>{506e36b5-6e43-4cc7-bf21-60ca4d19136a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -303,6 +309,12 @@
     <ClInclude Include="..\Public\Data_Manager.h">
       <Filter>96.Data_Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\SkyBox.h">
+      <Filter>02.GameObjects\02.Map\04.SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Weed.h">
+      <Filter>02.GameObjects\02.Map\05.Weed</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -437,6 +449,12 @@
     <ClCompile Include="..\Private\Data_Manager.cpp">
       <Filter>96.Data_Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\SkyBox.cpp">
+      <Filter>02.GameObjects\02.Map\04.SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Weed.cpp">
+      <Filter>02.GameObjects\02.Map\05.Weed</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -462,6 +480,12 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimModel.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxRectInstance.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

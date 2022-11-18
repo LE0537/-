@@ -5,6 +5,7 @@
 #include "Camera_Dynamic.h"
 #include "SoundMgr.h"
 
+
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -123,6 +124,31 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar * pLayerTag)
 	CGameInstance*			pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_PointInstance"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, m_iWeed[0]))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_PointInstance2"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, m_iWeed[1]))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_PointInstance3"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, m_iWeed[2]))))
+		return E_FAIL;
+
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Weed"), LEVEL_GAMEPLAY, pLayerTag, &tInsInfo)))
+		return E_FAIL;
+	dynamic_cast<CWeed*>(tInsInfo)->Set_Vector(m_listPos1, m_listScale1, 0);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Weed"), LEVEL_GAMEPLAY, pLayerTag, &tInsInfo)))
+		return E_FAIL;
+	dynamic_cast<CWeed*>(tInsInfo)->Set_Vector(m_listPos2, m_listScale2, 1);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Weed"), LEVEL_GAMEPLAY, pLayerTag, &tInsInfo)))
+		return E_FAIL;
+	dynamic_cast<CWeed*>(tInsInfo)->Set_Vector(m_listPos3, m_listScale3, 2);
+
 	for (auto& iter : m_vecSave)
 	{
 		if (iter.iType == 1)
@@ -139,6 +165,14 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar * pLayerTag)
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tree"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
 				return E_FAIL;
 		}
+		if (iter.iType == 6)
+		{
+			_float3 vScale = { 0.013f, 0.013f, 0.013f};
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = vScale;
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_SkyBox"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
 	}
 	for (auto& iter : m_vecSaveBattle)
 	{
@@ -149,8 +183,19 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar * pLayerTag)
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BattleField"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
 				return E_FAIL;
 		}
+		if (iter.iType == 6)
+		{
+			_float3 vScale = { 0.008f, 0.008f, 0.008f };
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = vScale;
+			m_LoadFile.bBattleMap = true;
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_SkyBox"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
 	}
 	Safe_Release(pGameInstance);
+
+
 
 	return S_OK;
 }
@@ -177,7 +222,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar * pLayerTag)
 	CameraDesc.CameraDesc.fFovy = XMConvertToRadians(60.0f);
 	CameraDesc.CameraDesc.fAspect = (_float)g_iWinSizeX / g_iWinSizeY;
 	CameraDesc.CameraDesc.fNear = 0.2f;
-	CameraDesc.CameraDesc.fFar = 1000.f;
+	CameraDesc.CameraDesc.fFar = 1300.f;
 
 	CameraDesc.CameraDesc.TransformDesc.fSpeedPerSec = 10.f;
 	CameraDesc.CameraDesc.TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
@@ -195,24 +240,68 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar * pLayerTag)
 	CGameInstance*			pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 
+	//Prototype_GameObject_Squirtle
+	//Prototype_GameObject_Pikachu
+	//Prototype_GameObject_Wigglytuff
+	//Prototype_GameObject_Meowth
+	//Prototype_GameObject_Slowbro
+	//Prototype_GameObject_Snorlax
+	//Prototype_GameObject_Garomakguri
 	for (auto& iter : m_vecSave)
 	{
-	/*	if (iter.iType == 2)
+		_int iDest = rand() % 7;
+		if (iter.iType == 2)
 		{
-			m_LoadFile.vPos = iter.vPos;
-			m_LoadFile.vScale = iter.vScale;
+			CGameObject* tInfo = nullptr;
 
-			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
-				return E_FAIL;
-		}*/
-		if (iter.iType == 5)
-		{
-			m_LoadFile.vPos = iter.vPos;
-			m_LoadFile.vScale = iter.vScale;
-
-			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Mari"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
-				return E_FAIL;
+			switch (iDest)
+			{
+			case 0:
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Squirtle"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+					return E_FAIL;
+				break;
+			case 1:
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+					return E_FAIL;
+				break;
+			case 2:
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Wigglytuff"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+					return E_FAIL;
+				break;
+			case 3:
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Meowth"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+					return E_FAIL;
+				break;
+			case 4:
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Slowbro"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+					return E_FAIL;
+				break;
+			case 5:
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Snorlax"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+					return E_FAIL;
+				break;
+			case 6:
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Garomakguri"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+					return E_FAIL;
+				break;
+			default:
+				break;
+			}
+			
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
 		}
+		//if (iter.iType == 5)
+		//{
+		//	m_LoadFile.vPos = iter.vPos;
+		//	m_LoadFile.vScale = iter.vScale;
+
+		//	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Mari"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+		//		return E_FAIL;
+		//}
 	}
 	Safe_Release(pGameInstance);
 
@@ -271,8 +360,26 @@ void CLevel_GamePlay::Load()
 		if (0 == dwByte)	// 더이상 읽을 데이터가 없을 경우
 			break;
 		m_vecSave.push_back(tInfo);
+		if (tInfo.iType == 7)
+		{
+			m_listPos1.push_back(tInfo.vPos);
+			m_listScale1.push_back(tInfo.vScale);
+			++m_iWeed[0];
+		}
+		if (tInfo.iType == 8)
+		{
+			m_listPos2.push_back(tInfo.vPos);
+			m_listScale2.push_back(tInfo.vScale);
+			++m_iWeed[1];
+		}
+		if (tInfo.iType == 9)
+		{
+			m_listPos3.push_back(tInfo.vPos);
+			m_listScale3.push_back(tInfo.vScale);
+			++m_iWeed[2];
+		}
 	}
-
+	
 	Safe_Release(pGameInstance);
 	// 3. 파일 소멸
 	CloseHandle(hFile);
@@ -334,6 +441,13 @@ CLevel_GamePlay * CLevel_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceCon
 void CLevel_GamePlay::Free()
 {
 	__super::Free();
+
+	m_listPos1.clear();
+	m_listScale1.clear();
+	m_listPos2;
+	m_listScale2;
+	m_listPos3;
+	m_listScale3;
 
 
 }

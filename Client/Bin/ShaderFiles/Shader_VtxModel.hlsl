@@ -68,7 +68,22 @@ VS_OUT VS_MAIN(VS_IN In)
 
 	return Out;
 }
+VS_OUT VS_Sky(VS_IN In)
+{
+	VS_OUT		Out = (VS_OUT)0;
 
+	matrix		matWV, matWVP;
+
+	matWV = mul(g_WorldMatrix, g_ViewMatrix);
+	matWVP = mul(matWV, g_ProjMatrix);
+
+	/* 정점의 위치에 월드 뷰 투영행렬을 곱한다. 현재 정점은 ViewSpace에 존재하낟. */
+	/* 투영행렬까지 곱하면 정점위치의 w에 뷰스페이스 상의 z를 보관한다. == Out.vPosition이 반드시 float4이어야하는 이유. */
+	Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
+	Out.vTexUV = In.vTexUV;
+
+	return Out;
+}
 
 struct PS_IN
 {
@@ -138,7 +153,17 @@ PS_OUT PS_Map(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_Sky(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
 
+	Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
+
+	if (Out.vColor.a <= 0.6f)
+		discard;
+
+	return Out;
+}
 
 technique11 DefaultTechnique
 {
@@ -173,5 +198,16 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_Tree();
+	}
+
+	pass Sky
+	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_Sky();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_Sky();
 	}
 }

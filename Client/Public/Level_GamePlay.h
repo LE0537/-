@@ -4,6 +4,7 @@
 #include "Level.h"
 #include "GameObject.h"
 #include "Camera_Dynamic.h"
+#include "Weed.h"
 
 BEGIN(Client)
 
@@ -26,7 +27,9 @@ public:
 		_float3	 vScale;
 		CGameObject* pTarget;
 		CGameObject* pCamera;
+		_bool	 bBattleMap;
 	}LOADFILE;
+
 public:
 	virtual HRESULT Initialize();
 	virtual void Tick(_float fTimeDelta);
@@ -43,11 +46,23 @@ public:
 private:
 	void Load();
 	void LoadBattle();
+	
 private:
 	LOADFILE			m_LoadFile;
 	vector<SaveInfo>	m_vecSave;
 	vector<SaveInfo>	m_vecSaveBattle;
 	CCamera_Dynamic::CAMERADESC_DERIVED			CameraDesc;
+
+	vector<_float4>					m_listPos1;
+	vector<_float3>					m_listScale1;
+	vector<_float4>					m_listPos2;
+	vector<_float3>					m_listScale2;
+	vector<_float4>					m_listPos3;
+	vector<_float3>					m_listScale3;
+	_int					m_iWeed[3] = { 0,0,0 };
+
+	CGameObject* tInsInfo = nullptr;
+
 public:
 	static CLevel_GamePlay* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;

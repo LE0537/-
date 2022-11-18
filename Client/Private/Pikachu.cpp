@@ -4,6 +4,11 @@
 #include "Level_GamePlay.h"
 #include "Lv_Up.h"
 #include "Data_Manager.h"	// 추가
+#include "SoundMgr.h"
+#include "TextBox.h"
+#include "Camera_Dynamic.h"
+#include "Player.h"
+#include "VIBuffer_Navigation.h"
 
 CPikachu::CPikachu(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -49,11 +54,9 @@ HRESULT CPikachu::Initialize(void * pArg)
 	m_PokemonInfo.eType2 = POKETYPE_END;
 	m_PokemonInfo.eStatInfo = STATINFO_END;
 	m_PokemonInfo.bLvUp = false;
-
+	m_bWildPoke = false;
 	m_pModelCom->Set_CurrentAnimIndex(2);
-
-	//m_pTransformCom->Set_Scale(XMLoadFloat3((&((CLevel_GamePlay::LOADFILE*)pArg)->vScale)));
-	//m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4((&((CLevel_GamePlay::LOADFILE*)pArg)->vPos)));
+	m_pTransformCom->Set_Scale(XMVectorSet(0.085f, 0.085f, 0.085f, 0.f));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(-50000.f, -50000.f, -50000.f, 1.f));
 	return S_OK;
 }
@@ -82,15 +85,41 @@ void CPikachu::Tick(_float fTimeDelta)
 	}
 	if (m_bAnimReset)
 		Reset_Battle();
+	if (m_bWildPoke)
+	{
+		if (!m_bReadyWild)
+		{
+			Ready_WildBattle();
+			m_bReadyWild = true;
+		}
+		if (g_Battle)
+		{
+			if (!m_bBattleStart && m_bCollCheck)
+				WildBattle();
+		}
+
+
+		if (m_bWildPoke && !g_Battle && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
+		{
+			//	OnNavi();
+			Move(fTimeDelta);
+			m_pModelCom->Play_Animation(fTimeDelta);
+			m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
+		}
+	}
 }
 
 void CPikachu::Late_Tick(_float fTimeDelta)
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 	
+	if (!g_Battle && m_bWildPoke)
+		Check_Coll();
+
 	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), 10.f))
 	{
-
+		if (m_bWildPoke && !m_bBattleMap && !g_Battle && nullptr != m_pRendererCom)
+			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 	}
 	if ((g_PokeInfo || g_bPokeDeck) && m_bOnOff && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UIPOKE, this);
@@ -124,6 +153,9 @@ HRESULT CPikachu::Render()
 	}
 
 	RELEASE_INSTANCE(CGameInstance);
+
+	if (g_CollBox)
+		m_pAABBCom->Render();
 	return S_OK;
 }
 HRESULT CPikachu::Ready_Components()
@@ -144,6 +176,23 @@ HRESULT CPikachu::Ready_Components()
 	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Pikachu"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
+	CCollider::COLLIDERDESC		ColliderDesc;
+
+	/* For.Com_AABB */
+	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+	ColliderDesc.vScale = _float3(20.f, 40.f, 20.f);
+	ColliderDesc.vPosition = _float3(0.f, 20.f, 0.f);
+	if (FAILED(__super::Add_Components(TEXT("Com_AABB"), LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"), (CComponent**)&m_pAABBCom, &ColliderDesc)))
+		return E_FAIL;
+
+	CNavigation::NAVIDESC			NaviDesc;
+	ZeroMemory(&NaviDesc, sizeof NaviDesc);
+
+	NaviDesc.iCurrentCellIndex = 0;
+
+	if (FAILED(__super::Add_Components(TEXT("Com_Navigation"), LEVEL_STATIC, TEXT("Prototype_Component_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
+		return E_FAIL;
 	return S_OK;
 }
 void CPikachu::Reset_Battle()
@@ -159,6 +208,128 @@ void CPikachu::Reset_Battle()
 	m_bStopAnim = false;
 	m_bAnimReset = false;
 	m_bBattleMap = false;
+}
+void CPikachu::Check_Coll()
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	CCollider*	pTargetCollider = (CCollider*)pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("Com_AABB"));
+
+	if (nullptr == pTargetCollider)
+		return;
+
+
+	if (m_pAABBCom->Collision(pTargetCollider))
+	{
+		if (!m_bCollCheck)
+		{
+			dynamic_cast<CPlayer*>(m_pTarget)->Set_TargetPoke(&m_vecPoke);
+			dynamic_cast<CPlayer*>(m_pTarget)->Set_BattleTarget(this, BATTLE_WILD);
+			if (!dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
+				dynamic_cast<CGameObj*>(m_pTarget)->OnOffEvent();
+			dynamic_cast<CCamera_Dynamic*>(m_pCamera)->Set_Target(this);
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BattleIntro"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"))))
+				return;
+			CSoundMgr::Get_Instance()->BGM_Stop();
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Battle1.wav"), 0.75f);
+			m_bCollCheck = true;
+		}
+	}
+
+	RELEASE_INSTANCE(CGameInstance);
+}
+void CPikachu::Ready_WildBattle()
+{
+	m_vecPoke.reserve(6);;
+	m_vecPoke.push_back(this);
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	CGameObject* tInfo;
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+		return;
+	m_vecPoke.push_back(tInfo);
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+		return;
+	m_vecPoke.push_back(tInfo);
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+		return;
+	m_vecPoke.push_back(tInfo);
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+		return;
+	m_vecPoke.push_back(tInfo);
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+		return;
+	m_vecPoke.push_back(tInfo);
+	RELEASE_INSTANCE(CGameInstance);
+
+
+}
+void CPikachu::WildBattle()
+{
+	//	_vector vLook = XMLoadFloat4(&dynamic_cast<CGameObj*>(m_pTarget)->Get_MyBattlePos()) - XMLoadFloat4(&m_vMyBattlePos);
+	//	XMVector3Normalize(vLook);
+	_vector vPos = XMLoadFloat4(&m_vMyBattlePos);
+	//	_vector vTargetPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 200.f;
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
+	m_pTransformCom->LookAt(XMLoadFloat4(&dynamic_cast<CGameObj*>(m_pTarget)->Get_MyBattlePos()));
+	Set_BattleMap(true, 0.f);
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	Ready_Script();
+	CTextBox::TINFO tTInfo;
+
+	tTInfo.iScriptSize = (_int)m_vNormalScript.size();
+	tTInfo.pTarget = this;
+	tTInfo.pScript = new wstring[m_vNormalScript.size()];
+	tTInfo.iType = 1;
+	for (_int i = 0; i < m_vNormalScript.size(); ++i)
+		tTInfo.pScript[i] = m_vNormalScript[i];
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
+		return;
+
+	RELEASE_INSTANCE(CGameInstance);
+
+	m_bBattleStart = true;
+	m_PlayerInfo.bEvent = false;
+
+}
+void CPikachu::Ready_Script()
+{
+	wstring szScriptBegin = TEXT("앗!! 야생의 '");
+	wstring szScriptEnd = TEXT("'(이)가   나타났다!");
+	szScriptBegin += m_PokemonInfo.strName;
+	szScriptBegin += szScriptEnd;
+	m_vNormalScript.push_back(szScriptBegin);
+}
+void CPikachu::Move(_float fTimeDelta)
+{
+	_vector vTargetPos = dynamic_cast<CGameObj*>(m_pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
+	_vector vLook = vTargetPos - m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+
+	m_fDist = XMVectorGetX(XMVector3Length(vLook));
+	if (m_fDist < 10.f)
+	{
+		if (!m_bFindPlayer)
+		{
+			m_PlayerInfo.bEvent = true;
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BattleEvent"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"), this)))
+				return;
+			RELEASE_INSTANCE(CGameInstance);
+			m_bFindPlayer = true;
+		}
+		m_pModelCom->Set_CurrentAnimIndex(8);
+		vPos += XMVector3Normalize(vLook) * 4.f * fTimeDelta;
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
+		m_pTransformCom->LookAt(vTargetPos);
+	}
+	else
+	{
+		m_PlayerInfo.bEvent = false;
+		m_pModelCom->Set_CurrentAnimIndex(2);
+		m_bFindPlayer = false;
+	}
 }
 void CPikachu::Set_DeckPos()
 {
@@ -281,6 +452,8 @@ void CPikachu::Battle(_float fTimeDelta)
 		{
 			if (m_bBrath && m_pModelCom->Get_End(m_iAnimIndex))
 			{
+				if (m_bWildPoke)
+					dynamic_cast<CPlayer*>(m_pTarget)->Set_BattleStart();
 				m_pModelCom->Set_End(m_iAnimIndex);
 				m_iAnimIndex = 2;
 				m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
@@ -339,6 +512,9 @@ void CPikachu::Set_Stats()
 	_float fSDef = 50.f;
 	_float fSpeed = 90.f;
 
+	m_PlayerInfo.strName = TEXT("피카츄");
+	m_PlayerInfo.bEvent = false;
+
 	m_PokemonInfo.strName = TEXT("피카츄");
 	m_PokemonInfo.strInfo = TEXT("재벌3세 석카츄...삼성게임즈를 위하여!\n최근 나이키 지디포스 화이트사고 자존감업됨.\n제발 코딩력도 업되자.");
 	m_PokemonInfo.strChar = TEXT("부유함");
@@ -351,7 +527,7 @@ void CPikachu::Set_Stats()
 	m_PokemonInfo.iDef = _int(((fDef * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
 	m_PokemonInfo.iSDef = _int(((fSDef * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
 	m_PokemonInfo.iSpeed = _int(((fSpeed * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
-	m_PokemonInfo.iMaxExp = m_PokemonInfo.iLv * 5;
+	m_PokemonInfo.iMaxExp = m_PokemonInfo.iLv * 2;
 	m_PokemonInfo.iExp = 0;
 	m_PokemonInfo.iSex = rand() % 2;
 	m_PokemonInfo.iBallNum = 0;
@@ -479,5 +655,15 @@ void CPikachu::Free()
 {
 	__super::Free();
 
+	if (m_bWildPoke)
+		m_vecPoke.clear();
+
+	for (auto iter = m_vNormalScript.begin(); iter != m_vNormalScript.end();)
+		iter = m_vNormalScript.erase(iter);
+
+	m_vNormalScript.clear();
+
+	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pModelCom);
+	Safe_Release(m_pAABBCom);
 }

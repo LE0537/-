@@ -39,12 +39,12 @@ protected:
 protected:
 	HRESULT Add_Components(const _tchar* pComponentTag, _uint iLevelIndex, const _tchar* pPrototypeTag, CComponent** ppOut, void* pArg = nullptr);
 	void Compute_CamDistance(_vector vWorldPos);
-
-public:
+protected:
 	_bool	m_bDead = false;
 
-
-
+public:
+	void  Set_Dead() { m_bDead = true; }
+	_bool Get_Dead() { return m_bDead; }
 public:	
 	virtual CGameObject* Clone(void* pArg = nullptr) = 0;
 	virtual void Free() override;

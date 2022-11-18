@@ -87,7 +87,15 @@ HRESULT CMari::Initialize(void * pArg)
 
 void CMari::Tick(_float fTimeDelta)
 {
-	if (g_Battle)
+	if (m_bBattleLose)
+	{
+		for (auto& iter : m_vecPoke)
+		{
+			iter->Set_Dead();
+		}
+		m_vecPoke.clear();
+	}
+	if (!m_bBattleLose && g_Battle)
 	{
 		Check_Anim(fTimeDelta);
 		if(!m_bChangeAnim && g_Battle)
@@ -373,6 +381,8 @@ void CMari::Check_Anim(_float fTimeDelta)
 			m_fStartBattle = 0.f;
 			m_ChangePoke = false;
 			g_Battle = false;
+			m_bBattleLose = true;
+		
 			return;
 		}
 		if (!m_bLose && m_iAnimIndex == 4)

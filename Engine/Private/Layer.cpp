@@ -36,7 +36,7 @@ void CLayer::Tick(_float fTimeDelta)
 		iter != m_GameObjects.end();)
 	{
 		(*iter)->Tick(fTimeDelta);
-		if ((*iter)->m_bDead)
+		if ((*iter)->Get_Dead())
 		{
 			Safe_Release(*iter);
 			iter = m_GameObjects.erase(iter);

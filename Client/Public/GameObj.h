@@ -104,6 +104,7 @@ protected:
 	_bool					m_bOnOff = false;
 	_bool					m_bDeckInfo = false;
 	_bool					m_bDeckPoke = false;
+	_bool					m_bWildPoke = false;
 	CGameObject*			m_pTarget = nullptr;
 	CGameObject*			m_pCamera = nullptr;
 	_float4					m_vMyBattlePos;
@@ -122,6 +123,8 @@ public:
 
 	CGameObject* Get_Target() {	return m_pTarget;}
 	void Set_Target(CGameObject* pTarget) { m_pTarget = pTarget; }
+	void Set_Camera(CGameObject* pCamera) { m_pCamera = pCamera; }
+	void Set_MyBattlePos(_float4 vPos) { m_vMyBattlePos = vPos; }
 	CTransform* Get_Transfrom() { return m_pTransformCom; }
 	_float4 Get_MyBattlePos() { return m_vMyBattlePos; }
 	_float4 Get_TargetBattlePos() { return m_vTargetBattlePos; }
@@ -179,6 +182,7 @@ public:
 
 
 	void	Set_DeckPoke() { m_bDeckPoke = true; }
+	void	Set_WildPoke() { m_bWildPoke = true; }
 	void	Set_PokeUIOnOff(){ m_bOnOff = !m_bOnOff; }
 	void	Set_DeckInfoOn() { m_bDeckInfo = false; }
 	void	Set_DeckInfoOff() { m_bDeckInfo = true; }

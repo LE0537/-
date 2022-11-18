@@ -55,6 +55,8 @@ HRESULT CBattleUI::Initialize(void * pArg)
 
 void CBattleUI::Tick(_float fTimeDelta)
 {
+	if (m_bWildWin)
+		Wild_Win(fTimeDelta);
 	if (!m_tInfo.pPlayer->Get_BattlePokeDead() && !m_tInfo.pPlayer->Get_BattleChangePoke() && !m_tInfo.pPlayer->Get_BattleUseItem())
 	{
 		if (m_bPlayerAttack)
@@ -127,7 +129,7 @@ HRESULT CBattleUI::Render()
 		return E_FAIL;
 	if (FAILED(SetUp_ShaderBall()))
 		return E_FAIL;
-
+	
 	Render_Fonts();
 	
 
@@ -622,6 +624,7 @@ HRESULT CBattleUI::SetUp_ShaderTarget()
 
 HRESULT CBattleUI::SetUp_ShaderBall()
 {
+	
 	for (_uint i = 0; i < 6; ++i)
 	{
 		if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(i))->Get_PokeInfo().iPokeNum != 999)
@@ -646,29 +649,31 @@ HRESULT CBattleUI::SetUp_ShaderBall()
 			m_pVIBufferBall[i]->Render();
 		}
 	}
-
-	for (_uint i = 6; i < 12; ++i)
+	if (m_tInfo.eBattleType == BATTLE_TRAINER)
 	{
-		if (dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[i-6])->Get_PokeInfo().iPokeNum != 999)
+		for (_uint i = 6; i < 12; ++i)
 		{
-			if (FAILED(m_pShaderBall[i]->Set_RawValue("g_WorldMatrix", &m_pTransformBall[i]->Get_World4x4_TP(), sizeof(_float4x4))))
-				return E_FAIL;
-			if (FAILED(m_pShaderBall[i]->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
-				return E_FAIL;
-			if (FAILED(m_pShaderBall[i]->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
-				return E_FAIL;
-			if (dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[i-6])->Get_PokeInfo().iHp > 0)
+			if (dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[i - 6])->Get_PokeInfo().iPokeNum != 999)
 			{
-				if (FAILED(m_pShaderBall[i]->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(10))))
+				if (FAILED(m_pShaderBall[i]->Set_RawValue("g_WorldMatrix", &m_pTransformBall[i]->Get_World4x4_TP(), sizeof(_float4x4))))
 					return E_FAIL;
-			}
-			else
-			{
-				if (FAILED(m_pShaderBall[i]->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(11))))
+				if (FAILED(m_pShaderBall[i]->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
 					return E_FAIL;
+				if (FAILED(m_pShaderBall[i]->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+					return E_FAIL;
+				if (dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[i - 6])->Get_PokeInfo().iHp > 0)
+				{
+					if (FAILED(m_pShaderBall[i]->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(10))))
+						return E_FAIL;
+				}
+				else
+				{
+					if (FAILED(m_pShaderBall[i]->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(11))))
+						return E_FAIL;
+				}
+				m_pShaderBall[i]->Begin(7);
+				m_pVIBufferBall[i]->Render();
 			}
-			m_pShaderBall[i]->Begin(7);
-			m_pVIBufferBall[i]->Render();
 		}
 	}
 	return S_OK;
@@ -711,6 +716,31 @@ HRESULT CBattleUI::SetSelectButton(ButtonDir _eDir)
 
 
 	return S_OK;
+}
+
+void CBattleUI::Wild_Win(_float fTimeDelta)
+{
+	m_WinTime += fTimeDelta;
+
+	if (m_WinTime > 0.5f)
+	{
+		dynamic_cast<CPlayer*>(m_tInfo.pPlayer_Orgin)->Battle_Win();
+		m_tInfo.pBattleTarget->Set_Dead();
+		g_Battle = false;
+	}
+}
+
+void CBattleUI::Ready_Run()
+{
+	for (auto iter = m_vBattleScript.begin(); iter != m_vBattleScript.end();)
+		iter = m_vBattleScript.erase(iter);
+
+	m_vBattleScript.clear();
+
+	wstring strTextBegin = TEXT("µµ∏¡√∆Ω¿¥œ¥Ÿ.....");
+
+
+	m_vBattleScript.push_back(strTextBegin);
 }
 
 void CBattleUI::Ready_RunFAILScript()
@@ -2047,7 +2077,25 @@ void CBattleUI::Check_Selected()
 				RELEASE_INSTANCE(CGameInstance);
 			}
 			else
-			{ }
+			{ 
+				Ready_Run();
+				CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+				CTextBox::TINFO tTInfo;
+
+				tTInfo.iScriptSize = (_int)m_vBattleScript.size();
+				tTInfo.pTarget = dynamic_cast<CGameObj*>(m_tInfo.pPlayer_Orgin);
+				tTInfo.pScript = new wstring[m_vBattleScript.size()];
+				tTInfo.iType = 5;
+				for (_int i = 0; i < m_vBattleScript.size(); ++i)
+					tTInfo.pScript[i] = m_vBattleScript[i];
+
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
+					return;
+				RELEASE_INSTANCE(CGameInstance);
+				dynamic_cast<CPlayer*>(m_tInfo.pPlayer_Orgin)->Battle_Win();
+				m_tInfo.pBattleTarget->Set_Dead();
+				g_Battle = false;
+			}
 		}
 		else
 		{
@@ -2930,7 +2978,13 @@ void CBattleUI::Change_TargetPoke(_float fTimeDelta)
 	}
 	else
 	{
-		dynamic_cast<CGameObj*>(m_tInfo.pBattleTarget)->Set_AnimIndex(4);
+		if (m_tInfo.eBattleType == BATTLE_TRAINER)
+			dynamic_cast<CGameObj*>(m_tInfo.pBattleTarget)->Set_AnimIndex(4);
+		else
+		{
+			m_bWildWin = true;
+			m_WinTime = 0.f;
+		}
 	}
 }
 

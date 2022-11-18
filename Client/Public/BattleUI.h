@@ -115,6 +115,8 @@ private:
 	_float					m_fTextSizeTime = 0.f;
 	vector<wstring>		    m_vBattleScript;
 
+	_bool					m_bWildWin = false;
+	_float					m_WinTime = 0.f;
 private:
 	HRESULT Ready_Components();
 	HRESULT SetUp_ShaderResources();
@@ -123,6 +125,8 @@ private:
 	HRESULT SetUp_ShaderTarget();
 	HRESULT SetUp_ShaderBall();
 	HRESULT SetSelectButton(ButtonDir _eDir);
+	void	Wild_Win(_float fTimeDelta);
+	void	Ready_Run();
 	void	Ready_RunFAILScript();
 	void	Ready_ChangePokeScript();
 	void	Ready_PlayerScript();

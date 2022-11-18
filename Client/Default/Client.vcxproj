@@ -204,6 +204,7 @@
     <ClInclude Include="..\public\PokeDeck.h" />
     <ClInclude Include="..\public\PokeInfo.h" />
     <ClInclude Include="..\public\Screen.h" />
+    <ClInclude Include="..\public\SkyBox.h" />
     <ClInclude Include="..\public\Slowbro.h" />
     <ClInclude Include="..\public\Snorlax.h" />
     <ClInclude Include="..\public\Squirtle.h" />
@@ -212,6 +213,7 @@
     <ClInclude Include="..\public\TextBox.h" />
     <ClInclude Include="..\public\Tree.h" />
     <ClInclude Include="..\public\UI.h" />
+    <ClInclude Include="..\public\Weed.h" />
     <ClInclude Include="..\public\Wigglytuff.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
@@ -252,6 +254,7 @@
     <ClCompile Include="..\private\PokeDeck.cpp" />
     <ClCompile Include="..\private\PokeInfo.cpp" />
     <ClCompile Include="..\private\Screen.cpp" />
+    <ClCompile Include="..\private\SkyBox.cpp" />
     <ClCompile Include="..\private\Slowbro.cpp" />
     <ClCompile Include="..\private\Snorlax.cpp" />
     <ClCompile Include="..\private\Squirtle.cpp" />
@@ -260,6 +263,7 @@
     <ClCompile Include="..\private\TextBox.cpp" />
     <ClCompile Include="..\private\Tree.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
+    <ClCompile Include="..\private\Weed.cpp" />
     <ClCompile Include="..\private\Wigglytuff.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -280,6 +284,8 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimModel.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxModel.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxRectInstance.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTex.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

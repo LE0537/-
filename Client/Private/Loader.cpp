@@ -19,6 +19,8 @@
 #include "Field.h"
 #include "BattleField.h"
 #include "Tree.h"
+#include "SkyBox.h"
+#include "Weed.h"
 //Player 헤더
 #include "Player.h"
 //Trainer
@@ -131,6 +133,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_PokeDeck"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/PokeDeck/%d.dds"), 2))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Weed"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Weed/%d.dds"), 3))))
 		return E_FAIL;
 	/* 터레인 텍스쳐 */
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
@@ -284,6 +289,19 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Tree"),
 		CTree::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_SkyBox"),
+	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/SkyBox/SkyBox.fbx", PivotMatrix))))
+	return E_FAIL;
+	/*CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("SkyBox"), LEVEL_STATIC, CData_Manager::DATA_NONANIM);*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_SkyBox"),
+	CSkyBox::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Weed"),
+		CWeed::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	// Navi
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Navigation"),
 		CNavigation::Create(m_pDevice, m_pContext, TEXT("../Data/NaviPos.dat")))))

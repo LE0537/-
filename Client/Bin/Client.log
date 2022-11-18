@@ -1,3 +1,16 @@
-﻿  Level_GamePlay.cpp
+﻿  Weed.cpp
+  Tree.cpp
+  SkyBox.cpp
+  Player.cpp
+  Pikachu.cpp
+  Mari.cpp
+  Lv_Up.cpp
+  Field.cpp
+  BattleField.cpp
+  BattleEvent.cpp
+  Level_Loading.cpp
+  Level_GamePlay.cpp
+  Camera_Dynamic.cpp
+  코드를 생성하고 있습니다...
   Client.vcxproj -> C:\Users\shout\Desktop\과제\Pokemon\갠폴\Client\Default\..\Bin\Client.exe
   Client.vcxproj -> ..\Bin\Client.pdb (Full PDB)

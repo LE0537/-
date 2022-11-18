@@ -25,17 +25,11 @@ HRESULT CBattleEvent::Initialize(void * pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-
-	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-
 	m_pTarget = (CGameObject*)pArg;
 
-	RELEASE_INSTANCE(CGameInstance);
+	OffSet();
 
 
-
-
-	//m_pTransformCom->Set_Scale(XMVectorSet(1.f, 1.f, 1.f, 0.f));
 	
 	return S_OK;
 }
@@ -48,7 +42,7 @@ void CBattleEvent::Tick(_float fTimeDelta)
 		return;
 	}
 	_vector vTargetPos = dynamic_cast<CGameObj*>(m_pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
-	vTargetPos.m128_f32[1] += 2.5f;
+	vTargetPos.m128_f32[1] += 1.5f + m_fOffSet;
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vTargetPos);
 }
 
@@ -119,6 +113,33 @@ void CBattleEvent::OnBillboard()
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, ViewMatrix.r[2]);
 
 	RELEASE_INSTANCE(CGameInstance);
+}
+
+void CBattleEvent::OffSet()
+{
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("마리"))
+		m_fOffSet = 1.f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("꼬부기"))
+		m_fOffSet = 0.f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("피카츄"))
+		m_fOffSet = 0.f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("푸크린"))
+		m_fOffSet = 1.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("나옹"))
+		m_fOffSet = 0.f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("야도란"))
+		m_fOffSet = 1.f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("잠만보"))
+		m_fOffSet = 2.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("해월막구리"))
+		m_fOffSet = 1.f;
 }
 
 HRESULT CBattleEvent::SetUp_ShaderResources()

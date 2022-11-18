@@ -34,10 +34,11 @@ private:
 	HRESULT SetUp_ShaderResources();
 	HRESULT Ready_Components();
 	void	OnBillboard();
+	void	OffSet();
 private:
 
 
-
+	_float		m_fOffSet = 0.f;
 
 
 public:

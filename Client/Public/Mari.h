@@ -12,6 +12,7 @@ class CTransform;
 class CVIBuffer_Rect;
 class CModel;
 class CCollider;
+class CNavigation;
 END
 
 
@@ -43,10 +44,12 @@ private:
 	void	Battle(_float fTimeDelta);
 	void	BattleStart(_float fTimeDelta);
 	void	Check_Anim(_float fTimeDelta);
+	void	OnNavi();
 private:
 	CModel*					m_pModelCom = nullptr;
 	CCollider*				m_pAABBCom = nullptr;
 	CCollider*				m_pOBBCom = nullptr;
+	CNavigation*			m_pNavigationCom = nullptr;
 
 	vector<wstring>		    m_vNormalScript;
 	vector<wstring>		    m_vBattleScript;

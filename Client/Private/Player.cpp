@@ -276,10 +276,22 @@ void CPlayer::BattleStart(_float fTimeDelta)
 			XMVector3Normalize(vLook);
 			_vector vPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 35.f;
 			_vector vTargetPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 200.f;
-			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(0))->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, vPos);
-			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(0))->Get_Transfrom()->LookAt(vTargetPos);
-			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(0))->Set_AnimIndex(0);
-			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(0))->Set_BattleMap(true,2.f);
+
+			_int iPokeIndex = 0;
+
+			for (_int i = 0; i < 6; ++i)
+			{
+				if (dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(i))->Get_PokeInfo().eStatInfo != STUN)
+				{
+					iPokeIndex = i;
+					i = 6;
+				}
+			}
+
+			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(iPokeIndex))->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, vPos);
+			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(iPokeIndex))->Get_Transfrom()->LookAt(vTargetPos);
+			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(iPokeIndex))->Set_AnimIndex(0);
+			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(iPokeIndex))->Set_BattleMap(true,2.f);
 		}
 		if ((m_fStartBattle > 0.2f) && m_pModelCom->Get_End(2))
 		{
@@ -337,11 +349,28 @@ void CPlayer::BattleStart(_float fTimeDelta)
 }
 void CPlayer::Ready_Script()
 {
+	for (auto iter = m_vBattleScript.begin(); iter != m_vBattleScript.end();)
+		iter = m_vBattleScript.erase(iter);
+
+	m_vBattleScript.clear();
+
 	wstring strTextBegin = TEXT("가랏 !!   '");
 	wstring strTextEnd = TEXT("'   너로 정했다!!");
 
+	_int iPokeIndex = 0;
+
+	for (_int i = 0; i < 6; ++i)
+	{
+		if (dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(i))->Get_PokeInfo().eStatInfo != STUN)
+		{
+			iPokeIndex = i;
+			i = 6;
+		}
+	}
+
 	
-	strTextBegin += dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().strName;
+
+	strTextBegin += dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(iPokeIndex))->Get_PokeInfo().strName;
 	strTextBegin += strTextEnd;
 
 	m_vBattleScript.push_back(strTextBegin);

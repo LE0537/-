@@ -294,17 +294,16 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar * pLayerTag)
 			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
 			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
 		}
-		//if (iter.iType == 5)
-		//{
-		//	m_LoadFile.vPos = iter.vPos;
-		//	m_LoadFile.vScale = iter.vScale;
+		if (iter.iType == 5)
+		{
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = iter.vScale;
 
-		//	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Mari"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
-		//		return E_FAIL;
-		//}
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Mari"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
 	}
 	Safe_Release(pGameInstance);
-
 
 	return S_OK;
 }

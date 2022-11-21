@@ -101,7 +101,7 @@ void CSquirtle::Tick(_float fTimeDelta)
 		
 		if (m_bWildPoke && !g_Battle && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
 		{
-		//	OnNavi();
+			OnNavi();
 			Move(fTimeDelta);
 			m_pModelCom->Play_Animation(fTimeDelta);
 			m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
@@ -166,7 +166,13 @@ HRESULT CSquirtle::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Transform */
-	if (FAILED(__super::Add_Components(TEXT("Com_Transform"), LEVEL_STATIC, TEXT("Prototype_Component_Transform"), (CComponent**)&m_pTransformCom)))
+	CTransform::TRANSFORMDESC		TransformDesc;
+	ZeroMemory(&TransformDesc, sizeof(CTransform::TRANSFORMDESC));
+
+	TransformDesc.fSpeedPerSec = 4.f;
+	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
+
+	if (FAILED(__super::Add_Components(TEXT("Com_Transform"), LEVEL_STATIC, TEXT("Prototype_Component_Transform"), (CComponent**)&m_pTransformCom, &TransformDesc)))
 		return E_FAIL;
 
 	/* For.Com_Shader */
@@ -194,6 +200,7 @@ HRESULT CSquirtle::Ready_Components()
 
 	if (FAILED(__super::Add_Components(TEXT("Com_Navigation"), LEVEL_STATIC, TEXT("Prototype_Component_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
 		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -250,7 +257,7 @@ void CSquirtle::Ready_WildBattle()
 	m_vecPoke.push_back(tInfo);
 	RELEASE_INSTANCE(CGameInstance);
 
-
+	m_pNavigationCom->Find_CurrentCellIndex(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
 }
 void CSquirtle::WildBattle()
 {
@@ -293,7 +300,6 @@ void CSquirtle::Move(_float fTimeDelta)
 {
 	_vector vTargetPos = dynamic_cast<CGameObj*>(m_pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
 	_vector vLook = vTargetPos - m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
-	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
 
 	m_fDist = XMVectorGetX(XMVector3Length(vLook));
 	if (m_fDist < 10.f)
@@ -308,8 +314,7 @@ void CSquirtle::Move(_float fTimeDelta)
 			m_bFindPlayer = true;
 		}
 		m_pModelCom->Set_CurrentAnimIndex(8);
-		vPos += XMVector3Normalize(vLook) * 4.f * fTimeDelta;
-		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
+		m_pTransformCom->Go_MonsterStraight(fTimeDelta, m_pNavigationCom, vTargetPos);
 		m_pTransformCom->LookAt(vTargetPos);
 	}
 	else

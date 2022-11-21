@@ -154,16 +154,16 @@ void CCamera_Dynamic::EventCam(_float fTimeDelta)
 {
 	if (m_pTarget->Get_Dead())
 	{
-		fSpeed = 0.f;
+	//	fSpeed = 0.f;
 		m_bEvent = false;
 		return;
 	}
 	if (!dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().bEvent)
 	{
 		m_bEvent = false;
-		fSpeed = 0.f;
+		//fSpeed = 0.f;
 	}
-
+	fSpeed = 0.f;
 }
 
 void CCamera_Dynamic::BattleEventcam(_float fTimeDelta)

@@ -50,6 +50,17 @@ HRESULT CBattleUI::Initialize(void * pArg)
 	Set_PlayerPos();
 	Set_TargetPos();
 	Set_BallPos();
+
+	for (_int i = 0; i < 6; ++i)
+	{
+		if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(i))->Get_PokeInfo().eStatInfo != STUN)
+		{
+			m_iPlayerIndex = i;
+			m_iPlayerHPIndex = i;
+			i = 6;
+		}
+	}
+	
 	return S_OK;
 }
 

@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Ball.h"
 #include "Data_Manager.h"	// 추가
+#include "VIBuffer_Navigation.h"
 
 CMari::CMari(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -46,15 +47,15 @@ HRESULT CMari::Initialize(void * pArg)
 		return E_FAIL;
 	m_vecPoke.push_back(tInfo);
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Garomakguri"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
 	m_vecPoke.push_back(tInfo);
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Slowbro"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
 	m_vecPoke.push_back(tInfo);
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Meowth"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
 	m_vecPoke.push_back(tInfo);
 
@@ -68,7 +69,7 @@ HRESULT CMari::Initialize(void * pArg)
 
 	RELEASE_INSTANCE(CGameInstance);
 
-	m_iPokeMaxSize = 3;
+	m_iPokeMaxSize = 0;
 	m_iPokeSize = 0;
 	m_PlayerInfo.strName = L"마리";
  	m_PlayerInfo.bEvent = false;
@@ -81,6 +82,7 @@ HRESULT CMari::Initialize(void * pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4((&((CLevel_GamePlay::LOADFILE*)pArg)->vPos)));
 
 	Ready_Script();
+	m_pNavigationCom->Find_CurrentCellIndex(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
 
 	return S_OK;
 }
@@ -103,6 +105,7 @@ void CMari::Tick(_float fTimeDelta)
 	}
 	else
 	{
+		OnNavi();
 		m_fEventTime += fTimeDelta;
 		if (!m_bFindPlayer)
 			m_pModelCom->Set_CurrentAnimIndex(0);
@@ -201,6 +204,14 @@ HRESULT CMari::Ready_Components()
 	if (FAILED(__super::Add_Components(TEXT("Com_OBB"), LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
 		return E_FAIL;
 
+	CNavigation::NAVIDESC			NaviDesc;
+	ZeroMemory(&NaviDesc, sizeof NaviDesc);
+
+	NaviDesc.iCurrentCellIndex = 0;
+
+	if (FAILED(__super::Add_Components(TEXT("Com_Navigation"), LEVEL_STATIC, TEXT("Prototype_Component_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -240,7 +251,26 @@ void CMari::Ready_LoseText()
 	wstring strTextBegin = TEXT("내...내가...지다니...믿을 수 없어...");
 	m_vBattleScript.push_back(strTextBegin);
 }
+void CMari::OnNavi()
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
+	CVIBuffer_Navigation*		pVIBuffer_Navigation = (CVIBuffer_Navigation*)pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Field"), TEXT("Com_Navigation"), 0);
+	if (nullptr == pVIBuffer_Navigation)
+		return;
+
+	CTransform*		pTransform_Navigation = (CTransform*)pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Field"), TEXT("Com_Transform"), 0);
+	if (nullptr == pTransform_Navigation)
+		return;
+
+	_vector		vPosition = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+
+	vPosition.m128_f32[1] = pVIBuffer_Navigation->Compute_Height(vPosition, pTransform_Navigation->Get_WorldMatrix(), m_pNavigationCom->Get_CellPoints());
+
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPosition);
+
+	RELEASE_INSTANCE(CGameInstance);
+}
 void CMari::Check_Coll()
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
@@ -537,6 +567,7 @@ void CMari::Free()
 
 	m_vBattleScript.clear();
 
+	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pBall);
 	Safe_Release(m_pAABBCom);
 	Safe_Release(m_pOBBCom);

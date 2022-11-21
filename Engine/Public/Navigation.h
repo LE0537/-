@@ -26,7 +26,7 @@ public:
 
 public:
 	HRESULT Render_Navigation();
-
+	void	Find_CurrentCellIndex(_vector vPos);
 
 private:
 	NAVIDESC				m_NaviDesc;

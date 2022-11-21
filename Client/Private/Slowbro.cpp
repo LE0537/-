@@ -102,7 +102,7 @@ void CSlowbro::Tick(_float fTimeDelta)
 
 		if (m_bWildPoke && !g_Battle && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
 		{
-			//	OnNavi();
+			OnNavi();
 			Move(fTimeDelta);
 			m_pModelCom->Play_Animation(fTimeDelta);
 			m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
@@ -166,7 +166,13 @@ HRESULT CSlowbro::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Transform */
-	if (FAILED(__super::Add_Components(TEXT("Com_Transform"), LEVEL_STATIC, TEXT("Prototype_Component_Transform"), (CComponent**)&m_pTransformCom)))
+	CTransform::TRANSFORMDESC		TransformDesc;
+	ZeroMemory(&TransformDesc, sizeof(CTransform::TRANSFORMDESC));
+
+	TransformDesc.fSpeedPerSec = 4.f;
+	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
+
+	if (FAILED(__super::Add_Components(TEXT("Com_Transform"), LEVEL_STATIC, TEXT("Prototype_Component_Transform"), (CComponent**)&m_pTransformCom, &TransformDesc)))
 		return E_FAIL;
 
 	/* For.Com_Shader */
@@ -262,7 +268,7 @@ void CSlowbro::Ready_WildBattle()
 	m_vecPoke.push_back(tInfo);
 	RELEASE_INSTANCE(CGameInstance);
 
-
+	m_pNavigationCom->Find_CurrentCellIndex(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
 }
 void CSlowbro::WildBattle()
 {
@@ -305,7 +311,6 @@ void CSlowbro::Move(_float fTimeDelta)
 {
 	_vector vTargetPos = dynamic_cast<CGameObj*>(m_pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
 	_vector vLook = vTargetPos - m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
-	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
 
 	m_fDist = XMVectorGetX(XMVector3Length(vLook));
 	if (m_fDist < 10.f)
@@ -320,8 +325,7 @@ void CSlowbro::Move(_float fTimeDelta)
 			m_bFindPlayer = true;
 		}
 		m_pModelCom->Set_CurrentAnimIndex(8);
-		vPos += XMVector3Normalize(vLook) * 4.f * fTimeDelta;
-		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
+		m_pTransformCom->Go_MonsterStraight(fTimeDelta, m_pNavigationCom, vTargetPos);
 		m_pTransformCom->LookAt(vTargetPos);
 	}
 	else
@@ -545,6 +549,26 @@ void CSlowbro::Set_Stats()
 	m_PokemonInfo.iBallNum = 0;
 	m_PokemonInfo.bRide = false;
 	m_PokemonInfo.bEvolution = false;
+}
+void CSlowbro::OnNavi()
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	CVIBuffer_Navigation*		pVIBuffer_Navigation = (CVIBuffer_Navigation*)pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Field"), TEXT("Com_Navigation"), 0);
+	if (nullptr == pVIBuffer_Navigation)
+		return;
+
+	CTransform*		pTransform_Navigation = (CTransform*)pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Field"), TEXT("Com_Transform"), 0);
+	if (nullptr == pTransform_Navigation)
+		return;
+
+	_vector		vPosition = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+
+	vPosition.m128_f32[1] = pVIBuffer_Navigation->Compute_Height(vPosition, pTransform_Navigation->Get_WorldMatrix(), m_pNavigationCom->Get_CellPoints());
+
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPosition);
+
+	RELEASE_INSTANCE(CGameInstance);
 }
 void CSlowbro::LvUp()
 {

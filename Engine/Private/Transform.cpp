@@ -53,6 +53,20 @@ void CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation)
 		Set_State(CTransform::STATE_TRANSLATION, vPosition);
 }
 
+void CTransform::Go_MonsterStraight(_float fTimeDelta, CNavigation * pNavigation, _vector vTargetPos)
+{
+	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
+	_vector		vLook = vTargetPos - vPosition;
+
+	vPosition += XMVector3Normalize(vLook) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
+
+	if (nullptr == pNavigation)
+		Set_State(CTransform::STATE_TRANSLATION, vPosition);
+
+	else if (true == pNavigation->isMove(vPosition))
+		Set_State(CTransform::STATE_TRANSLATION, vPosition);
+}
+
 void CTransform::Go_Backward(_float fTimeDelta)
 {
 	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);

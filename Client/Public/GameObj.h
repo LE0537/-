@@ -156,6 +156,7 @@ public:
 		++m_PokemonInfo.iLv; m_PokemonInfo.iMaxExp += 5; m_PokemonInfo.bLvUp = true;
 		}
 	}
+	void	Set_PokeLv(_int _iLv) { m_PokemonInfo.iLv = _iLv; }
 	void	Set_PokePP1(_int _iPP) {
 		m_PokemonInfo.eSkillNum1->iPoint += _iPP;
 		if (m_PokemonInfo.eSkillNum1->iPoint > m_PokemonInfo.eSkillNum1->iMaxPoint) { m_PokemonInfo.eSkillNum1->iPoint = m_PokemonInfo.eSkillNum1->iMaxPoint; }

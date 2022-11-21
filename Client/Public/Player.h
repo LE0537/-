@@ -46,6 +46,7 @@ public:
 	_bool	Get_Return() { return m_bReturn; }
 	void	Set_BattleStart() { m_bBattleStart = true; }
 	void	Set_Bag(class CBag* _Bag) { m_pBag = _Bag; }
+	class CBag* Get_Bag() { return m_pBag; }
 	void	Set_TargetPoke(vector<CGameObject*>* _pvecPoke) { m_pvecTargetPoke = _pvecPoke; }
 	void	Set_BattleTarget(CGameObject* _pTarget, BATTLETYPE eBattle_Type) { m_pBattleTarget = _pTarget; m_eBattleType = eBattle_Type; }
 	void	Battle_Win();

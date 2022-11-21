@@ -39,6 +39,15 @@ HRESULT CPokeDeck::Initialize(void * pArg)
 			continue;
 		}
 
+		if (i == 7)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Wartortle"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+
 		if (i == 24)
 		{
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))

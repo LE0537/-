@@ -104,12 +104,14 @@ public:
 	_int		 Get_iChangePoke() { return m_iChangePoke; }
 	CGameObject* Get_SelectPoke() { return m_vecPoke[m_iPokeSelect]; }
 	CGameObject* Get_vecPoke(_int _iIndex) { return m_vecPoke[_iIndex]; }
+	void		 Set_vecPoke(_int _iIndex, CGameObject* pPoke) { m_vecPoke[_iIndex] = pPoke; }
 	_bool		 Get_BattlePokeDead() { return m_bBattlePokeDead; }
 	void		 Set_BattlePokeDead() { m_bBattlePokeDead = true; }
 	_bool		 Get_BattleChangePoke() { return m_bBattleChangePoke; }
 	void		 Set_BattleChangePoke() { m_bBattleChangePoke = true; }
 	_bool		 Get_BattleUseItem() { return m_bBattleUseItem; }
 	void		 Set_BattleUseItem() { m_bBattleUseItem = true; }
+	_int		 Get_EvolIndex();
 private:
 	HRESULT Ready_Components();
 	HRESULT SetUp_ShaderResources(); /* 셰이더 전역변수에 값을 전달한다. */

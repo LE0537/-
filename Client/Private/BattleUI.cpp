@@ -738,6 +738,17 @@ void CBattleUI::Wild_Win(_float fTimeDelta)
 		dynamic_cast<CPlayer*>(m_tInfo.pPlayer_Orgin)->Battle_Win();
 		m_tInfo.pBattleTarget->Set_Dead();
 		g_Battle = false;
+
+		_int iIndex = m_tInfo.pPlayer->Get_EvolIndex();
+		if (iIndex != 99)
+		{
+			g_bEvolution = true;
+			dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(iIndex))->Set_PokeUIOnOff();
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Evolution"), LEVEL_GAMEPLAY, TEXT("Layer_UI"))))
+				return;
+			RELEASE_INSTANCE(CGameInstance);
+		}
 	}
 }
 
@@ -1933,7 +1944,7 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 		if (m_fEXPTime > 0.05f)
 		{
 			if (m_iDotEXP < m_iTotalEXP)
-				dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_PokeEXP(1);
+				dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_PokeEXP(10);
 			
 			if (m_iDotEXP == m_iTotalEXP)
 				m_bGet_EXP = false;

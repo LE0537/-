@@ -72,6 +72,7 @@ HRESULT CBag::Initialize(void * pArg)
 
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Squirtle"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
+	dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_pPlayer);
 	m_vecPoke.push_back(tInfo);
 
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Snorlax"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
@@ -204,6 +205,16 @@ HRESULT CBag::Render()
 
 	}
 	return S_OK;
+}
+
+_int CBag::Get_EvolIndex()
+{
+	for (_int i = 0; i < m_vecPoke.size();++i)
+	{
+		if (dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().bEvolution)
+			return i;
+	}
+	return 99;
 }
 
 HRESULT CBag::Ready_Components()

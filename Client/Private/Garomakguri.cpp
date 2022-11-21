@@ -170,7 +170,7 @@ HRESULT CGaromakguri::Ready_Components()
 	CTransform::TRANSFORMDESC		TransformDesc;
 	ZeroMemory(&TransformDesc, sizeof(CTransform::TRANSFORMDESC));
 
-	TransformDesc.fSpeedPerSec = 4.f;
+	TransformDesc.fSpeedPerSec = 3.f;
 	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
 	if (FAILED(__super::Add_Components(TEXT("Com_Transform"), LEVEL_STATIC, TEXT("Prototype_Component_Transform"), (CComponent**)&m_pTransformCom, &TransformDesc)))
@@ -270,6 +270,7 @@ void CGaromakguri::Ready_WildBattle()
 	RELEASE_INSTANCE(CGameInstance);
 
 	m_pNavigationCom->Find_CurrentCellIndex(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+	XMStoreFloat4(&m_vOriginPos, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
 }
 void CGaromakguri::WildBattle()
 {
@@ -312,7 +313,7 @@ void CGaromakguri::Move(_float fTimeDelta)
 {
 	_vector vTargetPos = dynamic_cast<CGameObj*>(m_pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
 	_vector vLook = vTargetPos - m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
-
+	_float fOriginPosDist = XMVectorGetX(XMVector3Length(XMLoadFloat4(&m_vOriginPos) - m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION)));
 	m_fDist = XMVectorGetX(XMVector3Length(vLook));
 	if (m_fDist < 10.f)
 	{
@@ -326,14 +327,50 @@ void CGaromakguri::Move(_float fTimeDelta)
 			m_bFindPlayer = true;
 		}
 		m_pModelCom->Set_CurrentAnimIndex(8);
-		m_pTransformCom->Go_MonsterStraight(fTimeDelta, m_pNavigationCom, vTargetPos);
+		m_pTransformCom->Go_MonsterStraight(fTimeDelta * 1.3f, m_pNavigationCom, vTargetPos);
 		m_pTransformCom->LookAt(vTargetPos);
 	}
 	else
 	{
+		m_fMoveTime += fTimeDelta;
 		m_PlayerInfo.bEvent = false;
-		m_pModelCom->Set_CurrentAnimIndex(2);
 		m_bFindPlayer = false;
+
+		if (m_fMoveTime > 3.f)
+		{
+			m_iMoveIndex = rand() % 2;
+			if (m_iMoveIndex != 0)
+				m_pTransformCom->Turn2(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(_float(rand() % 181)));
+			m_fMoveTime = 0.f;
+		}
+		if (fOriginPosDist > 15.f && m_iMoveIndex == 1)
+		{
+			m_iMoveIndex = 2;
+		}
+
+		switch (m_iMoveIndex)
+		{
+		case 0:
+			m_pModelCom->Set_CurrentAnimIndex(2);
+			break;
+		case 1:
+			m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
+			m_pModelCom->Set_CurrentAnimIndex(7);
+			break;
+		case 2:
+			if (fOriginPosDist > 1.f)
+			{
+				m_pTransformCom->Go_MonsterStraight(fTimeDelta, m_pNavigationCom, XMLoadFloat4(&m_vOriginPos));
+				m_pTransformCom->LookAt(XMLoadFloat4(&m_vOriginPos));
+				m_pModelCom->Set_CurrentAnimIndex(7);
+			}
+			else
+				m_pModelCom->Set_CurrentAnimIndex(2);
+			break;
+		default:
+			break;
+		}
+
 	}
 }
 void CGaromakguri::Set_DeckPos()

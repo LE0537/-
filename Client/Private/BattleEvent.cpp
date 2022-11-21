@@ -123,6 +123,9 @@ void CBattleEvent::OffSet()
 	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("²¿ºÎ±â"))
 		m_fOffSet = 0.f;
 
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("¾î´ÏºÎ±â"))
+		m_fOffSet = 1.f;
+
 	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("ÇÇÄ«Ãò"))
 		m_fOffSet = 0.f;
 

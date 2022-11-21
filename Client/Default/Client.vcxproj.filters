@@ -160,6 +160,12 @@
     <Filter Include="02.GameObjects\02.Map\05.Weed">
       <UniqueIdentifier>{506e36b5-6e43-4cc7-bf21-60ca4d19136a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\08.Wartortle">
+      <UniqueIdentifier>{b77660d0-49c9-4bb3-9b5d-03ac492d1801}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\06.Evolution">
+      <UniqueIdentifier>{4f94f77f-235a-4803-b9af-4fb6af0ea002}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -315,6 +321,12 @@
     <ClInclude Include="..\public\Weed.h">
       <Filter>02.GameObjects\02.Map\05.Weed</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Wartortle.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\08.Wartortle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Evolution.h">
+      <Filter>02.GameObjects\99.GameObj\04.UI\06.Evolution</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -454,6 +466,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Weed.cpp">
       <Filter>02.GameObjects\02.Map\05.Weed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Wartortle.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\08.Wartortle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Evolution.cpp">
+      <Filter>02.GameObjects\99.GameObj\04.UI\06.Evolution</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

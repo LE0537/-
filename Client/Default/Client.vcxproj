@@ -182,6 +182,7 @@
     <ClInclude Include="..\public\Charmander.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Data_Manager.h" />
+    <ClInclude Include="..\public\Evolution.h" />
     <ClInclude Include="..\public\ExpShare.h" />
     <ClInclude Include="..\public\Field.h" />
     <ClInclude Include="..\public\GameObj.h" />
@@ -213,6 +214,7 @@
     <ClInclude Include="..\public\TextBox.h" />
     <ClInclude Include="..\public\Tree.h" />
     <ClInclude Include="..\public\UI.h" />
+    <ClInclude Include="..\public\Wartortle.h" />
     <ClInclude Include="..\public\Weed.h" />
     <ClInclude Include="..\public\Wigglytuff.h" />
     <ClInclude Include="Client.h" />
@@ -232,6 +234,7 @@
     <ClCompile Include="..\Private\Camera_Dynamic.cpp" />
     <ClCompile Include="..\private\Charmander.cpp" />
     <ClCompile Include="..\Private\Data_Manager.cpp" />
+    <ClCompile Include="..\private\Evolution.cpp" />
     <ClCompile Include="..\private\ExpShare.cpp" />
     <ClCompile Include="..\private\Field.cpp" />
     <ClCompile Include="..\private\GameObj.cpp" />
@@ -263,6 +266,7 @@
     <ClCompile Include="..\private\TextBox.cpp" />
     <ClCompile Include="..\private\Tree.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
+    <ClCompile Include="..\private\Wartortle.cpp" />
     <ClCompile Include="..\private\Weed.cpp" />
     <ClCompile Include="..\private\Wigglytuff.cpp" />
     <ClCompile Include="Client.cpp" />

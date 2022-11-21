@@ -76,6 +76,10 @@ private:
 	_bool					m_bCollCheck = false;
 	_bool					m_bFindPlayer = false;
 
+	_float4					m_vOriginPos;
+	_int					m_iMoveIndex = 0;
+	_float					m_fMoveTime = 0.f;
+
 	_float					m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_float4x4				m_ViewMatrix, m_ProjMatrix;
 

@@ -1,55 +1,7 @@
-﻿  Client.cpp
-  Wigglytuff.cpp
-  Weed.cpp
-  UI.cpp
-  Tree.cpp
-  TextBox.cpp
-  Tackle.cpp
-  Squirtle.cpp
-  Snorlax.cpp
-  Slowbro.cpp
-  SkyBox.cpp
-  Screen.cpp
-  PokeInfo.cpp
-  PokeDeck.cpp
-  Player.cpp
-  Pikachu.cpp
-  NoneSkill.cpp
-  NonePoke.cpp
-  None.cpp
-  MonsterBall.cpp
+﻿  Squirtle.cpp
   코드를 생성하고 있습니다...
   컴파일하고 있습니다...
-  Mari.cpp
-  Lv_Up.cpp
-  HpPotion.cpp
-  Garomakguri.cpp
-  GameObj.cpp
-  Field.cpp
-  ExpShare.cpp
-  Charmander.cpp
-  BattleUI.cpp
-c:\users\shout\desktop\과제\pokemon\갠폴\client\private\battleui.cpp(1006): warning C4244: '=': 'float'에서 'Engine::_int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  BattleIntro.cpp
-  BattleField.cpp
-  BattleEvent.cpp
-  Ball.cpp
-  Bag.cpp
-  BackGround.cpp
-  Terrain.cpp
-  Meowth.cpp
-  MainApp.cpp
   Loader.cpp
-  Level_Logo.cpp
-  코드를 생성하고 있습니다...
-  컴파일하고 있습니다...
-  Level_Loading.cpp
-  Level_GamePlay.cpp
-  Data_Manager.cpp
-  Camera_Dynamic.cpp
-  코드를 생성하고 있습니다...
-  컴파일하고 있습니다...
-  BreakCar.cpp
   코드를 생성하고 있습니다...
   Client.vcxproj -> C:\Users\shout\Desktop\과제\Pokemon\갠폴\Client\Default\..\Bin\Client.exe
   Client.vcxproj -> ..\Bin\Client.pdb (Full PDB)

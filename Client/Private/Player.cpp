@@ -53,7 +53,7 @@ void CPlayer::Tick(_float fTimeDelta)
 {
 	if(g_Battle)
 		Battle(fTimeDelta);
-	else
+	else if(!g_bEvolution)
 	{
 		OnNavi();
 		if (!m_PlayerInfo.bRide)
@@ -67,7 +67,8 @@ void CPlayer::Tick(_float fTimeDelta)
 		m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
 		m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	}
-	m_pModelCom->Play_Animation(fTimeDelta);
+	if(!g_bEvolution)
+		m_pModelCom->Play_Animation(fTimeDelta);
 
 }
 
@@ -76,7 +77,7 @@ void CPlayer::Late_Tick(_float fTimeDelta)
 	if (g_Battle && m_PlayerInfo.bRide)
 		m_PlayerInfo.bRide = false;
 
-	if (!g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
+	if (!g_bEvolution && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 }
 

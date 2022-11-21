@@ -249,7 +249,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar * pLayerTag)
 	//Prototype_GameObject_Garomakguri
 	for (auto& iter : m_vecSave)
 	{
-		_int iDest = rand() % 7;
+		_int iDest = rand() % 8;
+		
 		if (iter.iType == 2)
 		{
 			CGameObject* tInfo = nullptr;
@@ -282,6 +283,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar * pLayerTag)
 				break;
 			case 6:
 				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Garomakguri"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+					return E_FAIL;
+				break;
+			case 7:
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Wartortle"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
 					return E_FAIL;
 				break;
 			default:

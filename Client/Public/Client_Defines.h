@@ -25,5 +25,6 @@ extern bool		g_bPokeDeck;
 extern bool     g_CollBox;
 extern bool		g_Battle;
 extern int		g_iWeed;
+extern bool		g_bEvolution;
 
 using namespace Client;

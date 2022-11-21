@@ -15,6 +15,7 @@
 #include "TextBox.h"
 #include "BattleUI.h"
 #include "Lv_Up.h"
+#include "Evolution.h"
 //Map
 #include "Field.h"
 #include "BattleField.h"
@@ -28,6 +29,7 @@
 //Pokemon 헤더
 #include "Charmander.h"
 #include "Squirtle.h"
+#include "Wartortle.h"
 #include "Pikachu.h"
 #include "Wigglytuff.h"
 #include "Meowth.h"
@@ -123,7 +125,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/StatInfo/%d.dds"), 6))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Battle"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Battle/%d.dds"), 21))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Battle/%d.dds"), 22))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Type"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Type/%d.dds"), 18))))
@@ -189,6 +191,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Lv_Up"),
 		CLv_Up::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Evolution"),
+		CEvolution::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	/* 아이템 객체 */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_None"),
 		CNone::Create(m_pDevice, m_pContext))))
@@ -222,6 +227,14 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Squirtle"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Squirtle"),
 		CSquirtle::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Wartortle"),
+	//CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Wartortle/Wartortle.fbx", PivotMatrix))))
+	//	return E_FAIL;
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Wartortle"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Wartortle"),
+	CWartortle::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Pikachu"), LEVEL_STATIC, CData_Manager::DATA_ANIM);

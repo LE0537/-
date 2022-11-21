@@ -10,6 +10,7 @@
 #include "Ball.h"
 #include "Data_Manager.h"	// Ãß°¡
 #include "VIBuffer_Navigation.h"
+#include "Bag.h"
 
 CMari::CMari(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -103,7 +104,7 @@ void CMari::Tick(_float fTimeDelta)
 		if(!m_bChangeAnim && g_Battle)
 			Battle(fTimeDelta);
 	}
-	else
+	else if(!g_bEvolution)
 	{
 		OnNavi();
 		m_fEventTime += fTimeDelta;
@@ -125,13 +126,13 @@ void CMari::Tick(_float fTimeDelta)
 
 void CMari::Late_Tick(_float fTimeDelta)
 {
-	if(!g_Battle)
+	if(!g_Battle && !g_bEvolution)
 		Check_Coll();
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
 	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION),10.f ))
 	{
-		if (!g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
+		if (!g_bEvolution && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
 			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 	}
 	RELEASE_INSTANCE(CGameInstance);
@@ -413,6 +414,17 @@ void CMari::Check_Anim(_float fTimeDelta)
 			g_Battle = false;
 			m_bBattleLose = true;
 		
+			_int iIndex = dynamic_cast<CPlayer*>(m_pTarget)->Get_Bag()->Get_EvolIndex();
+			if (iIndex != 99)
+			{
+				g_bEvolution = true;
+				dynamic_cast<CGameObj*>(dynamic_cast<CPlayer*>(m_pTarget)->Get_Bag()->Get_vecPoke(iIndex))->Set_PokeUIOnOff();
+				CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Evolution"), LEVEL_GAMEPLAY, TEXT("Layer_UI"))))
+					return;
+				RELEASE_INSTANCE(CGameInstance);
+			}
+
 			return;
 		}
 		if (!m_bLose && m_iAnimIndex == 4)

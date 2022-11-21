@@ -37,6 +37,7 @@ private:
 	HRESULT SetUp_ShaderResources();
 	HRESULT Ready_Components();
 	void	Set_DeckPos();
+	void	Set_EvolPos(_float fTimeDelta); //진화
 	void	Key_Input(_float fTimeDelta);
 	void	Battle(_float fTimeDelta);
 	void	Set_Stats();
@@ -50,6 +51,8 @@ private:
 	void	WildBattle();
 	void	Ready_Script();
 	void	Move(_float fTimeDelta);
+	
+	void	Ready_EvolScript(); //진화
 private:
 	CModel*					m_pModelCom = nullptr;
 	CCollider*				m_pAABBCom = nullptr;
@@ -74,12 +77,18 @@ private:
 	_bool					m_bCollCheck = false;
 	_bool					m_bFindPlayer = false;
 
+	_float4					m_vOriginPos;
+	_int					m_iMoveIndex = 0;
+	_float					m_fMoveTime = 0.f;
 
 	_float					m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_float4x4				m_ViewMatrix, m_ProjMatrix;
 
-
-
+	_float					m_EvolTime = 0.f; //진화
+	_float					m_fRenderTime = 0.8f; // 진화
+	_bool					m_bRender = false; // 진화
+	_bool					m_bEvol = false; //진화
+	CGameObject*			m_EvolPoke = nullptr; //진화
 public:
 	static CSquirtle* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

@@ -14,7 +14,9 @@ CGameInstance::CGameInstance()
 	, m_pLight_Manager(CLight_Manager::Get_Instance())
 	, m_pFont_Manager(CFont_Manager::Get_Instance())
 	, m_pFrustum(CFrustum::Get_Instance())
+	, m_pTarget_Manager(CTarget_Manager::Get_Instance())
 {
+	Safe_AddRef(m_pTarget_Manager);
 	Safe_AddRef(m_pFrustum);
 	Safe_AddRef(m_pFont_Manager);
 	Safe_AddRef(m_pLight_Manager);
@@ -392,11 +394,14 @@ void CGameInstance::Release_Engine()
 
 	CFont_Manager::Get_Instance()->Destroy_Instance();
 
+	CTarget_Manager::Get_Instance()->Destroy_Instance();
+
 	CGraphic_Device::Get_Instance()->Destroy_Instance();
 }
 
 void CGameInstance::Free()
 {	
+	Safe_Release(m_pTarget_Manager);
 	Safe_Release(m_pFrustum);
 	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pLight_Manager);

@@ -136,6 +136,11 @@ void CMari::Late_Tick(_float fTimeDelta)
 			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 	}
 	RELEASE_INSTANCE(CGameInstance);
+	if (g_CollBox)
+	{
+		m_pRendererCom->Add_Debug(m_pAABBCom);
+		m_pRendererCom->Add_Debug(m_pOBBCom);
+	}
 }
 
 HRESULT CMari::Render()
@@ -164,11 +169,7 @@ HRESULT CMari::Render()
 
 	RELEASE_INSTANCE(CGameInstance);
 
-	if (g_CollBox)
-	{
-		m_pAABBCom->Render();
-		m_pOBBCom->Render();
-	}
+
 	return S_OK;
 }
 HRESULT CMari::Ready_Components()
@@ -518,9 +519,6 @@ HRESULT CMari::SetUp_ShaderResources()
 		return E_FAIL;
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 	
-	if (FAILED(m_pShaderCom->Set_RawValue("g_vCamPosition", &pGameInstance->Get_CamPosition(), sizeof(_float4))))
-		return E_FAIL;
-
 	if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
 		return E_FAIL;
 

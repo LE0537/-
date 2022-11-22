@@ -1,14 +1,86 @@
 #include "..\Public\Renderer.h"
 #include "GameObject.h"
+#include "Target_Manager.h"
+#include "Light_Manager.h"
+#include "VIBuffer_Rect.h"
+#include "Shader.h"
+#include "Component.h"
+
 
 CRenderer::CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComponent(pDevice, pContext)
+	, m_pTarget_Manager(CTarget_Manager::Get_Instance())
+	, m_pLight_Manager(CLight_Manager::Get_Instance())
 {
-
+	Safe_AddRef(m_pLight_Manager);
+	Safe_AddRef(m_pTarget_Manager);
 }
 
 HRESULT CRenderer::Initialize_Prototype()
 {
+	if (nullptr == m_pTarget_Manager)
+		return E_FAIL;
+
+	D3D11_VIEWPORT		ViewportDesc;
+	ZeroMemory(&ViewportDesc, sizeof ViewportDesc);
+
+	_uint		iNumViewports = 1;
+
+	m_pContext->RSGetViewports(&iNumViewports, &ViewportDesc);
+
+	/* 렌더타겟들을 추가한다. */
+
+	/* For.Target_Diffuse */
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_Diffuse"), ViewportDesc.Width, ViewportDesc.Height,
+		DXGI_FORMAT_R8G8B8A8_UNORM, &_float4(1.f, 1.f, 1.f, 0.f))))
+		return E_FAIL;
+
+	/* For.Target_Normal */
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_Normal"), ViewportDesc.Width, ViewportDesc.Height,
+		DXGI_FORMAT_R8G8B8A8_UNORM, &_float4(1.f, 1.f, 1.f, 1.f))))
+		return E_FAIL;
+
+	/* For.Target_Shade */
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_Shade"), ViewportDesc.Width, ViewportDesc.Height,
+		DXGI_FORMAT_R8G8B8A8_UNORM, &_float4(1.f, 1.f, 1.f, 1.f))))
+		return E_FAIL;
+
+	/* For.MRT_Deferred */
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_Diffuse"))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_Normal"))))
+		return E_FAIL;
+
+	/* For.MRT_LightAcc */
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Shade"))))
+		return E_FAIL;
+
+	m_pVIBuffer = CVIBuffer_Rect::Create(m_pDevice, m_pContext);
+	if (nullptr == m_pVIBuffer)
+		return E_FAIL;
+
+	m_pShader = CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Deferred.hlsl"), VTXTEX_DECLARATION::Elements, VTXTEX_DECLARATION::iNumElements);
+	if (nullptr == m_pShader)
+		return E_FAIL;
+
+	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(ViewportDesc.Width, ViewportDesc.Height, 0.f, 1.f)));
+
+	XMStoreFloat4x4(&m_WorldMatrix, XMMatrixIdentity());
+	m_WorldMatrix._11 = ViewportDesc.Width;
+	m_WorldMatrix._22 = ViewportDesc.Height;
+
+	XMStoreFloat4x4(&m_WorldMatrix, XMMatrixTranspose(XMLoadFloat4x4(&m_WorldMatrix)));
+
+
+	if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Diffuse"), 100.f, 100.f, 200.f, 200.f)))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Normal"), 100.f, 300.f, 200.f, 200.f)))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Shade"), 300.f, 100.f, 200.f, 200.f)))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 
@@ -41,11 +113,17 @@ HRESULT CRenderer::Add_RenderGroup_Front(RENDERGROUP eRenderGroup, CGameObject *
 	return S_OK;
 }
 
-HRESULT CRenderer::Render_GameObjects()
+HRESULT CRenderer::Render_GameObjects(_bool _bDebug)
 {
 	if (FAILED(Render_Priority()))
 		return E_FAIL;
 	if (FAILED(Render_NonAlphaBlend()))
+		return E_FAIL;
+	if (FAILED(Render_Lights()))
+		return E_FAIL;
+	if (FAILED(Render_Blend()))
+		return E_FAIL;
+	if (FAILED(Render_NonLight()))
 		return E_FAIL;
 	if (FAILED(Render_AlphaBlend()))
 		return E_FAIL;
@@ -54,9 +132,21 @@ HRESULT CRenderer::Render_GameObjects()
 	if (FAILED(Render_UIPOKE()))
 		return E_FAIL;
 
+	if (_bDebug)
+	{
+		if (FAILED(Render_Debug()))
+			return E_FAIL;
+	}
 	return S_OK;
 }
+HRESULT CRenderer::Add_Debug(CComponent* pDebugCom)
+{
+	m_DebugComponents.push_back(pDebugCom);
 
+	Safe_AddRef(pDebugCom);
+
+	return S_OK;
+}
 HRESULT CRenderer::Render_Priority()
 {
 	for (auto& pGameObject : m_GameObjects[RENDER_PRIORITY])
@@ -75,6 +165,15 @@ HRESULT CRenderer::Render_Priority()
 
 HRESULT CRenderer::Render_NonAlphaBlend()
 {
+	if (nullptr == m_pTarget_Manager)
+		return E_FAIL;
+
+	/* 현재까지는 백버퍼가 셋팅되어있었지만.
+	빛연산ㅇ에 필요한 정보를 받아오기위해 MRT_Deferred타겟들을 바인딩한다. */
+	/* Target_Diffuse, Target_Normal에 그린다. */
+	if (FAILED(m_pTarget_Manager->Begin_MRT(m_pContext, TEXT("MRT_Deferred"))))
+		return E_FAIL;
+
 	for (auto& pGameObject : m_GameObjects[RENDER_NONALPHABLEND])
 	{
 		if (nullptr != pGameObject)
@@ -85,9 +184,90 @@ HRESULT CRenderer::Render_NonAlphaBlend()
 	}
 
 	m_GameObjects[RENDER_NONALPHABLEND].clear();
+
+	if (FAILED(m_pTarget_Manager->End_MRT(m_pContext)))
+		return E_FAIL;
+
+	return S_OK;
+}
+HRESULT CRenderer::Render_Lights()
+{
+	if (nullptr == m_pTarget_Manager ||
+		nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+	/* Target_Shader에 그린다. */
+	if (FAILED(m_pTarget_Manager->Begin_MRT(m_pContext, TEXT("MRT_LightAcc"))))
+		return E_FAIL;
+
+	/* 노말 렌더타겟의 SRV를 셰이더에 바인딩 한다. */
+	if (FAILED(m_pTarget_Manager->Bind_ShaderResource(TEXT("Target_Normal"), m_pShader, "g_NormalTexture")))
+		return E_FAIL;
+
+
+	if (FAILED(m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+
+	if (FAILED(m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+
+	if (FAILED(m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+
+	if (FAILED(m_pLight_Manager->Render_Lights(m_pShader, m_pVIBuffer)))
+		return E_FAIL;
+
+	if (FAILED(m_pTarget_Manager->End_MRT(m_pContext)))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 
+HRESULT CRenderer::Render_Blend()
+{
+	/* 백버퍼에 그린다. */
+	if (nullptr == m_pTarget_Manager)
+		return E_FAIL;
+
+	if (FAILED(m_pTarget_Manager->Bind_ShaderResource(TEXT("Target_Diffuse"), m_pShader, "g_DiffuseTexture")))
+		return E_FAIL;
+
+	if (FAILED(m_pTarget_Manager->Bind_ShaderResource(TEXT("Target_Shade"), m_pShader, "g_ShadeTexture")))
+		return E_FAIL;
+
+
+	if (FAILED(m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+
+	if (FAILED(m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+
+	if (FAILED(m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+
+	m_pShader->Begin(3);
+
+	m_pVIBuffer->Render();
+
+	return S_OK;
+}
+
+HRESULT CRenderer::Render_NonLight()
+{
+	for (auto& pGameObject : m_GameObjects[RENDER_NONLIGHT])
+	{
+		if (nullptr != pGameObject)
+		{
+			pGameObject->Render();
+			Safe_Release(pGameObject);
+		}
+	}
+
+	m_GameObjects[RENDER_NONLIGHT].clear();
+
+	return S_OK;
+}
 HRESULT CRenderer::Render_AlphaBlend()
 {
 	
@@ -138,6 +318,36 @@ HRESULT CRenderer::Render_UIPOKE()
 	m_GameObjects[RENDER_UIPOKE].clear();
 	return S_OK;
 }
+HRESULT CRenderer::Render_Debug()
+{
+	if (nullptr == m_pShader ||
+		nullptr == m_pVIBuffer)
+		return E_FAIL;
+
+	if (FAILED(m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+
+	if (FAILED(m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+
+	if (FAILED(m_pTarget_Manager->Render_Debug(TEXT("MRT_Deferred"), m_pShader, m_pVIBuffer)))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Render_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer)))
+		return E_FAIL;
+
+	for (auto& pComponent : m_DebugComponents)
+	{
+		if (nullptr != pComponent)
+			pComponent->Render();
+
+		Safe_Release(pComponent);
+	}
+
+	m_DebugComponents.clear();
+
+	return S_OK;
+}
+
 CRenderer * CRenderer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CRenderer*	pInstance = new CRenderer(pDevice, pContext);
@@ -161,5 +371,9 @@ CComponent * CRenderer::Clone(void * pArg)
 void CRenderer::Free()
 {
 	__super::Free();
+	Safe_Release(m_pVIBuffer);
+	Safe_Release(m_pShader);
 
+	Safe_Release(m_pLight_Manager);
+	Safe_Release(m_pTarget_Manager);
 }

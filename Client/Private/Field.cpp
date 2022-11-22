@@ -45,14 +45,20 @@ void CField::Late_Tick(_float fTimeDelta)
 	{
 		if (!g_bBag && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
 		{
-			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_ALPHABLEND, this);
+			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 			Compute_CamDistance(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
 		}
+		if (g_CollBox)
+		{
+			m_pRendererCom->Add_Debug(m_pNavigationCom);
+		}
+
 	}
 }
 
 HRESULT CField::Render()
 {
+
 
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pModelCom)
@@ -74,10 +80,7 @@ HRESULT CField::Render()
 			return E_FAIL;
 
 	}
-	if (g_CollBox)
-	{
-		m_pNavigationCom->Render_Navigation();
-	}
+
 	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }
@@ -118,9 +121,6 @@ HRESULT CField::SetUp_ShaderResources()
 	if (nullptr == m_pShaderCom)
 		return E_FAIL;
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-
-	if (FAILED(m_pShaderCom->Set_RawValue("g_vCamPosition", &pGameInstance->Get_CamPosition(), sizeof(_float4))))
-		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
 		return E_FAIL;

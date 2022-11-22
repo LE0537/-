@@ -213,9 +213,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 
 	/* Æ÷ÄÏ¸ó °´Ã¼ */
-	_matrix			PivotMatrix = XMMatrixIdentity();
 
-	PivotMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 
 	/*if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Charmander"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Charmander/Charmander.fbx", PivotMatrix))))
@@ -287,6 +285,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("MasterBall"), LEVEL_STATIC, CData_Manager::DATA_PARTS);
 
 	//Map
+	_matrix			PivotMatrix = XMMatrixIdentity();
+
+	PivotMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 
 	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Field"), LEVEL_STATIC, CData_Manager::DATA_NONANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Field"),

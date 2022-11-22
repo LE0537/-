@@ -127,7 +127,7 @@ void CSnorlax::Late_Tick(_float fTimeDelta)
 
 	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), 10.f))
 	{
-		if (m_bWildPoke && !m_bBattleMap && !g_Battle && nullptr != m_pRendererCom)
+		if (m_fDist < 30.f && !g_bEvolution && m_bWildPoke && !m_bBattleMap && !g_Battle && nullptr != m_pRendererCom)
 			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 	}
 	if ((g_PokeInfo || g_bPokeDeck) && m_bOnOff && nullptr != m_pRendererCom)
@@ -137,6 +137,9 @@ void CSnorlax::Late_Tick(_float fTimeDelta)
 	else if (m_bBattleMap && g_Battle && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 	RELEASE_INSTANCE(CGameInstance);
+	if (g_CollBox)
+		m_pRendererCom->Add_Debug(m_pAABBCom);
+	
 }
 
 HRESULT CSnorlax::Render()
@@ -153,20 +156,33 @@ HRESULT CSnorlax::Render()
 
 	_uint		iNumMeshes = m_pModelCom->Get_NumMeshContainers();
 
-	for (_uint i = 0; i < iNumMeshes; ++i)
+	if (!m_bOnOff)
 	{
-		if (FAILED(m_pModelCom->SetUp_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-			return E_FAIL;
+		for (_uint i = 0; i < iNumMeshes; ++i)
+		{
+			if (FAILED(m_pModelCom->SetUp_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+				return E_FAIL;
 
-		if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 0)))
-			return E_FAIL;
+			if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 0)))
+				return E_FAIL;
+		}
+	}
+	else if (m_bOnOff)
+	{
+		for (_uint i = 0; i < iNumMeshes; ++i)
+		{
+			if (FAILED(m_pModelCom->SetUp_Material(m_pShaderUICom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+				return E_FAIL;
 
+			if (FAILED(m_pModelCom->Render(m_pShaderUICom, i, 0)))
+				return E_FAIL;
+
+		}
 	}
 
 	RELEASE_INSTANCE(CGameInstance);
 
-	if (g_CollBox)
-		m_pAABBCom->Render();
+
 	return S_OK;
 }
 HRESULT CSnorlax::Ready_Components()
@@ -188,7 +204,8 @@ HRESULT CSnorlax::Ready_Components()
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Components(TEXT("Com_Shader"), LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimModel"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
-
+	if (FAILED(__super::Add_Components(TEXT("Com_ShaderUI"), LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxUIModel"), (CComponent**)&m_pShaderUICom)))
+		return E_FAIL;
 	/* For.Com_Model*/
 	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Snorlax"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
@@ -683,9 +700,6 @@ HRESULT CSnorlax::SetUp_ShaderResources()
 		return E_FAIL;
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-	if (FAILED(m_pShaderCom->Set_RawValue("g_vCamPosition", &pGameInstance->Get_CamPosition(), sizeof(_float4))))
-		return E_FAIL;
-
 	if (!m_bOnOff)
 	{
 		if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
@@ -700,13 +714,16 @@ HRESULT CSnorlax::SetUp_ShaderResources()
 	else if (m_bOnOff)
 	{
 
-		if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
+		if (FAILED(m_pShaderUICom->Set_RawValue("g_vCamPosition", &pGameInstance->Get_CamPosition(), sizeof(_float4))))
 			return E_FAIL;
 
-		if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+		if (FAILED(m_pShaderUICom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
 			return E_FAIL;
 
-		if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+		if (FAILED(m_pShaderUICom->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+			return E_FAIL;
+
+		if (FAILED(m_pShaderUICom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
 			return E_FAIL;
 
 	}
@@ -754,7 +771,7 @@ void CSnorlax::Free()
 		iter = m_vNormalScript.erase(iter);
 
 	m_vNormalScript.clear();
-
+	Safe_Release(m_pShaderUICom);
 	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pAABBCom);

@@ -65,7 +65,7 @@ void CSkyBox::Late_Tick(_float fTimeDelta)
 		if (!g_Battle)
 		{
 			if (!g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
-				m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+				m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
 		}
 	}
 	else
@@ -73,7 +73,7 @@ void CSkyBox::Late_Tick(_float fTimeDelta)
 		if (g_Battle)
 		{
 			if (!g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
-				m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+				m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
 		}
 	}
 }
@@ -138,9 +138,6 @@ HRESULT CSkyBox::SetUp_ShaderResources()
 	if (nullptr == m_pShaderCom)
 		return E_FAIL;
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-
-	if (FAILED(m_pShaderCom->Set_RawValue("g_vCamPosition", &pGameInstance->Get_CamPosition(), sizeof(_float4))))
-		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
 		return E_FAIL;

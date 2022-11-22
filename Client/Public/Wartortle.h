@@ -58,6 +58,7 @@ private:
 	CModel*					m_pModelCom = nullptr;
 	CCollider*				m_pAABBCom = nullptr;
 	CNavigation*			m_pNavigationCom = nullptr;
+	CShader*				m_pShaderUICom = nullptr;
 
 	_int					m_iAnim = 0;
 	_bool					m_bSetPos = false;

@@ -166,6 +166,12 @@
     <Filter Include="02.GameObjects\99.GameObj\04.UI\06.Evolution">
       <UniqueIdentifier>{4f94f77f-235a-4803-b9af-4fb6af0ea002}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\01.WaterBeam">
+      <UniqueIdentifier>{a3560757-3e22-400d-8f1c-75c70258f23d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\03.Hit">
+      <UniqueIdentifier>{0f5cb8a3-4249-4030-9b61-5dd13e8ebd43}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -327,6 +333,12 @@
     <ClInclude Include="..\public\Evolution.h">
       <Filter>02.GameObjects\99.GameObj\04.UI\06.Evolution</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Hit.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\03.Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\WaterBeam.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\01.WaterBeam</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -472,6 +484,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Evolution.cpp">
       <Filter>02.GameObjects\99.GameObj\04.UI\06.Evolution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Hit.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\03.Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\WaterBeam.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\01.WaterBeam</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

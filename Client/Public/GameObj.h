@@ -49,7 +49,9 @@ public:
 		_int		iMaxPoint;
 		_int		iPoint;
 		POKETYPE	eType;
-		
+		_bool		bUseSkill;
+		_float4		vMyPos;
+		_float4		vTargetPos;
 	}SKILLINFO;
 	typedef struct tagInfo3 {
 		wstring		strName;
@@ -157,6 +159,12 @@ public:
 		}
 	}
 	void	Set_PokeLv(_int _iLv) { m_PokemonInfo.iLv = _iLv; }
+	void	Set_PokeSkill(SKILLINFO* _Skill1, SKILLINFO* _Skill2, SKILLINFO* _Skill3, SKILLINFO* _Skill4) {
+		m_PokemonInfo.eSkillNum1 = _Skill1;
+		m_PokemonInfo.eSkillNum2 = _Skill2;
+		m_PokemonInfo.eSkillNum3 = _Skill3;
+		m_PokemonInfo.eSkillNum4 = _Skill4;
+	}
 	void	Set_PokePP1(_int _iPP) {
 		m_PokemonInfo.eSkillNum1->iPoint += _iPP;
 		if (m_PokemonInfo.eSkillNum1->iPoint > m_PokemonInfo.eSkillNum1->iMaxPoint) { m_PokemonInfo.eSkillNum1->iPoint = m_PokemonInfo.eSkillNum1->iMaxPoint; }
@@ -176,6 +184,22 @@ public:
 		m_PokemonInfo.eSkillNum4->iPoint += _iPP;
 		if (m_PokemonInfo.eSkillNum4->iPoint > m_PokemonInfo.eSkillNum4->iMaxPoint) { m_PokemonInfo.eSkillNum4->iPoint = m_PokemonInfo.eSkillNum4->iMaxPoint; }
 		else if (m_PokemonInfo.eSkillNum4->iPoint < 0) { m_PokemonInfo.eSkillNum4->iPoint = 0; }
+	}
+	void	Set_PokeUseSkill1(_float4 _MyPos, _float4 _TargetPos) {
+		m_PokemonInfo.eSkillNum1->bUseSkill = true;
+		m_PokemonInfo.eSkillNum1->vMyPos = _MyPos; m_PokemonInfo.eSkillNum1->vTargetPos = _TargetPos;
+	}
+	void	Set_PokeUseSkill2(_float4 _MyPos, _float4 _TargetPos) {
+		m_PokemonInfo.eSkillNum2->bUseSkill = true;
+		m_PokemonInfo.eSkillNum2->vMyPos = _MyPos; m_PokemonInfo.eSkillNum2->vTargetPos = _TargetPos;
+	}
+	void	Set_PokeUseSkill3(_float4 _MyPos, _float4 _TargetPos) {
+		m_PokemonInfo.eSkillNum3->bUseSkill = true;
+		m_PokemonInfo.eSkillNum3->vMyPos = _MyPos; m_PokemonInfo.eSkillNum3->vTargetPos = _TargetPos;
+	}
+	void	Set_PokeUseSkill4(_float4 _MyPos, _float4 _TargetPos) {
+		m_PokemonInfo.eSkillNum4->bUseSkill = true;
+		m_PokemonInfo.eSkillNum4->vMyPos = _MyPos; m_PokemonInfo.eSkillNum4->vTargetPos = _TargetPos;
 	}
 	void	Set_PokeItem(ITEMINFO* _eItem) { m_PokemonInfo.eItem = _eItem; }
 	void	Set_StatInfo(STATINFO eStatInfo) { m_PokemonInfo.eStatInfo = eStatInfo; }

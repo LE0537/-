@@ -117,7 +117,10 @@ private:
 
 	_bool					m_bWildWin = false;
 	_float					m_WinTime = 0.f;
-private:
+
+	_float4					m_MySKillPos;
+	_float4					m_TargetSkillPos;
+private:	
 	HRESULT Ready_Components();
 	HRESULT SetUp_ShaderResources();
 	HRESULT SetUp_ShaderSkill();
@@ -151,6 +154,8 @@ private:
 	_float	Check_Type(POKETYPE _eType, POKETYPE _eTargetType);
 	void	Change_PlayerPoke(_float fTimeDelta);
 	void	Change_TargetPoke(_float fTimeDelta);
+	void	Use_SkillEffect();
+	void	Use_TargetSkillEffect();
 public:
 	static CBattleUI* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

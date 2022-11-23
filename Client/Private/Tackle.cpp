@@ -31,7 +31,7 @@ HRESULT CTackle::Initialize(void * pArg)
 	m_SkillInfo.iMaxPoint = 35;
 	m_SkillInfo.iPoint = m_SkillInfo.iMaxPoint;
 	m_SkillInfo.eType = NORMAL;
-
+	m_SkillInfo.bUseSkill = false;
 	*(SKILLINFO**)pArg = &m_SkillInfo;
 	return S_OK;
 }

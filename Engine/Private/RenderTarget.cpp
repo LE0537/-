@@ -61,7 +61,6 @@ HRESULT CRenderTarget::Bind_ShaderResource(CShader * pShader, const char * pCons
 	return pShader->Set_ShaderResourceView(pConstantName, m_pSRV);	
 }
 
-#ifdef _DEBUG
 
 HRESULT CRenderTarget::Ready_Debug(_float fX, _float fY, _float fSizeX, _float fSizeY)
 {
@@ -102,7 +101,6 @@ HRESULT CRenderTarget::Render_Debug(CShader* pShader, CVIBuffer_Rect * pVIBuffer
 	return S_OK;
 }
 
-#endif // _DEBUG
 
 CRenderTarget * CRenderTarget::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, _uint iSizeX, _uint iSizeY, DXGI_FORMAT eFormat, const _float4 * pColor)
 {

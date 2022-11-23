@@ -25,7 +25,7 @@ public:
 	_float3* Get_CellPoints();
 
 public:
-	HRESULT Render_Navigation();
+	HRESULT Render();
 	void	Find_CurrentCellIndex(_vector vPos);
 
 private:

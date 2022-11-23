@@ -40,7 +40,7 @@ HRESULT CSquirtle::Initialize(void * pArg)
 
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tackle"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum1)))
 		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NoneSkill"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum2)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_WaterBeam"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum2)))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NoneSkill"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum3)))
 		return E_FAIL;
@@ -553,6 +553,7 @@ void CSquirtle::Set_EvolPos(_float fTimeDelta)
 		_int iIndex = dynamic_cast<CPlayer*>(m_pTarget)->Get_Bag()->Get_EvolIndex();
 		dynamic_cast<CGameObj*>(m_EvolPoke)->Set_Target(m_pTarget);
 		dynamic_cast<CGameObj*>(m_EvolPoke)->Set_PokeLv(m_PokemonInfo.iLv);
+		dynamic_cast<CGameObj*>(m_EvolPoke)->Set_PokeSkill(m_PokemonInfo.eSkillNum1, m_PokemonInfo.eSkillNum2, m_PokemonInfo.eSkillNum3, m_PokemonInfo.eSkillNum4);
 		dynamic_cast<CPlayer*>(m_pTarget)->Get_Bag()->Set_vecPoke(iIndex, m_EvolPoke);
 		dynamic_cast<CGameObj*>(m_EvolPoke)->Set_PokeUIOnOff();
 		

@@ -40,7 +40,7 @@ HRESULT CPlayer::Initialize(void * pArg)
 	m_PlayerInfo.bEvent = false;
 	m_PlayerInfo.bBattle = false;
 	m_PlayerInfo.bRide = false;
-
+	m_PlayerInfo.iMoney = 1000;
 	
 	m_pTransformCom->Set_Scale(XMLoadFloat3((&((CLevel_GamePlay::LOADFILE*)pArg)->vScale)));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4((&((CLevel_GamePlay::LOADFILE*)pArg)->vPos)));
@@ -82,9 +82,9 @@ void CPlayer::Late_Tick(_float fTimeDelta)
 
 	if (g_CollBox)
 	{
+		m_pRendererCom->Add_Debug(m_pNavigationCom);
  		m_pRendererCom->Add_Debug(m_pAABBCom);
 		m_pRendererCom->Add_Debug(m_pOBBCom);
-		m_pRendererCom->Add_Debug(m_pNavigationCom);
 	}
 }
 

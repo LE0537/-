@@ -90,8 +90,6 @@ HRESULT CTarget_Manager::Bind_ShaderResource(const _tchar * pTargetTag, CShader 
 	return pRenderTarget->Bind_ShaderResource(pShader, pConstantName);
 }
 
-#ifdef _DEBUG
-
 HRESULT CTarget_Manager::Ready_Debug(const _tchar * pTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY)
 {
 	CRenderTarget*		pRenderTarget = Find_RenderTarget(pTargetTag);
@@ -114,8 +112,6 @@ HRESULT CTarget_Manager::Render_Debug(const _tchar * pMRTTag, class CShader* pSh
 
 	return S_OK;
 }
-
-#endif // _DEBUG
 
 
 CRenderTarget * CTarget_Manager::Find_RenderTarget(const _tchar * pTargetTag)

@@ -1014,7 +1014,7 @@ void CBattleUI::Change_Poke(_float fTimeDelta)
 
 		dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Set_AnimIndex(iAnim);
 		m_bCheckAttack = false;
-		m_fDotDeal = 0.f;
+		m_fDotDeal = 0;
 		m_fHPTime = 0.f;
 	}
 	//상대포켓몬 공격
@@ -1575,6 +1575,8 @@ void CBattleUI::BattleFrame()
 		m_bCheckAttack = false;
 		m_fDotDeal = 0;
 		m_fHPTime = 0.f;
+
+		Use_SkillEffect();
 	}
 	else if (!m_bCreateTextBox && (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().iSpeed < dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().iSpeed))
 	{
@@ -1635,6 +1637,7 @@ void CBattleUI::BattleFrame()
 		m_bCheckAttack = false;
 		m_fDotDeal = 0;
 		m_fHPTime = 0.f;
+		Use_TargetSkillEffect();
 	}
 
 	if (!m_bCreateTextBox2 && m_bCheckAttack2)
@@ -1697,6 +1700,8 @@ void CBattleUI::BattleFrame()
 			dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_AnimIndex(iAnim);
 			m_fDotDeal = 0;
 			m_fHPTime = 0.f;
+
+			Use_SkillEffect();
 		}
 		else if (!m_bCreateTextBox2 && (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().iSpeed >= dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().iSpeed))
 		{
@@ -1756,6 +1761,7 @@ void CBattleUI::BattleFrame()
 			dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Set_AnimIndex(iAnim);
 			m_fDotDeal = 0;
 			m_fHPTime = 0.f;
+			Use_TargetSkillEffect();
 		}
 	}
 
@@ -3008,6 +3014,56 @@ void CBattleUI::Change_TargetPoke(_float fTimeDelta)
 			m_WinTime = 0.f;
 		}
 	}
+}
+
+void CBattleUI::Use_SkillEffect()
+{
+	XMStoreFloat4(&m_MySKillPos, dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION));
+	XMStoreFloat4(&m_TargetSkillPos, dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION));
+	
+	switch (m_bPlayerSkillIndex)
+	{
+	case 0:
+		dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_PokeUseSkill1(m_MySKillPos, m_TargetSkillPos);
+		break;
+	case 1:
+		dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_PokeUseSkill2(m_MySKillPos, m_TargetSkillPos);
+		break;
+	case 2:
+		dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_PokeUseSkill3(m_MySKillPos, m_TargetSkillPos);
+		break;
+	case 3:
+		dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_PokeUseSkill4(m_MySKillPos, m_TargetSkillPos);
+		break;
+	default:
+		break;
+	}
+
+}
+
+void CBattleUI::Use_TargetSkillEffect()
+{
+	XMStoreFloat4(&m_MySKillPos, dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION));
+	XMStoreFloat4(&m_TargetSkillPos, dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION));
+
+	switch (m_bTargetSkillIndex)
+	{
+	case 0:
+		dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Set_PokeUseSkill1(m_MySKillPos, m_TargetSkillPos);
+		break;
+	case 1:
+		dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Set_PokeUseSkill2(m_MySKillPos, m_TargetSkillPos);
+		break;
+	case 2:
+		dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Set_PokeUseSkill3(m_MySKillPos, m_TargetSkillPos);
+		break;
+	case 3:
+		dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Set_PokeUseSkill4(m_MySKillPos, m_TargetSkillPos);
+		break;
+	default:
+		break;
+	}
+
 }
 
 

@@ -187,6 +187,7 @@
     <ClInclude Include="..\public\Field.h" />
     <ClInclude Include="..\public\GameObj.h" />
     <ClInclude Include="..\public\Garomakguri.h" />
+    <ClInclude Include="..\public\Hit.h" />
     <ClInclude Include="..\public\HpPotion.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
@@ -215,6 +216,7 @@
     <ClInclude Include="..\public\Tree.h" />
     <ClInclude Include="..\public\UI.h" />
     <ClInclude Include="..\public\Wartortle.h" />
+    <ClInclude Include="..\public\WaterBeam.h" />
     <ClInclude Include="..\public\Weed.h" />
     <ClInclude Include="..\public\Wigglytuff.h" />
     <ClInclude Include="Client.h" />
@@ -239,6 +241,7 @@
     <ClCompile Include="..\private\Field.cpp" />
     <ClCompile Include="..\private\GameObj.cpp" />
     <ClCompile Include="..\private\Garomakguri.cpp" />
+    <ClCompile Include="..\private\Hit.cpp" />
     <ClCompile Include="..\private\HpPotion.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
@@ -267,6 +270,7 @@
     <ClCompile Include="..\private\Tree.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
     <ClCompile Include="..\private\Wartortle.cpp" />
+    <ClCompile Include="..\private\WaterBeam.cpp" />
     <ClCompile Include="..\private\Weed.cpp" />
     <ClCompile Include="..\private\Wigglytuff.cpp" />
     <ClCompile Include="Client.cpp" />

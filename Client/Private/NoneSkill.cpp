@@ -33,7 +33,7 @@ HRESULT CNoneSkill::Initialize(void * pArg)
 	m_SkillInfo.iMaxPoint = 0;
 	m_SkillInfo.iPoint = m_SkillInfo.iMaxPoint;
 	m_SkillInfo.eType = POKETYPE_END;
-
+	m_SkillInfo.bUseSkill = false;
 	*(SKILLINFO**)pArg = &m_SkillInfo;
 	return S_OK;
 }

@@ -1319,7 +1319,7 @@ void CBag::RenderFonts()
 		vPos.m128_f32[1] += 96.f;
 	}
 	wstring strLv = TEXT("Lv.");
-	vPos = { 336.f,162.f,0.f,1.f };
+	vPos = { 316.f,162.f,0.f,1.f };
 	for (_int i = 0; i < 6; ++i)
 	{
 		if (dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().eStatInfo == STATINFO_END)
@@ -1330,7 +1330,9 @@ void CBag::RenderFonts()
 		}
 		vPos.m128_f32[1] += 96.f;
 	}
-	wstring strMoney = TEXT("¿ëµ·                    0 ¿ø");
+	wstring strMoney = TEXT("¿ëµ·           ");
+	strMoney += to_wstring(dynamic_cast<CGameObj*>(m_pPlayer)->Get_PalyerInfo().iMoney);
+	strMoney += TEXT(" ¿ø");
 	vPos = { 980.f,30.f,0.f,1.f };
 	pGameInstance->Render_Font(TEXT("Font_Nexon"), strMoney.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
 

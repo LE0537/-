@@ -18,6 +18,7 @@ struct VS_OUT
 	float4		vPosition : SV_POSITION;
 	float4		vNormal : NORMAL;
 	float2		vTexUV : TEXCOORD0;
+	float4		vProjPos : TEXCOORD1;
 };
 
 /* DrawIndexed함수를 호출하면. */
@@ -39,7 +40,7 @@ VS_OUT VS_MAIN(VS_IN In)
 	Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
 	Out.vNormal = vNormal;
 	Out.vTexUV = In.vTexUV;
-
+	Out.vProjPos = Out.vPosition;
 	return Out;
 }
 VS_OUT VS_Sky(VS_IN In)
@@ -58,7 +59,7 @@ VS_OUT VS_Sky(VS_IN In)
 	Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
 	Out.vNormal = vNormal;
 	Out.vTexUV = In.vTexUV;
-
+	Out.vProjPos = Out.vPosition;
 	return Out;
 }
 
@@ -67,12 +68,15 @@ struct PS_IN
 	float4		vPosition : SV_POSITION;
 	float4		vNormal : NORMAL;
 	float2		vTexUV : TEXCOORD0;
+	float4		vProjPos : TEXCOORD1;
 };
 
 struct PS_OUT
 {
 	float4		vDiffuse : SV_TARGET0;
 	float4		vNormal : SV_TARGET1;
+	float4		vDepth : SV_TARGET2;
+
 };
 
 /* 이렇게 만들어진 픽셀을 PS_MAIN함수의 인자로 던진다. */
@@ -84,6 +88,8 @@ PS_OUT PS_MAIN(PS_IN In)
 
 	Out.vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
 	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1300.f, 0.f, 0.f);
+
 
 	if (Out.vDiffuse.a <= 0.3f)
 		discard;
@@ -96,8 +102,9 @@ PS_OUT PS_Tree(PS_IN In)
 
 	Out.vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
 	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
-
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1300.f, 0.f, 0.f);
 	Out.vDiffuse.a = Out.vDiffuse.g;
+
 
 	if (Out.vDiffuse.a <= 0.15f)
 		discard;
@@ -110,6 +117,7 @@ PS_OUT PS_Map(PS_IN In)
 
 	Out.vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
 	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1300.f, 0.f, 0.f);
 
 	if (Out.vDiffuse.a <= 0.6f)
 		discard;
@@ -124,16 +132,28 @@ PS_OUT PS_Sky(PS_IN In)
 
 	Out.vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
 	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1300.f, 0.f, 0.f);
 
 	if (Out.vDiffuse.a <= 0.6f)
 		discard;
 
 	return Out;
 }
+PS_OUT PS_WaterBeam(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
 
+	Out.vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
+	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1300.f, 0.f, 0.f);
+	
+	Out.vDiffuse.a = 0.7f;
+
+	return Out;
+}
 technique11 DefaultTechnique
 {
-	pass Default
+	pass Default //0
 	{
 		SetRasterizerState(RS_Default);
 		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
@@ -144,7 +164,7 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
 
-	pass Map
+	pass Map //1
 	{
 		SetRasterizerState(RS_Map);
 		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
@@ -155,7 +175,7 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_Map();
 	}
 	
-	pass Tree
+	pass Tree //2
 	{
 		SetRasterizerState(RS_Default);
 		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
@@ -166,7 +186,7 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_Tree();
 	}
 
-	pass Sky
+	pass Sky //3
 	{
 		SetRasterizerState(RS_Default);
 		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
@@ -175,5 +195,15 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_Sky();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_Sky();
+	}
+	pass WaterBeam //4
+	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_WaterBeam();
 	}
 }

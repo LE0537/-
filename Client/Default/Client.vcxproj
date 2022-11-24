@@ -216,6 +216,7 @@
     <ClInclude Include="..\public\Tree.h" />
     <ClInclude Include="..\public\UI.h" />
     <ClInclude Include="..\public\Wartortle.h" />
+    <ClInclude Include="..\public\WaterBall.h" />
     <ClInclude Include="..\public\WaterBeam.h" />
     <ClInclude Include="..\public\Weed.h" />
     <ClInclude Include="..\public\Wigglytuff.h" />
@@ -270,6 +271,7 @@
     <ClCompile Include="..\private\Tree.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
     <ClCompile Include="..\private\Wartortle.cpp" />
+    <ClCompile Include="..\private\WaterBall.cpp" />
     <ClCompile Include="..\private\WaterBeam.cpp" />
     <ClCompile Include="..\private\Weed.cpp" />
     <ClCompile Include="..\private\Wigglytuff.cpp" />

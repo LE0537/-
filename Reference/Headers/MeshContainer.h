@@ -36,12 +36,6 @@ private:	// 추가
 public:
 	void Get_MeshData(DATA_BINMESH* pMeshData);
 
-private:	// 추가
-	VTXMODEL*			m_pNonAnimVertices = nullptr;
-	VTXANIMMODEL*		m_pAnimVertices = nullptr;
-	FACEINDICES32*		m_pIndices = nullptr;
-	_bool				m_bIsProto = false;
-
 private:
 	char						m_szName[MAX_PATH] = "";
 	const aiMesh*				m_pAIMesh = nullptr;
@@ -50,6 +44,11 @@ private:
 	/* 이 메시에 영향을 주는 뼈들의 갯수 .*/
 	_uint							m_iNumBones = 0;
 	vector<class CHierarchyNode*>	m_Bones;
+private:	// 추가
+	VTXMODEL*			m_pNonAnimVertices = nullptr;
+	VTXANIMMODEL*		m_pAnimVertices = nullptr;
+	FACEINDICES32*		m_pIndices = nullptr;
+	_bool				m_bIsProto = false;
 
 public:
 	HRESULT Create_VertexBuffer_NonAnimModel(const aiMesh* pAIMesh, _fmatrix PivotMatrix);

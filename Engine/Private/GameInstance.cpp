@@ -362,6 +362,14 @@ _bool CGameInstance::IsInFrustum(_vector vPos, _float fLength)
 
 	return m_pFrustum->IsinFrustum(vPos, fLength);
 }
+HRESULT CGameInstance::Bind_RenderTarget_SRV(const _tchar * pTargetTag, CShader * pShader, const char * pConstantName)
+{
+	if (nullptr == m_pTarget_Manager)
+		return E_FAIL;
+
+	return m_pTarget_Manager->Bind_ShaderResource(pTargetTag, pShader, pConstantName);
+}
+
 HRESULT CGameInstance::Render_Font(const _tchar * pFontTag, const _tchar * pText, _fvector vPos, _fvector vColor, _fvector vScale)
 {
 	if (nullptr == m_pFont_Manager)

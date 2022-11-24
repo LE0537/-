@@ -83,7 +83,29 @@ HRESULT CLevel_GamePlay::Ready_Lights()
 	if (FAILED(pGameInstance->Add_Light(m_pDevice, m_pContext, LightDesc)))
 		return E_FAIL;
 
+	/* For.Point */
+	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
+	
+	for (auto& iter : m_vecSave)
+	{
+		if (iter.iType == 10)
+		{
+			LightDesc.eType = LIGHTDESC::TYPE_POINT;
+			iter.vPos.y += 10.f;
+			LightDesc.vPosition = iter.vPos;
+			LightDesc.fRange = 300.f;
+			LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+			LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
+			LightDesc.vSpecular = LightDesc.vDiffuse;
+			if (FAILED(pGameInstance->Add_Light(m_pDevice, m_pContext, LightDesc)))
+				return E_FAIL;
+		}
+	}
+	
+
+	if (FAILED(pGameInstance->Add_Light(m_pDevice, m_pContext, LightDesc)))
+		return E_FAIL;
 
 	RELEASE_INSTANCE(CGameInstance);
 

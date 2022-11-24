@@ -33,15 +33,12 @@ public:
 	virtual HRESULT Render();
 
 private:
-	CTransform*				m_pTransformCom2 = nullptr;
-	CModel*					m_pModelCom = nullptr;
-	CModel*					m_pModelCom2 = nullptr;
 
+	_float					m_fSkillTime = 0.f;
 	_float					m_fDeadTime = 0.f;
 	_bool					m_bSetPos = false;
 private:
-	HRESULT Ready_Components();
-	HRESULT SetUp_ShaderResources(); /* 셰이더 전역변수에 값을 전달한다. */
+
 	void	Set_Pos(_float fTimeDelta);
 	
 public:

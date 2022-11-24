@@ -172,6 +172,9 @@
     <Filter Include="02.GameObjects\99.GameObj\06.Effect\03.Hit">
       <UniqueIdentifier>{0f5cb8a3-4249-4030-9b61-5dd13e8ebd43}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\01.WaterBeam\WaterBall">
+      <UniqueIdentifier>{2b4d6ee2-0a69-49d3-9f97-614acb09e099}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -339,6 +342,9 @@
     <ClInclude Include="..\public\WaterBeam.h">
       <Filter>02.GameObjects\99.GameObj\05.Skill\01.WaterBeam</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\WaterBall.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\01.WaterBeam\WaterBall</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -490,6 +496,9 @@
     </ClCompile>
     <ClCompile Include="..\private\WaterBeam.cpp">
       <Filter>02.GameObjects\99.GameObj\05.Skill\01.WaterBeam</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\WaterBall.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\01.WaterBeam\WaterBall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

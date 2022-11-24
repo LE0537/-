@@ -494,7 +494,10 @@ HRESULT CModel::Bin_Ready_Materials(const char * pModelFilePath)
 			if (!strcmp(pAIMaterial.cNames[j], ""))
 				continue;
 
+			if (!strcmp(pAIMaterial.cNames[j], "sea01_com_n.dds"))
+			{
 
+			}
 			char			szFullPath[MAX_PATH] = "";
 			char			szExt[MAX_PATH] = "";
 
@@ -508,7 +511,7 @@ HRESULT CModel::Bin_Ready_Materials(const char * pModelFilePath)
 				strcpy_s(szExt, ".dds");
 				strcat_s(szFullPath, szExt);
 			}
-
+			
 			_tchar			szWideFullPath[MAX_PATH] = TEXT("");
 
 			MultiByteToWideChar(CP_ACP, 0, szFullPath, strlen(szFullPath), szWideFullPath, MAX_PATH);
@@ -518,6 +521,8 @@ HRESULT CModel::Bin_Ready_Materials(const char * pModelFilePath)
 			MaterialDesc.pMaterials[j] = CTexture::Create(m_pDevice, m_pContext, szWideFullPath);
 			if (nullptr == MaterialDesc.pMaterials[j])
 				return E_FAIL;
+
+		
 		}
 
 		m_Materials.push_back(MaterialDesc);

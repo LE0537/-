@@ -85,6 +85,8 @@ public: /* For.Font_Manager */
 
 public:	/* for. Frustum*/
 	_bool	IsInFrustum(_vector vPos, _float fLength);
+public: /* For.Target_Manager */
+	HRESULT Bind_RenderTarget_SRV(const _tchar* pTargetTag, class CShader* pShader, const char* pConstantName);
 
 public:
 	static void Release_Engine();

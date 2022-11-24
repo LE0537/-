@@ -101,7 +101,7 @@ PS_OUT PS_Tree(PS_IN In)
 	PS_OUT		Out = (PS_OUT)0;
 
 	Out.vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
-	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1300.f, 0.f, 0.f);
 	Out.vDiffuse.a = Out.vDiffuse.g;
 
@@ -116,7 +116,7 @@ PS_OUT PS_Map(PS_IN In)
 	PS_OUT		Out = (PS_OUT)0;
 
 	Out.vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
-	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1300.f, 0.f, 0.f);
 
 	if (Out.vDiffuse.a <= 0.6f)
@@ -147,7 +147,27 @@ PS_OUT PS_WaterBeam(PS_IN In)
 	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1300.f, 0.f, 0.f);
 	
-	Out.vDiffuse.a = 0.7f;
+	
+	if (Out.vDiffuse.r < 0.3f)
+	{
+		Out.vDiffuse.a = 0.7f;
+	}
+	else
+		Out.vDiffuse += 0.3f;
+	return Out;
+}
+
+PS_OUT PS_Water(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
+	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 2.f);
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1300.f, 0.f, 0.f);
+
+	if (Out.vDiffuse.a <= 0.6f)
+		discard;
+
 
 	return Out;
 }
@@ -205,5 +225,15 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_WaterBeam();
+	}
+	pass Water //5
+	{
+		SetRasterizerState(RS_Map);
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_Water();
 	}
 }

@@ -75,10 +75,16 @@ HRESULT CField::Render()
 	{
 		if (FAILED(m_pModelCom->SetUp_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
-
-		if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 1)))
-			return E_FAIL;
-
+		if (i == 150 || i == 151 || i == 152 || i == 153)
+		{
+			if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 5)))
+				return E_FAIL;
+		}
+		else
+		{
+			if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 1)))
+				return E_FAIL;
+		}
 	}
 
 	RELEASE_INSTANCE(CGameInstance);

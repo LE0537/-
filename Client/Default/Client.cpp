@@ -83,9 +83,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		pGameInstance->Update_TimeDelta(TEXT("Timer_Default"));
 		fTimeAcc += pGameInstance->Get_TimeDelta(TEXT("Timer_Default"));
 
+		srand(unsigned(time(NULL)));
 		if (fTimeAcc >= 1.0f / 60.0f)
 		{
-			srand(unsigned(time(NULL)));
 			fTimeAcc = 0.f;
 
 			pGameInstance->Update_TimeDelta(TEXT("Timer_60"));

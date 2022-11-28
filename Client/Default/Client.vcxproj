@@ -209,6 +209,8 @@
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\PokeDeck.h" />
     <ClInclude Include="..\public\PokeInfo.h" />
+    <ClInclude Include="..\public\Raticate.h" />
+    <ClInclude Include="..\public\Rattata.h" />
     <ClInclude Include="..\public\Screen.h" />
     <ClInclude Include="..\public\SkyBox.h" />
     <ClInclude Include="..\public\Slowbro.h" />
@@ -268,6 +270,8 @@
     <ClCompile Include="..\private\Player.cpp" />
     <ClCompile Include="..\private\PokeDeck.cpp" />
     <ClCompile Include="..\private\PokeInfo.cpp" />
+    <ClCompile Include="..\private\Raticate.cpp" />
+    <ClCompile Include="..\private\Rattata.cpp" />
     <ClCompile Include="..\private\Screen.cpp" />
     <ClCompile Include="..\private\SkyBox.cpp" />
     <ClCompile Include="..\private\Slowbro.cpp" />

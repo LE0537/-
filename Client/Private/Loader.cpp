@@ -34,6 +34,8 @@
 #include "Caterpie.h"
 #include "Metapod.h"
 #include "Butterfree.h"
+#include "Rattata.h"
+#include "Raticate.h"
 #include "Pikachu.h"
 #include "Wigglytuff.h"
 #include "Meowth.h"
@@ -251,6 +253,16 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Butterfree"),
 	CButterfree::Create(m_pDevice, m_pContext))))
 	return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Rattata"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Rattata"),
+	CRattata::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Raticate"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Raticate"),
+	CRaticate::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Pikachu"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Pikachu"),

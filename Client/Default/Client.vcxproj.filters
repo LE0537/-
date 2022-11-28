@@ -187,6 +187,12 @@
     <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\12.Butterfree">
       <UniqueIdentifier>{cd42b6ca-1279-4706-871c-4020868bbbe3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\19.Rattata">
+      <UniqueIdentifier>{a89ad21f-35da-4eef-a3a1-955a6e1dfb71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\20.Raticate">
+      <UniqueIdentifier>{44373a1b-f207-42e6-9130-6e9640149782}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -369,6 +375,12 @@
     <ClInclude Include="..\public\Butterfree.h">
       <Filter>02.GameObjects\99.GameObj\01.Pokemon\12.Butterfree</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Rattata.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\19.Rattata</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Raticate.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\20.Raticate</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -535,6 +547,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Butterfree.cpp">
       <Filter>02.GameObjects\99.GameObj\01.Pokemon\12.Butterfree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Rattata.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\19.Rattata</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Raticate.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\20.Raticate</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

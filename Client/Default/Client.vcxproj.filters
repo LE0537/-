@@ -175,6 +175,18 @@
     <Filter Include="02.GameObjects\99.GameObj\05.Skill\01.WaterBeam\WaterBall">
       <UniqueIdentifier>{2b4d6ee2-0a69-49d3-9f97-614acb09e099}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\09.Blastoise">
+      <UniqueIdentifier>{35a9709c-3eab-4dee-8661-d6cb744ce805}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\10.Caterpie">
+      <UniqueIdentifier>{b9ef49a9-4160-48be-9986-3cfeacdd64ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\11.Metapod">
+      <UniqueIdentifier>{d3f1368e-e445-4d72-9bfb-9b35538e0b2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\12.Butterfree">
+      <UniqueIdentifier>{cd42b6ca-1279-4706-871c-4020868bbbe3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -345,6 +357,18 @@
     <ClInclude Include="..\public\WaterBall.h">
       <Filter>02.GameObjects\99.GameObj\05.Skill\01.WaterBeam\WaterBall</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Blastoise.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\09.Blastoise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Caterpie.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\10.Caterpie</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Metapod.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\11.Metapod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Butterfree.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\12.Butterfree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -499,6 +523,18 @@
     </ClCompile>
     <ClCompile Include="..\private\WaterBall.cpp">
       <Filter>02.GameObjects\99.GameObj\05.Skill\01.WaterBeam\WaterBall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Blastoise.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\09.Blastoise</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Caterpie.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\10.Caterpie</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Metapod.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\11.Metapod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Butterfree.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\12.Butterfree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

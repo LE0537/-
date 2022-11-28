@@ -76,7 +76,7 @@ void CSquirtle::Tick(_float fTimeDelta)
 				Key_Input(fTimeDelta);
 			}
 		}
-		else if (g_bEvolution)
+		else if (g_bEvolution && m_PokemonInfo.bEvolution)
 		{
 			Set_EvolPos(fTimeDelta);
 		}
@@ -108,7 +108,7 @@ void CSquirtle::Tick(_float fTimeDelta)
 		}
 
 		
-		if (m_bWildPoke && !g_Battle && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
+		if (m_bWildPoke && !g_Battle && !g_bBag && !g_bPokeDeck && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
 		{
 			OnNavi();
 			Move(fTimeDelta);

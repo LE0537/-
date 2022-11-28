@@ -9,6 +9,7 @@
 #include "VIBuffer_Navigation.h"
 #include "Data_Manager.h"	// Ãß°¡
 #include "Bag.h"
+#include "Blastoise.h"
 
 CWartortle::CWartortle(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -77,9 +78,13 @@ void CWartortle::Tick(_float fTimeDelta)
 				Key_Input(fTimeDelta);
 			}
 		}
-		else if (g_bEvolution)
+		else if (g_bEvolution && !m_PokemonInfo.bEvolution)
 		{
 			Set_EvolPos(fTimeDelta);
+		}
+		else if (g_bEvolution && m_PokemonInfo.bEvolution)
+		{
+			Set_EvolPos2(fTimeDelta);
 		}
 	}
 	if (g_PokeInfo || g_bPokeDeck || g_bEvolution)
@@ -108,8 +113,7 @@ void CWartortle::Tick(_float fTimeDelta)
 				WildBattle();
 		}
 
-
-		if (m_bWildPoke && !g_Battle && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
+		if (m_bWildPoke && !g_Battle && !g_bBag && !g_bPokeDeck && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
 		{
 			OnNavi();
 			Move(fTimeDelta);
@@ -536,6 +540,102 @@ void CWartortle::Set_EvolPos(_float fTimeDelta)
 
 	RELEASE_INSTANCE(CGameInstance);
 }
+void CWartortle::Set_EvolPos2(_float fTimeDelta)
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	if (m_bSetPos)
+	{
+		m_EvolTime += fTimeDelta;
+	}
+	if (m_bEvol && m_EvolTime > m_fRenderTime)
+	{
+		if (m_bRender)
+		{
+			m_bRender = false;
+			m_EvolTime = 0.f;
+			m_fRenderTime -= 0.05f;
+			dynamic_cast<CBlastoise*>(m_EvolPoke)->Set_Render(true);
+		}
+		else if (!m_bRender)
+		{
+			m_bRender = true;
+			m_EvolTime = 0.f;
+			m_fRenderTime -= 0.05f;
+			dynamic_cast<CBlastoise*>(m_EvolPoke)->Set_Render(false);
+		}
+	}
+	if (m_fRenderTime < 0.f)
+	{
+		m_bRender = false;
+		Set_Dead();
+		dynamic_cast<CBlastoise*>(m_EvolPoke)->Set_Render(true);
+		dynamic_cast<CBlastoise*>(m_EvolPoke)->Set_CheckEvol();
+	}
+	if (!m_bSetPos)
+	{
+		_vector		vLook = { -0.3f,0.f,-1.f,0.f };
+
+		_vector		vAxisY = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+
+		_vector		vRight = XMVector3Cross(vAxisY, vLook);
+
+		_vector		vUp = XMVector3Cross(vLook, vRight);
+
+		m_pTransformCom->Set_State(CTransform::STATE_RIGHT, XMVector3Normalize(vRight));
+		m_pTransformCom->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp));
+		m_pTransformCom->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
+		m_bSetPos = true;
+
+
+		Ready_EvolScript();
+		CTextBox::TINFO tTInfo;
+
+		tTInfo.iScriptSize = (_int)m_vNormalScript.size();
+		tTInfo.pTarget = this;
+		tTInfo.pScript = new wstring[m_vNormalScript.size()];
+		tTInfo.iType = 1;
+		for (_int i = 0; i < m_vNormalScript.size(); ++i)
+			tTInfo.pScript[i] = m_vNormalScript[i];
+
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
+			return;
+
+		m_iAnimIndex = 1;
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+	}
+
+	if (m_bSetPos && m_iAnimIndex == 1 && m_pModelCom->Get_End(m_iAnimIndex))
+	{
+		m_bEvol = true;
+		m_EvolTime = 0.f;
+		m_iAnimIndex = 2;
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Blastoise"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &m_EvolPoke)))
+			return;
+		_int iIndex = dynamic_cast<CPlayer*>(m_pTarget)->Get_Bag()->Get_EvolIndex();
+		dynamic_cast<CGameObj*>(m_EvolPoke)->Set_Target(m_pTarget);
+		dynamic_cast<CGameObj*>(m_EvolPoke)->Set_PokeLv(m_PokemonInfo.iLv);
+		dynamic_cast<CGameObj*>(m_EvolPoke)->Set_PokeSkill(m_PokemonInfo.eSkillNum1, m_PokemonInfo.eSkillNum2, m_PokemonInfo.eSkillNum3, m_PokemonInfo.eSkillNum4);
+		dynamic_cast<CPlayer*>(m_pTarget)->Get_Bag()->Set_vecPoke(iIndex, m_EvolPoke);
+		dynamic_cast<CGameObj*>(m_EvolPoke)->Set_PokeUIOnOff();
+
+		m_bRender = true;
+	}
+	m_fSizeX = 10.f;
+	m_fSizeY = 10.f;
+	m_fX = 640.f;
+	m_fY = 450.f;
+
+	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixTranspose(XMMatrixIdentity()));
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -500.f, 100.f)));
+	_float3 vScale = { m_fSizeX,m_fSizeY,10.f };
+	m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, -200.f, 1.f));
+
+
+	RELEASE_INSTANCE(CGameInstance);
+}
 void CWartortle::Set_DeckPos()
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
@@ -812,7 +912,8 @@ void CWartortle::LvUp()
 		RELEASE_INSTANCE(CGameInstance);
 	}
 
-
+	if (m_PokemonInfo.iLv >= 36)
+		m_PokemonInfo.bEvolution = true;
 	m_PokemonInfo.bLvUp = false;
 }
 void CWartortle::Reset_Battle()

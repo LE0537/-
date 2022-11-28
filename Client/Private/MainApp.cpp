@@ -5,6 +5,7 @@
 #include "Level_Loading.h"
 #include "SoundMgr.h"
 #include "Data_Manager.h"	// 추가
+#include "BackGround.h"
 
 bool		g_bBag = false;
 bool		g_PokeInfo = false;
@@ -59,10 +60,7 @@ void CMainApp::Tick(_float fTimeDelta)
 
 	m_pGameInstance->Tick_Engine(fTimeDelta);
 
-#ifdef _DEBUG
 	m_fTimeAcc += fTimeDelta;
-#endif // _DEBUG
-
 }
 
 HRESULT CMainApp::Render()
@@ -164,6 +162,14 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/Shaderfiles/Shader_VtxPointInstance.hlsl"), VTXPOINTINSTANCE_DECLARATION::Elements, VTXPOINTINSTANCE_DECLARATION::iNumElements))))
 		return E_FAIL;
 
+	/* 백그 텍스쳐 */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BackGround"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Logo.dds"), 1))))
+		return E_FAIL;
+	/* 백그 객체 */
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BackGround"),
+		CBackGround::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	Safe_AddRef(m_pRenderer);
 
 	return S_OK;
@@ -184,7 +190,6 @@ CMainApp * CMainApp::Create()
 
 void CMainApp::Free()
 {
-
 	Safe_Release(m_pRenderer);
 
 	Safe_Release(m_pDevice);

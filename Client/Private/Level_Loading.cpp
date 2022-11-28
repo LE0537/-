@@ -17,6 +17,9 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel)
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+		return E_FAIL;
+
 	m_eNextLevel = eNextLevel;
 
 	m_pLoader = CLoader::Create(m_pDevice, m_pContext, eNextLevel);
@@ -32,34 +35,33 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 
 	if (true == m_pLoader->Get_Finished())
 	{
-		if (GetKeyState(VK_RETURN) & 0x8000)
+	
+		/* 넥스트레벨에 대한 준비가 끝나면 실제 넥스트레벨을 할당한다. */
+		CLevel*			pNewLevel = nullptr;
+
+		switch (m_eNextLevel)
 		{
-			/* 넥스트레벨에 대한 준비가 끝나면 실제 넥스트레벨을 할당한다. */
-			CLevel*			pNewLevel = nullptr;
+		case LEVEL_LOGO:
+			pNewLevel = CLevel_Logo::Create(m_pDevice, m_pContext);
+			break;
+		case LEVEL_GAMEPLAY:
+			pNewLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
+			break;
+		}
 
-			switch (m_eNextLevel)
-			{
-			case LEVEL_LOGO:
-				pNewLevel = CLevel_Logo::Create(m_pDevice, m_pContext);
-				break;
-			case LEVEL_GAMEPLAY:
-				pNewLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
-				break;
-			}
+		if (nullptr == pNewLevel)
+			return;
 
-			if (nullptr == pNewLevel)
-				return;
+		CGameInstance* pGameInstance = CGameInstance::Get_Instance();
+		if (nullptr == pGameInstance)
+			return;
+		Safe_AddRef(pGameInstance);
 
-			CGameInstance* pGameInstance = CGameInstance::Get_Instance();
-			if (nullptr == pGameInstance)
-				return;
-			Safe_AddRef(pGameInstance);
+		if (FAILED(pGameInstance->Open_Level(m_eNextLevel, pNewLevel)))
+			return;
 
-			if (FAILED(pGameInstance->Open_Level(m_eNextLevel, pNewLevel)))
-				return;
-
-			Safe_Release(pGameInstance);
-		}		
+		Safe_Release(pGameInstance);
+				
 	}
 }
 
@@ -82,7 +84,18 @@ CLevel_Loading * CLevel_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceConte
 
 	return pInstance;
 }
+HRESULT CLevel_Loading::Ready_Layer_BackGround(const _tchar * pLayerTag)
+{
+	CGameInstance*			pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
 
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BackGround"), LEVEL_LOADING, pLayerTag, nullptr)))
+		return E_FAIL;
+
+	Safe_Release(pGameInstance);
+
+	return S_OK;
+}
 void CLevel_Loading::Free()
 {
 	__super::Free();

@@ -30,6 +30,10 @@
 #include "Charmander.h"
 #include "Squirtle.h"
 #include "Wartortle.h"
+#include "Blastoise.h"
+#include "Caterpie.h"
+#include "Metapod.h"
+#include "Butterfree.h"
 #include "Pikachu.h"
 #include "Wigglytuff.h"
 #include "Meowth.h"
@@ -109,10 +113,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	/* 텍스쳐 로딩 중. */
 	lstrcpy(m_szLoadingText, TEXT("                       텍스쳐 로딩 중."));
-	/* 백그 텍스쳐 */
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BackGround"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
-		return E_FAIL;
+
 	/* UI 텍스쳐 */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_UI"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Bag/%d.dds"), 12))))
@@ -155,11 +156,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("                     셰이더 로딩 중."));
 	
 	lstrcpy(m_szLoadingText, TEXT("                     객체 생성 중."));
-
-	/* 백그 객체 */
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BackGround"),
-		CBackGround::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
 
 	/* 터레인 객체 */
 	/*if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Terrain"),
@@ -215,7 +211,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 
 	/* 포켓몬 객체 */
+	_matrix			PivotMatrix = XMMatrixIdentity();
 
+	PivotMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 
 	/*if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Charmander"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Charmander/Charmander.fbx", PivotMatrix))))
@@ -229,13 +227,30 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		CSquirtle::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Wartortle"),
-	//CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Wartortle/Wartortle.fbx", PivotMatrix))))
-	//	return E_FAIL;
 	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Wartortle"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Wartortle"),
 	CWartortle::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Blastoise"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Blastoise"),
+	CBlastoise::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Caterpie"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Caterpie"),
+	CCaterpie::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Metapod"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Metapod"),
+	CMetapod::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Butterfree"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Butterfree"),
+	CButterfree::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
 
 	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Pikachu"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Pikachu"),
@@ -287,9 +302,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("MasterBall"), LEVEL_STATIC, CData_Manager::DATA_PARTS);
 
 	//Map
-	_matrix			PivotMatrix = XMMatrixIdentity();
 
-	PivotMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 
 	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Field"), LEVEL_STATIC, CData_Manager::DATA_NONANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Field"),

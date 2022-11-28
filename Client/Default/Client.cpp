@@ -64,7 +64,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		return FALSE;
 
 	_float			fTimeAcc = 0.f;
-
+	srand(unsigned(time(NULL)));
     // 기본 메시지 루프입니다.
 	while (true)
 	{
@@ -83,7 +83,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		pGameInstance->Update_TimeDelta(TEXT("Timer_Default"));
 		fTimeAcc += pGameInstance->Get_TimeDelta(TEXT("Timer_Default"));
 
-		srand(unsigned(time(NULL)));
+		
 		if (fTimeAcc >= 1.0f / 60.0f)
 		{
 			fTimeAcc = 0.f;

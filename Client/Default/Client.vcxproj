@@ -177,8 +177,11 @@
     <ClInclude Include="..\public\BattleField.h" />
     <ClInclude Include="..\public\BattleIntro.h" />
     <ClInclude Include="..\public\BattleUI.h" />
+    <ClInclude Include="..\public\Blastoise.h" />
     <ClInclude Include="..\Public\BreakCar.h" />
+    <ClInclude Include="..\public\Butterfree.h" />
     <ClInclude Include="..\Public\Camera_Dynamic.h" />
+    <ClInclude Include="..\public\Caterpie.h" />
     <ClInclude Include="..\public\Charmander.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Data_Manager.h" />
@@ -197,6 +200,7 @@
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\public\Mari.h" />
     <ClInclude Include="..\public\Meowth.h" />
+    <ClInclude Include="..\public\Metapod.h" />
     <ClInclude Include="..\public\MonsterBall.h" />
     <ClInclude Include="..\public\None.h" />
     <ClInclude Include="..\public\NonePoke.h" />
@@ -233,8 +237,11 @@
     <ClCompile Include="..\private\BattleField.cpp" />
     <ClCompile Include="..\private\BattleIntro.cpp" />
     <ClCompile Include="..\private\BattleUI.cpp" />
+    <ClCompile Include="..\private\Blastoise.cpp" />
     <ClCompile Include="..\Private\BreakCar.cpp" />
+    <ClCompile Include="..\private\Butterfree.cpp" />
     <ClCompile Include="..\Private\Camera_Dynamic.cpp" />
+    <ClCompile Include="..\private\Caterpie.cpp" />
     <ClCompile Include="..\private\Charmander.cpp" />
     <ClCompile Include="..\Private\Data_Manager.cpp" />
     <ClCompile Include="..\private\Evolution.cpp" />
@@ -252,6 +259,7 @@
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\private\Mari.cpp" />
     <ClCompile Include="..\Private\Meowth.cpp" />
+    <ClCompile Include="..\private\Metapod.cpp" />
     <ClCompile Include="..\private\MonsterBall.cpp" />
     <ClCompile Include="..\private\None.cpp" />
     <ClCompile Include="..\private\NonePoke.cpp" />

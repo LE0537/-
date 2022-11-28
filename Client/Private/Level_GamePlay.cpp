@@ -288,7 +288,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar * pLayerTag)
 					return E_FAIL;
 				break;
 			case 2:
-				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Wigglytuff"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Caterpie"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
 					return E_FAIL;
 				break;
 			case 3:

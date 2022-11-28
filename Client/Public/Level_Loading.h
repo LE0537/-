@@ -15,6 +15,8 @@ public:
 	virtual HRESULT Initialize(LEVEL eNextLevel);
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void Late_Tick(_float fTimeDelta) override;
+public:
+	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
 
 private:
 	LEVEL				m_eNextLevel = LEVEL_END;

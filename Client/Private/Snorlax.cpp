@@ -107,7 +107,7 @@ void CSnorlax::Tick(_float fTimeDelta)
 		}
 
 
-		if (m_bWildPoke && !g_Battle && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
+		if (m_bWildPoke && !g_Battle && !g_bBag && !g_bPokeDeck && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
 		{
 			OnNavi();
 			Move(fTimeDelta);

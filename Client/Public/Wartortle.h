@@ -38,6 +38,7 @@ private:
 	HRESULT Ready_Components();
 	void	Set_DeckPos();
 	void	Set_EvolPos(_float fTimeDelta);
+	void	Set_EvolPos2(_float fTimeDelta); //ÁøÈ­
 	void	Key_Input(_float fTimeDelta);
 	void	Battle(_float fTimeDelta);
 	void	Set_Stats();

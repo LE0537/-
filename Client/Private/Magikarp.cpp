@@ -112,10 +112,7 @@ void CMagikarp::Tick(_float fTimeDelta)
 
 		if (m_bWildPoke && !g_Battle && !g_bBag && !g_bPokeDeck && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
 		{
-			OnNavi();
 			Move(fTimeDelta);
-			m_pModelCom->Play_Animation(fTimeDelta);
-			m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
 		}
 	}
 }
@@ -338,63 +335,71 @@ void CMagikarp::Move(_float fTimeDelta)
 	_vector vLook = vTargetPos - m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
 	_float fOriginPosDist = XMVectorGetX(XMVector3Length(XMLoadFloat4(&m_vOriginPos) - m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION)));
 	m_fDist = XMVectorGetX(XMVector3Length(vLook));
-	if (m_fDist < 10.f)
+
+	if (m_fDist < 30.f)
 	{
-		if (!m_bFindPlayer)
+		OnNavi();
+		if (m_fDist < 10.f)
 		{
-			m_PlayerInfo.bEvent = true;
-			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BattleEvent"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"), this)))
-				return;
-			RELEASE_INSTANCE(CGameInstance);
-			m_bFindPlayer = true;
-		}
-		m_pModelCom->Set_CurrentAnimIndex(8);
-		m_pTransformCom->Go_MonsterStraight(fTimeDelta * 1.3f, m_pNavigationCom, vTargetPos);
-		m_pTransformCom->LookAt(vTargetPos);
-	}
-	else
-	{
-		m_fMoveTime += fTimeDelta;
-		m_PlayerInfo.bEvent = false;
-		m_bFindPlayer = false;
-
-		if (m_fMoveTime > 3.f)
-		{
-			m_iMoveIndex = rand() % 2;
-			if (m_iMoveIndex != 0)
-				m_pTransformCom->Turn2(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(_float(rand() % 181)));
-
-			m_fMoveTime = 0.f;
-		}
-		if (fOriginPosDist > 15.f && m_iMoveIndex == 1)
-		{
-			m_iMoveIndex = 2;
-		}
-
-		switch (m_iMoveIndex)
-		{
-		case 0:
-			m_pModelCom->Set_CurrentAnimIndex(2);
-			break;
-		case 1:
-			m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
-			m_pModelCom->Set_CurrentAnimIndex(7);
-			break;
-		case 2:
-			if (fOriginPosDist > 1.f)
+			if (!m_bFindPlayer)
 			{
-				m_pTransformCom->Go_MonsterStraight(fTimeDelta, m_pNavigationCom, XMLoadFloat4(&m_vOriginPos));
-				m_pTransformCom->LookAt(XMLoadFloat4(&m_vOriginPos));
-				m_pModelCom->Set_CurrentAnimIndex(7);
+				m_PlayerInfo.bEvent = true;
+				CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BattleEvent"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"), this)))
+					return;
+				RELEASE_INSTANCE(CGameInstance);
+				m_bFindPlayer = true;
 			}
-			else
+			m_pModelCom->Set_CurrentAnimIndex(8);
+			m_pTransformCom->Go_MonsterStraight(fTimeDelta * 1.3f, m_pNavigationCom, vTargetPos);
+			m_pTransformCom->LookAt(vTargetPos);
+		}
+		else
+		{
+			m_fMoveTime += fTimeDelta;
+			m_PlayerInfo.bEvent = false;
+			m_bFindPlayer = false;
+
+			if (m_fMoveTime > 3.f)
+			{
+				m_iMoveIndex = rand() % 2;
+				if (m_iMoveIndex != 0)
+					m_pTransformCom->Turn2(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(_float(rand() % 181)));
+
+				m_fMoveTime = 0.f;
+			}
+			if (fOriginPosDist > 15.f && m_iMoveIndex == 1)
+			{
+				m_iMoveIndex = 2;
+			}
+
+			switch (m_iMoveIndex)
+			{
+			case 0:
 				m_pModelCom->Set_CurrentAnimIndex(2);
-			break;
-		default:
-			break;
+				break;
+			case 1:
+				m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
+				m_pModelCom->Set_CurrentAnimIndex(7);
+				break;
+			case 2:
+				if (fOriginPosDist > 1.f)
+				{
+					m_pTransformCom->Go_MonsterStraight(fTimeDelta, m_pNavigationCom, XMLoadFloat4(&m_vOriginPos));
+					m_pTransformCom->LookAt(XMLoadFloat4(&m_vOriginPos));
+					m_pModelCom->Set_CurrentAnimIndex(7);
+				}
+				else
+					m_pModelCom->Set_CurrentAnimIndex(2);
+				break;
+			default:
+				break;
+			}
+
 		}
 
+		m_pModelCom->Play_Animation(fTimeDelta);
+		m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	}
 }
 void CMagikarp::Ready_EvolScript()

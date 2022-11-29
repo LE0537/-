@@ -271,50 +271,365 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar * pLayerTag)
 	//Prototype_GameObject_Garomakguri
 	for (auto& iter : m_vecSave)
 	{
-		_int iDest = rand() % 8;
-		
-		if (iter.iType == 2)
+	
+		if (iter.iType == 12)
 		{
 			CGameObject* tInfo = nullptr;
 
-			switch (iDest)
-			{
-			case 0:
-				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Squirtle"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
-					return E_FAIL;
-				break;
-			case 1:
-				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
-					return E_FAIL;
-				break;
-			case 2:
-				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Caterpie"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
-					return E_FAIL;
-				break;
-			case 3:
-				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Meowth"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
-					return E_FAIL;
-				break;
-			case 4:
-				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Slowbro"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
-					return E_FAIL;
-				break;
-			case 5:
-				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Snorlax"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
-					return E_FAIL;
-				break;
-			case 6:
-				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Garomakguri"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
-					return E_FAIL;
-				break;
-			case 7:
-				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Wartortle"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
-					return E_FAIL;
-				break;
-			default:
-				break;
-			}
-			
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Squirtle"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+		
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 13)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Wartortle"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 14)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Blastoise"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 15)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Caterpie"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 16)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Metapod"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 17)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Butterfree"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 18)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Rattata"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 19)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Raticate"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 20)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 21)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Jigglypuff"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 22)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Wigglytuff"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 23)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Meowth"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 24)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Persian"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 25)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Slowpoke"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 26)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Slowbro"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 27)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Onix"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 28)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Lickitung"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 29)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Chansey"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 30)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Kangaskhan"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 31)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Scyther"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 32)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Magikarp"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 33)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Gyarados"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 34)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Snorlax"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 35)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Dratini"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 36)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Dragonair"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 37)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Dragonite"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 38)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Mewtwo"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
+			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
+			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
+			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);
+			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
+			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
+		}
+		if (iter.iType == 39)
+		{
+			CGameObject* tInfo = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Mew"), LEVEL_GAMEPLAY, pLayerTag, &tInfo)))
+				return E_FAIL;
+
 			dynamic_cast<CGameObj*>(tInfo)->Set_WildPoke();
 			dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_LoadFile.pTarget);
 			dynamic_cast<CGameObj*>(tInfo)->Set_Camera(m_LoadFile.pCamera);

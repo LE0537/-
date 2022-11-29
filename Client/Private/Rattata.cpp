@@ -68,20 +68,6 @@ HRESULT CRattata::Initialize(void * pArg)
 
 void CRattata::Tick(_float fTimeDelta)
 {
-	//CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
-
-	//if (pGameInstance->Key_Down(DIK_F2))	// 추가 -> 저장하기
-	//{
-	//	CData_Manager* pData_Manager = GET_INSTANCE(CData_Manager);
-	//	char cName[MAX_PATH];
-	//	ZeroMemory(cName, sizeof(char) * MAX_PATH);
-	//	pData_Manager->TCtoC(TEXT("Rattata"), cName);
-	//	pData_Manager->Conv_Bin_Model(m_pModelCom, cName, CData_Manager::DATA_ANIM);
-	//	ERR_MSG(TEXT("Save_Bin_Rattata"));
-	//	RELEASE_INSTANCE(CData_Manager);
-	//}
-
-//	RELEASE_INSTANCE(CGameInstance);
 	if (m_bOnOff)
 	{
 		if (!g_bEvolution)

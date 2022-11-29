@@ -9,6 +9,7 @@
 #include "VIBuffer_Navigation.h"
 #include "Bag.h"
 #include "Wartortle.h"
+#include "Data_Manager.h"	// Ãß°¡
 
 CSquirtle::CSquirtle(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)

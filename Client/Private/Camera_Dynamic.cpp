@@ -43,7 +43,7 @@ void CCamera_Dynamic::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 	if (!g_Battle)
 	{
-		if (!m_bEvent && !g_bBag && !g_bPokeDeck && !g_PokeInfo)
+		if (!m_bEvent && !g_bBag && !g_bEvolution && !g_bPokeDeck && !g_PokeInfo)
 		{
 			Key_Input(fTimeDelta);
 		}

@@ -52,12 +52,6 @@
     <Filter Include="02.GameObjects\99.GameObj\03.Item\00.MonsterBall">
       <UniqueIdentifier>{4d268ae1-5b94-49db-8353-b24613b752cc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\04.UI">
-      <UniqueIdentifier>{418b620b-4b2f-48ea-aa56-0881b5828d8f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\04.UI\00.Bag">
-      <UniqueIdentifier>{2dfa4ff2-4911-4e83-9925-3be1078db5f5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\99.GameObj\03.Item\99.None">
       <UniqueIdentifier>{a97d3628-279c-4448-9144-d105bb01d579}</UniqueIdentifier>
     </Filter>
@@ -75,12 +69,6 @@
     </Filter>
     <Filter Include="02.GameObjects\99.GameObj\03.Item\30.ExpShare">
       <UniqueIdentifier>{6601399b-760a-4ea6-af1f-c0fbada8e64a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\04.UI\01.PokeInfo">
-      <UniqueIdentifier>{5f2484c2-abcf-4b9c-965f-5931d7403b4b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\04.UI\02.PokeDeck">
-      <UniqueIdentifier>{fdacc3f3-73d0-4e0f-9788-82a0012ff1bc}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\07.Squirtle">
       <UniqueIdentifier>{cfb1faf2-5950-4e91-a225-58e86decdbcc}</UniqueIdentifier>
@@ -136,20 +124,11 @@
     <Filter Include="02.GameObjects\99.GameObj\06.Effect\01.Screen">
       <UniqueIdentifier>{b38fd83a-df41-4ae8-9bc6-3b7bfd1ab219}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\04.UI\03.TextBox">
-      <UniqueIdentifier>{66a2eb67-9320-424e-b94e-6e9840645274}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\99.GameObj\06.Effect\02.BattleIntro">
       <UniqueIdentifier>{3071df74-8d95-49a1-9b6d-4ea4a82c4dc9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\04.UI\04.BattleUI">
-      <UniqueIdentifier>{1f15b8b4-4280-4516-921b-098039c4a793}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\99.GameObj\07.Ball">
       <UniqueIdentifier>{e848a78b-1331-44c3-b21e-acfaeb82d4e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\04.UI\05.Lv_UP">
-      <UniqueIdentifier>{d89197f9-f18f-4c45-8f9a-cd472105b5d4}</UniqueIdentifier>
     </Filter>
     <Filter Include="96.Data_Manager">
       <UniqueIdentifier>{bc13d5da-b1a6-467d-ad39-0f08ad6428fe}</UniqueIdentifier>
@@ -162,9 +141,6 @@
     </Filter>
     <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\08.Wartortle">
       <UniqueIdentifier>{b77660d0-49c9-4bb3-9b5d-03ac492d1801}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\04.UI\06.Evolution">
-      <UniqueIdentifier>{4f94f77f-235a-4803-b9af-4fb6af0ea002}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\99.GameObj\05.Skill\01.WaterBeam">
       <UniqueIdentifier>{a3560757-3e22-400d-8f1c-75c70258f23d}</UniqueIdentifier>
@@ -192,6 +168,75 @@
     </Filter>
     <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\20.Raticate">
       <UniqueIdentifier>{44373a1b-f207-42e6-9130-6e9640149782}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\108.Lickitung">
+      <UniqueIdentifier>{cd99768d-65c7-4146-a59c-e39d08629b0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\113.Chansey">
+      <UniqueIdentifier>{3649bbd5-3a6b-4dae-8a02-2dd455d1c99c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\115.Kangaskhan">
+      <UniqueIdentifier>{7cd697be-31f0-4e9f-b284-a49cfdc4c623}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\123.Scyther">
+      <UniqueIdentifier>{b1940c25-b46a-4e83-98c3-3df047945d13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\129.Magikarp">
+      <UniqueIdentifier>{0096bd36-a94e-49bb-9303-0d8f0e4c0eb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\130.Gyarados">
+      <UniqueIdentifier>{051a68e4-4c6e-45ff-a12c-2aae6bc16180}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\147.Dratini">
+      <UniqueIdentifier>{50eb7181-31cf-4857-a251-c126a730b051}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\148.Dragonair">
+      <UniqueIdentifier>{cb17ae4a-c211-4fba-8314-cf143e5e5beb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\149.Dragonite">
+      <UniqueIdentifier>{1ef8e196-896f-4914-be26-c0c0b800bb6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\150.Mewtwo">
+      <UniqueIdentifier>{75c7ba3a-46c0-4555-885f-953a446dc2f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\151.Mew">
+      <UniqueIdentifier>{4aa9cbf0-3e2a-48aa-93f8-4850945a7183}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\39.Jigglypuff">
+      <UniqueIdentifier>{c7084a0a-8784-415c-b1a2-7346fa26f8c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\53.Persian">
+      <UniqueIdentifier>{09445ec4-5908-42ee-9c80-305f4a54d34d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\79.Slowpoke">
+      <UniqueIdentifier>{a47ac9f5-64d8-42cb-aeab-9b866827d1b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\95.Onix">
+      <UniqueIdentifier>{a9634958-616b-49c1-b5f7-d591cf083fc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI">
+      <UniqueIdentifier>{418b620b-4b2f-48ea-aa56-0881b5828d8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\00.Bag">
+      <UniqueIdentifier>{2dfa4ff2-4911-4e83-9925-3be1078db5f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\01.PokeInfo">
+      <UniqueIdentifier>{5f2484c2-abcf-4b9c-965f-5931d7403b4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\02.PokeDeck">
+      <UniqueIdentifier>{fdacc3f3-73d0-4e0f-9788-82a0012ff1bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\03.TextBox">
+      <UniqueIdentifier>{66a2eb67-9320-424e-b94e-6e9840645274}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\04.BattleUI">
+      <UniqueIdentifier>{1f15b8b4-4280-4516-921b-098039c4a793}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\05.Lv_UP">
+      <UniqueIdentifier>{d89197f9-f18f-4c45-8f9a-cd472105b5d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\06.Evolution">
+      <UniqueIdentifier>{4f94f77f-235a-4803-b9af-4fb6af0ea002}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -381,6 +426,51 @@
     <ClInclude Include="..\public\Raticate.h">
       <Filter>02.GameObjects\99.GameObj\01.Pokemon\20.Raticate</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Jigglypuff.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\39.Jigglypuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Persian.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\53.Persian</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Slowpoke.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\79.Slowpoke</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Onix.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\95.Onix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Lickitung.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\108.Lickitung</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Chansey.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\113.Chansey</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Kangaskhan.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\115.Kangaskhan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Scyther.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\123.Scyther</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Magikarp.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\129.Magikarp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Gyarados.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\130.Gyarados</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Dratini.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\147.Dratini</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Dragonair.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\148.Dragonair</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Dragonite.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\149.Dragonite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Mewtwo.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\150.Mewtwo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Mew.h">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\151.Mew</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -553,6 +643,51 @@
     </ClCompile>
     <ClCompile Include="..\private\Raticate.cpp">
       <Filter>02.GameObjects\99.GameObj\01.Pokemon\20.Raticate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Jigglypuff.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\39.Jigglypuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Persian.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\53.Persian</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Slowpoke.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\79.Slowpoke</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Onix.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\95.Onix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Lickitung.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\108.Lickitung</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Chansey.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\113.Chansey</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Kangaskhan.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\115.Kangaskhan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Scyther.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\123.Scyther</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Magikarp.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\129.Magikarp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Gyarados.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\130.Gyarados</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Dratini.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\147.Dratini</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Dragonair.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\148.Dragonair</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Dragonite.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\149.Dragonite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Mewtwo.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\150.Mewtwo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Mew.cpp">
+      <Filter>02.GameObjects\99.GameObj\01.Pokemon\151.Mew</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

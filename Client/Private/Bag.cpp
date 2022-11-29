@@ -65,12 +65,13 @@ HRESULT CBag::Initialize(void * pArg)
 		m_vecItem.push_back(tInfo);
 	}
 	CGameObject* tInfo;
-
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Wigglytuff"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+	
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Mewtwo"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
+	dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_pPlayer);
 	m_vecPoke.push_back(tInfo);
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Rattata"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Kangaskhan"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
 	dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_pPlayer);
 	m_vecPoke.push_back(tInfo);
@@ -80,7 +81,7 @@ HRESULT CBag::Initialize(void * pArg)
 	dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_pPlayer);
 	m_vecPoke.push_back(tInfo);
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Meowth"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Mew"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
 	m_vecPoke.push_back(tInfo);
 

@@ -1,13 +1,15 @@
 #include "stdafx.h"
 #include "..\Public\Slowbro.h"
+
 #include "GameInstance.h"
 #include "Lv_Up.h"
-#include "Data_Manager.h"	// 추가
 #include "SoundMgr.h"
 #include "TextBox.h"
 #include "Camera_Dynamic.h"
 #include "Player.h"
 #include "VIBuffer_Navigation.h"
+#include "Data_Manager.h"	// 추가
+#include "Bag.h"
 
 CSlowbro::CSlowbro(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -34,7 +36,7 @@ HRESULT CSlowbro::Initialize(void * pArg)
 
 	Set_Stats();
 
-	
+
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tackle"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum1)))
@@ -57,23 +59,44 @@ HRESULT CSlowbro::Initialize(void * pArg)
 	m_PokemonInfo.bLvUp = false;
 	m_bWildPoke = false;
 	m_pModelCom->Set_CurrentAnimIndex(2);
-	m_pTransformCom->Set_Scale(XMVectorSet(0.05f, 0.05f, 0.05f, 0.f));
+	m_pTransformCom->Set_Scale(XMVectorSet(0.06f, 0.06f, 0.06f, 0.f));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(-50000.f, -50000.f, -50000.f, 1.f));
+
 	return S_OK;
 }
 
 void CSlowbro::Tick(_float fTimeDelta)
 {
-	
+	//CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	//if (pGameInstance->Key_Down(DIK_F2))	// 추가 -> 저장하기
+	//{
+	//	CData_Manager* pData_Manager = GET_INSTANCE(CData_Manager);
+	//	char cName[MAX_PATH];
+	//	ZeroMemory(cName, sizeof(char) * MAX_PATH);
+	//	pData_Manager->TCtoC(TEXT("Persian"), cName);
+	//	pData_Manager->Conv_Bin_Model(m_pModelCom, cName, CData_Manager::DATA_ANIM);
+	//	ERR_MSG(TEXT("Save_Bin_Persian"));
+	//	RELEASE_INSTANCE(CData_Manager);
+	//}
+
+	//	RELEASE_INSTANCE(CGameInstance);
 	if (m_bOnOff)
 	{
-		Set_DeckPos();
-		if (!m_bDeckInfo)
+		if (!g_bEvolution)
 		{
-			Key_Input(fTimeDelta);
+			Set_DeckPos();
+			if (!m_bDeckInfo)
+			{
+				Key_Input(fTimeDelta);
+			}
+		}
+		else if (g_bEvolution)
+		{
+			Set_EvolPos(fTimeDelta);
 		}
 	}
-	if (g_PokeInfo || g_bPokeDeck)
+	if (g_PokeInfo || g_bPokeDeck || g_bEvolution)
 		m_pModelCom->Play_Animation(fTimeDelta);
 	if (!m_bOnOff)
 		m_bSetPos = false;
@@ -86,7 +109,7 @@ void CSlowbro::Tick(_float fTimeDelta)
 	}
 	if (m_bAnimReset)
 		Reset_Battle();
-	if (m_bWildPoke)
+	if (m_bWildPoke && !g_bEvolution)
 	{
 		if (!m_bReadyWild)
 		{
@@ -114,7 +137,7 @@ void CSlowbro::Late_Tick(_float fTimeDelta)
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-	if (!g_Battle && m_bWildPoke)
+	if (!g_bEvolution && !g_Battle && m_bWildPoke)
 		Check_Coll();
 
 	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), 10.f))
@@ -122,7 +145,7 @@ void CSlowbro::Late_Tick(_float fTimeDelta)
 		if (m_fDist < 30.f && !g_bEvolution && m_bWildPoke && !m_bBattleMap && !g_Battle && nullptr != m_pRendererCom)
 			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 	}
-	if ((g_PokeInfo || g_bPokeDeck) && m_bOnOff && nullptr != m_pRendererCom)
+	if ((g_PokeInfo || g_bPokeDeck || g_bEvolution) && m_bOnOff && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UIPOKE, this);
 	else if (m_bBattleMap && g_Battle && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
@@ -130,7 +153,6 @@ void CSlowbro::Late_Tick(_float fTimeDelta)
 
 	if (g_CollBox)
 		m_pRendererCom->Add_Debug(m_pAABBCom);
-	
 }
 
 HRESULT CSlowbro::Render()
@@ -164,16 +186,21 @@ HRESULT CSlowbro::Render()
 		{
 			if (FAILED(m_pModelCom->SetUp_Material(m_pShaderUICom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 				return E_FAIL;
-
-			if (FAILED(m_pModelCom->Render(m_pShaderUICom, i, 0)))
-				return E_FAIL;
-
+			if (!m_bEvol)
+			{
+				if (FAILED(m_pModelCom->Render(m_pShaderUICom, i, 0)))
+					return E_FAIL;
+			}
+			else if (m_bEvol && m_bRender)
+			{
+				if (FAILED(m_pModelCom->Render(m_pShaderUICom, i, 1)))
+					return E_FAIL;
+			}
 		}
 	}
-
 	RELEASE_INSTANCE(CGameInstance);
 
-	
+
 	return S_OK;
 }
 HRESULT CSlowbro::Ready_Components()
@@ -200,6 +227,7 @@ HRESULT CSlowbro::Ready_Components()
 	/* For.Com_Model*/
 	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Slowbro"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
+
 	CCollider::COLLIDERDESC		ColliderDesc;
 
 	/* For.Com_AABB */
@@ -217,21 +245,9 @@ HRESULT CSlowbro::Ready_Components()
 
 	if (FAILED(__super::Add_Components(TEXT("Com_Navigation"), LEVEL_STATIC, TEXT("Prototype_Component_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
 		return E_FAIL;
+
+
 	return S_OK;
-}
-void CSlowbro::Reset_Battle()
-{
-	m_iAnim = 0;
-	m_bSetPos = false;
-	m_bBrath = false;
-	m_bBattle = false;
-	m_fStartBattle = 0.f;
-	m_bAttack = false;
-	m_bHit = false;
-	m_bDown = false;
-	m_bStopAnim = false;
-	m_bAnimReset = false;
-	m_bBattleMap = false;
 }
 void CSlowbro::Check_Coll()
 {
@@ -390,6 +406,150 @@ void CSlowbro::Move(_float fTimeDelta)
 
 	}
 }
+void CSlowbro::Ready_EvolScript()
+{
+	for (auto iter = m_vNormalScript.begin(); iter != m_vNormalScript.end();)
+		iter = m_vNormalScript.erase(iter);
+
+	m_vNormalScript.clear();
+
+	wstring strTextBegin = TEXT("...오잉 ?!   '");
+	wstring strTextEnd = TEXT("' 의 모습이...!");
+
+	strTextBegin += m_PokemonInfo.strName;
+	strTextBegin += strTextEnd;
+
+	m_vNormalScript.push_back(strTextBegin);
+}
+void CSlowbro::Ready_ClearEvolScript()
+{
+	for (auto iter = m_vNormalScript.begin(); iter != m_vNormalScript.end();)
+		iter = m_vNormalScript.erase(iter);
+
+	m_vNormalScript.clear();
+
+	wstring strTextBegin = TEXT("축하합니다! 야돈은  \n'");
+	wstring strTextEnd = TEXT("' 로 진화했습니다!");
+
+	strTextBegin += m_PokemonInfo.strName;
+	strTextBegin += strTextEnd;
+
+	m_vNormalScript.push_back(strTextBegin);
+}
+void CSlowbro::Set_EvolPos(_float fTimeDelta)
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	if (m_bSetPos)
+	{
+		m_EvolTime += fTimeDelta;
+	}
+	if (!m_bSetPos)
+	{
+		_vector		vLook = { -0.3f,0.f,-1.f,0.f };
+
+		_vector		vAxisY = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+
+		_vector		vRight = XMVector3Cross(vAxisY, vLook);
+
+		_vector		vUp = XMVector3Cross(vLook, vRight);
+
+		m_pTransformCom->Set_State(CTransform::STATE_RIGHT, XMVector3Normalize(vRight));
+		m_pTransformCom->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp));
+		m_pTransformCom->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
+		m_bSetPos = true;
+
+		if (m_PokemonInfo.bEvolution)
+		{
+			Ready_Script();
+			CTextBox::TINFO tTInfo;
+
+			tTInfo.iScriptSize = (_int)m_vNormalScript.size();
+			tTInfo.pTarget = this;
+			tTInfo.pScript = new wstring[m_vNormalScript.size()];
+			tTInfo.iType = 1;
+			for (_int i = 0; i < m_vNormalScript.size(); ++i)
+				tTInfo.pScript[i] = m_vNormalScript[i];
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
+				return;
+
+			m_iAnimIndex = 1;
+			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+		}
+		else
+		{
+			m_bEvol = true;
+			m_iAnimIndex = 2;
+			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+		}
+	}
+	if (m_PokemonInfo.bEvolution)
+	{
+		if (m_bSetPos && m_iAnimIndex == 1 && m_pModelCom->Get_End(m_iAnimIndex))
+		{
+			m_bEvol = true;
+			m_EvolTime = 0.f;
+			m_iAnimIndex = 2;
+			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Wartortle"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &m_EvolPoke)))
+				return;
+			_int iIndex = dynamic_cast<CPlayer*>(m_pTarget)->Get_Bag()->Get_EvolIndex();
+			dynamic_cast<CGameObj*>(m_EvolPoke)->Set_Target(m_pTarget);
+			dynamic_cast<CPlayer*>(m_pTarget)->Get_Bag()->Set_vecPoke(iIndex, m_EvolPoke);
+			dynamic_cast<CGameObj*>(m_EvolPoke)->Set_PokeUIOnOff();
+		}
+	}
+	else if (m_bClearEvol)
+	{
+		m_bEvol = false;
+		m_iAnimIndex = 1;
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+
+		Ready_ClearEvolScript();
+		CTextBox::TINFO tTInfo;
+
+		tTInfo.iScriptSize = (_int)m_vNormalScript.size();
+		tTInfo.pTarget = this;
+		tTInfo.pScript = new wstring[m_vNormalScript.size()];
+		tTInfo.iType = 1;
+		for (_int i = 0; i < m_vNormalScript.size(); ++i)
+			tTInfo.pScript[i] = m_vNormalScript[i];
+
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
+			return;
+
+		m_bClearEvol = false;
+		m_iAnimIndex = 1;
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+		m_EvolTime = 0.f;
+	}
+	else if (!m_bEvol && !m_bClearEvol && m_iAnimIndex == 1 && m_pModelCom->Get_End(m_iAnimIndex))
+	{
+		m_iAnimIndex = 2;
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+	}
+	else if (!m_bEvol && !m_bClearEvol && m_EvolTime > 3.f)
+	{
+		LvUp();
+		g_bEvolution = false;
+		m_bSetPos = false;
+		m_bOnOff = false;
+	}
+	m_fSizeX = 10.f;
+	m_fSizeY = 10.f;
+	m_fX = 640.f;
+	m_fY = 450.f;
+
+	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixTranspose(XMMatrixIdentity()));
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -500.f, 100.f)));
+	_float3 vScale = { m_fSizeX,m_fSizeY,10.f };
+	m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, -200.f, 1.f));
+
+
+	RELEASE_INSTANCE(CGameInstance);
+}
 void CSlowbro::Set_DeckPos()
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
@@ -412,14 +572,14 @@ void CSlowbro::Set_DeckPos()
 			m_bSetPos = true;
 		}
 
-		m_fSizeX = 7.f;
-		m_fSizeY = 7.f;
+		m_fSizeX = 10.f;
+		m_fSizeY = 10.f;
 		m_fX = 1000;
 		m_fY = 550;
 
 		XMStoreFloat4x4(&m_ViewMatrix, XMMatrixTranspose(XMMatrixIdentity()));
 		XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -500.f, 100.f)));
-		_float3 vScale = { m_fSizeX,m_fSizeY,7.f };
+		_float3 vScale = { m_fSizeX,m_fSizeY,10.f };
 		m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
 		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, -200.f, 1.f));
 
@@ -442,14 +602,14 @@ void CSlowbro::Set_DeckPos()
 			m_bSetPos = true;
 		}
 
-		m_fSizeX = 7.f;
-		m_fSizeY = 7.f;
+		m_fSizeX = 10.f;
+		m_fSizeY = 10.f;
 		m_fX = 280;
 		m_fY = 550;
 
 		XMStoreFloat4x4(&m_ViewMatrix, XMMatrixTranspose(XMMatrixIdentity()));
-		XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -800.f, 500.f)));
-		_float3 vScale = { m_fSizeX,m_fSizeY,7.f };
+		XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -500.f, 100.f)));
+		_float3 vScale = { m_fSizeX,m_fSizeY,10.f };
 		m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
 		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, -200.f, 1.f));
 
@@ -492,7 +652,7 @@ void CSlowbro::Battle(_float fTimeDelta)
 {
 	if (!m_bBattle)
 	{
-		m_pTransformCom->Set_Scale(XMVectorSet(0.05f, 0.05f, 0.05f, 0.f));
+		m_pTransformCom->Set_Scale(XMVectorSet(0.06f, 0.06f, 0.06f, 0.f));
 		m_fStartBattle += fTimeDelta;
 		if (m_iAnimIndex == 0)
 		{
@@ -511,26 +671,14 @@ void CSlowbro::Battle(_float fTimeDelta)
 		{
 			if (m_bBrath && m_pModelCom->Get_End(m_iAnimIndex))
 			{
+				if (m_bWildPoke)
+					dynamic_cast<CPlayer*>(m_pTarget)->Set_BattleStart();
 				m_pModelCom->Set_End(m_iAnimIndex);
 				m_iAnimIndex = 2;
 				m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
 				m_bBattle = true;
-				if (m_bWildPoke)
-				{
-					m_bDelay = true;
-					m_fDelayTime = 0.f;
-				}
 			}
 
-		}
-	}
-	if (m_bDelay)
-	{
-		m_fDelayTime += fTimeDelta;
-		if (m_fDelayTime > 1.f)
-		{
-			dynamic_cast<CPlayer*>(m_pTarget)->Set_BattleStart();
-			m_bDelay = false;
 		}
 	}
 	if (m_bAttack && m_pModelCom->Get_End(m_iAnimIndex))
@@ -540,7 +688,7 @@ void CSlowbro::Battle(_float fTimeDelta)
 		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
 		m_bAttack = false;
 	}
-	if (m_iAnimIndex == 3 || m_iAnimIndex == 4)
+	if ((m_iAnimIndex == 3 || m_iAnimIndex == 4) && !m_bAttack)
 	{
 		m_pModelCom->Set_Loop(m_iAnimIndex);
 		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
@@ -553,7 +701,7 @@ void CSlowbro::Battle(_float fTimeDelta)
 		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
 		m_bHit = false;
 	}
-	if (m_iAnimIndex == 5)
+	if (!m_bHit && m_iAnimIndex == 5)
 	{
 		m_pModelCom->Set_Loop(m_iAnimIndex);
 		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
@@ -586,11 +734,12 @@ void CSlowbro::Set_Stats()
 	m_PlayerInfo.strName = TEXT("야도란");
 	m_PlayerInfo.bEvent = false;
 
+
 	m_PokemonInfo.strName = TEXT("야도란");
-	m_PokemonInfo.strInfo = TEXT("준석도란. \n밴티 찾고 모나뽑고 원신 안하기??\n밴티 왜 찾음?...");
-	m_PokemonInfo.strChar = TEXT("웹마스터");
+	m_PokemonInfo.strInfo = TEXT("야돈이 바다로 먹이를 잡으러 갔다가\n셀러에게 꼬리를 물려 야도란이 되었다.");
+	m_PokemonInfo.strChar = TEXT("흐리멍텅");
 	m_PokemonInfo.iPokeNum = 80;
-	m_PokemonInfo.iLv = 15;
+	m_PokemonInfo.iLv = 36;
 	m_PokemonInfo.iMaxHp = _int(((fHp * 2.f) + 31.f + 100) * (m_PokemonInfo.iLv / 100.f) + 10.f);
 	m_PokemonInfo.iHp = m_PokemonInfo.iMaxHp;
 	m_PokemonInfo.iDmg = _int(((fDmg * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
@@ -604,6 +753,7 @@ void CSlowbro::Set_Stats()
 	m_PokemonInfo.iBallNum = 0;
 	m_PokemonInfo.bRide = false;
 	m_PokemonInfo.bEvolution = false;
+
 }
 void CSlowbro::OnNavi()
 {
@@ -650,31 +800,48 @@ void CSlowbro::LvUp()
 	m_PokemonInfo.iSDef = _int(((fSDef * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
 	m_PokemonInfo.iSpeed = _int(((fSpeed * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
 
-	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	if (!g_bEvolution)
+	{
+		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-	CLv_Up::LVUPINFO tInfo;
-	tInfo.iPrevMaxHp = iPrevMaxHp;
-	tInfo.iPrevDmg = iPrevDmg;
-	tInfo.iPrevDef = iPrevDef;
-	tInfo.iPrevSDmg = iPrevSDmg;
-	tInfo.iPrevSDef = iPrevSDef;
-	tInfo.iPrevSpeed = iPrevSpeed;
+		CLv_Up::LVUPINFO tInfo;
+		tInfo.iPrevMaxHp = iPrevMaxHp;
+		tInfo.iPrevDmg = iPrevDmg;
+		tInfo.iPrevDef = iPrevDef;
+		tInfo.iPrevSDmg = iPrevSDmg;
+		tInfo.iPrevSDef = iPrevSDef;
+		tInfo.iPrevSpeed = iPrevSpeed;
 
-	tInfo.iMaxHp = m_PokemonInfo.iMaxHp;
-	tInfo.iDmg = m_PokemonInfo.iDmg;
-	tInfo.iDef = m_PokemonInfo.iDef;
-	tInfo.iSDmg = m_PokemonInfo.iSDmg;
-	tInfo.iSDef = m_PokemonInfo.iSDef;
-	tInfo.iSpeed = m_PokemonInfo.iSpeed;
+		tInfo.iMaxHp = m_PokemonInfo.iMaxHp;
+		tInfo.iDmg = m_PokemonInfo.iDmg;
+		tInfo.iDef = m_PokemonInfo.iDef;
+		tInfo.iSDmg = m_PokemonInfo.iSDmg;
+		tInfo.iSDef = m_PokemonInfo.iSDef;
+		tInfo.iSpeed = m_PokemonInfo.iSpeed;
 
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Lv_Up"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
-		return;
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Lv_Up"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
+			return;
 
-	RELEASE_INSTANCE(CGameInstance);
+		RELEASE_INSTANCE(CGameInstance);
+	}
 
 
 	m_PokemonInfo.bLvUp = false;
+}
+void CSlowbro::Reset_Battle()
+{
+	m_iAnim = 0;
+	m_bSetPos = false;
+	m_bBrath = false;
+	m_bBattle = false;
+	m_fStartBattle = 0.f;
+	m_bAttack = false;
+	m_bHit = false;
+	m_bDown = false;
+	m_bStopAnim = false;
+	m_bAnimReset = false;
+	m_bBattleMap = false;
 }
 HRESULT CSlowbro::SetUp_ShaderResources()
 {

@@ -60,7 +60,7 @@ HRESULT CCaterpie::Initialize(void * pArg)
 	m_PokemonInfo.bLvUp = false;
 	m_bWildPoke = false;
 	m_pModelCom->Set_CurrentAnimIndex(2);
-	m_pTransformCom->Set_Scale(XMVectorSet(0.2f, 0.2f, 0.2f, 0.f));
+	m_pTransformCom->Set_Scale(XMVectorSet(0.1f, 0.1f, 0.1f, 0.f));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(-50000.f, -50000.f, -50000.f, 1.f));
 
 	return S_OK;
@@ -611,7 +611,7 @@ void CCaterpie::Battle(_float fTimeDelta)
 {
 	if (!m_bBattle)
 	{
-		m_pTransformCom->Set_Scale(XMVectorSet(0.085f, 0.085f, 0.085f, 0.f));
+		m_pTransformCom->Set_Scale(XMVectorSet(0.1f, 0.1f, 0.1f, 0.f));
 		m_fStartBattle += fTimeDelta;
 		if (m_iAnimIndex == 0)
 		{

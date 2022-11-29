@@ -37,10 +37,25 @@
 #include "Rattata.h"
 #include "Raticate.h"
 #include "Pikachu.h"
+#include "Jigglypuff.h"
 #include "Wigglytuff.h"
 #include "Meowth.h"
+#include "Persian.h"
+#include "Slowpoke.h"
 #include "Slowbro.h"
+#include "Onix.h"
+#include "Lickitung.h"
+#include "Chansey.h"
+#include "Kangaskhan.h"
+#include "Scyther.h"
+#include "Magikarp.h"
+#include "Gyarados.h"
 #include "Snorlax.h"
+#include "Dratini.h"
+#include "Dragonair.h"
+#include "Dragonite.h"
+#include "Mewtwo.h"
+#include "Mew.h"
 #include "Garomakguri.h"
 #include "NonePoke.h"
 //Item Çì´õ
@@ -269,6 +284,11 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		CPikachu::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Jigglypuff"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Jigglypuff"),
+	CJigglypuff::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
 	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Wigglytuff"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Wigglytuff"),
 		CWigglytuff::Create(m_pDevice, m_pContext))))
@@ -279,15 +299,85 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		CMeowth::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Persian"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Persian"),
+	CPersian::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Slowpoke"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Slowpoke"),
+	CSlowpoke::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
 	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Slowbro"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Slowbro"),
 		CSlowbro::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Onix"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Onix"),
+	COnix::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Lickitung"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Lickitung"),
+	CLickitung::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Chansey"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Chansey"),
+	CChansey::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Kangaskhan"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Kangaskhan"),
+	CKangaskhan::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+	
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Scyther"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Scyther"),
+	CScyther::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Magikarp"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Magikarp"),
+	CMagikarp::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+	
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Gyarados"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Gyarados"),
+		CGyarados::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Snorlax"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Snorlax"),
 		CSnorlax::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Dratini"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Dratini"),
+	CDratini::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Dragonair"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Dragonair"),
+	CDragonair::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Dragonite"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Dragonite"),
+	CDragonite::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Mewtwo"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Mewtwo"),
+	CMewtwo::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Mew"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Mew"),
+	CMew::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
 
 	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Garomakguri"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Garomakguri"),

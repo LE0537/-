@@ -173,6 +173,9 @@ void CPlayer::CheckRideIDLE()
 {
 	switch (m_PlayerInfo.iRideNum)
 	{
+	case 115:
+		m_pModelCom->Set_CurrentAnimIndex(RIDE_KANGASKHAN);
+		break;
 	case 143:
 		m_pModelCom->Set_CurrentAnimIndex(RIDE_SNORLAX);
 		break;
@@ -205,6 +208,9 @@ void CPlayer::Key_Input(_float fTimeDelta)
 			m_pTransformCom->Go_Straight(fTimeDelta * 1.8f, m_pNavigationCom);
 			switch (m_PlayerInfo.iRideNum)
 			{
+			case 115:
+				m_pModelCom->Set_CurrentAnimIndex(RUN_KANGASKHAN);
+				break;
 			case 143:
 				m_pModelCom->Set_CurrentAnimIndex(RUN_SNORLAX);
 				break;

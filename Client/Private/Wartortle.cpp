@@ -738,7 +738,7 @@ void CWartortle::Battle(_float fTimeDelta)
 {
 	if (!m_bBattle)
 	{
-		m_pTransformCom->Set_Scale(XMVectorSet(0.085f, 0.085f, 0.085f, 0.f));
+		m_pTransformCom->Set_Scale(XMVectorSet(0.065f, 0.065f, 0.065f, 0.f));
 		m_fStartBattle += fTimeDelta;
 		if (m_iAnimIndex == 0)
 		{

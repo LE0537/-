@@ -110,7 +110,7 @@ void CGyarados::Tick(_float fTimeDelta)
 		}
 
 
-		if (m_bWildPoke && !g_Battle && !g_bBag && !g_bPokeDeck && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
+		if (m_bWildPoke && !g_Battle && !g_bBag && !g_PokeInfo && !g_bPokeDeck && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
 		{
 			Move(fTimeDelta);
 		}
@@ -126,7 +126,7 @@ void CGyarados::Late_Tick(_float fTimeDelta)
 
 	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), 10.f))
 	{
-		if (m_fDist < 30.f && !g_bEvolution && m_bWildPoke && !m_bBattleMap && !g_Battle && nullptr != m_pRendererCom)
+		if (m_fDist < 30.f && !g_bEvolution && !g_bBag && !g_PokeInfo && !g_bPokeDeck && m_bWildPoke && !m_bBattleMap && !g_Battle && nullptr != m_pRendererCom)
 			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 	}
 	if ((g_PokeInfo || g_bPokeDeck || g_bEvolution) && m_bOnOff && nullptr != m_pRendererCom)
@@ -732,7 +732,7 @@ void CGyarados::Set_Stats()
 	m_PokemonInfo.strInfo = TEXT("한번 난동부리기 시작한 갸라도스는 \n태풍이 사납게 휘몰아쳐도 모든 것을 다 태워버린다.");
 	m_PokemonInfo.strChar = TEXT("포악");
 	m_PokemonInfo.iPokeNum = 130;
-	m_PokemonInfo.iLv = 36;
+	m_PokemonInfo.iLv = rand() % 10 + 40;
 	m_PokemonInfo.iMaxHp = _int(((fHp * 2.f) + 31.f + 100) * (m_PokemonInfo.iLv / 100.f) + 10.f);
 	m_PokemonInfo.iHp = m_PokemonInfo.iMaxHp;
 	m_PokemonInfo.iDmg = _int(((fDmg * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);

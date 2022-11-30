@@ -77,11 +77,11 @@ HRESULT CTr9::Initialize(void * pArg)
 	m_PlayerInfo.bBattle = false;
 
 	m_pModelCom->Set_CurrentAnimIndex(0);
-	m_pTransformCom->Turn2(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.f));
+	//m_pTransformCom->Turn2(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.f));
 	//m_pTransformCom->Set_Scale(XMLoadFloat3((&((CLevel_GamePlay::LOADFILE*)pArg)->vScale)));
 	m_pTransformCom->Set_Scale(XMVectorSet(0.055f, 0.055f, 0.055f, 0.f));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4((&((CLevel_GamePlay::LOADFILE*)pArg)->vPos)));
-
+	m_pTransformCom->LookAt(XMLoadFloat4((&((CLevel_GamePlay::LOADFILE*)pArg)->vMyPos)));
 	Ready_Script();
 	m_pNavigationCom->Find_CurrentCellIndex(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
 
@@ -90,7 +90,7 @@ HRESULT CTr9::Initialize(void * pArg)
 
 void CTr9::Tick(_float fTimeDelta)
 {
-	if (m_bBattleLose)
+	if (m_OnOff && m_bBattleLose)
 	{
 		for (auto& iter : m_vecPoke)
 		{
@@ -98,7 +98,7 @@ void CTr9::Tick(_float fTimeDelta)
 		}
 		m_vecPoke.clear();
 	}
-	if (!m_bBattleLose && g_Battle)
+	if (m_OnOff && !m_bBattleLose && g_Battle)
 	{
 		Check_Anim(fTimeDelta);
 		if (!m_bChangeAnim && g_Battle)
@@ -300,6 +300,7 @@ void CTr9::Check_Coll()
 		m_bFindPlayer = true;
 		m_PlayerInfo.bEvent = true;
 		m_bEvent = true;
+		m_OnOff = true;
 		m_fEventTime = 0.f;
 		dynamic_cast<CPlayer*>(m_pTarget)->Set_TargetPoke(&m_vecPoke);
 		dynamic_cast<CPlayer*>(m_pTarget)->Set_BattleTarget(this, BATTLE_TRAINER);

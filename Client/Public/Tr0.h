@@ -72,6 +72,7 @@ private:
 	_float					m_fStartBattle = 0.f;
 	_bool					m_ChangePoke = false;
 	_bool					m_bLose = false;
+	_bool					m_OnOff = false;
 	//BattleEnd
 	_float4					m_vPrevPos;
 	_bool					m_bPrevPos = false;

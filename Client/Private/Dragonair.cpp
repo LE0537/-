@@ -114,7 +114,7 @@ void CDragonair::Tick(_float fTimeDelta)
 				WildBattle();
 		}
 
-		if (m_bWildPoke && !g_Battle && !g_bBag && !g_bPokeDeck && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
+		if (m_bWildPoke && !g_Battle && !g_bBag && !g_PokeInfo && !g_bPokeDeck && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
 		{
 			Move(fTimeDelta);
 		}
@@ -130,7 +130,7 @@ void CDragonair::Late_Tick(_float fTimeDelta)
 
 	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), 10.f))
 	{
-		if (m_fDist < 30.f && !g_bEvolution && m_bWildPoke && !m_bBattleMap && !g_Battle && nullptr != m_pRendererCom)
+		if (m_fDist < 30.f && !g_bEvolution && !g_bBag && !g_PokeInfo && !g_bPokeDeck && m_bWildPoke && !m_bBattleMap && !g_Battle && nullptr != m_pRendererCom)
 			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 	}
 	if ((g_PokeInfo || g_bPokeDeck || g_bEvolution) && m_bOnOff && nullptr != m_pRendererCom)
@@ -832,7 +832,7 @@ void CDragonair::Set_Stats()
 	m_PokemonInfo.strInfo = TEXT("꼬리의 구슬에 힘을 모아 날씨를 조종한다.\n오라에 둘러싸인 모습은 신비롭다.");
 	m_PokemonInfo.strChar = TEXT("신비");
 	m_PokemonInfo.iPokeNum = 148;
-	m_PokemonInfo.iLv = 18;
+	m_PokemonInfo.iLv = rand() % 10 + 30;
 	m_PokemonInfo.iMaxHp = _int(((fHp * 2.f) + 31.f + 100) * (m_PokemonInfo.iLv / 100.f) + 10.f);
 	m_PokemonInfo.iHp = m_PokemonInfo.iMaxHp;
 	m_PokemonInfo.iDmg = _int(((fDmg * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);

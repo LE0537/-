@@ -636,14 +636,224 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar * pLayerTag)
 			dynamic_cast<CGameObj*>(tInfo)->Set_MyBattlePos(m_LoadFile.vTargetPos);
 			dynamic_cast<CGameObj*>(tInfo)->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&iter.vPos));
 		}
-	/*	if (iter.iType == 5)
+		if (iter.iType == 5)
 		{
 			m_LoadFile.vPos = iter.vPos;
 			m_LoadFile.vScale = iter.vScale;
 
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Sonia"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
+		if (iter.iType == 41)
+		{
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = iter.vScale;
+			for (auto& iter : m_vecSaveLookAt)
+			{
+				if (iter.iType == 42)
+				{
+					m_LoadFile.vMyPos = iter.vPos;
+					break;
+				}
+			}
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Mari"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
+		if (iter.iType == 43)
+		{
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = iter.vScale;
+			for (auto& iter : m_vecSaveLookAt)
+			{
+				if (iter.iType == 44)
+				{
+					m_LoadFile.vMyPos = iter.vPos;
+					break;
+				}
+			}
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Beat"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
+		if (iter.iType == 45)
+		{
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = iter.vScale;
+			for (auto& iter : m_vecSaveLookAt)
+			{
+				if (iter.iType == 46)
+				{
+					m_LoadFile.vMyPos = iter.vPos;
+					break;
+				}
+			}
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Olive"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
 				return E_FAIL;
-		}*/
+		}
+		if (iter.iType == 47)
+		{
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = iter.vScale;
+			for (auto& iter : m_vecSaveLookAt)
+			{
+				if (iter.iType == 48)
+				{
+					m_LoadFile.vMyPos = iter.vPos;
+					break;
+				}
+			}
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Dandel"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
+		if (iter.iType == 49)
+		{
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = iter.vScale;
+			for (auto& iter : m_vecSaveLookAt)
+			{
+				if (iter.iType == 50)
+				{
+					m_LoadFile.vMyPos = iter.vPos;
+					break;
+				}
+			}
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tr0"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
+		if (iter.iType == 51)
+		{
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = iter.vScale;
+			for (auto& iter : m_vecSaveLookAt)
+			{
+				if (iter.iType == 52)
+				{
+					m_LoadFile.vMyPos = iter.vPos;
+					break;
+				}
+			}
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tr1"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
+		if (iter.iType == 53)
+		{
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = iter.vScale;
+			for (auto& iter : m_vecSaveLookAt)
+			{
+				if (iter.iType == 54)
+				{
+					m_LoadFile.vMyPos = iter.vPos;
+					break;
+				}
+			}
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tr2"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
+		if (iter.iType == 55)
+		{
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = iter.vScale;
+			for (auto& iter : m_vecSaveLookAt)
+			{
+				if (iter.iType == 56)
+				{
+					m_LoadFile.vMyPos = iter.vPos;
+					break;
+				}
+			}
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tr3"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
+		if (iter.iType == 57)
+		{
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = iter.vScale;
+			for (auto& iter : m_vecSaveLookAt)
+			{
+				if (iter.iType == 58)
+				{
+					m_LoadFile.vMyPos = iter.vPos;
+					break;
+				}
+			}
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tr4"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
+		if (iter.iType == 59)
+		{
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = iter.vScale;
+			for (auto& iter : m_vecSaveLookAt)
+			{
+				if (iter.iType == 60)
+				{
+					m_LoadFile.vMyPos = iter.vPos;
+					break;
+				}
+			}
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tr5"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
+		if (iter.iType == 61)
+		{
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = iter.vScale;
+			for (auto& iter : m_vecSaveLookAt)
+			{
+				if (iter.iType == 62)
+				{
+					m_LoadFile.vMyPos = iter.vPos;
+					break;
+				}
+			}
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tr6"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
+		if (iter.iType == 63)
+		{
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = iter.vScale;
+			for (auto& iter : m_vecSaveLookAt)
+			{
+				if (iter.iType == 64)
+				{
+					m_LoadFile.vMyPos = iter.vPos;
+					break;
+				}
+			}
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tr7"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
+		if (iter.iType == 65)
+		{
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = iter.vScale;
+			for (auto& iter : m_vecSaveLookAt)
+			{
+				if (iter.iType == 66)
+				{
+					m_LoadFile.vMyPos = iter.vPos;
+					break;
+				}
+			}
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tr8"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
+		if (iter.iType == 67)
+		{
+			m_LoadFile.vPos = iter.vPos;
+			m_LoadFile.vScale = iter.vScale;
+			for (auto& iter : m_vecSaveLookAt)
+			{
+				if (iter.iType == 68)
+				{
+					m_LoadFile.vMyPos = iter.vPos;
+					break;
+				}
+			}
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tr9"), LEVEL_GAMEPLAY, pLayerTag, &m_LoadFile)))
+				return E_FAIL;
+		}
 	}
 	Safe_Release(pGameInstance);
 
@@ -718,6 +928,62 @@ void CLevel_GamePlay::Load()
 			m_listPos3.push_back(tInfo.vPos);
 			m_listScale3.push_back(tInfo.vScale);
 			++m_iWeed[2];
+		}
+		if (tInfo.iType == 42)
+		{
+			m_vecSaveLookAt.push_back(tInfo);
+		}
+		if (tInfo.iType == 44)
+		{
+			m_vecSaveLookAt.push_back(tInfo);
+		}
+		if (tInfo.iType == 46)
+		{
+			m_vecSaveLookAt.push_back(tInfo);
+		}
+		if (tInfo.iType == 48)
+		{
+			m_vecSaveLookAt.push_back(tInfo);
+		}
+		if (tInfo.iType == 50)
+		{
+			m_vecSaveLookAt.push_back(tInfo);
+		}
+		if (tInfo.iType == 52)
+		{
+			m_vecSaveLookAt.push_back(tInfo);
+		}
+		if (tInfo.iType == 54)
+		{
+			m_vecSaveLookAt.push_back(tInfo);
+		}
+		if (tInfo.iType == 56)
+		{
+			m_vecSaveLookAt.push_back(tInfo);
+		}
+		if (tInfo.iType == 58)
+		{
+			m_vecSaveLookAt.push_back(tInfo);
+		}
+		if (tInfo.iType == 60)
+		{
+			m_vecSaveLookAt.push_back(tInfo);
+		}
+		if (tInfo.iType == 62)
+		{
+			m_vecSaveLookAt.push_back(tInfo);
+		}
+		if (tInfo.iType == 64)
+		{
+			m_vecSaveLookAt.push_back(tInfo);
+		}
+		if (tInfo.iType == 66)
+		{
+			m_vecSaveLookAt.push_back(tInfo);
+		}
+		if (tInfo.iType == 68)
+		{
+			m_vecSaveLookAt.push_back(tInfo);
 		}
 	}
 	

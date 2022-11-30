@@ -1018,7 +1018,7 @@ void CBattleUI::Change_Poke(_float fTimeDelta)
 		m_fHPTime = 0.f;
 	}
 	//상대포켓몬 공격
-	if (m_bCreateTextBox && m_bTargetHit && m_fDelayTime > m_fTextSizeTime && m_fHPTime > 0.05f)
+	if (m_bCreateTextBox && m_bTargetHit && m_fDelayTime > m_fTextSizeTime && m_fHPTime > 0.03f)
 	{
 		if (m_fDotDeal < m_iTargetFinalDmg)
 		{
@@ -1182,7 +1182,7 @@ void CBattleUI::Use_Item(_float fTimeDelta)
 		m_fHPTime = 0.f;
 	}
 	//상대포켓몬 공격
-	if (m_bCreateTextBox && m_bTargetHit && m_fDelayTime > m_fTextSizeTime && m_fHPTime > 0.05f)
+	if (m_bCreateTextBox && m_bTargetHit && m_fDelayTime > m_fTextSizeTime && m_fHPTime > 0.03f)
 	{
 		if (m_fDotDeal < m_iTargetFinalDmg)
 		{
@@ -1770,7 +1770,7 @@ void CBattleUI::BattleFrame()
 void CBattleUI::BattleDelay(_float fTimeDelta)
 {
 	//선공
-	if (!m_bBattleBagPoke && !m_bCreateTextBox2 && m_bCheckAttack && m_fHPTime > 0.05f)
+	if (!m_bBattleBagPoke && !m_bCreateTextBox2 && m_bCheckAttack && m_fHPTime > 0.03f)
 	{
 		if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().iSpeed >= dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().iSpeed)
 		{
@@ -1853,7 +1853,7 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 		m_bCheckAttack = true;
 	}
 	//후공
-	if (!m_bBattleBagPoke &&m_bCheckAttack3 && m_fHPTime > 0.05f)
+	if (!m_bBattleBagPoke &&m_bCheckAttack3 && m_fHPTime > 0.03f)
 	{
 		if (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().iSpeed < dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().iSpeed)
 		{

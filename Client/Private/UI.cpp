@@ -47,7 +47,7 @@ HRESULT CUI::Initialize(void * pArg)
 
 void CUI::Tick(_float fTimeDelta)
 {
-	if (!g_Battle)
+	if (!g_Battle && !g_bBag && !g_bEvolution && !g_bPokeDeck)
 	{
 		CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 		Safe_AddRef(pGameInstance);

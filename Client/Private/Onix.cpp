@@ -101,7 +101,7 @@ void COnix::Tick(_float fTimeDelta)
 		}
 
 
-		if (m_bWildPoke && !g_Battle && !g_bBag && !g_bPokeDeck && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
+		if (m_bWildPoke && !g_Battle && !g_bBag && !g_PokeInfo && !g_bPokeDeck && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
 		{
 			Move(fTimeDelta);
 		}
@@ -117,7 +117,7 @@ void COnix::Late_Tick(_float fTimeDelta)
 
 	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), 10.f))
 	{
-		if (m_fDist < 30.f && !g_bEvolution && m_bWildPoke && !m_bBattleMap && !g_Battle && nullptr != m_pRendererCom)
+		if (m_fDist < 30.f && !g_bEvolution && !g_bBag && !g_PokeInfo && !g_bPokeDeck && m_bWildPoke && !m_bBattleMap && !g_Battle && nullptr != m_pRendererCom)
 			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 	}
 
@@ -586,7 +586,7 @@ void COnix::Set_Stats()
 	m_PokemonInfo.strInfo = TEXT("땅속을 엄청난 기세로 뚫고 나아가며 먹이를 찾는다.\n지나간 곳은 디그다의 보금자리가 된다.");
 	m_PokemonInfo.strChar = TEXT("텟카이");
 	m_PokemonInfo.iPokeNum = 95;
-	m_PokemonInfo.iLv = 10;
+	m_PokemonInfo.iLv = rand() % 10 + 30;
 	m_PokemonInfo.iMaxHp = _int(((fHp * 2.f) + 31.f + 100) * (m_PokemonInfo.iLv / 100.f) + 10.f);
 	m_PokemonInfo.iHp = m_PokemonInfo.iMaxHp;
 	m_PokemonInfo.iDmg = _int(((fDmg * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);

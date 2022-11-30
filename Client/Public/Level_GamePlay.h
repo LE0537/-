@@ -50,6 +50,7 @@ private:
 private:
 	LOADFILE			m_LoadFile;
 	vector<SaveInfo>	m_vecSave;
+	vector<SaveInfo>	m_vecSaveLookAt;
 	vector<SaveInfo>	m_vecSaveBattle;
 	CCamera_Dynamic::CAMERADESC_DERIVED			CameraDesc;
 

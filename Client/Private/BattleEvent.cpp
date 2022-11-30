@@ -168,11 +168,29 @@ void CBattleEvent::OffSet()
 	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("¾î´ÏºÎ±â"))
 		m_fOffSet = 1.f;
 
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("°ÅºÏ¿Õ"))
+		m_fOffSet = 1.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("Ä³ÅÍÇÇ"))
+		m_fOffSet = 0.f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("´Üµ¥±â"))
+		m_fOffSet = 0.5f;
+
 	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("¹öÅÍÇÃ"))
+		m_fOffSet = 1.f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("²¿·¿"))
+		m_fOffSet = 0.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("·¹Æ®¶ó"))
 		m_fOffSet = 1.f;
 
 	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("ÇÇÄ«Ãò"))
 		m_fOffSet = 0.f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("Çª¸°"))
+		m_fOffSet = 1.f;
 
 	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("ÇªÅ©¸°"))
 		m_fOffSet = 1.5f;
@@ -180,11 +198,53 @@ void CBattleEvent::OffSet()
 	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("³ª¿Ë"))
 		m_fOffSet = 0.f;
 
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("Æä¸£½Ã¿Â"))
+		m_fOffSet = 1.f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("¾ßµ·"))
+		m_fOffSet = 0.5f;
+
 	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("¾ßµµ¶õ"))
 		m_fOffSet = 1.f;
 
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("·Õ½ºÅæ"))
+		m_fOffSet = 2.1f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("³»·ç¹Ì"))
+		m_fOffSet = 1.f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("·°Å°"))
+		m_fOffSet = 1.f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("Ä»Ä«"))
+		m_fOffSet = 2.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("½º¶óÅ©"))
+		m_fOffSet = 1.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("À×¾îÅ·"))
+		m_fOffSet = 0.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("°¼¶óµµ½º"))
+		m_fOffSet = 1.5f;
+
 	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("Àá¸¸º¸"))
 		m_fOffSet = 2.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("¹Ì´¨"))
+		m_fOffSet = 0.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("½Å´¨"))
+		m_fOffSet = 1.f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("¸Á³ª´¨"))
+		m_fOffSet = 2.f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("¹ÂÃ÷"))
+		m_fOffSet = 2.f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("¹Â"))
+		m_fOffSet = 1.f;
 
 	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("ÇØ¿ù¸·±¸¸®"))
 		m_fOffSet = 1.f;

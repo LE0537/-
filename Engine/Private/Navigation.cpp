@@ -155,17 +155,14 @@ HRESULT CNavigation::Render()
 
 void CNavigation::Find_CurrentCellIndex(_vector vPos)
 {
-	_vector vTargetPos;
-	_float	fDist = 9999999.f;
-	_float  fTargetDist = 0.f;
+	_int		iNeighborIndex = -1;
+
 	for (_int i = 0; i < m_Cells.size(); ++i)
 	{
-		vTargetPos = (XMLoadFloat3(m_Cells[i]->Get_Point(CCell::POINT_A)) + XMLoadFloat3(m_Cells[i]->Get_Point(CCell::POINT_B)) + XMLoadFloat3(m_Cells[i]->Get_Point(CCell::POINT_C))) / 3.f;
-		fTargetDist = XMVectorGetX(XMVector3Length(vTargetPos - vPos));
-		if (fDist > fTargetDist)
+		if (m_Cells[i]->isIn(vPos, &iNeighborIndex))
 		{
-			fDist = fTargetDist;
 			m_NaviDesc.iCurrentCellIndex = i;
+			return;
 		}
 	}
 }

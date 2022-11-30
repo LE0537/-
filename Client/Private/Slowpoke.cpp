@@ -83,9 +83,10 @@ void CSlowpoke::Tick(_float fTimeDelta)
 		{
 			Set_EvolPos(fTimeDelta);
 		}
+		if (g_PokeInfo || g_bPokeDeck || g_bEvolution)
+			m_pModelCom->Play_Animation(fTimeDelta);
 	}
-	if (g_PokeInfo || g_bPokeDeck || g_bEvolution)
-		m_pModelCom->Play_Animation(fTimeDelta);
+
 	if (!m_bOnOff)
 		m_bSetPos = false;
 

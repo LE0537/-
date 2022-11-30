@@ -45,6 +45,7 @@ private:
 	void	BattleStart(_float fTimeDelta);
 	void	Check_Anim(_float fTimeDelta);
 	void	OnNavi();
+	void	Ckeck_Dist();
 private:
 	CModel*					m_pModelCom = nullptr;
 	CCollider*				m_pAABBCom = nullptr;
@@ -58,6 +59,7 @@ private:
 
 	CGameObject*			m_pBall = nullptr;
 
+	_float					m_fDist = 0.f;
 	_int					m_iAnim = 0;
 	_bool					m_bFindPlayer = false;
 	_float					m_fEventTime = 0.f;

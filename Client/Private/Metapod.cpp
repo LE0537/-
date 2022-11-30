@@ -87,9 +87,10 @@ void CMetapod::Tick(_float fTimeDelta)
 		{
 			Set_EvolPos2(fTimeDelta);
 		}
+		if (g_PokeInfo || g_bPokeDeck || g_bEvolution)
+			m_pModelCom->Play_Animation(fTimeDelta);
 	}
-	if (g_PokeInfo || g_bPokeDeck || g_bEvolution)
-		m_pModelCom->Play_Animation(fTimeDelta);
+
 	if (!m_bOnOff)
 		m_bSetPos = false;
 

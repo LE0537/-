@@ -238,6 +238,48 @@
     <Filter Include="02.GameObjects\99.GameObj\04.UI\06.Evolution">
       <UniqueIdentifier>{4f94f77f-235a-4803-b9af-4fb6af0ea002}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\02.Trainer\01.Beat">
+      <UniqueIdentifier>{f1e4ad6b-0c2e-49d3-8510-adb3d2782037}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\02.Trainer\02.Sonia">
+      <UniqueIdentifier>{003c67ce-22ab-4681-a461-becc877eeb8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\02.Trainer\03.Dandel">
+      <UniqueIdentifier>{383f4ce9-237a-4cd4-9ea4-a6ad48a46358}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\02.Trainer\04.Olive">
+      <UniqueIdentifier>{2ae9144d-a781-4025-9460-e618b645b10a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\02.Trainer\05.Tr0">
+      <UniqueIdentifier>{36bcd7a0-a532-4038-80e5-daf89a0a051f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\02.Trainer\06.Tr1">
+      <UniqueIdentifier>{b9230490-6413-42fa-b7d6-78d573ed7dd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\02.Trainer\07.Tr2">
+      <UniqueIdentifier>{5ad9b52b-f56d-4e16-a958-dbd7060209db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\02.Trainer\08.Tr3">
+      <UniqueIdentifier>{62062cb5-2a38-437d-9d24-72a128a9c4ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\02.Trainer\09.Tr4">
+      <UniqueIdentifier>{ae5f853e-b220-4507-a854-eb7b4a366777}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\02.Trainer\10.Tr5">
+      <UniqueIdentifier>{b9c24788-c377-4d9a-84ff-b131b60ecf75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\02.Trainer\11.Tr6">
+      <UniqueIdentifier>{14827344-504e-4993-8383-69585977dddb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\02.Trainer\12.Tr7">
+      <UniqueIdentifier>{d7ac1476-2830-45af-b1c7-e6b50d9693bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\02.Trainer\13.Tr8">
+      <UniqueIdentifier>{70afb8da-5383-4887-9156-bbacf23ec4f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\02.Trainer\14.Tr9">
+      <UniqueIdentifier>{30551553-4476-4f43-bd91-070c52de5e5e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -471,6 +513,48 @@
     <ClInclude Include="..\public\Mew.h">
       <Filter>02.GameObjects\99.GameObj\01.Pokemon\151.Mew</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Beat.h">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\01.Beat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sonia.h">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\02.Sonia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Dandel.h">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\03.Dandel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Olive.h">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\04.Olive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tr0.h">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\05.Tr0</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tr1.h">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\06.Tr1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tr2.h">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\07.Tr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tr3.h">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\08.Tr3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tr4.h">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\09.Tr4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tr5.h">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\10.Tr5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tr6.h">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\11.Tr6</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tr7.h">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\12.Tr7</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tr8.h">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\13.Tr8</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tr9.h">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\14.Tr9</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -688,6 +772,48 @@
     </ClCompile>
     <ClCompile Include="..\private\Mew.cpp">
       <Filter>02.GameObjects\99.GameObj\01.Pokemon\151.Mew</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Beat.cpp">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\01.Beat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sonia.cpp">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\02.Sonia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Dandel.cpp">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\03.Dandel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Olive.cpp">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\04.Olive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tr0.cpp">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\05.Tr0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tr1.cpp">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\06.Tr1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tr2.cpp">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\07.Tr2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tr3.cpp">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\08.Tr3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tr4.cpp">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\09.Tr4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tr5.cpp">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\10.Tr5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tr6.cpp">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\11.Tr6</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tr7.cpp">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\12.Tr7</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tr8.cpp">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\13.Tr8</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tr9.cpp">
+      <Filter>02.GameObjects\99.GameObj\02.Trainer\14.Tr9</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

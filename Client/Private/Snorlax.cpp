@@ -73,6 +73,8 @@ void CSnorlax::Tick(_float fTimeDelta)
 		{
 			Key_Input(fTimeDelta);
 		}
+		if (g_PokeInfo || g_bPokeDeck)
+			m_pModelCom->Play_Animation(fTimeDelta);
 	}
 	
 	if (!m_bOnOff)
@@ -82,7 +84,7 @@ void CSnorlax::Tick(_float fTimeDelta)
 	if (m_PlayerInfo.bRide)
 		Set_RidePos();
 
-	if (g_PokeInfo || g_bPokeDeck || m_PlayerInfo.bRide)
+	if (m_PlayerInfo.bRide && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
 		m_pModelCom->Play_Animation(fTimeDelta);
 
 	if (m_bBattleMap)

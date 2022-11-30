@@ -57,7 +57,7 @@ HRESULT CNonePoke::Initialize(void * pArg)
 	m_PokemonInfo.eType = POKETYPE_END;
 	m_PokemonInfo.eType2 = POKETYPE_END;
 	m_PokemonInfo.eStatInfo = STATINFO_END;
-
+	m_PokemonInfo.bEvolution = false;
 
 	return S_OK;
 }

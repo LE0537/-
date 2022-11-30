@@ -118,12 +118,57 @@ void CBattleEvent::OnBillboard()
 void CBattleEvent::OffSet()
 {
 	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("마리"))
-		m_fOffSet = 1.f;
+		m_fOffSet = 1.3f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("비트"))
+		m_fOffSet = 1.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("소니아"))
+		m_fOffSet = 1.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("단델"))
+		m_fOffSet = 1.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("올리브"))
+		m_fOffSet = 1.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("아킬"))
+		m_fOffSet = 1.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("야청"))
+		m_fOffSet = 1.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("순무"))
+		m_fOffSet = 1.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("채두"))
+		m_fOffSet = 1.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("어니언"))
+		m_fOffSet = 1.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("포플러"))
+		m_fOffSet = 1.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("마쿠와"))
+		m_fOffSet = 1.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("멜론"))
+		m_fOffSet = 1.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("두송"))
+		m_fOffSet = 1.5f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("금랑"))
+		m_fOffSet = 1.5f;
 
 	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("꼬부기"))
 		m_fOffSet = 0.f;
 
 	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("어니부기"))
+		m_fOffSet = 1.f;
+
+	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("버터플"))
 		m_fOffSet = 1.f;
 
 	if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().strName == TEXT("피카츄"))

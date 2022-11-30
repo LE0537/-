@@ -72,9 +72,10 @@ void COnix::Tick(_float fTimeDelta)
 		{
 			Key_Input(fTimeDelta);
 		}
+		if (g_PokeInfo || g_bPokeDeck)
+			m_pModelCom->Play_Animation(fTimeDelta);
 	}
-	if (g_PokeInfo || g_bPokeDeck)
-		m_pModelCom->Play_Animation(fTimeDelta);
+
 	if (!m_bOnOff)
 		m_bSetPos = false;
 
@@ -425,10 +426,10 @@ void COnix::Set_DeckPos()
 		m_fY = 550;
 
 		XMStoreFloat4x4(&m_ViewMatrix, XMMatrixTranspose(XMMatrixIdentity()));
-		XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -500.f, 100.f)));
+		XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -2000.f, 500.f)));
 		_float3 vScale = { m_fSizeX,m_fSizeY,5.f };
 		m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
-		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, -200.f, 1.f));
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, -500.f, 1.f));
 
 	}
 	else if (!m_bDeckInfo)

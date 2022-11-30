@@ -47,10 +47,65 @@ HRESULT CPokeDeck::Initialize(void * pArg)
 			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
 			continue;
 		}
-
+		if (i == 8)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Blastoise"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 9)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Caterpie"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 10)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Metapod"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 11)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Butterfree"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 18)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Rattata"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 19)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Raticate"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
 		if (i == 24)
 		{
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 38)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Jigglypuff"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 				return E_FAIL;
 			m_vecPoke.push_back(tInfo);
 			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
@@ -73,6 +128,22 @@ HRESULT CPokeDeck::Initialize(void * pArg)
 			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
 			continue;
 		}
+		if (i == 52)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Persian"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 78)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Slowpoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
 		if (i == 79)
 		{
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Slowbro"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
@@ -81,9 +152,105 @@ HRESULT CPokeDeck::Initialize(void * pArg)
 			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
 			continue;
 		}
+		if (i == 94)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Onix"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 107)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Lickitung"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 112)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Chansey"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 114)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Kangaskhan"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 122)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Scyther"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 128)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Magikarp"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 129)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Gyarados"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
 		if (i == 142)
 		{
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Snorlax"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 146)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Dratini"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 147)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Dragonair"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 148)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Dragonite"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 149)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Mewtwo"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+				return E_FAIL;
+			m_vecPoke.push_back(tInfo);
+			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
+			continue;
+		}
+		if (i == 150)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Mew"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 				return E_FAIL;
 			m_vecPoke.push_back(tInfo);
 			dynamic_cast<CGameObj*>(tInfo)->Set_DeckPoke();
@@ -113,12 +280,12 @@ HRESULT CPokeDeck::Initialize(void * pArg)
 	m_fY = g_iWinSizeY >> 1;
 
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixTranspose(XMMatrixIdentity()));
-	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -800.f, 500.f)));
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -2000.f, 500.f)));
 
 	_float3 vScale = { m_fSizeX,m_fSizeY,0.f };
 
 	m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 300.f, 1.f));
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 500.f, 1.f));
 
 	m_fSizeX = 60.f;
 	m_fSizeY = 60.f;
@@ -126,7 +293,7 @@ HRESULT CPokeDeck::Initialize(void * pArg)
 	m_fY = 140.f;
 	vScale = { m_fSizeX,m_fSizeY,0.f };
 	m_pTransformCom2->Set_Scale(XMLoadFloat3(&vScale));
-	m_pTransformCom2->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 300.f, 1.f));
+	m_pTransformCom2->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 500.f, 1.f));
 
 	Set_PokePos();
 	Set_TypePos();

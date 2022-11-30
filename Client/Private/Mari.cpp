@@ -106,6 +106,7 @@ void CMari::Tick(_float fTimeDelta)
 	}
 	else if(!g_bEvolution)
 	{
+		Ckeck_Dist();
 		OnNavi();
 		m_fEventTime += fTimeDelta;
 		if (!m_bFindPlayer)
@@ -117,9 +118,12 @@ void CMari::Tick(_float fTimeDelta)
 		{
 			m_PlayerInfo.bEvent = false;
 		}
-		m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
-		m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
-		m_pModelCom->Play_Animation(fTimeDelta);
+		if (m_fDist <= 30.f)
+		{
+			m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
+			m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+			m_pModelCom->Play_Animation(fTimeDelta);
+		}
 	}
 
 }
@@ -132,7 +136,7 @@ void CMari::Late_Tick(_float fTimeDelta)
 
 	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION),10.f ))
 	{
-		if (!g_bEvolution && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
+		if (m_fDist <= 30.f && !g_bEvolution && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
 			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 	}
 	RELEASE_INSTANCE(CGameInstance);
@@ -272,6 +276,12 @@ void CMari::OnNavi()
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPosition);
 
 	RELEASE_INSTANCE(CGameInstance);
+}
+void CMari::Ckeck_Dist()
+{
+	_vector vTargetPos = dynamic_cast<CGameObj*>(m_pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
+	_vector vLook = vTargetPos - m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+	m_fDist = XMVectorGetX(XMVector3Length(vLook));
 }
 void CMari::Check_Coll()
 {

@@ -255,7 +255,7 @@ void CSonia::Check_Coll()
 		tTInfo.iScriptSize = (_int)m_vNormalScript.size();
 		tTInfo.pTarget = this;
 		tTInfo.pScript = new wstring[m_vNormalScript.size()];
-		tTInfo.iType = 3;
+		tTInfo.iType = 7;
 		for (_int i = 0; i < m_vNormalScript.size(); ++i)
 			tTInfo.pScript[i] = m_vNormalScript[i];
 

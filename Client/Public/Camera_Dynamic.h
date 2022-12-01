@@ -34,6 +34,7 @@ private:
 	void	BattleEventcam(_float fTimeDelta);
 	void	Battlecam(_float fTimeDelta);
 	void	CapturePos();
+	void	EndingPos(_float fTimeDelta);
 private:
 	_float		 m_YfAngle = 0.f;
 	_float		 m_XfAngle = 0.f;
@@ -51,11 +52,24 @@ private:
 	_float			fSpeed = 0.f;
 	_float			m_fBattletime = 0.f;
 
+	//Ending
+	_bool			m_bOrigin = false;
+	_float4			OriginPos;
+	_float4			EndingPos1, EndingPos2, EndingPos3, EndingAt1, EndingAt2;
+	_float			fEndingSpeed = 0.f;
+	_float			fEndingFov = 0.f;
 	//Capture
 	_float			m_fCaptureTime = 0.f;
 	_bool			m_bCaptureCam = false;
 public:
 	void	Set_Target(CGameObject* _pTarget);
+	void	Set_Ending(_float4 _EndingPos1, _float4 _EndingPos2, _float4 _EndingPos3, _float4 _EndingAt1, _float4 _EndingAt2) {
+		EndingPos1 = _EndingPos1;
+		EndingPos2 = _EndingPos2;
+		EndingPos3 = _EndingPos3;
+		EndingAt1 = _EndingAt1;
+		EndingAt2 = _EndingAt2;
+	}
 public:
 	static CCamera_Dynamic* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr) override;

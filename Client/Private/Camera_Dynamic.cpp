@@ -35,6 +35,8 @@ HRESULT CCamera_Dynamic::Initialize(void* pArg)
 	camLookPos.y += 3.f;
 
 
+	fEndingFov = 60.f;
+
 	return S_OK;
 }
 
@@ -42,40 +44,46 @@ void CCamera_Dynamic::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	if (g_bCaptureRender)
+	if (g_bEnding)
 	{
-		if (!m_bCaptureCam)
-		{
-			m_fCaptureTime = 0.f;
-			m_bCaptureCam = true;
-		}
+		EndingPos(fTimeDelta);
 	}
+	else
+	{
+		if (g_bCaptureRender)
+		{
+			if (!m_bCaptureCam)
+			{
+				m_fCaptureTime = 0.f;
+				m_bCaptureCam = true;
+			}
+		}
+		if (!g_Battle)
+		{
+			if (!m_bEvent && !g_bBag && !g_bEvolution && !g_bPokeDeck && !g_PokeInfo)
+			{
+				Key_Input(fTimeDelta);
+			}
+			if (m_bEvent)
+			{
+				EventCam(fTimeDelta);
+			}
+		}
+		else if (!g_bCaptureRender && !m_bCaptureCam)
+		{
+			if (fSpeed < 1.4f)
+				BattleEventcam(fTimeDelta);
+			else
+				Battlecam(fTimeDelta);
 
-	if (!g_Battle)
-	{
-		if (!m_bEvent && !g_bBag && !g_bEvolution && !g_bPokeDeck && !g_PokeInfo)
-		{
-			Key_Input(fTimeDelta);
 		}
-		if (m_bEvent)
+		if (m_bCaptureCam)
 		{
-			EventCam(fTimeDelta);
+			m_fCaptureTime += fTimeDelta;
+			CapturePos();
+			if (m_fCaptureTime > 3.5f)
+				m_bCaptureCam = false;
 		}
-	}
-	else if(!g_bCaptureRender && !m_bCaptureCam)
-	{
-		if (fSpeed < 1.4f)
-			BattleEventcam(fTimeDelta);
-		else
-			Battlecam(fTimeDelta);
-		
-	}
-	if (m_bCaptureCam)
-	{
-		m_fCaptureTime += fTimeDelta;
-		CapturePos();
-		if (m_fCaptureTime > 3.5f)
-			m_bCaptureCam = false;
 	}
 	if (FAILED(Bind_OnPipeLine()))
 		return;
@@ -227,6 +235,50 @@ void CCamera_Dynamic::CapturePos()
 	m_CameraDesc.fFovy = XMConvertToRadians(20.f);
 	m_pTransform->Set_State(CTransform::STATE_TRANSLATION, vPos);
 	m_pTransform->LookAt(vTarget);
+}
+
+void CCamera_Dynamic::EndingPos(_float fTimeDelta)
+{
+	if (!m_bOrigin)
+	{
+		XMStoreFloat4(&OriginPos, m_pTransform->Get_State(CTransform::STATE_TRANSLATION));
+		m_bOrigin = true;
+	}
+	_vector TargetPos;
+	if (fEndingSpeed < 1.5f)
+	{
+		fEndingSpeed += 0.1f * fTimeDelta;
+	}
+	EndingPos1, EndingPos2, EndingPos3, EndingAt1, EndingAt2;
+
+	_vector vPos = XMVectorCatmullRom(XMLoadFloat4(&OriginPos), XMLoadFloat4(&EndingPos1)
+		, XMLoadFloat4(&EndingPos2), XMLoadFloat4(&EndingPos3), fEndingSpeed);
+
+	if (fEndingSpeed < 1.f)
+	{
+		TargetPos = XMLoadFloat4(&EndingAt2);
+		
+	}
+	else if (fEndingSpeed <= 1.5f)
+	{
+		TargetPos = dynamic_cast<CGameObj*>(m_CameraDesc.pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
+		fEndingFov -= 0.2f;
+		if (fEndingFov < 3.f)
+			fEndingFov = 3.f;
+	}
+	else
+	{
+		TargetPos = dynamic_cast<CGameObj*>(m_CameraDesc.pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
+		fEndingFov -= 0.2f;
+		if (fEndingFov < 3.f)
+			fEndingFov = 3.f;
+	}
+	//TargetPos.m128_f32[1] +=.f;
+	vPos.m128_f32[1] += 15.f;
+	m_CameraDesc.fFovy = XMConvertToRadians(fEndingFov);
+	m_pTransform->Set_State(CTransform::STATE_TRANSLATION, vPos);
+	m_pTransform->LookAt(TargetPos);
+
 }
 
 void CCamera_Dynamic::Set_Target(CGameObject * _pTarget)

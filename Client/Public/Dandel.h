@@ -40,6 +40,7 @@ private:
 	void	Move(_float fTimeDelta);
 	void	Ready_Script();
 	void	Ready_LoseText();
+	void	Ready_EndingText();
 	void	Check_Coll();
 	void	Battle(_float fTimeDelta);
 	void	BattleStart(_float fTimeDelta);
@@ -77,6 +78,7 @@ private:
 	_float4					m_vPrevPos;
 	_bool					m_bPrevPos = false;
 	_bool					m_bBattleLose = false;
+	_bool					m_bEndingText = false;
 public:
 	static CDandel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

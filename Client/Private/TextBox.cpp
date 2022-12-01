@@ -230,6 +230,43 @@ void CTextBox::Running_TextBox()
 			m_fDeadTime = 0.f;
 		}
 	}
+	if (m_tTInfo.iType == 7)
+	{
+		if (pGameInstance->Key_Down(DIK_SPACE))
+		{
+			if (m_iScriptIndex < m_tTInfo.iScriptSize - 1)
+			{
+				++m_iScriptIndex;
+				m_wstr = TEXT("");
+				m_iIndex = 0;
+			}
+			else if (m_iScriptIndex == m_tTInfo.iScriptSize - 1)
+			{
+				m_bDead = true;
+			}
+		}
+	}
+	if (m_tTInfo.iType == 8)
+	{
+		if (pGameInstance->Key_Down(DIK_SPACE))
+		{
+			if (m_iScriptIndex < m_tTInfo.iScriptSize - 1)
+			{
+				++m_iScriptIndex;
+				m_wstr = TEXT("");
+				m_iIndex = 0;
+			}
+			else if (m_iScriptIndex == m_tTInfo.iScriptSize - 1)
+			{
+				m_bDead = true;
+			}
+			if (m_iScriptIndex == 2)
+			{
+				g_bEnding = true;
+				g_CollBox = true;
+			}
+		}
+	}
 	RELEASE_INSTANCE(CGameInstance);
 }
 

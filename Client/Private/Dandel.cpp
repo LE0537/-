@@ -97,6 +97,25 @@ void CDandel::Tick(_float fTimeDelta)
 			iter->Set_Dead();
 		}
 		m_vecPoke.clear();
+		if (!m_bEndingText)
+		{
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+			Ready_EndingText();
+			CTextBox::TINFO tTInfo;
+
+			tTInfo.iScriptSize = (_int)m_vBattleScript.size();
+			tTInfo.pTarget = this;
+			tTInfo.pScript = new wstring[m_vBattleScript.size()];
+			tTInfo.iType = 8;
+			for (_int i = 0; i < m_vBattleScript.size(); ++i)
+				tTInfo.pScript[i] = m_vBattleScript[i];
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
+				return;
+
+			RELEASE_INSTANCE(CGameInstance);
+			m_bEndingText = true;
+		}
 	}
 	if (m_OnOff && !m_bBattleLose && g_Battle)
 	{
@@ -256,6 +275,24 @@ void CDandel::Ready_LoseText()
 
 	wstring strTextBegin = TEXT("이런...져버렸나...");
 	m_vBattleScript.push_back(strTextBegin);
+}
+void CDandel::Ready_EndingText()
+{
+	for (auto iter = m_vBattleScript.begin(); iter != m_vBattleScript.end();)
+		iter = m_vBattleScript.erase(iter);
+
+	m_vBattleScript.clear();
+
+	m_vBattleScript.push_back(TEXT("약속대로 원래 세카이로 돌아갈 수 있는 방법을\n알려줘야겠지?..."));
+	m_vBattleScript.push_back(TEXT("사실 이세카이엔 비밀이 있다..."));
+	m_vBattleScript.push_back(TEXT("자!!  봐라~! 이세카이의 비밀을!!"));
+	m_vBattleScript.push_back(TEXT("이세카이는 무려!!!!!\n샐이 5246개나 깔려있는 어마어마한 세계다!"));
+	m_vBattleScript.push_back(TEXT("하지만 이 세카이는 더 넓었던 것이다...\n5246개론 택도 없이 부족했지..."));
+	m_vBattleScript.push_back(TEXT("원래 세카이로 가는 방법은 방법은 단 하나!!"));
+	m_vBattleScript.push_back(TEXT("그건 바로 너가 직접 샐을 하나하나 \n추가로 찍어 나아가는것뿐이다!"));
+	m_vBattleScript.push_back(TEXT("하하하핳하하하핳하핳하!!!!!\n비록 난 5246개에 포기해 버렸지만..."));
+	m_vBattleScript.push_back(TEXT("혹시 너라면 가능할지도...?"));
+	m_vBattleScript.push_back(TEXT("그럼 행운을 빌지~"));
 }
 void CDandel::OnNavi()
 {
@@ -426,16 +463,6 @@ void CDandel::Check_Anim(_float fTimeDelta)
 			g_Battle = false;
 			m_bBattleLose = true;
 
-			_int iIndex = dynamic_cast<CPlayer*>(m_pTarget)->Get_Bag()->Get_EvolIndex();
-			if (iIndex != 99)
-			{
-				g_bEvolution = true;
-				dynamic_cast<CGameObj*>(dynamic_cast<CPlayer*>(m_pTarget)->Get_Bag()->Get_vecPoke(iIndex))->Set_PokeUIOnOff();
-				CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Evolution"), LEVEL_GAMEPLAY, TEXT("Layer_UI"))))
-					return;
-				RELEASE_INSTANCE(CGameInstance);
-			}
 
 			return;
 		}

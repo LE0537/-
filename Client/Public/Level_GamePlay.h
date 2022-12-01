@@ -45,11 +45,13 @@ public:
 	HRESULT Ready_Layer_UI(const _tchar* pLayerTag);
 private:
 	void Load();
+	void LoadCamPos();
 	void LoadBattle();
 	
 private:
 	LOADFILE			m_LoadFile;
 	vector<SaveInfo>	m_vecSave;
+	vector<SaveInfo>	m_vecCamPos;
 	vector<SaveInfo>	m_vecSaveLookAt;
 	vector<SaveInfo>	m_vecSaveBattle;
 	CCamera_Dynamic::CAMERADESC_DERIVED			CameraDesc;

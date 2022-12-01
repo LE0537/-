@@ -8,7 +8,7 @@
 #include "VIBuffer_Navigation.h"
 #include "BattleUI.h"
 #include "Data_Manager.h"	// Ãß°¡
-
+#include "Ball.h"
 
 CPlayer::CPlayer(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -34,7 +34,8 @@ HRESULT CPlayer::Initialize(void * pArg)
 	m_vTargetBattlePos = *(_float4*)&((CLevel_GamePlay::LOADFILE*)pArg)->vTargetPos;
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
-	
+	if (FAILED(Ready_Parts()))
+		return E_FAIL;
 
 	m_PlayerInfo.strName = L"Áê½Å";
 	m_PlayerInfo.bEvent = false;
@@ -242,8 +243,8 @@ void CPlayer::Key_Input(_float fTimeDelta)
 	if (pGameInstance->Key_Pressing(DIK_P))
 	{
 		++m_iAnim;
-		if (m_iAnim > 12)
-			m_iAnim = 12;
+		if (m_iAnim > 2)
+			m_iAnim = 2;
 		m_pModelCom->Set_CurrentAnimIndex(m_iAnim);
 	}
 
@@ -278,8 +279,11 @@ void CPlayer::BattleStart(_float fTimeDelta)
 		m_pModelCom->Set_Loop(2);
 		m_pModelCom->Set_CurrentAnimIndex(2);
 		m_pModelCom->Play_Animation(fTimeDelta*0.8f);
-
-		if (m_fStartBattle > 1.8f)
+		m_iBallIndex = dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(0))->Get_PokeInfo().iBallNum;
+		dynamic_cast<CBall*>(m_pBall)->Set_Render(true, m_iBallIndex);
+		m_pBall->Tick(fTimeDelta);
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, m_pBall);
+		if (m_fStartBattle > 1.4f)
 		{
 			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
 			XMVector3Normalize(vLook);
@@ -307,7 +311,9 @@ void CPlayer::BattleStart(_float fTimeDelta)
 			m_bBattle = true;
 			m_pModelCom->Set_End(2);
 			m_fBattleUITime = 0.f;
+			dynamic_cast<CBall*>(m_pBall)->Set_Render(false, m_iBallIndex);
 		}
+
 		if (!m_bBattleText)
 		{
 			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
@@ -385,6 +391,41 @@ void CPlayer::Ready_Script()
 	m_vBattleScript.push_back(strTextBegin);
 
 }
+void CPlayer::Check_Ball()
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	CLevel_GamePlay::LOADFILE tInfo;
+
+	tInfo.pTarget = this;
+	tInfo.pCamera = m_pvecTargetPoke->front();
+	tInfo.vPos = m_vTargetBattlePos;
+
+	switch (m_iCaptureBall)
+	{
+	case 0:
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_AnimMonsterBall"), LEVEL_GAMEPLAY, TEXT("CaptureBall"), &tInfo)))
+			return;
+		break;
+	case 1:
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_AnimSuperBall"), LEVEL_GAMEPLAY, TEXT("CaptureBall"), &tInfo)))
+			return;
+		break;
+	case 2:
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_AnimHyperBall"), LEVEL_GAMEPLAY, TEXT("CaptureBall"), &tInfo)))
+			return;
+		break;
+	case 3:
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_AnimMasterBall"), LEVEL_GAMEPLAY, TEXT("CaptureBall"), &tInfo)))
+			return;
+		break;
+	default:
+		break;
+	}
+
+	RELEASE_INSTANCE(CGameInstance);
+
+}
 void CPlayer::Battle_Win()
 {
 	for (_uint i = 0; i < 6; ++i)
@@ -403,7 +444,7 @@ void CPlayer::Battle_Win()
 }
 void CPlayer::Check_Anim(_float fTimeDelta)
 {
-	if (m_iAnimIndex == 2 || m_iAnimIndex == 8)
+	if (m_iAnimIndex == 1 || m_iAnimIndex == 2 || m_iAnimIndex == 8)
 	{
 		m_fStartBattle += fTimeDelta;
 		m_bChangeAnim = true;
@@ -420,6 +461,25 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 			m_pModelCom->Set_Loop(m_iAnimIndex);
 			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
 			m_ChangePoke = true;
+			m_fStartBattle = 0.f;
+		}
+		if (m_bCapture && m_pModelCom->Get_End(m_iAnimIndex))
+		{
+			m_pModelCom->Set_End(m_iAnimIndex);
+			m_iAnimIndex = 0;
+			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+			m_bChangeAnim = false;
+			m_bCapture = false;
+			
+			Check_Ball();
+
+			g_bCaptureRender = true;
+		}
+		if (!m_bCapture && m_iAnimIndex == 1)
+		{
+			m_pModelCom->Set_Loop(m_iAnimIndex);
+			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+			m_bCapture = true;
 			m_fStartBattle = 0.f;
 		}
 		if (m_bReturnPoke && m_pModelCom->Get_End(m_iAnimIndex))
@@ -443,7 +503,10 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 	if (m_ChangePoke && m_bChangeAnim)
 	{
 		m_pModelCom->Play_Animation(fTimeDelta*0.8f);
-		if (m_fStartBattle > 1.8f)
+		dynamic_cast<CBall*>(m_pBall)->Set_Render(true, m_iBallIndex);
+		m_pBall->Tick(fTimeDelta);
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, m_pBall);
+		if (m_fStartBattle > 1.4f)
 		{
 			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
 			XMVector3Normalize(vLook);
@@ -458,8 +521,18 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 	if (m_bReturnPoke && m_bChangeAnim)
 	{
 		m_pModelCom->Play_Animation(fTimeDelta*0.6f);
+		dynamic_cast<CBall*>(m_pBall)->Set_Render(true, m_iPrevBall);
+		m_pBall->Tick(fTimeDelta);
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, m_pBall);
 		if (m_fStartBattle > 1.0f)
 			m_bReturn = true;
+	}
+	if (m_bCapture && m_bChangeAnim)
+	{
+		m_pModelCom->Play_Animation(fTimeDelta*0.8f);
+		dynamic_cast<CBall*>(m_pBall)->Set_Render(true, m_iCaptureBall);
+		m_pBall->Tick(fTimeDelta);
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, m_pBall);
 	}
 }
 void CPlayer::OnNavi()
@@ -502,6 +575,30 @@ HRESULT CPlayer::SetUp_ShaderResources()
 
 	return S_OK;
 }
+HRESULT CPlayer::Ready_Parts()
+{
+
+	/* For.Weapon */
+	CHierarchyNode*		pSocket = m_pModelCom->Get_BonePtr("loc_ob_ball");
+	if (nullptr == pSocket)
+		return E_FAIL;
+
+	CBall::WEAPONDESC		WeaponDesc;
+	WeaponDesc.pSocket = pSocket;
+	WeaponDesc.SocketPivotMatrix = m_pModelCom->Get_PivotFloat4x4();
+	WeaponDesc.pParentWorldMatrix = m_pTransformCom->Get_World4x4Ptr();
+	Safe_AddRef(pSocket);
+
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	m_pBall = pGameInstance->Clone_GameObject(TEXT("Prototype_GameObject_Ball"), &WeaponDesc);
+	if (nullptr == m_pBall)
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
+
+	return S_OK;
+}
 
 CPlayer * CPlayer::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
@@ -538,7 +635,7 @@ void CPlayer::Free()
 		iter = m_vBattleScript.erase(iter);
 
 	m_vBattleScript.clear();
-
+	Safe_Release(m_pBall);
 	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pAABBCom);
 	Safe_Release(m_pOBBCom);

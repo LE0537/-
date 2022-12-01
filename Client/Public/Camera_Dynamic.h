@@ -33,6 +33,7 @@ private:
 	void	EventCam(_float fTimeDelta);
 	void	BattleEventcam(_float fTimeDelta);
 	void	Battlecam(_float fTimeDelta);
+	void	CapturePos();
 private:
 	_float		 m_YfAngle = 0.f;
 	_float		 m_XfAngle = 0.f;
@@ -49,6 +50,10 @@ private:
 	_float4			m_vTargetBattlePos;
 	_float			fSpeed = 0.f;
 	_float			m_fBattletime = 0.f;
+
+	//Capture
+	_float			m_fCaptureTime = 0.f;
+	_bool			m_bCaptureCam = false;
 public:
 	void	Set_Target(CGameObject* _pTarget);
 public:

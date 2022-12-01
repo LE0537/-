@@ -170,6 +170,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
+    <ClInclude Include="..\public\AnimHyperBall.h" />
+    <ClInclude Include="..\public\AnimMasterBall.h" />
+    <ClInclude Include="..\public\AnimMonsterBall.h" />
+    <ClInclude Include="..\public\AnimSuperBall.h" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\Bag.h" />
     <ClInclude Include="..\public\Ball.h" />
@@ -189,16 +193,25 @@
     <ClInclude Include="..\public\Dandel.h" />
     <ClInclude Include="..\Public\Data_Manager.h" />
     <ClInclude Include="..\public\Dragonair.h" />
+    <ClInclude Include="..\public\DragonBadge.h" />
     <ClInclude Include="..\public\Dragonite.h" />
     <ClInclude Include="..\public\Dratini.h" />
+    <ClInclude Include="..\public\EvilBadge.h" />
     <ClInclude Include="..\public\Evolution.h" />
     <ClInclude Include="..\public\ExpShare.h" />
+    <ClInclude Include="..\public\FairyBadge.h" />
     <ClInclude Include="..\public\Field.h" />
+    <ClInclude Include="..\public\FightBadge.h" />
+    <ClInclude Include="..\public\FireBadge.h" />
     <ClInclude Include="..\public\GameObj.h" />
     <ClInclude Include="..\public\Garomakguri.h" />
+    <ClInclude Include="..\public\GhostBadge.h" />
+    <ClInclude Include="..\public\GrassBadge.h" />
     <ClInclude Include="..\public\Gyarados.h" />
     <ClInclude Include="..\public\Hit.h" />
     <ClInclude Include="..\public\HpPotion.h" />
+    <ClInclude Include="..\public\HyperBall.h" />
+    <ClInclude Include="..\public\IceBadge.h" />
     <ClInclude Include="..\public\Jigglypuff.h" />
     <ClInclude Include="..\public\Kangaskhan.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
@@ -210,6 +223,7 @@
     <ClInclude Include="..\public\Magikarp.h" />
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\public\Mari.h" />
+    <ClInclude Include="..\public\MasterBall.h" />
     <ClInclude Include="..\public\Meowth.h" />
     <ClInclude Include="..\public\Metapod.h" />
     <ClInclude Include="..\public\Mew.h" />
@@ -235,8 +249,10 @@
     <ClInclude Include="..\public\Snorlax.h" />
     <ClInclude Include="..\public\Sonia.h" />
     <ClInclude Include="..\public\Squirtle.h" />
+    <ClInclude Include="..\public\SuperBall.h" />
     <ClInclude Include="..\public\Tackle.h" />
     <ClInclude Include="..\Public\Terrain.h" />
+    <ClInclude Include="..\public\TerrainBadge.h" />
     <ClInclude Include="..\public\TextBox.h" />
     <ClInclude Include="..\public\Tr0.h" />
     <ClInclude Include="..\public\Tr1.h" />
@@ -251,6 +267,7 @@
     <ClInclude Include="..\public\Tree.h" />
     <ClInclude Include="..\public\UI.h" />
     <ClInclude Include="..\public\Wartortle.h" />
+    <ClInclude Include="..\public\WaterBadge.h" />
     <ClInclude Include="..\public\WaterBall.h" />
     <ClInclude Include="..\public\WaterBeam.h" />
     <ClInclude Include="..\public\Weed.h" />
@@ -261,6 +278,10 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\private\AnimHyperBall.cpp" />
+    <ClCompile Include="..\private\AnimMasterBall.cpp" />
+    <ClCompile Include="..\private\AnimMonsterBall.cpp" />
+    <ClCompile Include="..\private\AnimSuperBall.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\private\Bag.cpp" />
     <ClCompile Include="..\private\Ball.cpp" />
@@ -279,16 +300,25 @@
     <ClCompile Include="..\private\Dandel.cpp" />
     <ClCompile Include="..\Private\Data_Manager.cpp" />
     <ClCompile Include="..\private\Dragonair.cpp" />
+    <ClCompile Include="..\private\DragonBadge.cpp" />
     <ClCompile Include="..\private\Dragonite.cpp" />
     <ClCompile Include="..\private\Dratini.cpp" />
+    <ClCompile Include="..\private\EvilBadge.cpp" />
     <ClCompile Include="..\private\Evolution.cpp" />
     <ClCompile Include="..\private\ExpShare.cpp" />
+    <ClCompile Include="..\private\FairyBadge.cpp" />
     <ClCompile Include="..\private\Field.cpp" />
+    <ClCompile Include="..\private\FightBadge.cpp" />
+    <ClCompile Include="..\private\FireBadge.cpp" />
     <ClCompile Include="..\private\GameObj.cpp" />
     <ClCompile Include="..\private\Garomakguri.cpp" />
+    <ClCompile Include="..\private\GhostBadge.cpp" />
+    <ClCompile Include="..\private\GrassBadge.cpp" />
     <ClCompile Include="..\private\Gyarados.cpp" />
     <ClCompile Include="..\private\Hit.cpp" />
     <ClCompile Include="..\private\HpPotion.cpp" />
+    <ClCompile Include="..\private\HyperBall.cpp" />
+    <ClCompile Include="..\private\IceBadge.cpp" />
     <ClCompile Include="..\private\Jigglypuff.cpp" />
     <ClCompile Include="..\private\Kangaskhan.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
@@ -300,6 +330,7 @@
     <ClCompile Include="..\private\Magikarp.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\private\Mari.cpp" />
+    <ClCompile Include="..\private\MasterBall.cpp" />
     <ClCompile Include="..\Private\Meowth.cpp" />
     <ClCompile Include="..\private\Metapod.cpp" />
     <ClCompile Include="..\private\Mew.cpp" />
@@ -325,8 +356,10 @@
     <ClCompile Include="..\private\Snorlax.cpp" />
     <ClCompile Include="..\private\Sonia.cpp" />
     <ClCompile Include="..\private\Squirtle.cpp" />
+    <ClCompile Include="..\private\SuperBall.cpp" />
     <ClCompile Include="..\private\Tackle.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
+    <ClCompile Include="..\private\TerrainBadge.cpp" />
     <ClCompile Include="..\private\TextBox.cpp" />
     <ClCompile Include="..\private\Tr0.cpp" />
     <ClCompile Include="..\private\Tr1.cpp" />
@@ -341,6 +374,7 @@
     <ClCompile Include="..\private\Tree.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
     <ClCompile Include="..\private\Wartortle.cpp" />
+    <ClCompile Include="..\private\WaterBadge.cpp" />
     <ClCompile Include="..\private\WaterBall.cpp" />
     <ClCompile Include="..\private\WaterBeam.cpp" />
     <ClCompile Include="..\private\Weed.cpp" />

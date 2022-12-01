@@ -203,11 +203,13 @@ public:
 	}
 	void	Set_PokeItem(ITEMINFO* _eItem) { m_PokemonInfo.eItem = _eItem; }
 	void	Set_StatInfo(STATINFO eStatInfo) { m_PokemonInfo.eStatInfo = eStatInfo; }
-
+	void	Set_BallType(_int _iIndex) { m_PokemonInfo.iBallNum = _iIndex; }
 
 
 	void	Set_DeckPoke() { m_bDeckPoke = true; }
+	_bool	Get_WildPoke() { return m_bWildPoke; }
 	void	Set_WildPoke() { m_bWildPoke = true; }
+	void	Set_CapturePoke() { m_bWildPoke = false; }
 	void	Set_PokeUIOnOff(){ m_bOnOff = !m_bOnOff; }
 	void	Set_DeckInfoOn() { m_bDeckInfo = false; }
 	void	Set_DeckInfoOff() { m_bDeckInfo = true; }

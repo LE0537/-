@@ -122,7 +122,12 @@ void CPikachu::Late_Tick(_float fTimeDelta)
 	if ((g_PokeInfo || g_bPokeDeck) && m_bOnOff && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UIPOKE, this);
 	else if (m_bBattleMap && g_Battle && nullptr != m_pRendererCom)
-		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	{
+		if (g_bCaptureRender && !m_bWildPoke)
+			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+		else if (!g_bCaptureRender)
+			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	}
 	RELEASE_INSTANCE(CGameInstance);
 	if (g_CollBox)
 		m_pRendererCom->Add_Debug(m_pAABBCom);

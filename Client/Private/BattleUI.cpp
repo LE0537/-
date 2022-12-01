@@ -94,7 +94,15 @@ void CBattleUI::Tick(_float fTimeDelta)
 				m_tInfo.pPlayer->Set_Close();
 				return;
 			}
-			Use_Item(fTimeDelta);
+			if(!g_bCapture && !m_bWildWin)
+				Use_Item(fTimeDelta);
+			if (dynamic_cast<CPlayer*>(m_tInfo.pPlayer_Orgin)->Get_Captrue())
+			{
+				m_bWildWin = true;
+				m_WinTime = 0.f;
+				dynamic_cast<CPlayer*>(m_tInfo.pPlayer_Orgin)->Set_Captrue(false);
+				g_bCapture = false;
+			}
 		}
 		else
 		{
@@ -736,7 +744,8 @@ void CBattleUI::Wild_Win(_float fTimeDelta)
 	if (m_WinTime > 0.5f)
 	{
 		dynamic_cast<CPlayer*>(m_tInfo.pPlayer_Orgin)->Battle_Win();
-		m_tInfo.pBattleTarget->Set_Dead();
+		if(dynamic_cast<CGameObj*>(m_tInfo.pBattleTarget)->Get_WildPoke())
+			m_tInfo.pBattleTarget->Set_Dead();
 		g_Battle = false;
 
 		_int iIndex = m_tInfo.pPlayer->Get_EvolIndex();
@@ -1011,7 +1020,7 @@ void CBattleUI::Change_Poke(_float fTimeDelta)
 		default:
 			break;
 		}
-
+		Use_TargetSkillEffect();
 		dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Set_AnimIndex(iAnim);
 		m_bCheckAttack = false;
 		m_fDotDeal = 0;
@@ -1176,6 +1185,7 @@ void CBattleUI::Use_Item(_float fTimeDelta)
 			break;
 		}
 
+		Use_TargetSkillEffect();
 		dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Set_AnimIndex(iAnim);
 		m_bCheckAttack = false;
 		m_fDotDeal = 0;
@@ -2297,8 +2307,8 @@ void CBattleUI::Use_PlayerSkill(_int _iSkillIndex)
 		break;
 	}
 	
-	_int iCri = rand() % 10;
-	if (iCri == 7)
+	_int iCri = rand() % 100 + 1;
+	if (iCri <= 20)
 	{
 		fCri = 1.5f;
 		m_bPlayerCri = true;
@@ -2306,16 +2316,15 @@ void CBattleUI::Use_PlayerSkill(_int _iSkillIndex)
 	else
 		m_bPlayerCri = false;
 
-	_float fHit = rand() % 100 / 100.f;
+	//_float fHit = rand() % 100 + 1;
 	//(데미지 = 
 	//(위력 × 공격 ×(레벨 × 2 ÷ 5 + 2) ÷ 방어 ÷ 50 ×[[급소]] + 2) ×[[자속 보정]] × 타입상성1 × 타입상성2 × 랜덤수 / 255)
 
 	m_iPlayerFinalDmg = _int(((_float)iSkillDmg * (_float)iDmg * ((_float)iLv * 2.f / 5.f + 2.f) / (_float)iDef / 50.f * fCri + 2.f) * fTypeBonus * fTargetType1 * fTargetType2 * fRand);
 
-	if (_fHit >= fHit)
-		m_bPlayerHit = true;
-	else
-		m_bPlayerHit = false;
+	
+	m_bPlayerHit = true;
+	
 
 	m_fPlayerType = fTargetType1 * fTargetType2;
 
@@ -2431,8 +2440,8 @@ void CBattleUI::Use_TargetSkill(_int _iSkillIndex)
 		break;
 	}
 
-	_int iCri = rand() % 10;
-	if (iCri == 7)
+	_int iCri = rand() % 100 + 1;
+	if (iCri <= 20)
 	{
 		fCri = 1.5f;
 		m_bTargetCri = true;
@@ -2440,16 +2449,15 @@ void CBattleUI::Use_TargetSkill(_int _iSkillIndex)
 	else
 		m_bTargetCri = false;
 
-	_float fHit = rand() % 100 / 100.f;
+	//_float fHit = rand() % 100 + 1;
 	//(데미지 = 
 	//(위력 × 공격 ×(레벨 × 2 ÷ 5 + 2) ÷ 방어 ÷ 50 ×[[급소]] + 2) ×[[자속 보정]] × 타입상성1 × 타입상성2 × 랜덤수 / 255)
 
 	m_iTargetFinalDmg = _int(((_float)iSkillDmg * (_float)iDmg * ((_float)iLv * 2.f / 5.f + 2.f) / (_float)iDef / 50.f * fCri + 2.f) * fTypeBonus * fTargetType1 * fTargetType2 * fRand);
 
-	if (_fHit >= fHit)
-		m_bTargetHit = true;
-	else
-		m_bTargetHit = false;
+
+	m_bTargetHit = true;
+
 
 	m_fTargetType = fTargetType1 * fTargetType2;
 }

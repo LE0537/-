@@ -257,6 +257,8 @@ void CTr9::Ready_LoseText()
 
 	wstring strTextBegin = TEXT("...2인자는 너였나...그럼 난 3인자라도...");
 	m_vBattleScript.push_back(strTextBegin);
+	m_vBattleScript.push_back(TEXT("용의배지를 얻었습니다."));
+
 }
 void CTr9::OnNavi()
 {
@@ -427,6 +429,22 @@ void CTr9::Check_Anim(_float fTimeDelta)
 			g_Battle = false;
 			m_bBattleLose = true;
 
+			for (_int i = 0; i < 60; ++i)
+			{
+				if (dynamic_cast<CPlayer*>(m_pTarget)->Get_Bag()->Get_vecItemNum(i) == 99)
+				{
+					CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+					ITEMINFO* tInfo;
+					if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_DragonBadge"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfo)))
+						return;
+					dynamic_cast<CPlayer*>(m_pTarget)->Get_Bag()->Set_vecItem(i, tInfo);
+
+					RELEASE_INSTANCE(CGameInstance);
+					break;
+				}
+			}
+
 			_int iIndex = dynamic_cast<CPlayer*>(m_pTarget)->Get_Bag()->Get_EvolIndex();
 			if (iIndex != 99)
 			{
@@ -452,7 +470,7 @@ void CTr9::Check_Anim(_float fTimeDelta)
 			tTInfo.iScriptSize = (_int)m_vBattleScript.size();
 			tTInfo.pTarget = this;
 			tTInfo.pScript = new wstring[m_vBattleScript.size()];
-			tTInfo.iType = 4;
+			tTInfo.iType = 6;
 			for (_int i = 0; i < m_vBattleScript.size(); ++i)
 				tTInfo.pScript[i] = m_vBattleScript[i];
 

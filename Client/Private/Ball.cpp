@@ -48,6 +48,7 @@ void CBall::Tick(_float fTimeDelta)
 
 
 		XMStoreFloat4x4(&m_CombinedWorldMatrix, m_pTransformCom->Get_WorldMatrix() * SocketMatrix);
+
 	}
 }
 
@@ -146,6 +147,7 @@ HRESULT CBall::SetUp_ShaderResources()
 
 	return S_OK;
 }
+
 
 CBall * CBall::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {

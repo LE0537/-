@@ -26,5 +26,7 @@ extern bool     g_CollBox;
 extern bool		g_Battle;
 extern int		g_iWeed;
 extern bool		g_bEvolution;
+extern bool		g_bCapture;
+extern bool	    g_bCaptureRender;
 
 using namespace Client;

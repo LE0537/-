@@ -51,10 +51,13 @@ private:
 	WEAPONDESC				m_WeaponDesc;
 	_float4x4				m_CombinedWorldMatrix;
 
+
 	_bool					m_bRender = false;
 	_int					m_iBallIndex = 0;
+
 public:
 	void Set_Render(_bool _bRender, _int _iBallIndex) { m_bRender = _bRender; m_iBallIndex = _iBallIndex; }
+
 private:
 	HRESULT Ready_Components();
 	HRESULT SetUp_ShaderResources(); /* 셰이더 전역변수에 값을 전달한다. */

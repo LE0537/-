@@ -42,7 +42,13 @@ private:
 	void	Battle(_float fTimeDelta);
 	void	BattleStart(_float fTimeDelta);
 	void	Ready_Script();
+	void	Check_Ball();
 public:
+	void	Set_PlayerBallIndex(_int _iIndex) { m_iPrevBall = m_iBallIndex;  m_iBallIndex = _iIndex; }
+	void	Set_CaptureBallIndex(_int _iIndex) { m_iCaptureBall = _iIndex; }
+	_bool	Get_Captrue() { return m_bCapturePoke; }
+	void	Set_Captrue(_bool _bCapture) { m_bCapturePoke = _bCapture; }
+	BATTLETYPE Get_BattleType() { return m_eBattleType; }
 	_bool	Get_Return() { return m_bReturn; }
 	void	Set_BattleStart() { m_bBattleStart = true; }
 	void	Set_Bag(class CBag* _Bag) { m_pBag = _Bag; }
@@ -51,6 +57,7 @@ public:
 	void	Set_BattleTarget(CGameObject* _pTarget, BATTLETYPE eBattle_Type) { m_pBattleTarget = _pTarget; m_eBattleType = eBattle_Type; }
 	void	Battle_Win();
 	void	Check_Anim(_float fTimeDelta);
+	HRESULT Ready_Parts();
 private:
 	CModel*					m_pModelCom = nullptr;
 	CCollider*				m_pAABBCom = nullptr;
@@ -58,7 +65,8 @@ private:
 	CNavigation*			m_pNavigationCom = nullptr;
 
 	class CBag*				m_pBag = nullptr;
-	
+	CGameObject*			m_pBall = nullptr;
+
 	CGameObject*			m_pBattleTarget = nullptr;
 	vector<wstring>		    m_vBattleScript;
 	vector<CGameObject*>*    m_pvecTargetPoke;
@@ -75,11 +83,18 @@ private:
 	_bool					m_bPrevPos = false;
 	_float4					m_vPrevPos;
 	//Battle
+	_bool					m_bCapture = false;
 	_bool					m_ChangePoke = false;
 	_bool					m_bChangeAnim = false;
 	_bool					m_bReturnPoke = false;
 	_bool					m_bReturn = false;
 	BATTLETYPE				m_eBattleType = BATTLE_END;
+
+	//Capture
+	_bool					m_bCapturePoke = false;
+	_int					m_iCaptureBall = 0;
+	_int					m_iBallIndex = 0;
+	_int					m_iPrevBall = 0;
 public:
 	static CPlayer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

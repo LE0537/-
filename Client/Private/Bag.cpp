@@ -35,34 +35,41 @@ HRESULT CBag::Initialize(void * pArg)
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_PokeInfo"), LEVEL_STATIC, TEXT("Layer_UI"), this)))
 		return E_FAIL;
 
-	for (_int i = 0; i < 5; ++i)
-	{
-		ITEMINFO* tInfo;
-		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_MonsterBall"), LEVEL_STATIC, TEXT("Layer_Item"),&tInfo)))
-			return E_FAIL;
-		m_vecItem.push_back(tInfo);
-	}
-	for (_int i = 5; i < 15; ++i)
-	{
-		ITEMINFO* tInfo;
-		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_HpPotion"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfo)))
-			return E_FAIL;
-		tInfo->iNum = 5;
-		m_vecItem.push_back(tInfo);
-	}
-	for (_int i = 15; i < 20; ++i)
-	{
-		ITEMINFO* tInfo;
-		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_ExpShare"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfo)))
-			return E_FAIL;
-		m_vecItem.push_back(tInfo);
-	}
+	ITEMINFO* tInfoItem;
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_MonsterBall"), LEVEL_STATIC, TEXT("Layer_Item"),&tInfoItem)))
+		return E_FAIL;
+	tInfoItem->iNum = 10;
+	m_vecItem.push_back(tInfoItem);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_SuperBall"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))
+		return E_FAIL;
+	tInfoItem->iNum = 5;
+	m_vecItem.push_back(tInfoItem);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_HyperBall"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))
+		return E_FAIL;
+	tInfoItem->iNum = 5;
+	m_vecItem.push_back(tInfoItem);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_MasterBall"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))
+		return E_FAIL;
+	tInfoItem->iNum = 1;
+	m_vecItem.push_back(tInfoItem);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_HpPotion"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))
+		return E_FAIL;
+	tInfoItem->iNum = 10;
+	m_vecItem.push_back(tInfoItem);
+	
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_ExpShare"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))
+		return E_FAIL;
+	m_vecItem.push_back(tInfoItem);
+	
 	for (_int i = 20; i < 50; ++i)
 	{
-		ITEMINFO* tInfo;
-		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_None"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfo)))
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_None"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))
 			return E_FAIL;
-		m_vecItem.push_back(tInfo);
+		m_vecItem.push_back(tInfoItem);
 	}
 	CGameObject* tInfo;
 	
@@ -812,7 +819,7 @@ void CBag::Key_Input()
 				switch (m_UsePos)
 				{
 				case 0:
-					if (CheckUseItem())
+					if (m_vecItem[m_iItemPos]->iItemNum == 4)
 					{
 						SetSelectButtonPoke(m_iPokeSelect, DIR_LEFT);
 						m_bItem = true;
@@ -1145,6 +1152,18 @@ void CBag::UseItem()
 
 	switch ((*iter)->iItemNum)
 	{
+	case 0:
+		--(*iter)->iNum;
+		break;
+	case 1:
+		--(*iter)->iNum;
+		break;
+	case 2:
+		--(*iter)->iNum;
+		break;
+	case 3:
+		--(*iter)->iNum;
+		break;
 	case 4:
 		m_iHealHP = 30;
 		m_iHealPokeIndex = m_iPokeSelect;
@@ -1312,24 +1331,30 @@ void CBag::RenderFonts()
 	vPos = { 136.f,162.f,0.f,1.f };
 	for (_int i = 0; i < 6; ++i)
 	{
-		strHP = TEXT("");
-		strHP += to_wstring(dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().iHp);
-		strHP += strHP2;
-		strHP += to_wstring(dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().iMaxHp);
-		pGameInstance->Render_Font(TEXT("Font_Nexon"), strHP.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
-		vPos.m128_f32[1] += 96.f;
+		if (dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().iPokeNum != 999)
+		{
+			strHP = TEXT("");
+			strHP += to_wstring(dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().iHp);
+			strHP += strHP2;
+			strHP += to_wstring(dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().iMaxHp);
+			pGameInstance->Render_Font(TEXT("Font_Nexon"), strHP.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+			vPos.m128_f32[1] += 96.f;
+		}
 	}
 	wstring strLv = TEXT("Lv.");
 	vPos = { 316.f,162.f,0.f,1.f };
 	for (_int i = 0; i < 6; ++i)
 	{
-		if (dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().eStatInfo == STATINFO_END)
+		if (dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().iPokeNum != 999)
 		{
-			strLv = TEXT("Lv.");
-			strLv += to_wstring(dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().iLv);
-			pGameInstance->Render_Font(TEXT("Font_Nexon"), strLv.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+			if (dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().eStatInfo == STATINFO_END)
+			{
+				strLv = TEXT("Lv.");
+				strLv += to_wstring(dynamic_cast<CGameObj*>(m_vecPoke[i])->Get_PokeInfo().iLv);
+				pGameInstance->Render_Font(TEXT("Font_Nexon"), strLv.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+			}
+			vPos.m128_f32[1] += 96.f;
 		}
-		vPos.m128_f32[1] += 96.f;
 	}
 	wstring strMoney = TEXT("¿ëµ·           ");
 	strMoney += to_wstring(dynamic_cast<CGameObj*>(m_pPlayer)->Get_PalyerInfo().iMoney);
@@ -1340,18 +1365,7 @@ void CBag::RenderFonts()
 	RELEASE_INSTANCE(CGameInstance);
 }
 
-_bool CBag::CheckUseItem()
-{
-	switch (m_vecItem[m_iItemPos]->iItemNum)
-	{
-	case 4:
-		return true;
-		break;
-	default:
-		break;
-	}
-	return false;
-}
+
 
 _bool CBag::CheckGiveItem()
 {
@@ -1465,6 +1479,7 @@ void CBag::BattleChangePokeKey()
 	{
 		if (m_iChangePoke != m_iPokeSelect && dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().eStatInfo != STUN)
 		{
+			dynamic_cast<CPlayer*>(m_pPlayer)->Set_PlayerBallIndex(dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().iBallNum);
 			m_iChangePoke = m_iPokeSelect;
 			m_bStart = false;
 			ClearBag();
@@ -1562,12 +1577,92 @@ void CBag::BattleUseItemKey()
 				switch (m_UsePos)
 				{
 				case 0:
-					if (CheckUseItem())
+					if (m_vecItem[m_iItemPos]->iItemNum == 4)
 					{
 						SetSelectButtonPoke(m_iPokeSelect, DIR_LEFT);
 						m_bItem = true;
 						m_bItemSelect = false;
 						m_bUseItem = false;
+					}
+					else if (m_vecItem[m_iItemPos]->iItemNum == 0 && dynamic_cast<CPlayer*>(m_pPlayer)->Get_BattleType() == BATTLE_WILD)
+					{
+						dynamic_cast<CPlayer*>(m_pPlayer)->Set_CaptureBallIndex(0);
+						UseItem();
+						m_bItemSelect = true;
+						m_bItem = false;
+						m_bGiveItem = false;
+						m_bUsePoke = false;
+						m_bUseItem = false;
+						m_UsePos = 0;
+						m_bUse = false;
+						m_iPokeSelect = 0;
+						m_bStart = false;
+						ClearBag();
+						m_bBattleUseItem = false;
+						dynamic_cast<CGameObj*>(m_pPlayer)->Set_AnimIndex(1);
+						RELEASE_INSTANCE(CGameInstance);
+						g_bCapture = true;
+						return;
+					}
+					else if (m_vecItem[m_iItemPos]->iItemNum == 1 && dynamic_cast<CPlayer*>(m_pPlayer)->Get_BattleType() == BATTLE_WILD)
+					{
+						dynamic_cast<CPlayer*>(m_pPlayer)->Set_CaptureBallIndex(1);
+						UseItem();
+						m_bItemSelect = true;
+						m_bItem = false;
+						m_bGiveItem = false;
+						m_bUsePoke = false;
+						m_bUseItem = false;
+						m_UsePos = 0;
+						m_bUse = false;
+						m_iPokeSelect = 0;
+						m_bStart = false;
+						ClearBag();
+						m_bBattleUseItem = false;
+						dynamic_cast<CGameObj*>(m_pPlayer)->Set_AnimIndex(1);
+						RELEASE_INSTANCE(CGameInstance);
+						g_bCapture = true;
+						return;
+					}
+					else if (m_vecItem[m_iItemPos]->iItemNum == 2 && dynamic_cast<CPlayer*>(m_pPlayer)->Get_BattleType() == BATTLE_WILD)
+					{
+						dynamic_cast<CPlayer*>(m_pPlayer)->Set_CaptureBallIndex(2);
+						UseItem();
+						m_bItemSelect = true;
+						m_bItem = false;
+						m_bGiveItem = false;
+						m_bUsePoke = false;
+						m_bUseItem = false;
+						m_UsePos = 0;
+						m_bUse = false;
+						m_iPokeSelect = 0;
+						m_bStart = false;
+						ClearBag();
+						m_bBattleUseItem = false;
+						dynamic_cast<CGameObj*>(m_pPlayer)->Set_AnimIndex(1);
+						RELEASE_INSTANCE(CGameInstance);
+						g_bCapture = true;
+						return;
+					}
+					else if (m_vecItem[m_iItemPos]->iItemNum == 3 && dynamic_cast<CPlayer*>(m_pPlayer)->Get_BattleType() == BATTLE_WILD)
+					{
+						dynamic_cast<CPlayer*>(m_pPlayer)->Set_CaptureBallIndex(3);
+						UseItem();
+						m_bItemSelect = true;
+						m_bItem = false;
+						m_bGiveItem = false;
+						m_bUsePoke = false;
+						m_bUseItem = false;
+						m_UsePos = 0;
+						m_bUse = false;
+						m_iPokeSelect = 0;
+						m_bStart = false;
+						ClearBag();
+						m_bBattleUseItem = false;
+						dynamic_cast<CGameObj*>(m_pPlayer)->Set_AnimIndex(1);
+						RELEASE_INSTANCE(CGameInstance);
+						g_bCapture = true;
+						return;
 					}
 					m_bUse = false;
 					break;

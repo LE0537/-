@@ -46,44 +46,17 @@
     <Filter Include="02.GameObjects\99.GameObj\03.Item">
       <UniqueIdentifier>{466febe0-2f93-4a78-9ae0-77c521a99087}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon">
-      <UniqueIdentifier>{1325a119-e099-4af2-9e0c-f8091f2a9f18}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\99.GameObj\03.Item\00.MonsterBall">
       <UniqueIdentifier>{4d268ae1-5b94-49db-8353-b24613b752cc}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\99.GameObj\03.Item\99.None">
       <UniqueIdentifier>{a97d3628-279c-4448-9144-d105bb01d579}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\25.Pikachu">
-      <UniqueIdentifier>{8d69a1a7-26cd-43a1-a454-0dbfacee3b72}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\999.NonePoke">
-      <UniqueIdentifier>{1fb9c189-7ab9-47c9-8d33-a8dcf75ec444}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\152.Garomakguri">
-      <UniqueIdentifier>{9bc0ec44-7ce4-4898-95ab-e01296c53f4d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\99.GameObj\03.Item\04.HpPotion">
       <UniqueIdentifier>{3f49e1f3-b30a-421f-bfc2-5944eb469b44}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\99.GameObj\03.Item\30.ExpShare">
       <UniqueIdentifier>{6601399b-760a-4ea6-af1f-c0fbada8e64a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\07.Squirtle">
-      <UniqueIdentifier>{cfb1faf2-5950-4e91-a225-58e86decdbcc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\52.Meowth">
-      <UniqueIdentifier>{9956e4b2-445e-44bb-91cb-60cda0027e83}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\80.Slowbro">
-      <UniqueIdentifier>{7504cef0-ed43-4f9c-93ce-08731ba6c064}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\04.Charmander">
-      <UniqueIdentifier>{395cdd0f-013a-44ff-98e4-2dfba64400ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\40.Wigglytuff">
-      <UniqueIdentifier>{8253f5c8-b571-4145-a67f-b2ea57c357e3}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\02.Map">
       <UniqueIdentifier>{02cbd942-76bf-4716-ab1d-88fbc83ee3e4}</UniqueIdentifier>
@@ -93,9 +66,6 @@
     </Filter>
     <Filter Include="02.GameObjects\02.Map\02.BattleField">
       <UniqueIdentifier>{4baccdec-6f70-4d67-b21d-587b1aa08110}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\143.Snorlax">
-      <UniqueIdentifier>{7c7d5a8a-9791-402a-83fd-32f40bffa7ba}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\99.GameObj\02.Trainer\00.Mari">
       <UniqueIdentifier>{bd1d203b-67b1-420b-9f39-f1484de78819}</UniqueIdentifier>
@@ -139,9 +109,6 @@
     <Filter Include="02.GameObjects\02.Map\05.Weed">
       <UniqueIdentifier>{506e36b5-6e43-4cc7-bf21-60ca4d19136a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\08.Wartortle">
-      <UniqueIdentifier>{b77660d0-49c9-4bb3-9b5d-03ac492d1801}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\99.GameObj\05.Skill\01.WaterBeam">
       <UniqueIdentifier>{a3560757-3e22-400d-8f1c-75c70258f23d}</UniqueIdentifier>
     </Filter>
@@ -150,69 +117,6 @@
     </Filter>
     <Filter Include="02.GameObjects\99.GameObj\05.Skill\01.WaterBeam\WaterBall">
       <UniqueIdentifier>{2b4d6ee2-0a69-49d3-9f97-614acb09e099}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\09.Blastoise">
-      <UniqueIdentifier>{35a9709c-3eab-4dee-8661-d6cb744ce805}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\10.Caterpie">
-      <UniqueIdentifier>{b9ef49a9-4160-48be-9986-3cfeacdd64ef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\11.Metapod">
-      <UniqueIdentifier>{d3f1368e-e445-4d72-9bfb-9b35538e0b2d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\12.Butterfree">
-      <UniqueIdentifier>{cd42b6ca-1279-4706-871c-4020868bbbe3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\19.Rattata">
-      <UniqueIdentifier>{a89ad21f-35da-4eef-a3a1-955a6e1dfb71}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\20.Raticate">
-      <UniqueIdentifier>{44373a1b-f207-42e6-9130-6e9640149782}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\108.Lickitung">
-      <UniqueIdentifier>{cd99768d-65c7-4146-a59c-e39d08629b0f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\113.Chansey">
-      <UniqueIdentifier>{3649bbd5-3a6b-4dae-8a02-2dd455d1c99c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\115.Kangaskhan">
-      <UniqueIdentifier>{7cd697be-31f0-4e9f-b284-a49cfdc4c623}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\123.Scyther">
-      <UniqueIdentifier>{b1940c25-b46a-4e83-98c3-3df047945d13}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\129.Magikarp">
-      <UniqueIdentifier>{0096bd36-a94e-49bb-9303-0d8f0e4c0eb8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\130.Gyarados">
-      <UniqueIdentifier>{051a68e4-4c6e-45ff-a12c-2aae6bc16180}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\147.Dratini">
-      <UniqueIdentifier>{50eb7181-31cf-4857-a251-c126a730b051}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\148.Dragonair">
-      <UniqueIdentifier>{cb17ae4a-c211-4fba-8314-cf143e5e5beb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\149.Dragonite">
-      <UniqueIdentifier>{1ef8e196-896f-4914-be26-c0c0b800bb6f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\150.Mewtwo">
-      <UniqueIdentifier>{75c7ba3a-46c0-4555-885f-953a446dc2f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\151.Mew">
-      <UniqueIdentifier>{4aa9cbf0-3e2a-48aa-93f8-4850945a7183}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\39.Jigglypuff">
-      <UniqueIdentifier>{c7084a0a-8784-415c-b1a2-7346fa26f8c1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\53.Persian">
-      <UniqueIdentifier>{09445ec4-5908-42ee-9c80-305f4a54d34d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\79.Slowpoke">
-      <UniqueIdentifier>{a47ac9f5-64d8-42cb-aeab-9b866827d1b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\95.Onix">
-      <UniqueIdentifier>{a9634958-616b-49c1-b5f7-d591cf083fc9}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\99.GameObj\04.UI">
       <UniqueIdentifier>{418b620b-4b2f-48ea-aa56-0881b5828d8f}</UniqueIdentifier>
@@ -279,6 +183,156 @@
     </Filter>
     <Filter Include="02.GameObjects\99.GameObj\02.Trainer\14.Tr9">
       <UniqueIdentifier>{30551553-4476-4f43-bd91-070c52de5e5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\41.GrassBadge">
+      <UniqueIdentifier>{d8a38453-a254-4002-822d-974f563795b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\42.WaterBadge">
+      <UniqueIdentifier>{95cfb67e-61f7-4568-b109-6811fb84ff36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\43.FireBadge">
+      <UniqueIdentifier>{31031b2e-d724-44e8-992d-b6a6204501e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\44.FightBadge">
+      <UniqueIdentifier>{b5de061d-25fa-4034-8474-0c8790f0b5b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\45.GhostBadge">
+      <UniqueIdentifier>{63b269a6-ddfc-46c1-a8ff-45d27a10ffe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\46.FairyBadge">
+      <UniqueIdentifier>{bd35dda0-20d3-4320-a16e-9708daf2a609}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\47.TerrainBadge">
+      <UniqueIdentifier>{d0749e0e-4fe9-47e5-a909-564bb23db8ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\48.IceBadge">
+      <UniqueIdentifier>{0e19bbe4-5335-4913-847f-75396764b69d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\49.EvilBadge">
+      <UniqueIdentifier>{981c6dab-4880-4666-b151-4bb61d081277}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\50.DragonBadge">
+      <UniqueIdentifier>{199fccf2-a743-462c-ab49-57c7e83b165d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon">
+      <UniqueIdentifier>{1325a119-e099-4af2-9e0c-f8091f2a9f18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\25.Pikachu">
+      <UniqueIdentifier>{8d69a1a7-26cd-43a1-a454-0dbfacee3b72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\999.NonePoke">
+      <UniqueIdentifier>{1fb9c189-7ab9-47c9-8d33-a8dcf75ec444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\152.Garomakguri">
+      <UniqueIdentifier>{9bc0ec44-7ce4-4898-95ab-e01296c53f4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\07.Squirtle">
+      <UniqueIdentifier>{cfb1faf2-5950-4e91-a225-58e86decdbcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\52.Meowth">
+      <UniqueIdentifier>{9956e4b2-445e-44bb-91cb-60cda0027e83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\80.Slowbro">
+      <UniqueIdentifier>{7504cef0-ed43-4f9c-93ce-08731ba6c064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\04.Charmander">
+      <UniqueIdentifier>{395cdd0f-013a-44ff-98e4-2dfba64400ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\40.Wigglytuff">
+      <UniqueIdentifier>{8253f5c8-b571-4145-a67f-b2ea57c357e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\143.Snorlax">
+      <UniqueIdentifier>{7c7d5a8a-9791-402a-83fd-32f40bffa7ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\08.Wartortle">
+      <UniqueIdentifier>{b77660d0-49c9-4bb3-9b5d-03ac492d1801}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\09.Blastoise">
+      <UniqueIdentifier>{35a9709c-3eab-4dee-8661-d6cb744ce805}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\10.Caterpie">
+      <UniqueIdentifier>{b9ef49a9-4160-48be-9986-3cfeacdd64ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\11.Metapod">
+      <UniqueIdentifier>{d3f1368e-e445-4d72-9bfb-9b35538e0b2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\12.Butterfree">
+      <UniqueIdentifier>{cd42b6ca-1279-4706-871c-4020868bbbe3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\19.Rattata">
+      <UniqueIdentifier>{a89ad21f-35da-4eef-a3a1-955a6e1dfb71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\20.Raticate">
+      <UniqueIdentifier>{44373a1b-f207-42e6-9130-6e9640149782}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\108.Lickitung">
+      <UniqueIdentifier>{cd99768d-65c7-4146-a59c-e39d08629b0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\113.Chansey">
+      <UniqueIdentifier>{3649bbd5-3a6b-4dae-8a02-2dd455d1c99c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\115.Kangaskhan">
+      <UniqueIdentifier>{7cd697be-31f0-4e9f-b284-a49cfdc4c623}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\123.Scyther">
+      <UniqueIdentifier>{b1940c25-b46a-4e83-98c3-3df047945d13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\129.Magikarp">
+      <UniqueIdentifier>{0096bd36-a94e-49bb-9303-0d8f0e4c0eb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\130.Gyarados">
+      <UniqueIdentifier>{051a68e4-4c6e-45ff-a12c-2aae6bc16180}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\147.Dratini">
+      <UniqueIdentifier>{50eb7181-31cf-4857-a251-c126a730b051}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\148.Dragonair">
+      <UniqueIdentifier>{cb17ae4a-c211-4fba-8314-cf143e5e5beb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\149.Dragonite">
+      <UniqueIdentifier>{1ef8e196-896f-4914-be26-c0c0b800bb6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\150.Mewtwo">
+      <UniqueIdentifier>{75c7ba3a-46c0-4555-885f-953a446dc2f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\151.Mew">
+      <UniqueIdentifier>{4aa9cbf0-3e2a-48aa-93f8-4850945a7183}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\39.Jigglypuff">
+      <UniqueIdentifier>{c7084a0a-8784-415c-b1a2-7346fa26f8c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\53.Persian">
+      <UniqueIdentifier>{09445ec4-5908-42ee-9c80-305f4a54d34d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\79.Slowpoke">
+      <UniqueIdentifier>{a47ac9f5-64d8-42cb-aeab-9b866827d1b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\01.Pokemon\95.Onix">
+      <UniqueIdentifier>{a9634958-616b-49c1-b5f7-d591cf083fc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\08.CaptureBall">
+      <UniqueIdentifier>{8b5b2f37-7461-49ed-b641-513c8258d9d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\08.CaptureBall\00.AnimMonsterBall">
+      <UniqueIdentifier>{0baba323-cdaa-49b3-b585-60efbde2bd1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\08.CaptureBall\01.AnimSuperBall">
+      <UniqueIdentifier>{308168e1-d573-4e99-acfd-2417bf17bb4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\08.CaptureBall\02.AnimHyperBall">
+      <UniqueIdentifier>{828afbfd-5108-4d54-965b-ecf2e1ef0cd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\08.CaptureBall\03.AnimMasterBall">
+      <UniqueIdentifier>{ae8a21e3-bb6a-4dda-beeb-ecf3884205e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\01.SuperBall">
+      <UniqueIdentifier>{20292feb-f81f-4542-a28a-07e445cd8a2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\02.HyperBall">
+      <UniqueIdentifier>{214e1335-394f-4aa6-af2b-6995440ab33c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\03.MasterBall">
+      <UniqueIdentifier>{55948c36-b24b-4ba7-adc9-163b158509f5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -555,6 +609,57 @@
     <ClInclude Include="..\public\Tr9.h">
       <Filter>02.GameObjects\99.GameObj\02.Trainer\14.Tr9</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\GrassBadge.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\41.GrassBadge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\WaterBadge.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\42.WaterBadge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\DragonBadge.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\50.DragonBadge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TerrainBadge.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\47.TerrainBadge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\IceBadge.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\48.IceBadge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EvilBadge.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\49.EvilBadge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\GhostBadge.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\45.GhostBadge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FairyBadge.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\46.FairyBadge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FightBadge.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\44.FightBadge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FireBadge.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\43.FireBadge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\AnimMonsterBall.h">
+      <Filter>02.GameObjects\99.GameObj\08.CaptureBall\00.AnimMonsterBall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\AnimHyperBall.h">
+      <Filter>02.GameObjects\99.GameObj\08.CaptureBall\02.AnimHyperBall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\AnimMasterBall.h">
+      <Filter>02.GameObjects\99.GameObj\08.CaptureBall\03.AnimMasterBall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\AnimSuperBall.h">
+      <Filter>02.GameObjects\99.GameObj\08.CaptureBall\01.AnimSuperBall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SuperBall.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\01.SuperBall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\HyperBall.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\02.HyperBall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MasterBall.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\03.MasterBall</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -814,6 +919,57 @@
     </ClCompile>
     <ClCompile Include="..\private\Tr9.cpp">
       <Filter>02.GameObjects\99.GameObj\02.Trainer\14.Tr9</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\GrassBadge.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\41.GrassBadge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\WaterBadge.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\42.WaterBadge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DragonBadge.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\50.DragonBadge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TerrainBadge.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\47.TerrainBadge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\IceBadge.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\48.IceBadge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EvilBadge.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\49.EvilBadge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\GhostBadge.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\45.GhostBadge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FairyBadge.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\46.FairyBadge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FightBadge.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\44.FightBadge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FireBadge.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\43.FireBadge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\AnimMonsterBall.cpp">
+      <Filter>02.GameObjects\99.GameObj\08.CaptureBall\00.AnimMonsterBall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\AnimHyperBall.cpp">
+      <Filter>02.GameObjects\99.GameObj\08.CaptureBall\02.AnimHyperBall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\AnimMasterBall.cpp">
+      <Filter>02.GameObjects\99.GameObj\08.CaptureBall\03.AnimMasterBall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\AnimSuperBall.cpp">
+      <Filter>02.GameObjects\99.GameObj\08.CaptureBall\01.AnimSuperBall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SuperBall.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\01.SuperBall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HyperBall.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\02.HyperBall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MasterBall.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\03.MasterBall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

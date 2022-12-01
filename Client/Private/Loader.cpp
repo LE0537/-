@@ -74,10 +74,27 @@
 #include "NonePoke.h"
 //Item 헤더
 #include "MonsterBall.h"
+#include "SuperBall.h"
+#include "HyperBall.h"
+#include "MasterBall.h"
 #include "HpPotion.h"
 #include "ExpShare.h"
 #include "None.h"
 #include "Ball.h"
+#include "GrassBadge.h"
+#include "WaterBadge.h"
+#include "FireBadge.h"
+#include "FightBadge.h"
+#include "GhostBadge.h"
+#include "FairyBadge.h"
+#include "TerrainBadge.h"
+#include "IceBadge.h"
+#include "EvilBadge.h"
+#include "DragonBadge.h"
+#include "AnimMonsterBall.h"
+#include "AnimSuperBall.h"
+#include "AnimHyperBall.h"
+#include "AnimMasterBall.h"
 //Skill 헤더
 #include "Tackle.h"
 #include "BreakCar.h"
@@ -150,7 +167,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Bag/%d.dds"), 12))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Item"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Item/%d.dds"), 41))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Item/%d.dds"), 51))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_PokeNum"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/PokeNum/%d.dds"), 153))))
@@ -230,6 +247,15 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_MonsterBall"),
 		CMonsterBall::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_SuperBall"),
+		CSuperBall::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_HyperBall"),
+		CHyperBall::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_MasterBall"),
+		CMasterBall::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_HpPotion"),
 		CHpPotion::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -239,12 +265,62 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Ball"),
 		CBall::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_GrassBadge"),
+		CGrassBadge::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_WaterBadge"),
+		CWaterBadge::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_FireBadge"),
+		CFireBadge::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_FightBadge"),
+		CFightBadge::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_GhostBadge"),
+		CGhostBadge::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_FairyBadge"),
+		CFairyBadge::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_TerrainBadge"),
+		CTerrainBadge::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_IceBadge"),
+		CIceBadge::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_EvilBadge"),
+		CEvilBadge::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_DragonBadge"),
+		CDragonBadge::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
-
-	/* 포켓몬 객체 */
 	_matrix			PivotMatrix = XMMatrixIdentity();
 
 	PivotMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("AnimMonsterBall"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_AnimMonsterBall"),
+	CAnimMonsterBall::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("AnimSuperBall"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_AnimSuperBall"),
+	CAnimSuperBall::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("AnimHyperBall"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_AnimHyperBall"),
+	CAnimHyperBall::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("AnimMasterBall"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_AnimMasterBall"),
+	CAnimMasterBall::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
+	/* 포켓몬 객체 */
 
 	/*if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Charmander"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Charmander/Charmander.fbx", PivotMatrix))))

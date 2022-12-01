@@ -105,6 +105,8 @@ public:
 	CGameObject* Get_SelectPoke() { return m_vecPoke[m_iPokeSelect]; }
 	CGameObject* Get_vecPoke(_int _iIndex) { return m_vecPoke[_iIndex]; }
 	void		 Set_vecPoke(_int _iIndex, CGameObject* pPoke) { m_vecPoke[_iIndex] = pPoke; }
+	_int		 Get_vecItemNum(_int _iIndex) { return m_vecItem[_iIndex]->iItemNum; }
+	void		 Set_vecItem(_int _iIndex, ITEMINFO* pItem) { m_vecItem[_iIndex] = pItem; }
 	_bool		 Get_BattlePokeDead() { return m_bBattlePokeDead; }
 	void		 Set_BattlePokeDead() { m_bBattlePokeDead = true; }
 	_bool		 Get_BattleChangePoke() { return m_bBattleChangePoke; }
@@ -136,7 +138,6 @@ private:
 	void	ClearItem();
 	void	SwapPoke(_int _iSwapPoke);
 	void	RenderFonts();
-	_bool	CheckUseItem();
 	_bool	CheckGiveItem();
 	void	ClearBag();
 	void	RidePoke();

@@ -4,6 +4,9 @@
 #include "GameInstance.h"
 #include "Level_GamePlay.h"
 #include "Data_Manager.h"	// Ãß°¡
+#include "Cell.h"
+#include "SoundMgr.h"
+
 
 CField::CField(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -36,17 +39,62 @@ HRESULT CField::Initialize(void * pArg)
 
 void CField::Tick(_float fTimeDelta)
 {
-
+	//CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	//if(pGameInstance->Key_Down(DIK_F2))
+	//{ 
+	//	g_bEnding = !g_bEnding;
+	//}
+	//RELEASE_INSTANCE(CGameInstance);
+	if (g_bEnding)
+	{
+		if (m_iEndinCell >= 3)
+		{
+			Ending(fTimeDelta);
+			return;
+		}
+		if (m_bPicking)
+		{
+			m_pModelCom->Picking(m_pTransformCom, &m_vMousePos);
+			
+			Check_Range();
+			
+			switch (m_iCheckPoints)
+			{
+			case 0:
+				vPoints[0] = m_vMousePos;
+				++m_iCheckPoints;
+				break;
+			case 1:
+				vPoints[1] = m_vMousePos;
+				++m_iCheckPoints;
+				break;
+			case 2:
+				vPoints[2] = m_vMousePos;
+				m_iCheckPoints = 0;
+				Sort_Cell();
+				Create_Cell();
+				break;
+			default:
+				break;
+			}
+			m_bPicking = false;
+		}
+		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+		if (pGameInstance->Mouse_Down(DIMK_RBUTTON))
+		{
+			m_bPicking = true;
+		}
+		RELEASE_INSTANCE(CGameInstance);
+	}
 }
 
 void CField::Late_Tick(_float fTimeDelta)
 {
 	if (!g_Battle)
 	{
-		if (!g_bBag && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
+		if (!g_bEvolution && !g_bBag && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
 		{
 			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-			Compute_CamDistance(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
 		}
 		if (g_CollBox)
 		{
@@ -121,7 +169,92 @@ HRESULT CField::Ready_Components()
 	return S_OK;
 }
 
+HRESULT CField::Create_Cell()
+{
+	CCell*			pCell = CCell::Create(m_pDevice, m_pContext, vPoints, m_pNavigationCom->Get_Cells()->size());
+	if (nullptr == pCell)
+		return E_FAIL;
 
+	
+	m_pNavigationCom->Get_Cells()->push_back(pCell);
+	
+	++m_iEndinCell;
+
+	return S_OK;
+}
+void CField::Check_Range()
+{
+	_vector vPos;
+	_vector vMousePos = XMLoadFloat3(&m_vMousePos);
+	_float fDist = 0.f;
+	_float fDist2 = 1.5f;
+	for (auto& Cell : *m_pNavigationCom->Get_Cells())
+	{
+		vPos = XMLoadFloat3(Cell->Get_Point(CCell::POINT_A));
+		fDist = XMVectorGetX(XMVector3Length(vPos - vMousePos));
+		if (fDist2 > fDist)
+			XMStoreFloat3(&m_vMousePos, vPos);
+		vPos = XMLoadFloat3(Cell->Get_Point(CCell::POINT_B));
+		fDist = XMVectorGetX(XMVector3Length(vPos - vMousePos));
+		if (fDist2 > fDist)
+			XMStoreFloat3(&m_vMousePos, vPos);
+		vPos = XMLoadFloat3(Cell->Get_Point(CCell::POINT_C));
+		fDist = XMVectorGetX(XMVector3Length(vPos - vMousePos));
+		if (fDist2 > fDist)
+			XMStoreFloat3(&m_vMousePos, vPos);
+	}
+
+}
+void CField::Sort_Cell()
+{
+
+	_vector vABDir = XMLoadFloat3(&vPoints[1]) - XMLoadFloat3(&vPoints[0]);
+	_vector vBCDir = XMLoadFloat3(&vPoints[2]) - XMLoadFloat3(&vPoints[1]);
+	_vector vCloss = XMVector3Cross(vABDir, vBCDir);
+
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	_vector vMouseDir = pGameInstance->Get_RayDir() * -1.f;
+	vCloss = XMVector3Normalize(vCloss);
+	vMouseDir = XMVector3Normalize(vMouseDir);
+
+	if (0.f > XMVectorGetX(XMVector3Dot(vCloss, vMouseDir)))
+	{
+		_float3 vTemp = vPoints[0];
+		vPoints[0] = vPoints[2];
+		vPoints[2] = vTemp;
+	}
+	RELEASE_INSTANCE(CGameInstance);
+
+}
+HRESULT CField::Ending(_float fTimeDelta)
+{
+	if (!m_bEnding)
+	{
+		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_EndingErr"), LEVEL_GAMEPLAY, TEXT("Layer_UI"))))
+			return E_FAIL;
+
+		RELEASE_INSTANCE(CGameInstance);
+		CSoundMgr::Get_Instance()->BGM_Stop();
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Err.wav"), 1.f);
+		m_bEnding = true;
+		m_fDeadtime = 0.f;
+	}
+
+	if (m_bEnding && !m_bDeadSound)
+	{
+		m_fDeadtime += fTimeDelta;
+		if (m_fDeadtime > 3.f)
+		{
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("DeadEnding.wav"), 1.f);
+			m_bDeadSound = true;
+		}
+	}
+
+	return S_OK;
+}
 HRESULT CField::SetUp_ShaderResources()
 {
 	if (nullptr == m_pShaderCom)

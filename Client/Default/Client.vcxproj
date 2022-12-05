@@ -186,6 +186,7 @@
     <ClInclude Include="..\Public\BreakCar.h" />
     <ClInclude Include="..\public\Butterfree.h" />
     <ClInclude Include="..\Public\Camera_Dynamic.h" />
+    <ClInclude Include="..\public\Candy.h" />
     <ClInclude Include="..\public\Caterpie.h" />
     <ClInclude Include="..\public\Chansey.h" />
     <ClInclude Include="..\public\Charmander.h" />
@@ -196,6 +197,7 @@
     <ClInclude Include="..\public\DragonBadge.h" />
     <ClInclude Include="..\public\Dragonite.h" />
     <ClInclude Include="..\public\Dratini.h" />
+    <ClInclude Include="..\public\EndingErr.h" />
     <ClInclude Include="..\public\EvilBadge.h" />
     <ClInclude Include="..\public\Evolution.h" />
     <ClInclude Include="..\public\ExpShare.h" />
@@ -203,6 +205,7 @@
     <ClInclude Include="..\public\Field.h" />
     <ClInclude Include="..\public\FightBadge.h" />
     <ClInclude Include="..\public\FireBadge.h" />
+    <ClInclude Include="..\public\FullPotion.h" />
     <ClInclude Include="..\public\GameObj.h" />
     <ClInclude Include="..\public\Garomakguri.h" />
     <ClInclude Include="..\public\GhostBadge.h" />
@@ -224,6 +227,7 @@
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\public\Mari.h" />
     <ClInclude Include="..\public\MasterBall.h" />
+    <ClInclude Include="..\public\MaxPotion.h" />
     <ClInclude Include="..\public\Meowth.h" />
     <ClInclude Include="..\public\Metapod.h" />
     <ClInclude Include="..\public\Mew.h" />
@@ -294,6 +298,7 @@
     <ClCompile Include="..\Private\BreakCar.cpp" />
     <ClCompile Include="..\private\Butterfree.cpp" />
     <ClCompile Include="..\Private\Camera_Dynamic.cpp" />
+    <ClCompile Include="..\private\Candy.cpp" />
     <ClCompile Include="..\private\Caterpie.cpp" />
     <ClCompile Include="..\private\Chansey.cpp" />
     <ClCompile Include="..\private\Charmander.cpp" />
@@ -303,6 +308,7 @@
     <ClCompile Include="..\private\DragonBadge.cpp" />
     <ClCompile Include="..\private\Dragonite.cpp" />
     <ClCompile Include="..\private\Dratini.cpp" />
+    <ClCompile Include="..\private\EndingErr.cpp" />
     <ClCompile Include="..\private\EvilBadge.cpp" />
     <ClCompile Include="..\private\Evolution.cpp" />
     <ClCompile Include="..\private\ExpShare.cpp" />
@@ -310,6 +316,7 @@
     <ClCompile Include="..\private\Field.cpp" />
     <ClCompile Include="..\private\FightBadge.cpp" />
     <ClCompile Include="..\private\FireBadge.cpp" />
+    <ClCompile Include="..\private\FullPotion.cpp" />
     <ClCompile Include="..\private\GameObj.cpp" />
     <ClCompile Include="..\private\Garomakguri.cpp" />
     <ClCompile Include="..\private\GhostBadge.cpp" />
@@ -331,6 +338,7 @@
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\private\Mari.cpp" />
     <ClCompile Include="..\private\MasterBall.cpp" />
+    <ClCompile Include="..\private\MaxPotion.cpp" />
     <ClCompile Include="..\Private\Meowth.cpp" />
     <ClCompile Include="..\private\Metapod.cpp" />
     <ClCompile Include="..\private\Mew.cpp" />

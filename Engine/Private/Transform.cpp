@@ -39,6 +39,15 @@ HRESULT CTransform::Initialize(void * pArg)
 	return S_OK;
 }
 
+void CTransform::Go_StraightNoNavi(_float fTimeDelta)
+{
+	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
+	_vector		vLook = Get_State(CTransform::STATE_LOOK);
+
+	vPosition += XMVector3Normalize(vLook) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
+	Set_State(CTransform::STATE_TRANSLATION, vPosition);
+}
+
 void CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation)
 {
 	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);

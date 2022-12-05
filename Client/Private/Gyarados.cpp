@@ -94,6 +94,11 @@ void CGyarados::Tick(_float fTimeDelta)
 		if (m_PokemonInfo.bLvUp)
 			LvUp();
 	}
+	else
+	{
+		if (m_PokemonInfo.bLvUp)
+			LvUp();
+	}
 	if (m_bAnimReset)
 		Reset_Battle();
 	if (m_bWildPoke && !g_bEvolution)

@@ -6,7 +6,7 @@
 #include "Object_Manager.h"
 #include "Timer_Manager.h"
 #include "PipeLine.h"
-
+#include "Picking.h"
 #include "Component_Manager.h"
 #include "Light_Manager.h"
 #include "Font_Manager.h"
@@ -88,6 +88,7 @@ public:	/* for. Frustum*/
 public: /* For.Target_Manager */
 	HRESULT Bind_RenderTarget_SRV(const _tchar* pTargetTag, class CShader* pShader, const char* pConstantName);
 
+	_vector Get_RayDir() { return m_pPicking->Get_RayDir(); }
 public:
 	static void Release_Engine();
 
@@ -103,7 +104,7 @@ private:
 	CFont_Manager*					m_pFont_Manager = nullptr;
 	CFrustum*						m_pFrustum = nullptr;
 	CTarget_Manager*				m_pTarget_Manager = nullptr;
-
+	CPicking*						m_pPicking = nullptr;
 public:
 	virtual void Free() override;
 };

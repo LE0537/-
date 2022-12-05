@@ -288,7 +288,7 @@ void CDandel::Ready_EndingText()
 	m_vBattleScript.push_back(TEXT("자!!  봐라~! 이세카이의 비밀을!!"));
 	m_vBattleScript.push_back(TEXT("이세카이는 무려!!!!!\n샐이 5246개나 깔려있는 어마어마한 세계다!"));
 	m_vBattleScript.push_back(TEXT("하지만 이 세카이는 더 넓었던 것이다...\n5246개론 택도 없이 부족했지..."));
-	m_vBattleScript.push_back(TEXT("원래 세카이로 가는 방법은 방법은 단 하나!!"));
+	m_vBattleScript.push_back(TEXT("원래 세카이로 가는 방법은 단 하나!!"));
 	m_vBattleScript.push_back(TEXT("그건 바로 너가 직접 샐을 하나하나 \n추가로 찍어 나아가는것뿐이다!"));
 	m_vBattleScript.push_back(TEXT("하하하핳하하하핳하핳하!!!!!\n비록 난 5246개에 포기해 버렸지만..."));
 	m_vBattleScript.push_back(TEXT("혹시 너라면 가능할지도...?"));

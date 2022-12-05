@@ -1960,8 +1960,10 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 		if (m_fEXPTime > 0.05f)
 		{
 			if (m_iDotEXP < m_iTotalEXP)
-				dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_PokeEXP(10);
-			
+			{
+				dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_PokeEXP(m_iDotEXP);
+				m_tInfo.pPlayer->Set_vecPokeExpShare(m_iDotEXP);
+			}
 			if (m_iDotEXP == m_iTotalEXP)
 				m_bGet_EXP = false;
 			

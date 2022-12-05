@@ -46,7 +46,10 @@ void CCamera_Dynamic::Tick(_float fTimeDelta)
 
 	if (g_bEnding)
 	{
-		EndingPos(fTimeDelta);
+	//	if(!bNavi)
+			EndingPos(fTimeDelta);
+	//	else if(bNavi)
+	//		EndingKeyInput(fTimeDelta);
 	}
 	else
 	{
@@ -262,16 +265,19 @@ void CCamera_Dynamic::EndingPos(_float fTimeDelta)
 	else if (fEndingSpeed <= 1.5f)
 	{
 		TargetPos = dynamic_cast<CGameObj*>(m_CameraDesc.pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
-		fEndingFov -= 0.2f;
+		fEndingFov -= 0.3f;
 		if (fEndingFov < 3.f)
 			fEndingFov = 3.f;
 	}
 	else
 	{
 		TargetPos = dynamic_cast<CGameObj*>(m_CameraDesc.pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
-		fEndingFov -= 0.2f;
+		fEndingFov -= 0.3f;
 		if (fEndingFov < 3.f)
+		{
+			bNavi = true;
 			fEndingFov = 3.f;
+		}
 	}
 	//TargetPos.m128_f32[1] +=.f;
 	vPos.m128_f32[1] += 15.f;
@@ -279,6 +285,59 @@ void CCamera_Dynamic::EndingPos(_float fTimeDelta)
 	m_pTransform->Set_State(CTransform::STATE_TRANSLATION, vPos);
 	m_pTransform->LookAt(TargetPos);
 
+}
+
+void CCamera_Dynamic::EndingKeyInput(_float fTimeDelta)
+{
+	if (GetKeyState('T') < 0)
+	{
+		m_pTransform->Go_StraightNoNavi(fTimeDelta * 10.f);
+	}
+
+	if (GetKeyState('G') < 0)
+	{
+		m_pTransform->Go_Backward(fTimeDelta * 10.f);
+	}
+
+	if (GetKeyState('F') < 0)
+	{
+
+		m_pTransform->Go_Left(fTimeDelta * 10.f);
+	}
+
+	if (GetKeyState('H') < 0)
+	{
+
+		m_pTransform->Go_Right(fTimeDelta * 10.f);
+	}
+
+	CGameInstance*			pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+	_long			MouseMove = 0;
+
+	if (GetKeyState(VK_UP) < 0)
+	{
+		m_pTransform->Turn(m_pTransform->Get_State(CTransform::STATE_RIGHT), fTimeDelta * 1 * 0.1f * -1.f);
+	}
+
+	if (GetKeyState(VK_DOWN) < 0)
+	{
+		m_pTransform->Turn(m_pTransform->Get_State(CTransform::STATE_RIGHT), fTimeDelta * 1 * 0.1f);
+	}
+
+
+	if (GetKeyState(VK_LEFT) < 0)
+	{
+		m_pTransform->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * 1 * 0.1f * -1.f);
+	}
+
+	if (GetKeyState(VK_RIGHT) < 0)
+	{
+		m_pTransform->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * 1 * 0.1f);
+	}
+
+	Safe_Release(pGameInstance);
 }
 
 void CCamera_Dynamic::Set_Target(CGameObject * _pTarget)

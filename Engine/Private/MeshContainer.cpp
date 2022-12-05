@@ -1,5 +1,7 @@
 #include "..\Public\MeshContainer.h"
 #include "HierarchyNode.h"
+#include "Picking.h"
+#include "Transform.h"
 
 CMeshContainer::CMeshContainer(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CVIBuffer(pDevice, pContext)
@@ -15,6 +17,7 @@ CMeshContainer::CMeshContainer(const CMeshContainer & rhs)
 	, m_pNonAnimVertices(rhs.m_pNonAnimVertices) // 추가
 	, m_pIndices(rhs.m_pIndices) // 추가
 	, m_bIsProto(false)	// 추가
+
 {
 	strcpy_s(m_szName, rhs.m_szName);
 }
@@ -95,8 +98,6 @@ HRESULT CMeshContainer::Initialize_Prototype(CModel::TYPE eModelType, const aiMe
 	//Safe_Delete_Array(pIndices);	// 추가
 #pragma endregion
 
-
-
 	return S_OK;
 }
 
@@ -168,6 +169,7 @@ HRESULT CMeshContainer::Create_VertexBuffer_NonAnimModel(const aiMesh* pAIMesh, 
 	{
 		memcpy(&pVertices[i].vPosition, &m_pAIMesh->mVertices[i], sizeof(_float3));
 		XMStoreFloat3(&pVertices[i].vPosition, XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vPosition), PivotMatrix));
+	
 
 		memcpy(&pVertices[i].vNormal, &m_pAIMesh->mNormals[i], sizeof(_float3));
 		XMStoreFloat3(&pVertices[i].vNormal, XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vNormal), PivotMatrix));
@@ -501,6 +503,58 @@ void CMeshContainer::Get_MeshData(DATA_BINMESH * pMeshData)
 		int a = 0;
 	}
 }
+_bool CMeshContainer::Picking(CTransform * pTransform, _float3 * pOut, _float** _fDist)
+{
+
+	CPicking* pPicking = GET_INSTANCE(CPicking);
+
+	_matrix WorldMatrixInv = pTransform->Get_WorldMatrixInverse();
+	_float3 vTempRayDir, vTempRayPos;
+	XMVECTOR vRayDir, vRayPos;
+
+	pPicking->Compute_LocalRayInfo(&vTempRayDir, &vTempRayPos, pTransform);
+
+	vRayDir = XMLoadFloat3(&vTempRayDir);
+	vRayDir = XMVector3Normalize(vRayDir);
+	vRayPos = XMLoadFloat3(&vTempRayPos);
+	vRayPos = XMVectorSetW(vRayPos, 1.f);
+
+	_bool	bTrue = false;
+	fDist2 = 999999.f;
+
+	for (_uint i = 0; i < m_iNumPrimitive; ++i)
+	{
+		_float		fU, fV, fDist;
+		_matrix	WorldMatrix = pTransform->Get_WorldMatrix();
+
+
+		if (true == TriangleTests::Intersects(vRayPos, vRayDir,
+			XMLoadFloat3(&m_pNonAnimVertices[m_pIndices[i]._0].vPosition),
+			XMLoadFloat3(&m_pNonAnimVertices[m_pIndices[i]._1].vPosition),
+			XMLoadFloat3(&m_pNonAnimVertices[m_pIndices[i]._2].vPosition), fDist))
+		{
+			bTrue = true;
+
+			if (fDist2 > fDist)
+			{
+				_vector	vPickPos = vRayPos + vRayDir * fDist;
+
+				XMStoreFloat3(pOut, XMVector3TransformCoord(vPickPos, WorldMatrix));
+				fDist2 = fDist;
+			}
+		}
+
+	}
+	if (bTrue)
+	{
+		*_fDist = &fDist2;
+		RELEASE_INSTANCE(CPicking);
+		return true;
+	}
+
+	RELEASE_INSTANCE(CPicking);
+	return false;
+}
 CMeshContainer * CMeshContainer::Bin_Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, CModel::TYPE eModelType, DATA_BINMESH * pAIMesh, CModel * pModel, _fmatrix PivotMatrix)
 {
 	CMeshContainer*			pInstance = new CMeshContainer(pDevice, pContext);
@@ -528,4 +582,5 @@ void CMeshContainer::Free()
 		Safe_Delete_Array(m_pAnimVertices);
 		Safe_Delete_Array(m_pNonAnimVertices);
 	}
+
 }

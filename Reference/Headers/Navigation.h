@@ -23,7 +23,7 @@ public:
 public:
 	_bool isMove(_fvector vPosition);
 	_float3* Get_CellPoints();
-
+	vector<class CCell*>* Get_Cells() { return &m_Cells; }
 public:
 	HRESULT Render();
 	void	Find_CurrentCellIndex(_vector vPos);

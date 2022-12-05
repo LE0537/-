@@ -91,7 +91,7 @@ void CUI::Tick(_float fTimeDelta)
 
 void CUI::Late_Tick(_float fTimeDelta)
 {
-	if (nullptr != m_pRendererCom && m_bInven)
+	if (!g_bEvolution && nullptr != m_pRendererCom && m_bInven)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
 }
 

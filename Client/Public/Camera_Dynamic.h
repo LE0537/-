@@ -35,6 +35,7 @@ private:
 	void	Battlecam(_float fTimeDelta);
 	void	CapturePos();
 	void	EndingPos(_float fTimeDelta);
+	void	EndingKeyInput(_float fTimeDelta);
 private:
 	_float		 m_YfAngle = 0.f;
 	_float		 m_XfAngle = 0.f;
@@ -58,6 +59,7 @@ private:
 	_float4			EndingPos1, EndingPos2, EndingPos3, EndingAt1, EndingAt2;
 	_float			fEndingSpeed = 0.f;
 	_float			fEndingFov = 0.f;
+	_bool			bNavi = false;
 	//Capture
 	_float			m_fCaptureTime = 0.f;
 	_bool			m_bCaptureCam = false;

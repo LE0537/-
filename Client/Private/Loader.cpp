@@ -16,6 +16,7 @@
 #include "BattleUI.h"
 #include "Lv_Up.h"
 #include "Evolution.h"
+#include "EndingErr.h"
 //Map
 #include "Field.h"
 #include "BattleField.h"
@@ -78,6 +79,9 @@
 #include "HyperBall.h"
 #include "MasterBall.h"
 #include "HpPotion.h"
+#include "FullPotion.h"
+#include "MaxPotion.h"
+#include "Candy.h"
 #include "ExpShare.h"
 #include "None.h"
 #include "Ball.h"
@@ -163,6 +167,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("                       텍스쳐 로딩 중."));
 
 	/* UI 텍스쳐 */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_EndingErr"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Ending/%d.png"), 1))))
+		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_UI"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Bag/%d.dds"), 12))))
 		return E_FAIL;
@@ -240,6 +247,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Evolution"),
 		CEvolution::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_EndingErr"),
+		CEndingErr::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	/* 아이템 객체 */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_None"),
 		CNone::Create(m_pDevice, m_pContext))))
@@ -258,6 +268,15 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_HpPotion"),
 		CHpPotion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_FullPotion"),
+		CFullPotion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_MaxPotion"),
+		CMaxPotion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Candy"),
+		CCandy::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_ExpShare"),
 		CExpShare::Create(m_pDevice, m_pContext))))
@@ -582,7 +601,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_SkyBox"),
-	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/SkyBox/SkyBox.fbx", PivotMatrix))))
+	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/SkyBox/SkyBox.fbx"))))
 	return E_FAIL;
 	/*CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("SkyBox"), LEVEL_STATIC, CData_Manager::DATA_NONANIM);*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_SkyBox"),

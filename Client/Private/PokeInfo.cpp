@@ -71,7 +71,7 @@ void CPokeInfo::Tick(_float fTimeDelta)
 
 void CPokeInfo::Late_Tick(_float fTimeDelta)
 {
-	if (g_PokeInfo)
+	if (!g_bEvolution && g_PokeInfo)
 	{
 		if (nullptr != m_pRendererCom)
 			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);

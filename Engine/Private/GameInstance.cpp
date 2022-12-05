@@ -15,7 +15,9 @@ CGameInstance::CGameInstance()
 	, m_pFont_Manager(CFont_Manager::Get_Instance())
 	, m_pFrustum(CFrustum::Get_Instance())
 	, m_pTarget_Manager(CTarget_Manager::Get_Instance())
+	, m_pPicking(CPicking::Get_Instance())
 {
+	Safe_AddRef(m_pPicking);
 	Safe_AddRef(m_pTarget_Manager);
 	Safe_AddRef(m_pFrustum);
 	Safe_AddRef(m_pFont_Manager);
@@ -53,6 +55,9 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, cons
 	if (FAILED(m_pComponent_Manager->Reserve_Container(iNumLevels)))
 		return E_FAIL;
 
+	if (FAILED(m_pPicking->Initialize(GraphicDesc.hWnd, GraphicDesc.iWinSizeX, GraphicDesc.iWinSizeY, *ppDevice, *ppContext)))
+		return E_FAIL;
+
 	if (FAILED(m_pFrustum->Initialize()))
 		return E_FAIL;
 
@@ -72,6 +77,9 @@ void CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pObject_Manager->Tick(fTimeDelta);
 
 	m_pPipeLine->Update();
+
+	m_pPicking->Tick();
+
 	m_pFrustum->Tick();
 	m_pLevel_Manager->Late_Tick(fTimeDelta);
 	m_pObject_Manager->Late_Tick(fTimeDelta);
@@ -396,6 +404,8 @@ void CGameInstance::Release_Engine()
 
 	CTimer_Manager::Get_Instance()->Destroy_Instance();
 
+	CPicking::Get_Instance()->Destroy_Instance();
+
 	CFrustum::Get_Instance()->Destroy_Instance();
 
 	CInput_Device::Get_Instance()->Destroy_Instance();
@@ -409,6 +419,7 @@ void CGameInstance::Release_Engine()
 
 void CGameInstance::Free()
 {	
+	Safe_Release(m_pPicking);
 	Safe_Release(m_pTarget_Manager);
 	Safe_Release(m_pFrustum);
 	Safe_Release(m_pFont_Manager);

@@ -41,6 +41,8 @@ public: // For. Data 추가
 	HRESULT Get_MeshData(DATA_BINSCENE* pBinScene);
 	HRESULT Get_AnimData(DATA_BINSCENE* pBinScene);
 
+	virtual _bool Picking(class CTransform* pTransform, _float3* pOut);
+
 private: // 추가
 	vector<DATA_BINMATERIAL>				m_DataMaterials;
 
@@ -78,6 +80,7 @@ private:
 	_float4x4				m_PivotMatrix;
 	_bool					m_bAnimReset = false;
 
+	_float3*					vPos;
 private: // 추가
 	HRESULT Bin_Ready_MeshContainers(_fmatrix PivotMatrix);
 	HRESULT Bin_Ready_Materials(const char* pModelFilePath);

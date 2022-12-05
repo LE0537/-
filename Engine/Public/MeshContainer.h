@@ -35,11 +35,12 @@ private:	// 추가
 	// For. Data 추가
 public:
 	void Get_MeshData(DATA_BINMESH* pMeshData);
-
+	virtual _bool Picking(class CTransform* pTransform, _float3* pOut, _float** _fDist);
 private:
 	char						m_szName[MAX_PATH] = "";
 	const aiMesh*				m_pAIMesh = nullptr;
 	_uint						m_iMaterialIndex = 0;
+
 
 	/* 이 메시에 영향을 주는 뼈들의 갯수 .*/
 	_uint							m_iNumBones = 0;
@@ -50,6 +51,7 @@ private:	// 추가
 	FACEINDICES32*		m_pIndices = nullptr;
 	_bool				m_bIsProto = false;
 
+	_float						fDist2 = 99999.f;
 public:
 	HRESULT Create_VertexBuffer_NonAnimModel(const aiMesh* pAIMesh, _fmatrix PivotMatrix);
 	HRESULT Create_VertexBuffer_AnimModel(const aiMesh* pAIMesh, class CModel* pModel);

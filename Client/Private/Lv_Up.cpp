@@ -57,7 +57,7 @@ void CLv_Up::Tick(_float fTimeDelta)
 void CLv_Up::Late_Tick(_float fTimeDelta)
 {
 
-	if (nullptr != m_pRendererCom)
+	if (!g_bBag && !g_bEvolution && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
 
 }

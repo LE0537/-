@@ -334,6 +334,18 @@
     <Filter Include="02.GameObjects\99.GameObj\03.Item\03.MasterBall">
       <UniqueIdentifier>{55948c36-b24b-4ba7-adc9-163b158509f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\07.EndingErr">
+      <UniqueIdentifier>{251ad626-6fb0-4777-a7bd-63778218eff9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\11.MaxPotion">
+      <UniqueIdentifier>{7cde8af4-0153-4d1f-957f-de3fb745cbe5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\13.Candy">
+      <UniqueIdentifier>{13485aef-a7c2-455e-9cd9-14ac08a11614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\06.FullPotion">
+      <UniqueIdentifier>{2bb01963-76e8-4d6f-823b-aa660aa86575}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -660,6 +672,18 @@
     <ClInclude Include="..\public\MasterBall.h">
       <Filter>02.GameObjects\99.GameObj\03.Item\03.MasterBall</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\EndingErr.h">
+      <Filter>02.GameObjects\99.GameObj\04.UI\07.EndingErr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Candy.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\13.Candy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FullPotion.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\06.FullPotion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MaxPotion.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\11.MaxPotion</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -970,6 +994,18 @@
     </ClCompile>
     <ClCompile Include="..\private\MasterBall.cpp">
       <Filter>02.GameObjects\99.GameObj\03.Item\03.MasterBall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EndingErr.cpp">
+      <Filter>02.GameObjects\99.GameObj\04.UI\07.EndingErr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Candy.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\13.Candy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FullPotion.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\06.FullPotion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MaxPotion.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\11.MaxPotion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

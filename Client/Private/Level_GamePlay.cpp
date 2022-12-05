@@ -42,7 +42,7 @@ HRESULT CLevel_GamePlay::Initialize()
 		return E_FAIL;
 
 	
-	CSoundMgr::Get_Instance()->PlayBGM(TEXT("hov.wav"),0.75f);
+	CSoundMgr::Get_Instance()->PlayBGM(TEXT("hov.wav"),0.65f);
 
 	return S_OK;
 }

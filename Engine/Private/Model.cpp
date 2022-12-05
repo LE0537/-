@@ -423,6 +423,32 @@ HRESULT CModel::Get_MaterialData(DATA_BINSCENE * pBinScene)
 
 	return S_OK;
 }
+_bool CModel::Picking(CTransform * pTransform, _float3 * pOut)
+{
+	_bool bTrue = false;
+	//	_float* fDist = nullptr;
+	_float  fDist2 = 99999.f;
+
+	for (auto& Mesh : m_Meshes)
+	{
+		_float* fDist = nullptr;
+		if (Mesh->Picking(pTransform, pOut, &fDist))
+		{
+			bTrue = true;
+			if (fDist2 > *fDist)
+			{
+				vPos = pOut;
+				fDist2 = *fDist;
+			}
+		}
+	}
+	if (bTrue)
+	{
+		pOut = vPos;
+		return true;
+	}
+	return false;
+}
 HRESULT CModel::Get_MeshData(DATA_BINSCENE * pBinScene)
 {
 	pBinScene->iMeshCount = m_iNumMeshes;

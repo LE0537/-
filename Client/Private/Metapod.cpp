@@ -100,6 +100,11 @@ void CMetapod::Tick(_float fTimeDelta)
 		if (m_PokemonInfo.bLvUp)
 			LvUp();
 	}
+	else
+	{
+		if (m_PokemonInfo.bLvUp)
+			LvUp();
+	}
 	if (m_bAnimReset)
 		Reset_Battle();
 	if (m_bWildPoke && !g_bEvolution)
@@ -630,6 +635,7 @@ void CMetapod::Set_EvolPos2(_float fTimeDelta)
 		dynamic_cast<CGameObj*>(m_EvolPoke)->Set_Target(m_pTarget);
 		dynamic_cast<CGameObj*>(m_EvolPoke)->Set_PokeLv(m_PokemonInfo.iLv);
 		dynamic_cast<CGameObj*>(m_EvolPoke)->Set_PokeSkill(m_PokemonInfo.eSkillNum1, m_PokemonInfo.eSkillNum2, m_PokemonInfo.eSkillNum3, m_PokemonInfo.eSkillNum4);
+		dynamic_cast<CGameObj*>(m_EvolPoke)->Set_PokeItem(m_PokemonInfo.eItem);
 		dynamic_cast<CPlayer*>(m_pTarget)->Get_Bag()->Set_vecPoke(iIndex, m_EvolPoke);
 		dynamic_cast<CGameObj*>(m_EvolPoke)->Set_PokeUIOnOff();
 

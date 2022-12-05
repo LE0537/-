@@ -61,11 +61,26 @@ HRESULT CBag::Initialize(void * pArg)
 	tInfoItem->iNum = 10;
 	m_vecItem.push_back(tInfoItem);
 	
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_FullPotion"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))
+		return E_FAIL;
+	tInfoItem->iNum = 10;
+	m_vecItem.push_back(tInfoItem);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_MaxPotion"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))
+		return E_FAIL;
+	tInfoItem->iNum = 10;
+	m_vecItem.push_back(tInfoItem);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Candy"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))
+		return E_FAIL;
+	tInfoItem->iNum = 99;
+	m_vecItem.push_back(tInfoItem);
+
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_ExpShare"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))
 		return E_FAIL;
 	m_vecItem.push_back(tInfoItem);
 	
-	for (_int i = 20; i < 50; ++i)
+	for (_int i = 9; i < 50; ++i)
 	{
 		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_None"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))
 			return E_FAIL;
@@ -140,6 +155,11 @@ void CBag::Tick(_float fTimeDelta)
 {
 	if (g_bBag)
 	{
+		if (m_iLvUp)
+		{
+			CheckLv();
+			return;
+		}
 		if (m_bHeal)
 		{
 			HealPoke(fTimeDelta);
@@ -178,7 +198,7 @@ void CBag::Tick(_float fTimeDelta)
 
 void CBag::Late_Tick(_float fTimeDelta)
 {
-	if (g_bBag || m_bBattlePokeDead || m_bBattleChangePoke || m_bBattleUseItem)
+	if (!g_bEvolution && g_bBag || m_bBattlePokeDead || m_bBattleChangePoke || m_bBattleUseItem)
 	{
 		if (nullptr != m_pRendererCom)
 			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
@@ -213,6 +233,16 @@ HRESULT CBag::Render()
 
 	}
 	return S_OK;
+}
+
+void CBag::Set_vecPokeExpShare(_int _iExp)
+{
+	for (auto& Poke : m_vecPoke)
+	{
+		if (dynamic_cast<CGameObj*>(Poke)->Get_PokeInfo().eItem->iItemNum == 30)
+			dynamic_cast<CGameObj*>(Poke)->Set_PokeEXP(_iExp);
+		
+	}
 }
 
 _int CBag::Get_EvolIndex()
@@ -819,7 +849,8 @@ void CBag::Key_Input()
 				switch (m_UsePos)
 				{
 				case 0:
-					if (m_vecItem[m_iItemPos]->iItemNum == 4)
+					if (m_vecItem[m_iItemPos]->iItemNum == 4 || m_vecItem[m_iItemPos]->iItemNum == 6 ||
+						m_vecItem[m_iItemPos]->iItemNum == 11 || m_vecItem[m_iItemPos]->iItemNum == 13)
 					{
 						SetSelectButtonPoke(m_iPokeSelect, DIR_LEFT);
 						m_bItem = true;
@@ -1116,7 +1147,7 @@ void CBag::Set_UseItemPos(_int _iIndex)
 	_vector vScale = { 120.f,80.f,0.f,0.f };
 	_vector vPos = m_pTransformItem[_iIndex]->Get_State(CTransform::STATE_TRANSLATION);
 
-	vPos.m128_f32[0] += 200.f;
+	vPos.m128_f32[0] += 285.f;
 	vPos.m128_f32[1] -= 20.f;
 	m_pTransformCom4->Set_Scale(vScale);
 	m_pTransformCom4->Set_State(CTransform::STATE_TRANSLATION, vPos);
@@ -1165,11 +1196,38 @@ void CBag::UseItem()
 		--(*iter)->iNum;
 		break;
 	case 4:
-		m_iHealHP = 30;
+		if (dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().eStatInfo != STUN)
+		{
+			m_iHealHP = 30;
+			m_iHealPokeIndex = m_iPokeSelect;
+			m_fHealTime = 0.f;
+			m_bHeal = true;
+			--(*iter)->iNum;
+		}
+		break;
+	case 6:
+		if (dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().eStatInfo != STUN)
+		{
+			m_iHealHP = 999;
+			m_iHealPokeIndex = m_iPokeSelect;
+			m_fHealTime = 0.f;
+			m_bHeal = true;
+			--(*iter)->iNum;
+		}
+		break;
+	case 11:
+		dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_StatInfo(STATINFO_END);
+		m_iHealHP = 999;
 		m_iHealPokeIndex = m_iPokeSelect;
 		m_fHealTime = 0.f;
 		m_bHeal = true;
 		--(*iter)->iNum;
+		break;
+	case 13:
+		dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_PokeEXP(dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().iMaxExp);
+		--(*iter)->iNum;
+		m_iLvPokeIndex = m_iPokeSelect;
+		m_iLvUp = true;
 		break;
 	default:
 		break;
@@ -1411,6 +1469,20 @@ void CBag::RidePoke()
 	dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->OnOffRide();
 }
 
+void CBag::CheckLv()
+{
+	if (dynamic_cast<CGameObj*>(m_vecPoke[m_iLvPokeIndex])->Get_PokeInfo().bEvolution)
+	{
+		g_bEvolution = true;
+		dynamic_cast<CGameObj*>(m_vecPoke[m_iLvPokeIndex])->Set_PokeUIOnOff();
+		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Evolution"), LEVEL_GAMEPLAY, TEXT("Layer_UI"))))
+			return;
+		RELEASE_INSTANCE(CGameInstance);
+	}
+	m_iLvUp = false;
+}
+
 void CBag::BattlePokeKey()
 {
 	if (!m_bStart)
@@ -1577,7 +1649,8 @@ void CBag::BattleUseItemKey()
 				switch (m_UsePos)
 				{
 				case 0:
-					if (m_vecItem[m_iItemPos]->iItemNum == 4)
+					if (m_vecItem[m_iItemPos]->iItemNum == 4 || m_vecItem[m_iItemPos]->iItemNum == 6 ||
+						m_vecItem[m_iItemPos]->iItemNum == 11)
 					{
 						SetSelectButtonPoke(m_iPokeSelect, DIR_LEFT);
 						m_bItem = true;

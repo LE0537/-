@@ -154,7 +154,7 @@ void CTextBox::Running_TextBox()
 				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BattleIntro"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"))))
 					return;
 				CSoundMgr::Get_Instance()->BGM_Stop();
-				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Battle1.wav"), 0.75f);
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Battle1.wav"), 0.85f);
 				m_bDead = true;
 			}
 		}

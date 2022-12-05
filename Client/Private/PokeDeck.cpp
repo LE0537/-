@@ -311,7 +311,7 @@ void CPokeDeck::Tick(_float fTimeDelta)
 
 void CPokeDeck::Late_Tick(_float fTimeDelta)
 {
-	if (nullptr != m_pRendererCom && g_bPokeDeck)
+	if (!g_bEvolution && nullptr != m_pRendererCom && g_bPokeDeck)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
 }
 

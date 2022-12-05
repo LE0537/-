@@ -52,7 +52,7 @@ void CTree::Late_Tick(_float fTimeDelta)
 
 		if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), 10.f))
 		{
-			if (!g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
+			if (!g_bEvolution && !g_bBag && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
 				m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 		}
 		RELEASE_INSTANCE(CGameInstance);

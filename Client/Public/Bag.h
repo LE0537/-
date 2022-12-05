@@ -86,6 +86,8 @@ private:
 	_bool					m_bHeal = false;
 	_float					m_fHealTime = 0.f;
 
+	_int					m_iLvPokeIndex = 0;
+	_bool					m_iLvUp = false;
 
 	CGameObject*			m_pPlayer;
 	vector<ITEMINFO*>    m_vecItem;
@@ -99,6 +101,7 @@ private:
 	_bool					m_bBattleUseItem = false;
 	_bool					m_bClose = false;
 public:
+	void		 Set_vecPokeExpShare(_int _iExp);
 	_bool		 Get_Close() { return m_bClose; }
 	void		 Set_Close() { m_bClose = false; }
 	_int		 Get_iChangePoke() { return m_iChangePoke; }
@@ -141,7 +144,7 @@ private:
 	_bool	CheckGiveItem();
 	void	ClearBag();
 	void	RidePoke();
-
+	void	CheckLv();
 	void	BattlePokeKey();
 	void	BattleChangePokeKey();
 	void	BattleUseItemKey();

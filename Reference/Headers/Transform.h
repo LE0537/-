@@ -65,6 +65,10 @@ public:
 		XMStoreFloat4x4(&m_WorldMatrix, WorldMatrix);	
 	}
 
+	_matrix Get_WorldMatrixInverse() const {
+		return XMMatrixInverse(nullptr, Get_WorldMatrix());
+	}
+
 
 	void Set_Scale(_fvector vScaleInfo);
 
@@ -78,6 +82,7 @@ public:
 	virtual HRESULT Initialize(void* pArg);
 
 public:
+	void Go_StraightNoNavi(_float fTimeDelta);
 	void Go_Straight(_float fTimeDelta, class CNavigation* pNavigation);
 	void Go_MonsterStraight(_float fTimeDelta, class CNavigation* pNavigation, _vector vTargetPos);
 	void Go_Backward(_float fTimeDelta);

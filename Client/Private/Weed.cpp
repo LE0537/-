@@ -47,7 +47,7 @@ void CWeed::Late_Tick(_float fTimeDelta)
 
 	if (!g_Battle)
 	{
-		if (!g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
+		if (!g_bEvolution && !g_bBag && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
 			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this);
 	}
 }

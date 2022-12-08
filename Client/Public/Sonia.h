@@ -64,6 +64,7 @@ private:
 	_float					m_fEventTime = 0.f;
 	_bool					m_bEvent = false;
 
+
 	//Battle
 	_bool					m_bBattleText = false;
 	_bool					m_bBattle = false;

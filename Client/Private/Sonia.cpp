@@ -190,10 +190,10 @@ void CSonia::Move(_float fTimeDelta)
 void CSonia::Ready_Script()
 {
 	m_vNormalScript.push_back(TEXT("앗! 잠깐만!!"));
-	m_vNormalScript.push_back(TEXT("넌 이세카이 사람이 아니구나?\n어이쿠... 어쩌다 이런 험난한 세카이로 오게된거야."));
+	m_vNormalScript.push_back(TEXT("넌 이세계 사람이 아니구나?\n어이쿠... 어쩌다 이런 험난한 세계로 오게된거야."));
 	m_vNormalScript.push_back(TEXT("이 너머에는 다양한 포켓몬들이 존재하지"));
 	m_vNormalScript.push_back(TEXT("아무런 준비없이 갔다간 죽음뿐이야..."));
-	m_vNormalScript.push_back(TEXT("원래 세카이로 돌아가고 싶으면\n배지 10개를 모아서 챔피온에게 가봐."));
+	m_vNormalScript.push_back(TEXT("원래 세계로 돌아가고 싶으면\n배지 10개를 모아서 챔피온에게 가봐."));
 	m_vNormalScript.push_back(TEXT("챔피온이라면 뭔가 방법을 알고 있을지도 몰라..."));
 	m_vNormalScript.push_back(TEXT("인심 썼다...\n이걸 줄게 이 녀석이 널 지켜줄지도 몰라."));
 

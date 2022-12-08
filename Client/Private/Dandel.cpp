@@ -48,11 +48,11 @@ HRESULT CDandel::Initialize(void * pArg)
 		return E_FAIL;
 	m_vecPoke.push_back(tInfo);
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
 	m_vecPoke.push_back(tInfo);
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
 	m_vecPoke.push_back(tInfo);
 
@@ -70,7 +70,7 @@ HRESULT CDandel::Initialize(void * pArg)
 
 	RELEASE_INSTANCE(CGameInstance);
 
-	m_iPokeMaxSize = 0;
+	m_iPokeMaxSize = 2;
 	m_iPokeSize = 0;
 	m_PlayerInfo.strName = L"단델";
 	m_PlayerInfo.bEvent = false;
@@ -255,7 +255,7 @@ void CDandel::Ready_Script()
 {
 	m_vNormalScript.push_back(TEXT("대단한걸? 배지를 다 모으다니"));
 	m_vNormalScript.push_back(TEXT("그래서 궁금한게 무엇이지?"));
-	m_vNormalScript.push_back(TEXT("음... 그렇군 원래 세카이로 돌아가고 싶다고?"));
+	m_vNormalScript.push_back(TEXT("음... 그렇군 원래 세계로 돌아가고 싶다고?"));
 	m_vNormalScript.push_back(TEXT("그럼 날 이기면 방법을 알려주지!"));
 
 	wstring szScriptBegin = TEXT("봐줄 생각은 없다!\n가라!!     '");
@@ -283,13 +283,13 @@ void CDandel::Ready_EndingText()
 
 	m_vBattleScript.clear();
 
-	m_vBattleScript.push_back(TEXT("약속대로 원래 세카이로 돌아갈 수 있는 방법을\n알려줘야겠지?..."));
-	m_vBattleScript.push_back(TEXT("사실 이세카이엔 비밀이 있다..."));
-	m_vBattleScript.push_back(TEXT("자!!  봐라~! 이세카이의 비밀을!!"));
-	m_vBattleScript.push_back(TEXT("이세카이는 무려!!!!!\n샐이 5246개나 깔려있는 어마어마한 세계다!"));
-	m_vBattleScript.push_back(TEXT("하지만 이 세카이는 더 넓었던 것이다...\n5246개론 택도 없이 부족했지..."));
-	m_vBattleScript.push_back(TEXT("원래 세카이로 가는 방법은 단 하나!!"));
-	m_vBattleScript.push_back(TEXT("그건 바로 너가 직접 샐을 하나하나 \n추가로 찍어 나아가는것뿐이다!"));
+	m_vBattleScript.push_back(TEXT("약속대로 원래 세계로 돌아갈 수 있는 방법을\n알려줘야겠지?..."));
+	m_vBattleScript.push_back(TEXT("사실 이세계엔 비밀이 있다..."));
+	m_vBattleScript.push_back(TEXT("자!!  봐라~! 이세계의 비밀을!!"));
+	m_vBattleScript.push_back(TEXT("이세계는 무려!!!!!\n샐이 5246개나 깔려있는 어마어마한 세계다!"));
+	m_vBattleScript.push_back(TEXT("하지만 이 세계는 더 넓었던 것이다...\n5246개론 택도 없이 부족했지..."));
+	m_vBattleScript.push_back(TEXT("원래 세계로 가는 방법은 단 하나!!"));
+	m_vBattleScript.push_back(TEXT("그건 바로 너가 직접 샐을 하나하나 \n추가로 찍어 나아가는 것 뿐이다!"));
 	m_vBattleScript.push_back(TEXT("하하하핳하하하핳하핳하!!!!!\n비록 난 5246개에 포기해 버렸지만..."));
 	m_vBattleScript.push_back(TEXT("혹시 너라면 가능할지도...?"));
 	m_vBattleScript.push_back(TEXT("그럼 행운을 빌지~"));
@@ -369,15 +369,51 @@ void CDandel::Check_Coll()
 
 void CDandel::BattleStart(_float fTimeDelta)
 {
-	m_fStartBattle += fTimeDelta;
 	if (!m_bBattle)
 	{
-		m_pModelCom->Set_Loop(1);
-		m_pModelCom->Set_CurrentAnimIndex(1);
+		if (!m_bEffectEnd)
+		{
+			m_pModelCom->Set_Loop(1);
+			m_pModelCom->Set_CurrentAnimIndex(1);
+			m_bEffectEnd = true;
+			m_fStartBattle = 0.f;
+		}
+		if (m_bMotionEnd && m_fStartBattle > 0.2f && m_fStartBattle > 2.25f)
+		{
+			m_bMotionEnd = false;
+			m_bEffectEnd = false;
+			m_bEffect = false;
+			m_bBattle = true;
+			m_pModelCom->Set_End(1);
+			dynamic_cast<CPlayer*>(m_pTarget)->Set_BattleStart();
+			dynamic_cast<CBall*>(m_pBall)->Set_Render(false, 0);
+			return;
+		}
+		m_fStartBattle += fTimeDelta;
+	
 		m_pModelCom->Play_Animation(fTimeDelta * 1.25f);
 		dynamic_cast<CBall*>(m_pBall)->Set_Render(true, 1);
 		m_pBall->Tick(fTimeDelta);
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, m_pBall);
+		if (m_fStartBattle > 1.85f && !m_bEffect)
+		{
+			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+			XMVector3Normalize(vLook);
+			_vector vPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 45.f;
+			_vector vTargetPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 200.f;
+
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+			CLevel_GamePlay::LOADFILE tInfo;
+
+			XMStoreFloat4(&tInfo.vPos, vPos);
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BallEffect"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
+				return;
+
+			RELEASE_INSTANCE(CGameInstance);
+			m_bEffect = true;
+		}
 		if (m_fStartBattle > 2.25f)
 		{
 			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
@@ -388,15 +424,9 @@ void CDandel::BattleStart(_float fTimeDelta)
 			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSize])->Get_Transfrom()->LookAt(vTargetPos);
 			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSize])->Set_AnimIndex(0);
 			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSize])->Set_BattleMap(true, 3.7f);
+			m_bMotionEnd = true;
 		}
-		if ((m_fStartBattle > 0.2f) && m_pModelCom->Get_End(1))
-		{
-			m_bBattle = true;
-			m_pModelCom->Set_End(1);
-			dynamic_cast<CPlayer*>(m_pTarget)->Set_BattleStart();
-			dynamic_cast<CBall*>(m_pBall)->Set_Render(false, 3);
 
-		}
 		if (!m_bBattleText)
 		{
 			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
@@ -429,16 +459,17 @@ void CDandel::Check_Anim(_float fTimeDelta)
 {
 	if (m_iAnimIndex == 1 || m_iAnimIndex == 4)
 	{
-		m_fStartBattle += fTimeDelta;
 		m_bChangeAnim = true;
-		if (m_ChangePoke && m_pModelCom->Get_End(m_iAnimIndex))
+		if (m_ChangePoke && m_fStartBattle > 3.25f)
 		{
+			m_bEffect = false;
 			m_pModelCom->Set_End(m_iAnimIndex);
 			m_iAnimIndex = 0;
 			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
 			m_bChangeAnim = false;
 			m_ChangePoke = false;
 		}
+		m_fStartBattle += fTimeDelta;
 		if (!m_ChangePoke && m_iAnimIndex == 1)
 		{
 			m_pModelCom->Set_Loop(m_iAnimIndex);
@@ -495,7 +526,25 @@ void CDandel::Check_Anim(_float fTimeDelta)
 		dynamic_cast<CBall*>(m_pBall)->Set_Render(true, 3);
 		m_pBall->Tick(fTimeDelta);
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, m_pBall);
+		if (m_fStartBattle > 2.85f && !m_bEffect)
+		{
+			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+			XMVector3Normalize(vLook);
+			_vector vPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 45.f;
+			_vector vTargetPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 200.f;
 
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+			CLevel_GamePlay::LOADFILE tInfo;
+
+			XMStoreFloat4(&tInfo.vPos, vPos);
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BallEffect"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
+				return;
+
+			RELEASE_INSTANCE(CGameInstance);
+			m_bEffect = true;
+		}
 		if (m_fStartBattle > 3.25f)
 		{
 			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);

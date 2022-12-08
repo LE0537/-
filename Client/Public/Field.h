@@ -34,7 +34,7 @@ public:
 private:
 	HRESULT SetUp_ShaderResources();
 	HRESULT Ready_Components();
-
+	void	Ready_Script();
 	HRESULT	Create_Cell();
 	void	Check_Range();
 	void	Sort_Cell();
@@ -44,6 +44,8 @@ private:
 	CModel*					m_pModelCom = nullptr;
 	CNavigation*			m_pNavigationCom = nullptr;
 
+
+	vector<wstring>		    m_vNormalScript;
 
 	_bool					m_bPicking = false;
 	_float3							m_vMousePos;

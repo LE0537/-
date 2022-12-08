@@ -85,7 +85,7 @@ void CSnorlax::Tick(_float fTimeDelta)
 		Set_RidePos();
 
 	if (m_PlayerInfo.bRide && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
-		m_pModelCom->Play_Animation(fTimeDelta);
+		m_pModelCom->Play_Animation(fTimeDelta * 1.5f);
 
 	if (m_bBattleMap)
 	{

@@ -109,6 +109,18 @@
 #include "BattleIntro.h"
 #include "WaterBeam.h"
 #include "WaterBall.h"
+#include "Land.h"
+#include "EvolLight.h"
+#include "EvolLight2.h"
+#include "EvolLight3.h"
+#include "EvolLight4.h"
+#include "Leaf.h"
+#include "BallEffect.h"
+#include "BallEffect2.h"
+#include "BallEffect3.h"
+#include "BallEffect4.h"
+#include "BallEffect5.h"
+#include "BallEffect6.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -196,6 +208,25 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Weed"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Weed/%d.dds"), 3))))
+		return E_FAIL;
+	//Effect 텍스쳐
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Land"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Land/%d.png"), 16))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_EffectLight"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Light/%d.png"), 8))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_EvolLight"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Thunder/%d.png"), 16))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Leaf"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Leaf/%d.png"), 1))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BallEffect"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/BallEffect/%d.png"), 4))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BallLand"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/BallLand/%d.png"), 4))))
 		return E_FAIL;
 	/* 터레인 텍스쳐 */
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
@@ -636,6 +667,45 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BattleIntro"),
 		CBattleIntro::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Land"),
+		CLand::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_EvolLight"),
+		CEvolLight::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Cross"),
+	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/Cross/Cross.fbx", PivotMatrix))))
+	return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_EvolLight2"),
+		CEvolLight2::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_EvolLight3"),
+		CEvolLight3::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_EvolLight4"),
+		CEvolLight4::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Leaf"),
+		CLeaf::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BallEffect"),
+		CBallEffect::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BallEffect2"),
+		CBallEffect2::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BallEffect3"),
+		CBallEffect3::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BallEffect4"),
+		CBallEffect4::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BallEffect5"),
+		CBallEffect5::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BallEffect6"),
+		CBallEffect6::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Cylinder"),

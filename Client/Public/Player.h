@@ -80,6 +80,9 @@ private:
 	_float					m_fBattleUITime = 0.f;
 	_bool					m_bBattleUI = false;
 
+	_float					m_fLandTime = 0.f;
+	_bool					m_bRideLand = false;
+
 	_bool					m_bPrevPos = false;
 	_float4					m_vPrevPos;
 	//Battle
@@ -90,6 +93,9 @@ private:
 	_bool					m_bReturn = false;
 	BATTLETYPE				m_eBattleType = BATTLE_END;
 
+	_bool					m_bEffect = false;
+	_bool					m_bEffectEnd = false;
+	_bool					m_bMotionEnd = false;
 	//Capture
 	_bool					m_bCapturePoke = false;
 	_int					m_iCaptureBall = 0;

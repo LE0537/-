@@ -1,3 +1,5 @@
-﻿  GameInstance.cpp
+﻿  VIBuffer_Rect_Instance.cpp
+c:\users\shout\desktop\과제\pokemon\갠폴\engine\private\vibuffer_rect_instance.cpp(126): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\shout\desktop\과제\pokemon\갠폴\engine\private\vibuffer_rect_instance.cpp(128): warning C4244: '=': 'int'에서 'Engine::_float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   Engine.vcxproj -> C:\Users\shout\Desktop\과제\Pokemon\갠폴\Engine\Default\..\Bin\Engine.dll
   Engine.vcxproj -> ..\Bin\Engine.pdb (Full PDB)

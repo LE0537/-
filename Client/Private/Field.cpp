@@ -6,7 +6,7 @@
 #include "Data_Manager.h"	// Ãß°¡
 #include "Cell.h"
 #include "SoundMgr.h"
-
+#include "TextBox.h"
 
 CField::CField(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -31,9 +31,12 @@ HRESULT CField::Initialize(void * pArg)
 		return E_FAIL;
 
 
+	m_PlayerInfo.strName = TEXT("Áê½Å");
 
 	m_pTransformCom->Set_Scale(XMLoadFloat3((&((CLevel_GamePlay::LOADFILE*)pArg)->vScale)));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4((&((CLevel_GamePlay::LOADFILE*)pArg)->vPos)));
+	
+	Ready_Script();
 	return S_OK;
 }
 
@@ -227,6 +230,11 @@ void CField::Sort_Cell()
 	RELEASE_INSTANCE(CGameInstance);
 
 }
+void CField::Ready_Script()
+{
+	m_vNormalScript.push_back(TEXT("¤¸°¼¤À¤±¤©Çá¤Ã¤À¤±¤¤¤·[¤Á¤À¤Ç¤¾'\n  (´ëÃæ ¼¦°ÇÄ¡´Â ¼Ò¸®)"));
+	
+}
 HRESULT CField::Ending(_float fTimeDelta)
 {
 	if (!m_bEnding)
@@ -248,6 +256,21 @@ HRESULT CField::Ending(_float fTimeDelta)
 		m_fDeadtime += fTimeDelta;
 		if (m_fDeadtime > 3.f)
 		{
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+		
+			CTextBox::TINFO tTInfo;
+
+			tTInfo.iScriptSize = (_int)m_vNormalScript.size();
+			tTInfo.pTarget = this;
+			tTInfo.pScript = new wstring[m_vNormalScript.size()];
+			tTInfo.iType = 7;
+			for (_int i = 0; i < m_vNormalScript.size(); ++i)
+				tTInfo.pScript[i] = m_vNormalScript[i];
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
+				return E_FAIL;
+
+			RELEASE_INSTANCE(CGameInstance);
 			CSoundMgr::Get_Instance()->PlayEffect(TEXT("DeadEnding.wav"), 1.f);
 			m_bDeadSound = true;
 		}
@@ -307,6 +330,11 @@ CGameObject * CField::Clone(void * pArg)
 void CField::Free()
 {
 	__super::Free();
+
+	for (auto iter = m_vNormalScript.begin(); iter != m_vNormalScript.end();)
+		iter = m_vNormalScript.erase(iter);
+
+	m_vNormalScript.clear();
 
 	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pModelCom);

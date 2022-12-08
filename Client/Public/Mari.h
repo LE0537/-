@@ -65,6 +65,10 @@ private:
 	_float					m_fEventTime = 0.f;
 	_bool					m_bEvent = false;
 	
+	_bool					m_bEffect = false;
+	_bool					m_bEffectEnd = false;
+	_bool					m_bMotionEnd = false;
+
 	//Battle
 	_bool					m_bBattleText = false;
 	_bool					m_bBattle = false;

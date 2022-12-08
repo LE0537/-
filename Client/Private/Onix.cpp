@@ -578,7 +578,12 @@ void COnix::Battle(_float fTimeDelta)
 	}
 
 	if (!m_bStopAnim)
-		m_pModelCom->Play_Animation(fTimeDelta * 1.1f);
+	{
+		if (m_iAnimIndex == 1)
+			m_pModelCom->Play_Animation(fTimeDelta * 0.7f);
+		else
+			m_pModelCom->Play_Animation(fTimeDelta * 1.1f);
+	}
 }
 void COnix::Set_Stats()
 {

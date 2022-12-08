@@ -159,9 +159,9 @@ void CVIBuffer_Rect_Instance::Update(_float fTimeDelta)
 
 	for (_uint i = 0; i < m_iNumInstance; ++i)
 	{
-		((VTXMATRIX*)MappedSubResource.pData)[i].vPosition.y += m_pSpeedPerSec[i] * fTimeDelta;
+		((VTXMATRIX*)MappedSubResource.pData)[i].vPosition.y -= m_pSpeedPerSec[i] * fTimeDelta;
 
-		if (5.0f < ((VTXMATRIX*)MappedSubResource.pData)[i].vPosition.y)
+		if (-1.f > ((VTXMATRIX*)MappedSubResource.pData)[i].vPosition.y)
 			((VTXMATRIX*)MappedSubResource.pData)[i].vPosition.y = 0.0f;
 	}
 

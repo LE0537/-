@@ -177,6 +177,12 @@
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\Bag.h" />
     <ClInclude Include="..\public\Ball.h" />
+    <ClInclude Include="..\public\BallEffect.h" />
+    <ClInclude Include="..\public\BallEffect2.h" />
+    <ClInclude Include="..\public\BallEffect3.h" />
+    <ClInclude Include="..\public\BallEffect4.h" />
+    <ClInclude Include="..\public\BallEffect5.h" />
+    <ClInclude Include="..\public\BallEffect6.h" />
     <ClInclude Include="..\public\BattleEvent.h" />
     <ClInclude Include="..\public\BattleField.h" />
     <ClInclude Include="..\public\BattleIntro.h" />
@@ -199,6 +205,10 @@
     <ClInclude Include="..\public\Dratini.h" />
     <ClInclude Include="..\public\EndingErr.h" />
     <ClInclude Include="..\public\EvilBadge.h" />
+    <ClInclude Include="..\public\EvolLight.h" />
+    <ClInclude Include="..\public\EvolLight2.h" />
+    <ClInclude Include="..\public\EvolLight3.h" />
+    <ClInclude Include="..\public\EvolLight4.h" />
     <ClInclude Include="..\public\Evolution.h" />
     <ClInclude Include="..\public\ExpShare.h" />
     <ClInclude Include="..\public\FairyBadge.h" />
@@ -217,6 +227,8 @@
     <ClInclude Include="..\public\IceBadge.h" />
     <ClInclude Include="..\public\Jigglypuff.h" />
     <ClInclude Include="..\public\Kangaskhan.h" />
+    <ClInclude Include="..\public\Land.h" />
+    <ClInclude Include="..\public\Leaf.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Logo.h" />
@@ -289,6 +301,12 @@
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\private\Bag.cpp" />
     <ClCompile Include="..\private\Ball.cpp" />
+    <ClCompile Include="..\private\BallEffect.cpp" />
+    <ClCompile Include="..\private\BallEffect2.cpp" />
+    <ClCompile Include="..\private\BallEffect3.cpp" />
+    <ClCompile Include="..\private\BallEffect4.cpp" />
+    <ClCompile Include="..\private\BallEffect5.cpp" />
+    <ClCompile Include="..\private\BallEffect6.cpp" />
     <ClCompile Include="..\private\BattleEvent.cpp" />
     <ClCompile Include="..\private\BattleField.cpp" />
     <ClCompile Include="..\private\BattleIntro.cpp" />
@@ -310,6 +328,10 @@
     <ClCompile Include="..\private\Dratini.cpp" />
     <ClCompile Include="..\private\EndingErr.cpp" />
     <ClCompile Include="..\private\EvilBadge.cpp" />
+    <ClCompile Include="..\private\EvolLight.cpp" />
+    <ClCompile Include="..\private\EvolLight2.cpp" />
+    <ClCompile Include="..\private\EvolLight3.cpp" />
+    <ClCompile Include="..\private\EvolLight4.cpp" />
     <ClCompile Include="..\private\Evolution.cpp" />
     <ClCompile Include="..\private\ExpShare.cpp" />
     <ClCompile Include="..\private\FairyBadge.cpp" />
@@ -328,6 +350,8 @@
     <ClCompile Include="..\private\IceBadge.cpp" />
     <ClCompile Include="..\private\Jigglypuff.cpp" />
     <ClCompile Include="..\private\Kangaskhan.cpp" />
+    <ClCompile Include="..\private\Land.cpp" />
+    <ClCompile Include="..\private\Leaf.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />

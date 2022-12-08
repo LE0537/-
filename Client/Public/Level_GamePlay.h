@@ -47,7 +47,7 @@ private:
 	void Load();
 	void LoadCamPos();
 	void LoadBattle();
-	
+	void Create_Leaf(_float fTimeDelta);
 private:
 	LOADFILE			m_LoadFile;
 	vector<SaveInfo>	m_vecSave;
@@ -63,6 +63,8 @@ private:
 	vector<_float4>					m_listPos3;
 	vector<_float3>					m_listScale3;
 	_int					m_iWeed[3] = { 0,0,0 };
+
+	_float					m_fLeafTime = 0.f;
 
 	CGameObject* tInsInfo = nullptr;
 

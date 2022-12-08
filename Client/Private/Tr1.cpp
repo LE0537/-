@@ -48,11 +48,11 @@ HRESULT CTr1::Initialize(void * pArg)
 		return E_FAIL;
 	m_vecPoke.push_back(tInfo);
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
 	m_vecPoke.push_back(tInfo);
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
 	m_vecPoke.push_back(tInfo);
 
@@ -70,7 +70,7 @@ HRESULT CTr1::Initialize(void * pArg)
 
 	RELEASE_INSTANCE(CGameInstance);
 
-	m_iPokeMaxSize = 0;
+	m_iPokeMaxSize = 2;
 	m_iPokeSize = 0;
 	m_PlayerInfo.strName = L"พ฿รป";
 	m_PlayerInfo.bEvent = false;
@@ -332,15 +332,50 @@ void CTr1::Check_Coll()
 
 void CTr1::BattleStart(_float fTimeDelta)
 {
-	m_fStartBattle += fTimeDelta;
 	if (!m_bBattle)
 	{
-		m_pModelCom->Set_Loop(1);
-		m_pModelCom->Set_CurrentAnimIndex(1);
+		if (!m_bEffectEnd)
+		{
+			m_pModelCom->Set_Loop(1);
+			m_pModelCom->Set_CurrentAnimIndex(1);
+			m_bEffectEnd = true;
+			m_fStartBattle = 0.f;
+		}
+		if (m_bMotionEnd && m_fStartBattle > 0.2f && m_fStartBattle > 3.25f)
+		{
+			m_bMotionEnd = false;
+			m_bEffectEnd = false;
+			m_bEffect = false;
+			m_bBattle = true;
+			m_pModelCom->Set_End(1);
+			dynamic_cast<CPlayer*>(m_pTarget)->Set_BattleStart();
+			dynamic_cast<CBall*>(m_pBall)->Set_Render(false, 0);
+			return;
+		}
+		m_fStartBattle += fTimeDelta;
 		m_pModelCom->Play_Animation(fTimeDelta * 1.25f);
 		dynamic_cast<CBall*>(m_pBall)->Set_Render(true, 2);
 		m_pBall->Tick(fTimeDelta);
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, m_pBall);
+		if (m_fStartBattle > 2.85f && !m_bEffect)
+		{
+			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+			XMVector3Normalize(vLook);
+			_vector vPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 45.f;
+			_vector vTargetPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 200.f;
+
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+			CLevel_GamePlay::LOADFILE tInfo;
+
+			XMStoreFloat4(&tInfo.vPos, vPos);
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BallEffect"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
+				return;
+
+			RELEASE_INSTANCE(CGameInstance);
+			m_bEffect = true;
+		}
 		if (m_fStartBattle > 3.25f)
 		{
 			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
@@ -351,15 +386,9 @@ void CTr1::BattleStart(_float fTimeDelta)
 			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSize])->Get_Transfrom()->LookAt(vTargetPos);
 			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSize])->Set_AnimIndex(0);
 			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSize])->Set_BattleMap(true, 3.7f);
+			m_bMotionEnd = true;
 		}
-		if ((m_fStartBattle > 0.2f) && m_pModelCom->Get_End(1))
-		{
-			m_bBattle = true;
-			m_pModelCom->Set_End(1);
-			dynamic_cast<CPlayer*>(m_pTarget)->Set_BattleStart();
-			dynamic_cast<CBall*>(m_pBall)->Set_Render(false, 0);
 
-		}
 		if (!m_bBattleText)
 		{
 			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
@@ -392,16 +421,17 @@ void CTr1::Check_Anim(_float fTimeDelta)
 {
 	if (m_iAnimIndex == 1 || m_iAnimIndex == 4)
 	{
-		m_fStartBattle += fTimeDelta;
 		m_bChangeAnim = true;
-		if (m_ChangePoke && m_pModelCom->Get_End(m_iAnimIndex))
+		if (m_ChangePoke && m_fStartBattle > 3.25f)
 		{
+			m_bEffect = false;
 			m_pModelCom->Set_End(m_iAnimIndex);
 			m_iAnimIndex = 0;
 			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
 			m_bChangeAnim = false;
 			m_ChangePoke = false;
 		}
+		m_fStartBattle += fTimeDelta;
 		if (!m_ChangePoke && m_iAnimIndex == 1)
 		{
 			m_pModelCom->Set_Loop(m_iAnimIndex);
@@ -484,7 +514,25 @@ void CTr1::Check_Anim(_float fTimeDelta)
 		dynamic_cast<CBall*>(m_pBall)->Set_Render(true, 2);
 		m_pBall->Tick(fTimeDelta);
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, m_pBall);
+		if (m_fStartBattle > 2.85f && !m_bEffect)
+		{
+			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+			XMVector3Normalize(vLook);
+			_vector vPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 45.f;
+			_vector vTargetPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 200.f;
 
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+			CLevel_GamePlay::LOADFILE tInfo;
+
+			XMStoreFloat4(&tInfo.vPos, vPos);
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BallEffect"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
+				return;
+
+			RELEASE_INSTANCE(CGameInstance);
+			m_bEffect = true;
+		}
 		if (m_fStartBattle > 3.25f)
 		{
 			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);

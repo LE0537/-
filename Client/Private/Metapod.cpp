@@ -581,11 +581,18 @@ void CMetapod::Set_EvolPos2(_float fTimeDelta)
 			m_fRenderTime -= 0.05f;
 			dynamic_cast<CButterfree*>(m_EvolPoke)->Set_Render(false);
 		}
+	/*	if (!m_bEffect)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_EvolLight4"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"), &m_pEffect)))
+				return;
+			m_bEffect = true;
+		}*/
 	}
 	if (m_fRenderTime < 0.f)
 	{
 		m_bRender = false;
 		Set_Dead();
+	//	m_pEffect->Set_Dead();
 		dynamic_cast<CButterfree*>(m_EvolPoke)->Set_Render(true);
 		dynamic_cast<CButterfree*>(m_EvolPoke)->Set_CheckEvol();
 	}

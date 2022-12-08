@@ -346,6 +346,42 @@
     <Filter Include="02.GameObjects\99.GameObj\03.Item\06.FullPotion">
       <UniqueIdentifier>{2bb01963-76e8-4d6f-823b-aa660aa86575}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\04.Land">
+      <UniqueIdentifier>{684a1e1d-fcd7-456c-8b13-7cac703c0bd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\05.EvolLight">
+      <UniqueIdentifier>{76e72cf8-9c80-4699-a5c0-8fde1a134f81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\05.EvolLight\EvolLight2">
+      <UniqueIdentifier>{bced60a4-b408-4f4c-875b-9acfe5710188}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\05.EvolLight\EvolLight3">
+      <UniqueIdentifier>{6f4d6546-fa29-4cab-ae20-e1df568efa32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\05.EvolLight\EvolLight4">
+      <UniqueIdentifier>{d8f1e27f-2324-40dc-bda7-9507bc930109}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\06.Leaf">
+      <UniqueIdentifier>{cd143633-5015-404f-a2ed-f8bd2b3d2de2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\07.BallEffect">
+      <UniqueIdentifier>{44dff53c-1b69-4279-88e0-2dddda679d50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallEffect2">
+      <UniqueIdentifier>{d88dc35e-01e8-41a1-9e36-3632d943bdd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallEffect3">
+      <UniqueIdentifier>{3233802a-4f3f-4c07-806e-38cddb4b8472}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallEffect4">
+      <UniqueIdentifier>{aa4d249f-390c-48ee-9219-b4d2ab0122b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallEffect5">
+      <UniqueIdentifier>{e6d0b78d-3f73-410a-916f-9f86ea31a735}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallEffect6">
+      <UniqueIdentifier>{f1e84e75-c5b0-4076-975f-7393aba7cdc1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -684,6 +720,42 @@
     <ClInclude Include="..\public\MaxPotion.h">
       <Filter>02.GameObjects\99.GameObj\03.Item\11.MaxPotion</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Land.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\04.Land</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EvolLight.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\05.EvolLight</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EvolLight2.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\05.EvolLight\EvolLight2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EvolLight3.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\05.EvolLight\EvolLight3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EvolLight4.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\05.EvolLight\EvolLight4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Leaf.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\06.Leaf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BallEffect.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BallEffect2.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallEffect2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BallEffect3.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallEffect3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BallEffect4.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallEffect4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BallEffect5.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallEffect5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BallEffect6.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallEffect6</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1006,6 +1078,42 @@
     </ClCompile>
     <ClCompile Include="..\private\MaxPotion.cpp">
       <Filter>02.GameObjects\99.GameObj\03.Item\11.MaxPotion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Land.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\04.Land</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EvolLight.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\05.EvolLight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EvolLight2.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\05.EvolLight\EvolLight2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EvolLight3.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\05.EvolLight\EvolLight3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EvolLight4.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\05.EvolLight\EvolLight4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Leaf.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\06.Leaf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BallEffect.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BallEffect2.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallEffect2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BallEffect3.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallEffect3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BallEffect4.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallEffect4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BallEffect5.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallEffect5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BallEffect6.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallEffect6</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

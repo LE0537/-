@@ -44,6 +44,8 @@ HRESULT CEvolution::Initialize(void * pArg)
 
 void CEvolution::Tick(_float fTimeDelta)
 {
+	Create_Light(fTimeDelta);
+
 	if (!g_bEvolution)
 		Set_Dead();
 }
@@ -91,6 +93,24 @@ HRESULT CEvolution::Ready_Components()
 	if (FAILED(__super::Add_Components(TEXT("Com_VIBuffer"), LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), (CComponent**)&m_pVIBufferCom)))
 		return E_FAIL;
 
+
+	return S_OK;
+}
+
+HRESULT CEvolution::Create_Light(_float fTimeDelta)
+{
+	m_fCreateTime += fTimeDelta;
+	if (m_fCreateTime > 0.3f)
+	{
+		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+		for (_int i = 0; i < 3; ++i)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_EvolLight"), LEVEL_GAMEPLAY, TEXT("Layer_UI"))))
+				return E_FAIL;
+		}
+		m_fCreateTime = 0.f;
+		RELEASE_INSTANCE(CGameInstance);
+	}
 
 	return S_OK;
 }

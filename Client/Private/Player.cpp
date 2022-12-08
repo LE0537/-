@@ -187,18 +187,40 @@ void CPlayer::CheckRideIDLE()
 
 void CPlayer::Key_Input(_float fTimeDelta)
 {
+	m_fLandTime += fTimeDelta;
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
 	if (!m_PlayerInfo.bRide)
 	{
 		if (pGameInstance->Key_Pressing(DIK_LSHIFT) && pGameInstance->Key_Pressing(DIK_W))
 		{
 			m_pTransformCom->Go_Straight(fTimeDelta * 1.3f, m_pNavigationCom);
 			m_pModelCom->Set_CurrentAnimIndex(RUN);
+			if (m_fLandTime > 0.2f)
+			{
+				CLevel_GamePlay::LOADFILE tInfo;
+				XMStoreFloat4(&tInfo.vPos, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+				tInfo.vScale = { 0.5f,0.5f,0.5f};
+				tInfo.vPos.y += 0.2f;
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Land"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
+					return;
+				m_fLandTime = 0.f;
+			}
 		}
 		else if (pGameInstance->Key_Pressing(DIK_W))
 		{
 			m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
 			m_pModelCom->Set_CurrentAnimIndex(WALK);
+			if (m_fLandTime > 0.3f)
+			{
+				CLevel_GamePlay::LOADFILE tInfo;
+				XMStoreFloat4(&tInfo.vPos, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+				tInfo.vScale = { 0.5f,0.5f,0.5f };
+				tInfo.vPos.y += 0.2f;
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Land"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
+					return;
+				m_fLandTime = 0.f;
+			}
 		}
 
 	}
@@ -217,6 +239,32 @@ void CPlayer::Key_Input(_float fTimeDelta)
 				break;
 			default:
 				break;
+			}
+			if (m_fLandTime > 0.1f)
+			{
+				CLevel_GamePlay::LOADFILE tInfo;
+				_vector vRight, vPos;
+				tInfo.vScale = { 1.1f,1.1f,1.1f };
+				vPos = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+				vRight = m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
+				XMVector3Normalize(vRight);
+				if (!m_bRideLand)
+				{
+					vPos += vRight * 5.f;
+					vPos.m128_f32[1] += 0.4f;
+					XMStoreFloat4(&tInfo.vPos, vPos);
+					m_bRideLand = true;
+				}
+				else
+				{
+					vPos -= vRight * 5.f;
+					vPos.m128_f32[1] += 0.4f;
+					XMStoreFloat4(&tInfo.vPos, vPos);
+					m_bRideLand = false;
+				}
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Land"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
+					return;
+				m_fLandTime = 0.f;
 			}
 		}
 		if (pGameInstance->Key_Pressing(DIK_R))
@@ -273,17 +321,53 @@ void CPlayer::Battle(_float fTimeDelta)
 }
 void CPlayer::BattleStart(_float fTimeDelta)
 {
-	m_fStartBattle += fTimeDelta;
+	
 	if (!m_bBattle)
 	{
-		m_pModelCom->Set_Loop(2);
-		m_pModelCom->Set_CurrentAnimIndex(2);
+		if (!m_bEffectEnd)
+		{
+			m_pModelCom->Set_Loop(2);
+			m_pModelCom->Set_CurrentAnimIndex(2);
+			m_bEffectEnd = true;
+			m_fStartBattle = 0.f;
+		}
+		if (m_bMotionEnd && m_fStartBattle > 0.2f && m_fStartBattle > 3.5f)
+		{
+			m_bMotionEnd = false;
+			m_bEffectEnd = false;
+			m_bEffect = false;
+			m_bBattle = true;
+			m_pModelCom->Set_End(2);
+			m_fBattleUITime = 0.f;
+			dynamic_cast<CBall*>(m_pBall)->Set_Render(false, m_iBallIndex);
+			return;
+		}
+		m_fStartBattle += fTimeDelta;
 		m_pModelCom->Play_Animation(fTimeDelta*0.8f);
 		m_iBallIndex = dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(0))->Get_PokeInfo().iBallNum;
 		dynamic_cast<CBall*>(m_pBall)->Set_Render(true, m_iBallIndex);
 		m_pBall->Tick(fTimeDelta);
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, m_pBall);
-		if (m_fStartBattle > 1.4f)
+		if (m_fStartBattle > 3.1f && !m_bEffect)
+		{
+			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+			XMVector3Normalize(vLook);
+			_vector vPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 35.f;
+			_vector vTargetPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 200.f;
+
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+			CLevel_GamePlay::LOADFILE tInfo;
+
+			XMStoreFloat4(&tInfo.vPos, vPos);
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BallEffect"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
+				return;
+
+			RELEASE_INSTANCE(CGameInstance);
+			m_bEffect = true;
+		}
+		if (m_fStartBattle > 3.5f)
 		{
 			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
 			XMVector3Normalize(vLook);
@@ -300,20 +384,13 @@ void CPlayer::BattleStart(_float fTimeDelta)
 					i = 6;
 				}
 			}
-
+			
 			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(iPokeIndex))->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, vPos);
 			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(iPokeIndex))->Get_Transfrom()->LookAt(vTargetPos);
 			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(iPokeIndex))->Set_AnimIndex(0);
-			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(iPokeIndex))->Set_BattleMap(true,2.f);
+			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(iPokeIndex))->Set_BattleMap(true,0.f);
+			m_bMotionEnd = true;
 		}
-		if ((m_fStartBattle > 0.2f) && m_pModelCom->Get_End(2))
-		{
-			m_bBattle = true;
-			m_pModelCom->Set_End(2);
-			m_fBattleUITime = 0.f;
-			dynamic_cast<CBall*>(m_pBall)->Set_Render(false, m_iBallIndex);
-		}
-
 		if (!m_bBattleText)
 		{
 			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
@@ -446,10 +523,10 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 {
 	if (m_iAnimIndex == 1 || m_iAnimIndex == 2 || m_iAnimIndex == 8)
 	{
-		m_fStartBattle += fTimeDelta;
 		m_bChangeAnim = true;
-		if (m_ChangePoke && m_pModelCom->Get_End(m_iAnimIndex))
+		if (m_ChangePoke && m_fStartBattle > 1.8f)
 		{
+			m_bEffect = false;
 			m_pModelCom->Set_End(m_iAnimIndex);
 			m_iAnimIndex = 0;
 			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
@@ -500,22 +577,44 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 		}
 
 	}
+	m_fStartBattle += fTimeDelta;
 	if (m_ChangePoke && m_bChangeAnim)
 	{
 		m_pModelCom->Play_Animation(fTimeDelta*0.8f);
 		dynamic_cast<CBall*>(m_pBall)->Set_Render(true, m_iBallIndex);
 		m_pBall->Tick(fTimeDelta);
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, m_pBall);
-		if (m_fStartBattle > 1.4f)
+		if (m_fStartBattle > 1.4f && !m_bEffect)
 		{
 			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
 			XMVector3Normalize(vLook);
 			_vector vPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 35.f;
 			_vector vTargetPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 200.f;
+
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+			CLevel_GamePlay::LOADFILE tInfo;
+
+			XMStoreFloat4(&tInfo.vPos, vPos);
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BallEffect"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
+				return;
+
+			RELEASE_INSTANCE(CGameInstance);
+			m_bEffect = true;
+		}
+		if (m_fStartBattle > 1.8f)
+		{
+			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+			XMVector3Normalize(vLook);
+			_vector vPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 35.f;
+			_vector vTargetPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 200.f;
+
 			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(m_pBag->Get_iChangePoke()))->Get_Transfrom()->Set_State(CTransform::STATE_TRANSLATION, vPos);
 			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(m_pBag->Get_iChangePoke()))->Get_Transfrom()->LookAt(vTargetPos);
 			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(m_pBag->Get_iChangePoke()))->Set_AnimIndex(0);
 			dynamic_cast<CGameObj*>(m_pBag->Get_vecPoke(m_pBag->Get_iChangePoke()))->Set_BattleMap(true, 0.f);
+	
 		}
 	}
 	if (m_bReturnPoke && m_bChangeAnim)

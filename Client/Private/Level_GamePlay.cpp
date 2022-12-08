@@ -4,7 +4,7 @@
 #include "GameInstance.h"
 #include "Camera_Dynamic.h"
 #include "SoundMgr.h"
-
+#include "GameObj.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
@@ -56,7 +56,9 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 	if (pGameInstance->Key_Down(DIK_F1))
 		g_CollBox = !g_CollBox;
 
-
+	if (!g_bBag && !g_PokeInfo && !g_bPokeDeck && !g_bEvolution)
+		Create_Leaf(fTimeDelta);
+	
 	RELEASE_INSTANCE(CGameInstance);
 }
 
@@ -159,7 +161,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar * pLayerTag)
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_PointInstance3"),
 		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, m_iWeed[2]))))
 		return E_FAIL;
-
 
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Weed"), LEVEL_GAMEPLAY, pLayerTag, &tInsInfo)))
 		return E_FAIL;
@@ -1096,6 +1097,27 @@ void CLevel_GamePlay::LoadBattle()
 	Safe_Release(pGameInstance);
 	// 3. ÆÄÀÏ ¼Ò¸ê
 	CloseHandle(hFile);
+}
+
+void CLevel_GamePlay::Create_Leaf(_float fTimeDelta)
+{
+	m_fLeafTime += fTimeDelta;
+	if (m_fLeafTime > 0.2f)
+	{
+		_vector vPos = dynamic_cast<CGameObj*>(m_LoadFile.pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
+		vPos.m128_f32[0] += rand() % 300 - 150.f;
+		vPos.m128_f32[1] += 30.f;
+		vPos.m128_f32[2] += rand() % 300 - 150.f;
+		XMStoreFloat4(&m_LoadFile.vPos, vPos);
+
+		m_fLeafTime = 0.f;
+		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Leaf"), LEVEL_GAMEPLAY, TEXT("Effect"), &m_LoadFile)))
+			return;
+
+		RELEASE_INSTANCE(CGameInstance);
+	}
 }
 
 CLevel_GamePlay * CLevel_GamePlay::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

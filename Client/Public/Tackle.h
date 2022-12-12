@@ -33,7 +33,7 @@ public:
 
 private:
 
-
+	_float		m_fSkillTime = 0.f;
 
 public:
 	static CTackle* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

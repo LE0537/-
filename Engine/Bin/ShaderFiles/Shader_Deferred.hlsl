@@ -213,9 +213,19 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
 	vector			vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
 	vector			vShade = g_ShadeTexture.Sample(LinearSampler, In.vTexUV);
 	vector			vSpecular = g_SpecularTexture.Sample(LinearSampler, In.vTexUV);
+	vector			vDepth = g_DepthTexture.Sample(LinearSampler, In.vTexUV);
 
-	Out.vColor = vDiffuse * vShade + vSpecular;
-	
+	vector		vFogColor = vector(1.f, 1.f, 1.f, 1.f);
+
+	float		fFogPower = 0.0f;
+
+	float		fFogDistance = 5.f;
+
+	fFogPower = max((vDepth.y * 1300.f) - fFogDistance, 0.f) / 700.0f;
+
+	Out.vColor = (vDiffuse * vShade + vSpecular) + vFogColor * fFogPower;
+
+
 	if (Out.vColor.a == 0.f)
 		discard;
 

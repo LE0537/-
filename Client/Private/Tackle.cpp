@@ -38,7 +38,23 @@ HRESULT CTackle::Initialize(void * pArg)
 
 void CTackle::Tick(_float fTimeDelta)
 {
+	if (m_SkillInfo.bUseSkill)
+	{
+		m_fSkillTime += fTimeDelta;
+		if (m_fSkillTime > 1.f)
+		{
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tackle2"), LEVEL_GAMEPLAY, TEXT("Effect"), &m_SkillInfo)))
+				return;
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tackle3"), LEVEL_GAMEPLAY, TEXT("Effect"), &m_SkillInfo)))
+				return;
+
+			RELEASE_INSTANCE(CGameInstance);
+			m_fSkillTime = 0.f;
+			m_SkillInfo.bUseSkill = false;
+		}
+	}
 }
 
 void CTackle::Late_Tick(_float fTimeDelta)

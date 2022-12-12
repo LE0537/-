@@ -394,6 +394,24 @@
     <Filter Include="02.GameObjects\99.GameObj\06.Effect\07.BallEffect\CaptureStar">
       <UniqueIdentifier>{10bba94b-e7fe-4036-9e41-88399e955f7b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\00.Tackle\Tackle2">
+      <UniqueIdentifier>{26e43d4c-7816-4735-b75e-249325020444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\00.Tackle\Tackle3">
+      <UniqueIdentifier>{7959f2f1-ef83-43f6-8541-480d49e5b474}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\02.WaterGun">
+      <UniqueIdentifier>{6cb26ef5-63a5-4e77-8763-bb47db01bb53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\02.WaterGun\WaterGun1">
+      <UniqueIdentifier>{9d696055-7ac2-41ee-af0e-1e9a560bc3a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\02.WaterGun\WaterGun2">
+      <UniqueIdentifier>{5f21ba29-230c-4cc9-8183-7a035ac588eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\02.WaterGun\WaterGun3">
+      <UniqueIdentifier>{f088b8c2-3853-42df-9517-689b2a45c1bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -780,6 +798,24 @@
     <ClInclude Include="..\public\CaptureStar.h">
       <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\CaptureStar</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Tackle2.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\00.Tackle\Tackle2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tackle3.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\00.Tackle\Tackle3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\WaterGun.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\02.WaterGun</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\WaterGun1.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\02.WaterGun\WaterGun1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\WaterGun3.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\02.WaterGun\WaterGun3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\WaterGun2.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\02.WaterGun\WaterGun2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1150,6 +1186,24 @@
     </ClCompile>
     <ClCompile Include="..\private\CaptureStar.cpp">
       <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\CaptureStar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tackle2.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\00.Tackle\Tackle2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tackle3.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\00.Tackle\Tackle3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\WaterGun.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\02.WaterGun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\WaterGun1.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\02.WaterGun\WaterGun1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\WaterGun3.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\02.WaterGun\WaterGun3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\WaterGun2.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\02.WaterGun\WaterGun2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

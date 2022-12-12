@@ -271,6 +271,8 @@
     <ClInclude Include="..\public\Squirtle.h" />
     <ClInclude Include="..\public\SuperBall.h" />
     <ClInclude Include="..\public\Tackle.h" />
+    <ClInclude Include="..\public\Tackle2.h" />
+    <ClInclude Include="..\public\Tackle3.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\public\TerrainBadge.h" />
     <ClInclude Include="..\public\TextBox.h" />
@@ -290,6 +292,10 @@
     <ClInclude Include="..\public\WaterBadge.h" />
     <ClInclude Include="..\public\WaterBall.h" />
     <ClInclude Include="..\public\WaterBeam.h" />
+    <ClInclude Include="..\public\WaterGun.h" />
+    <ClInclude Include="..\public\WaterGun1.h" />
+    <ClInclude Include="..\public\WaterGun2.h" />
+    <ClInclude Include="..\public\WaterGun3.h" />
     <ClInclude Include="..\public\Weed.h" />
     <ClInclude Include="..\public\Wigglytuff.h" />
     <ClInclude Include="Client.h" />
@@ -398,6 +404,8 @@
     <ClCompile Include="..\private\Squirtle.cpp" />
     <ClCompile Include="..\private\SuperBall.cpp" />
     <ClCompile Include="..\private\Tackle.cpp" />
+    <ClCompile Include="..\private\Tackle2.cpp" />
+    <ClCompile Include="..\private\Tackle3.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\private\TerrainBadge.cpp" />
     <ClCompile Include="..\private\TextBox.cpp" />
@@ -417,6 +425,10 @@
     <ClCompile Include="..\private\WaterBadge.cpp" />
     <ClCompile Include="..\private\WaterBall.cpp" />
     <ClCompile Include="..\private\WaterBeam.cpp" />
+    <ClCompile Include="..\private\WaterGun.cpp" />
+    <ClCompile Include="..\private\WaterGun1.cpp" />
+    <ClCompile Include="..\private\WaterGun2.cpp" />
+    <ClCompile Include="..\private\WaterGun3.cpp" />
     <ClCompile Include="..\private\Weed.cpp" />
     <ClCompile Include="..\private\Wigglytuff.cpp" />
     <ClCompile Include="Client.cpp" />

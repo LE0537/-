@@ -101,8 +101,15 @@
 #include "AnimMasterBall.h"
 //Skill 헤더
 #include "Tackle.h"
+#include "Tackle2.h"
+#include "Tackle3.h"
+#include "WaterGun.h"
+#include "WaterGun1.h"
+#include "WaterGun2.h"
+#include "WaterGun3.h"
 #include "BreakCar.h"
 #include "NoneSkill.h"
+
 //Effect 헤더
 #include "BattleEvent.h"
 #include "Screen.h"
@@ -237,6 +244,21 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Star"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Star/%d.png"), 1))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Tackle"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/Tackle/%d.png"), 1))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Tackle2"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/Tackle/Tackle2/%d.png"), 8))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_WaterGun1"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/WaterGun/WaterGun1/%d.png"), 8))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_WaterGun2"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/WaterGun/WaterGun2/%d.png"), 4))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_WaterGun3"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/WaterGun/WaterGun3/%d.png"), 8))))
 		return E_FAIL;
 	/* 터레인 텍스쳐 */
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
@@ -661,6 +683,24 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	/* 스킬 객체 */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Tackle"),
 		CTackle::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Tackle2"),
+		CTackle2::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Tackle3"),
+		CTackle3::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_WaterGun"),
+		CWaterGun::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_WaterGun1"),
+		CWaterGun1::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_WaterGun2"),
+		CWaterGun2::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_WaterGun3"),
+		CWaterGun3::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BreakCar"),
 		CBreakCar::Create(m_pDevice, m_pContext))))

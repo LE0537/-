@@ -2,7 +2,7 @@
 #include "..\Public\WaterBall.h"
 
 #include "GameInstance.h"
-
+#include "Level_GamePlay.h"
 
 CWaterBall::CWaterBall(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -61,6 +61,16 @@ void CWaterBall::Tick(_float fTimeDelta)
 	if (m_fDeadTime > 1.5f)
 	{
 		Set_Dead();
+		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+		CLevel_GamePlay::LOADFILE tInfo;
+		XMStoreFloat4(&tInfo.vPos, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+		tInfo.vScale = { 0.f,0.f,0.f };
+
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_WaterGun3"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"), &tInfo)))
+			return;
+	
+		RELEASE_INSTANCE(CGameInstance);
 	}
 }
 

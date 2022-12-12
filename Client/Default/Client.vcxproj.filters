@@ -382,6 +382,18 @@
     <Filter Include="02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallEffect6">
       <UniqueIdentifier>{f1e84e75-c5b0-4076-975f-7393aba7cdc1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallRed">
+      <UniqueIdentifier>{296848b8-4a4e-40f2-bed1-1f63c9d194aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallRed2">
+      <UniqueIdentifier>{8f2323b5-a691-405f-b6bd-08acde537874}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\07.BallEffect\CaptureEffect">
+      <UniqueIdentifier>{51570164-196d-4180-b97f-e4a81a802ca1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\07.BallEffect\CaptureStar">
+      <UniqueIdentifier>{10bba94b-e7fe-4036-9e41-88399e955f7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -756,6 +768,18 @@
     <ClInclude Include="..\public\BallEffect6.h">
       <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallEffect6</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\BallRed.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallRed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BallRed2.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallRed2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CaptureEffect.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\CaptureEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CaptureStar.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\CaptureStar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1114,6 +1138,18 @@
     </ClCompile>
     <ClCompile Include="..\private\BallEffect6.cpp">
       <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallEffect6</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BallRed.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallRed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BallRed2.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\BallRed2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CaptureEffect.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\CaptureEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CaptureStar.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\07.BallEffect\CaptureStar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -521,6 +521,8 @@ void CSnorlax::Set_RidePos()
 	if (GetKeyState('W') & 0x8000)
 		m_pModelCom->Set_CurrentAnimIndex(8);
 
+	m_pTransformCom->Set_Scale(XMVectorSet(0.05f, 0.05f, 0.05f, 0.f));
+
 	_vector vRight = dynamic_cast<CGameObj*>(m_pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_RIGHT);
 	_vector vUp = dynamic_cast<CGameObj*>(m_pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_UP);
 	_vector vLook = dynamic_cast<CGameObj*>(m_pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_LOOK);
@@ -529,6 +531,7 @@ void CSnorlax::Set_RidePos()
 	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
+
 }
 void CSnorlax::CheckRide()
 {
@@ -539,7 +542,7 @@ void CSnorlax::Battle(_float fTimeDelta)
 {
 	if (!m_bBattle)
 	{
-		m_pTransformCom->Set_Scale(XMVectorSet(0.065f, 0.065f, 0.065f, 0.f));
+		m_pTransformCom->Set_Scale(XMVectorSet(0.045f, 0.045f, 0.045f, 0.f));
 		m_fStartBattle += fTimeDelta;
 		if (m_iAnimIndex == 0)
 		{

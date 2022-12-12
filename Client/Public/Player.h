@@ -101,6 +101,11 @@ private:
 	_int					m_iCaptureBall = 0;
 	_int					m_iBallIndex = 0;
 	_int					m_iPrevBall = 0;
+
+	_bool					m_bTakeBall = false;
+
+	_bool					m_bCaptureBall = false;
+	_float					m_fCaptureTime = 0.f;
 public:
 	static CPlayer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

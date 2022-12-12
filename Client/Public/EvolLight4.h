@@ -36,6 +36,8 @@ private:
 	_float					m_fX, m_fX2, m_fY, m_fSizeX, m_fSizeY;
 	_float4x4				m_ViewMatrix, m_ProjMatrix;
 
+	_float					m_fDeadTime = 0.f;
+	_float					m_fSize = 0.f;
 private:
 	HRESULT Ready_Components();
 	HRESULT SetUp_ShaderResources(); /* 셰이더 전역변수에 값을 전달한다. */

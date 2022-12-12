@@ -121,6 +121,10 @@
 #include "BallEffect4.h"
 #include "BallEffect5.h"
 #include "BallEffect6.h"
+#include "BallRed.h"
+#include "BallRed2.h"
+#include "CaptureEffect.h"
+#include "CaptureStar.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -227,6 +231,12 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BallLand"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/BallLand/%d.png"), 4))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BallRed"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/BallRed/%d.png"), 1))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Star"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Star/%d.png"), 1))))
 		return E_FAIL;
 	/* 터레인 텍스쳐 */
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
@@ -707,6 +717,19 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BallEffect6"),
 		CBallEffect6::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BallRed"),
+		CBallRed::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BallRed2"),
+		CBallRed2::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_CaptureEffect"),
+		CCaptureEffect::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_CaptureStar"),
+		CCaptureStar::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Cylinder"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/Cylinder/Cylinder.fbx", PivotMatrix))))

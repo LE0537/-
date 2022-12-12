@@ -68,9 +68,22 @@ void CPlayer::Tick(_float fTimeDelta)
 		m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
 		m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	}
-	if(!g_bEvolution)
+	if(!g_bEvolution && !m_PlayerInfo.bRide)
 		m_pModelCom->Play_Animation(fTimeDelta);
-
+	else if (m_PlayerInfo.bRide)
+	{
+		switch (m_PlayerInfo.iRideNum)
+		{
+		case 115:
+			m_pModelCom->Play_Animation(fTimeDelta );
+			break;
+		case 143:
+			m_pModelCom->Play_Animation(fTimeDelta * 1.5f);
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 void CPlayer::Late_Tick(_float fTimeDelta)
@@ -281,20 +294,7 @@ void CPlayer::Key_Input(_float fTimeDelta)
 	{
 		m_pTransformCom->Turn2(m_pTransformCom->Get_State(CTransform::STATE_UP), XMConvertToRadians(3.f));
 	}
-	if (pGameInstance->Key_Pressing(DIK_O))
-	{
-		--m_iAnim;
-		if (m_iAnim < 0)
-			m_iAnim = 0;
-		m_pModelCom->Set_CurrentAnimIndex(m_iAnim);
-	}
-	if (pGameInstance->Key_Pressing(DIK_P))
-	{
-		++m_iAnim;
-		if (m_iAnim > 2)
-			m_iAnim = 2;
-		m_pModelCom->Set_CurrentAnimIndex(m_iAnim);
-	}
+
 
 	RELEASE_INSTANCE(CGameInstance);
 }
@@ -547,7 +547,7 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
 			m_bChangeAnim = false;
 			m_bCapture = false;
-			
+			m_bCaptureBall = false;
 			Check_Ball();
 
 			g_bCaptureRender = true;
@@ -573,6 +573,7 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 			m_pModelCom->Set_Loop(m_iAnimIndex);
 			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
 			m_bReturnPoke = true;
+			m_bTakeBall = false;
 			m_fStartBattle = 0.f;
 		}
 
@@ -620,7 +621,16 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 	if (m_bReturnPoke && m_bChangeAnim)
 	{
 		m_pModelCom->Play_Animation(fTimeDelta*0.6f);
-		dynamic_cast<CBall*>(m_pBall)->Set_Render(true, m_iPrevBall);
+		if (!m_bTakeBall)
+		{
+			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+			XMVector3Normalize(vLook);
+			_vector vPos = XMLoadFloat4(&m_vMyBattlePos) + vLook * 35.f;
+			_float4 vPos2;
+			XMStoreFloat4(&vPos2, vPos);
+			dynamic_cast<CBall*>(m_pBall)->Set_Render2(true, m_iPrevBall, true, vPos2);
+			m_bTakeBall = true;
+		}
 		m_pBall->Tick(fTimeDelta);
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, m_pBall);
 		if (m_fStartBattle > 1.0f)
@@ -628,6 +638,29 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 	}
 	if (m_bCapture && m_bChangeAnim)
 	{
+		if (!m_bCaptureBall)
+		{
+			m_fCaptureTime += fTimeDelta;
+			if (m_fCaptureTime > 2.2f)
+			{
+				CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+				CLevel_GamePlay::LOADFILE tInfo;
+
+				_float4 vPos = m_vTargetBattlePos;
+
+				vPos.y += 1.f;
+
+				tInfo.vPos = vPos;
+
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BallRed2"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"), &tInfo)))
+					return;
+
+				RELEASE_INSTANCE(CGameInstance);
+				m_bCaptureBall = true;
+				m_fCaptureTime = 0.f;
+			}
+		}
 		m_pModelCom->Play_Animation(fTimeDelta*0.8f);
 		dynamic_cast<CBall*>(m_pBall)->Set_Render(true, m_iCaptureBall);
 		m_pBall->Tick(fTimeDelta);

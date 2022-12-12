@@ -585,6 +585,17 @@ void CWartortle::Set_EvolPos2(_float fTimeDelta)
 	{
 		m_bRender = false;
 		Set_Dead();
+		for (_int i = 0; i < 120; ++i)
+		{
+			_int iInfo = i * 3;
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_EvolLight3"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"), &iInfo)))
+				return;
+		}
+		for (_int i = 0; i < 60; ++i)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_EvolLight4"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"))))
+				return;
+		}
 		dynamic_cast<CBlastoise*>(m_EvolPoke)->Set_Render(true);
 		dynamic_cast<CBlastoise*>(m_EvolPoke)->Set_CheckEvol();
 	}

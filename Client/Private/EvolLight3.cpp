@@ -24,19 +24,21 @@ HRESULT CEvolLight3::Initialize(void * pArg)
 		return E_FAIL;
 
 
-	m_fSizeX = 100.f;
-	m_fSizeY = 100.f;
+	m_fSizeX = 80.f;
+	m_fSizeY = 80.f;
 
-	m_fX = (g_iWinSizeX >> 1) + (rand() % 400 - 200.f);
-	m_fY = (g_iWinSizeY >> 1) + (rand() % 200 - 100.f);
+	m_fX = g_iWinSizeX >> 1;
+	m_fY = g_iWinSizeY >> 1;
 
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixTranspose(XMMatrixIdentity()));
-	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -200.f, 100.f)));
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -500.f, 200.f)));
 
 	_float3 vScale = { m_fSizeX,m_fSizeY,0.f };
-
 	m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
+
+	m_pTransformCom->Turn2(XMVectorSet(0.f,0.f,1.f,0.f),XMConvertToRadians(*(_int*)pArg));
+
 
 	return S_OK;
 }
@@ -51,6 +53,7 @@ void CEvolLight3::Tick(_float fTimeDelta)
 
 void CEvolLight3::Late_Tick(_float fTimeDelta)
 {
+
 	if (g_bEvolution && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
 }
@@ -83,7 +86,7 @@ HRESULT CEvolLight3::Ready_Components()
 
 
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Components(TEXT("Com_Texture"), LEVEL_STATIC, TEXT("Prototype_Component_Texture_EvolLight"), (CComponent**)&m_pTextureCom)))
+	if (FAILED(__super::Add_Components(TEXT("Com_Texture"), LEVEL_STATIC, TEXT("Prototype_Component_Texture_BallEffect"), (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
 	/* For.Com_VIBuffer */
@@ -105,10 +108,10 @@ HRESULT CEvolLight3::SetUp_ShaderResources()
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(m_iFrame))))
+	if (FAILED(m_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(1))))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(10);
+	m_pShaderCom->Begin(12);
 	m_pVIBufferCom->Render();
 
 
@@ -117,14 +120,16 @@ HRESULT CEvolLight3::SetUp_ShaderResources()
 
 void CEvolLight3::Set_Pos(_float fTimeDelta)
 {
-	m_fFrameTime += fTimeDelta;
-	if (m_fFrameTime > 0.05f)
-	{
-		++m_iFrame;
-		m_fFrameTime = 0.f;
-	}
-	if (m_iFrame >= 16)
-		Set_Dead();
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+	_vector vUp = m_pTransformCom->Get_State(CTransform::STATE_UP);
+
+	vPos += XMVector3Normalize(vUp) * 800.f * fTimeDelta;
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
+
+
+	/*m_fDeadTime += fTimeDelta;
+	if(m_fDeadTime > 0.4f)
+		Set_Dead();*/
 }
 
 

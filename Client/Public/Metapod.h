@@ -94,8 +94,6 @@ private:
 	_bool					m_bClearEvol = false; // 진화
 	CGameObject*			m_EvolPoke = nullptr; //진화
 
-	_bool					m_bEffect = false;
-	CGameObject*			m_pEffect = nullptr;
 public:
 	void	Set_Render(_bool _bRender) { m_bRender = _bRender; }
 	void	Set_CheckEvol() { m_bClearEvol = true; }

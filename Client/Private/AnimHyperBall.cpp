@@ -190,6 +190,17 @@ void CAnimHyperBall::Move(_float fTimeDelta)
 
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
 				return;
+
+			CLevel_GamePlay::LOADFILE tInfo;
+
+			_vector vInfoPos = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+
+			vInfoPos.m128_f32[1] -= 0.8f;
+			XMStoreFloat4(&tInfo.vPos, vInfoPos);
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_CaptureEffect"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"), &tInfo)))
+				return;
+
 			RELEASE_INSTANCE(CGameInstance);
 		}
 		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
@@ -265,6 +276,27 @@ void CAnimHyperBall::Capture_Success()
 
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
 				return;
+
+			CLevel_GamePlay::LOADFILE tInfo;
+
+			_vector vInfoPos = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+
+			vInfoPos.m128_f32[1] -= 0.8f;
+			XMStoreFloat4(&tInfo.vPos, vInfoPos);
+
+			for (_int i = 0; i < 100; ++i)
+			{
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BallEffect4"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"), &tInfo)))
+					return;
+			}
+			vInfoPos.m128_f32[1] += 0.3f;
+			for (_int i = 0; i < 3; ++i)
+			{
+				tInfo.vScale = { (_float)i,0.f,0.f };
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_CaptureStar"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"), &tInfo)))
+					return;
+			}
+
 			RELEASE_INSTANCE(CGameInstance);
 			return;
 		}

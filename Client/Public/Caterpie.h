@@ -91,8 +91,7 @@ private:
 	_bool					m_bEvol = false; //진화
 	CGameObject*			m_EvolPoke = nullptr; //진화
 
-	_bool					m_bEffect = false;
-	CGameObject*			m_pEffect = nullptr;
+
 public:
 	static CCaterpie* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

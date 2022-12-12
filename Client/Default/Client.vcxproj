@@ -183,6 +183,8 @@
     <ClInclude Include="..\public\BallEffect4.h" />
     <ClInclude Include="..\public\BallEffect5.h" />
     <ClInclude Include="..\public\BallEffect6.h" />
+    <ClInclude Include="..\public\BallRed.h" />
+    <ClInclude Include="..\public\BallRed2.h" />
     <ClInclude Include="..\public\BattleEvent.h" />
     <ClInclude Include="..\public\BattleField.h" />
     <ClInclude Include="..\public\BattleIntro.h" />
@@ -193,6 +195,8 @@
     <ClInclude Include="..\public\Butterfree.h" />
     <ClInclude Include="..\Public\Camera_Dynamic.h" />
     <ClInclude Include="..\public\Candy.h" />
+    <ClInclude Include="..\public\CaptureEffect.h" />
+    <ClInclude Include="..\public\CaptureStar.h" />
     <ClInclude Include="..\public\Caterpie.h" />
     <ClInclude Include="..\public\Chansey.h" />
     <ClInclude Include="..\public\Charmander.h" />
@@ -307,6 +311,8 @@
     <ClCompile Include="..\private\BallEffect4.cpp" />
     <ClCompile Include="..\private\BallEffect5.cpp" />
     <ClCompile Include="..\private\BallEffect6.cpp" />
+    <ClCompile Include="..\private\BallRed.cpp" />
+    <ClCompile Include="..\private\BallRed2.cpp" />
     <ClCompile Include="..\private\BattleEvent.cpp" />
     <ClCompile Include="..\private\BattleField.cpp" />
     <ClCompile Include="..\private\BattleIntro.cpp" />
@@ -317,6 +323,8 @@
     <ClCompile Include="..\private\Butterfree.cpp" />
     <ClCompile Include="..\Private\Camera_Dynamic.cpp" />
     <ClCompile Include="..\private\Candy.cpp" />
+    <ClCompile Include="..\private\CaptureEffect.cpp" />
+    <ClCompile Include="..\private\CaptureStar.cpp" />
     <ClCompile Include="..\private\Caterpie.cpp" />
     <ClCompile Include="..\private\Chansey.cpp" />
     <ClCompile Include="..\private\Charmander.cpp" />

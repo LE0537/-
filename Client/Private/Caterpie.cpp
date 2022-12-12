@@ -519,18 +519,23 @@ void CCaterpie::Set_EvolPos(_float fTimeDelta)
 			m_fRenderTime -= 0.05f;
 			dynamic_cast<CMetapod*>(m_EvolPoke)->Set_Render(false);
 		}
-	/*	if (!m_bEffect)
-		{
-			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_EvolLight4"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"),&m_pEffect)))
-				return;
-			m_bEffect = true;
-		}*/
+		
 	}
 	if (m_fRenderTime < 0.f)
 	{
 		m_bRender = false;
 		Set_Dead();
-	//	m_pEffect->Set_Dead();
+		for (_int i = 0; i < 120; ++i)
+		{
+			_int iInfo = i * 3;
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_EvolLight3"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"), &iInfo)))
+				return;
+		}
+		for (_int i = 0; i < 60; ++i)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_EvolLight4"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"))))
+				return;
+		}
 		dynamic_cast<CMetapod*>(m_EvolPoke)->Set_Render(true);
 		dynamic_cast<CMetapod*>(m_EvolPoke)->Set_CheckEvol();
 	}

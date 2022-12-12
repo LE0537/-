@@ -2,7 +2,7 @@
 #include "..\Public\Ball.h"
 
 #include "GameInstance.h"
-
+#include "Level_GamePlay.h"
 
 CBall::CBall(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
@@ -50,6 +50,29 @@ void CBall::Tick(_float fTimeDelta)
 		XMStoreFloat4x4(&m_CombinedWorldMatrix, m_pTransformCom->Get_WorldMatrix() * SocketMatrix);
 
 	}
+
+	if (m_bTakeBall)
+	{
+		m_fTakeBall += fTimeDelta;
+		if (m_fTakeBall > 0.5f)
+		{
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+			CLevel_GamePlay::LOADFILE tInfo;
+
+			tInfo.vPos = *(_float4*)&m_CombinedWorldMatrix.m[3][0];
+			tInfo.vTargetPos = m_vTargetPos;
+
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BallRed"), LEVEL_GAMEPLAY, TEXT("CaptureBall"), &tInfo)))
+				return;
+
+			RELEASE_INSTANCE(CGameInstance);
+			m_fTakeBall = 0.f;
+			m_bTakeBall = false;
+		}
+	}
+
+
 }
 
 void CBall::Late_Tick(_float fTimeDelta)
@@ -136,7 +159,7 @@ HRESULT CBall::SetUp_ShaderResources()
 		return E_FAIL;
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-
+	
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &pGameInstance->Get_TransformFloat4x4_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
 		return E_FAIL;
 

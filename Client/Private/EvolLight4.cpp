@@ -20,17 +20,15 @@ HRESULT CEvolLight4::Initialize_Prototype()
 
 HRESULT CEvolLight4::Initialize(void * pArg)
 {
-	*(CGameObject**)pArg = this;
-
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
 
-	m_fSizeX = 300.f;
-	m_fSizeY = 300.f;
+	m_fSizeX = 30.f;
+	m_fSizeY = 30.f;
 
-	m_fX = g_iWinSizeX >> 1;
-	m_fY = g_iWinSizeY >> 1;
+	m_fX = _float(rand() % 600 + 340.f);
+	m_fY = _float(rand() % 600);
 
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixTranspose(XMMatrixIdentity()));
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH((_float)g_iWinSizeX, (_float)g_iWinSizeY, -200.f, 100.f)));
@@ -85,7 +83,7 @@ HRESULT CEvolLight4::Ready_Components()
 
 
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Components(TEXT("Com_Texture"), LEVEL_STATIC, TEXT("Prototype_Component_Texture_EffectLight"), (CComponent**)&m_pTextureCom)))
+	if (FAILED(__super::Add_Components(TEXT("Com_Texture"), LEVEL_STATIC, TEXT("Prototype_Component_Texture_BallEffect"), (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
 	/* For.Com_VIBuffer */
@@ -107,7 +105,7 @@ HRESULT CEvolLight4::SetUp_ShaderResources()
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(7))))
+	if (FAILED(m_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(3))))
 		return E_FAIL;
 
 	m_pShaderCom->Begin(11);
@@ -119,15 +117,13 @@ HRESULT CEvolLight4::SetUp_ShaderResources()
 
 void CEvolLight4::Set_Pos(_float fTimeDelta)
 {
+	m_fSize = _float(rand() % 100 + 20);
+	_vector vScale = { m_fSize ,m_fSize ,1.f ,0.f };
+	m_pTransformCom->Set_Scale(vScale);
 
-	m_fSizeX += 300.f * fTimeDelta;
-	m_fSizeY += 300.f * fTimeDelta;
-
-
-	_float3 vScale = { m_fSizeX,m_fSizeY,0.f };
-
-	m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
-	m_pTransformCom->Turn2(XMVectorSet(0.f,0.f,1.f,0.f),XMConvertToRadians(-4.f));
+	m_fDeadTime += fTimeDelta;
+	if (m_fDeadTime > 0.5f)
+		Set_Dead();
 }
 
 

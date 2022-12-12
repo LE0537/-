@@ -43,17 +43,17 @@ HRESULT CBag::Initialize(void * pArg)
 
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_SuperBall"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))
 		return E_FAIL;
-	tInfoItem->iNum = 5;
+	tInfoItem->iNum = 10;
 	m_vecItem.push_back(tInfoItem);
 
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_HyperBall"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))
 		return E_FAIL;
-	tInfoItem->iNum = 5;
+	tInfoItem->iNum = 10;
 	m_vecItem.push_back(tInfoItem);
 
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_MasterBall"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))
 		return E_FAIL;
-	tInfoItem->iNum = 1;
+	tInfoItem->iNum = 10;
 	m_vecItem.push_back(tInfoItem);
 
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_HpPotion"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))

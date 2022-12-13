@@ -123,6 +123,11 @@
 #include "Thunder1.h"
 #include "Thunder2.h"
 #include "Thunder3.h"
+#include "MegaPunch.h"
+#include "MegaPunch1.h"
+#include "MegaPunch2.h"
+#include "MegaPunch3.h"
+
 #include "BreakCar.h"
 #include "NoneSkill.h"
 
@@ -300,6 +305,12 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Thunder3"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/Thunder/Thunder3/%d.png"), 4))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_MegaPunch1"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/MegaPunch/MegaPunch1/%d.png"), 2))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_MegaPunch2"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/MegaPunch/MegaPunch2/%d.png"), 4))))
 		return E_FAIL;
 	/* 터레인 텍스쳐 */
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
@@ -791,6 +802,18 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Thunder3"),
 		CThunder3::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_MegaPunch"),
+		CMegaPunch::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_MegaPunch1"),
+		CMegaPunch1::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_MegaPunch2"),
+		CMegaPunch2::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_MegaPunch3"),
+		CMegaPunch3::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BreakCar"),
 		CBreakCar::Create(m_pDevice, m_pContext))))

@@ -460,6 +460,18 @@
     <Filter Include="02.GameObjects\99.GameObj\05.Skill\06.Thunder\Thunder3">
       <UniqueIdentifier>{92124beb-3615-49e2-a19d-2e8ff6418596}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\07.MegaPunch">
+      <UniqueIdentifier>{7735b8be-5628-4e33-9eea-2723613966ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\07.MegaPunch\MegaPunch1">
+      <UniqueIdentifier>{74f1b010-708f-45cb-8dfa-ca01b861acf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\07.MegaPunch\MegaPunch2">
+      <UniqueIdentifier>{c6cbb044-f024-4cd1-9c1a-d386c9ae0197}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\07.MegaPunch\MegaPunch3">
+      <UniqueIdentifier>{9da58ec1-17fb-407e-aa25-c43dee2e787a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -912,6 +924,18 @@
     <ClInclude Include="..\public\Thunder1.h">
       <Filter>02.GameObjects\99.GameObj\05.Skill\06.Thunder\Thunder1</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\MegaPunch.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\07.MegaPunch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MegaPunch1.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\07.MegaPunch\MegaPunch1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MegaPunch2.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\07.MegaPunch\MegaPunch2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MegaPunch3.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\07.MegaPunch\MegaPunch3</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1348,6 +1372,18 @@
     </ClCompile>
     <ClCompile Include="..\private\Thunder1.cpp">
       <Filter>02.GameObjects\99.GameObj\05.Skill\06.Thunder\Thunder1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MegaPunch.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\07.MegaPunch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MegaPunch1.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\07.MegaPunch\MegaPunch1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MegaPunch2.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\07.MegaPunch\MegaPunch2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MegaPunch3.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\07.MegaPunch\MegaPunch3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -255,6 +255,10 @@
     <ClInclude Include="..\public\Mari.h" />
     <ClInclude Include="..\public\MasterBall.h" />
     <ClInclude Include="..\public\MaxPotion.h" />
+    <ClInclude Include="..\public\MegaPunch.h" />
+    <ClInclude Include="..\public\MegaPunch1.h" />
+    <ClInclude Include="..\public\MegaPunch2.h" />
+    <ClInclude Include="..\public\MegaPunch3.h" />
     <ClInclude Include="..\public\Meowth.h" />
     <ClInclude Include="..\public\Metapod.h" />
     <ClInclude Include="..\public\Mew.h" />
@@ -404,6 +408,10 @@
     <ClCompile Include="..\private\Mari.cpp" />
     <ClCompile Include="..\private\MasterBall.cpp" />
     <ClCompile Include="..\private\MaxPotion.cpp" />
+    <ClCompile Include="..\private\MegaPunch.cpp" />
+    <ClCompile Include="..\private\MegaPunch1.cpp" />
+    <ClCompile Include="..\private\MegaPunch2.cpp" />
+    <ClCompile Include="..\private\MegaPunch3.cpp" />
     <ClCompile Include="..\Private\Meowth.cpp" />
     <ClCompile Include="..\private\Metapod.cpp" />
     <ClCompile Include="..\private\Mew.cpp" />

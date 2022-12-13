@@ -61,7 +61,7 @@ HRESULT CBallRed::Initialize(void * pArg)
 void CBallRed::Tick(_float fTimeDelta)
 {
 	m_fDeadTime += fTimeDelta;
-	if (m_fDeadTime > 0.35f)
+	if (m_fDeadTime > 0.25f)
 		Set_Dead();
 }
 

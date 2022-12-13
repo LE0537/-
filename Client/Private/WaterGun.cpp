@@ -24,9 +24,9 @@ HRESULT CWaterGun::Initialize(void * pArg)
 	//	*(CGameObject**)pArg = this;
 	m_SkillInfo.strName = TEXT("물대포");
 	m_SkillInfo.strInfo = TEXT("강력한 물폭탄을 발사한다.");
-	m_SkillInfo.iSkillNum = 0;
-	m_SkillInfo.iDmg = 40;
-	m_SkillInfo.iSDmg = 0;
+	m_SkillInfo.iSkillNum = 2;
+	m_SkillInfo.iDmg = 0;
+	m_SkillInfo.iSDmg = 40;
 	m_SkillInfo.fHit = 100;
 	m_SkillInfo.iMaxPoint = 25;
 	m_SkillInfo.iPoint = m_SkillInfo.iMaxPoint;

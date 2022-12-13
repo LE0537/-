@@ -412,6 +412,54 @@
     <Filter Include="02.GameObjects\99.GameObj\05.Skill\02.WaterGun\WaterGun3">
       <UniqueIdentifier>{f088b8c2-3853-42df-9517-689b2a45c1bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\03.HydroPump">
+      <UniqueIdentifier>{1ff17381-2369-4b4b-be6d-ff6e73a9b8ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\03.HydroPump\HydroPump1">
+      <UniqueIdentifier>{206feaa8-08d4-452f-8f86-b9bf4c6b294c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\03.HydroPump\HydroPump2">
+      <UniqueIdentifier>{905e0bdb-76d5-479c-bf2f-502759df6eb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\03.HydroPump\HydroPump3">
+      <UniqueIdentifier>{c22af747-e52a-49a8-b3db-3abc29113360}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\03.HydroPump\HydroPump4">
+      <UniqueIdentifier>{b1e83eca-76e2-40da-bf82-4836b3ba6679}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\04.BugBuzz">
+      <UniqueIdentifier>{fa87b905-c821-4879-86a9-8c7d7b2633f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\04.BugBuzz\BugBuzz1">
+      <UniqueIdentifier>{274aa71a-5b3f-4017-919a-05129844f125}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\04.BugBuzz\BugBuzz2">
+      <UniqueIdentifier>{825bf855-80fd-4260-9962-5079f59c5d51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\04.BugBuzz\BugBuzz3">
+      <UniqueIdentifier>{e8eef2a0-fcb1-4a03-a2e0-178340349a14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\05.Bite">
+      <UniqueIdentifier>{cd2de8d4-cdf3-4cdc-a630-f3433ae6dd14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\05.Bite\Bite1">
+      <UniqueIdentifier>{c06be722-d988-42d0-b07e-3817b2168866}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\05.Bite\Bite2">
+      <UniqueIdentifier>{74673a36-d3e9-40dd-8d8f-fe8963d18ff2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\06.Thunder">
+      <UniqueIdentifier>{8417c436-4d6d-44d9-a688-763383d28562}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\06.Thunder\Thunder1">
+      <UniqueIdentifier>{a5cee607-ab37-4426-98a5-bb80a3875ce6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\06.Thunder\Thunder2">
+      <UniqueIdentifier>{1e39d88b-3f89-4575-8aab-dd7e3144a62e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\06.Thunder\Thunder3">
+      <UniqueIdentifier>{92124beb-3615-49e2-a19d-2e8ff6418596}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -816,6 +864,54 @@
     <ClInclude Include="..\public\WaterGun2.h">
       <Filter>02.GameObjects\99.GameObj\05.Skill\02.WaterGun\WaterGun2</Filter>
     </ClInclude>
+    <ClInclude Include="HydroPump.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\03.HydroPump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\HydroPump1.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\03.HydroPump\HydroPump1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\HydroPump3.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\03.HydroPump\HydroPump3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\HydroPump2.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\03.HydroPump\HydroPump2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\HydroPump4.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\03.HydroPump\HydroPump4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BugBuzz.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\04.BugBuzz</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BugBuzz1.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\04.BugBuzz\BugBuzz1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BugBuzz3.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\04.BugBuzz\BugBuzz3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BugBuzz2.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\04.BugBuzz\BugBuzz2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Bite.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\05.Bite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Bite1.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\05.Bite\Bite1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Bite2.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\05.Bite\Bite2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Thunder.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\06.Thunder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Thunder3.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\06.Thunder\Thunder3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Thunder2.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\06.Thunder\Thunder2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Thunder1.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\06.Thunder\Thunder1</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1204,6 +1300,54 @@
     </ClCompile>
     <ClCompile Include="..\private\WaterGun2.cpp">
       <Filter>02.GameObjects\99.GameObj\05.Skill\02.WaterGun\WaterGun2</Filter>
+    </ClCompile>
+    <ClCompile Include="HydroPump.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\03.HydroPump</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HydroPump1.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\03.HydroPump\HydroPump1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HydroPump3.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\03.HydroPump\HydroPump3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HydroPump2.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\03.HydroPump\HydroPump2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HydroPump4.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\03.HydroPump\HydroPump4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BugBuzz.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\04.BugBuzz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BugBuzz1.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\04.BugBuzz\BugBuzz1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BugBuzz3.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\04.BugBuzz\BugBuzz3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BugBuzz2.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\04.BugBuzz\BugBuzz2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Bite.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\05.Bite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Bite1.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\05.Bite\Bite1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Bite2.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\05.Bite\Bite2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Thunder.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\06.Thunder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Thunder3.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\06.Thunder\Thunder3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Thunder2.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\06.Thunder\Thunder2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Thunder1.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\06.Thunder\Thunder1</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

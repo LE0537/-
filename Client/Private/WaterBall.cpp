@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 #include "Level_GamePlay.h"
+#include "Data_Manager.h"	// 추가
 
 CWaterBall::CWaterBall(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -55,6 +56,20 @@ HRESULT CWaterBall::Initialize(void * pArg)
 
 void CWaterBall::Tick(_float fTimeDelta)
 {
+	//CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	//if (pGameInstance->Key_Down(DIK_F5))	// 추가 -> 저장하기
+	//{
+	//	CData_Manager* pData_Manager = GET_INSTANCE(CData_Manager);
+	//	char cName[MAX_PATH];
+	//	ZeroMemory(cName, sizeof(char) * MAX_PATH);
+	//	pData_Manager->TCtoC(TEXT("WaterBall"), cName);
+	//	pData_Manager->Conv_Bin_Model(m_pModelCom, cName, CData_Manager::DATA_NONANIM);
+	//	ERR_MSG(TEXT("Save_Bin_WaterBall"));
+	//	RELEASE_INSTANCE(CData_Manager);
+	//}
+
+	//RELEASE_INSTANCE(CGameInstance);
 
 	Set_Pos(fTimeDelta);
 	m_fDeadTime += fTimeDelta;
@@ -130,7 +145,7 @@ HRESULT CWaterBall::Ready_Components()
 
 	/* For.Com_Model*/
 
-	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Prototype_Component_Model_WaterBall"), (CComponent**)&m_pModelCom)))
+	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("WaterBall"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
 

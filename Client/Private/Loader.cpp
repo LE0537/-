@@ -107,6 +107,22 @@
 #include "WaterGun1.h"
 #include "WaterGun2.h"
 #include "WaterGun3.h"
+#include "HydroPump.h"
+#include "HydroPump1.h"
+#include "HydroPump2.h"
+#include "HydroPump3.h"
+#include "HydroPump4.h"
+#include "BugBuzz.h"
+#include "BugBuzz1.h"
+#include "BugBuzz2.h"
+#include "BugBuzz3.h"
+#include "Bite.h"
+#include "Bite1.h"
+#include "Bite2.h"
+#include "Thunder.h"
+#include "Thunder1.h"
+#include "Thunder2.h"
+#include "Thunder3.h"
 #include "BreakCar.h"
 #include "NoneSkill.h"
 
@@ -132,6 +148,7 @@
 #include "BallRed2.h"
 #include "CaptureEffect.h"
 #include "CaptureStar.h"
+
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -227,9 +244,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_EffectLight"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Light/%d.png"), 8))))
 		return E_FAIL;
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_EvolLight"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Thunder/%d.png"), 16))))
-		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Leaf"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Leaf/%d.png"), 1))))
 		return E_FAIL;
@@ -259,6 +273,33 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_WaterGun3"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/WaterGun/WaterGun3/%d.png"), 8))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_HydroPump1"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/HydroPump/HydroPump1/%d.png"), 3))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_HydroPump2"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/HydroPump/HydroPump2/%d.png"), 8))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BugBuzz1"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/BugBuzz/BugBuzz1/%d.png"), 1))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BugBuzz2"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/BugBuzz/BugBuzz2/%d.png"), 2))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BugBuzz3"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/BugBuzz/BugBuzz3/%d.png"), 4))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Bite2"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/Bite/Bite2/%d.png"), 4))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Thunder1"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/Thunder/Thunder1/%d.png"), 8))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Thunder2"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/Thunder/Thunder2/%d.png"), 16))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Thunder3"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/Thunder/Thunder3/%d.png"), 4))))
 		return E_FAIL;
 	/* 터레인 텍스쳐 */
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
@@ -702,6 +743,55 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_WaterGun3"),
 		CWaterGun3::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_HydroPump"),
+		CHydroPump::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_HydroPump1"),
+		CHydroPump1::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_HydroPump2"),
+		CHydroPump2::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_HydroPump3"),
+		CHydroPump3::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_HydroPump4"),
+		CHydroPump4::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BugBuzz"),
+		CBugBuzz::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BugBuzz1"),
+		CBugBuzz1::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BugBuzz2"),
+		CBugBuzz2::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BugBuzz3"),
+		CBugBuzz3::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Bite"),
+		CBite::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Bite"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Bite1"),
+		CBite1::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Bite2"),
+		CBite2::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Thunder"),
+		CThunder::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Thunder1"),
+		CThunder1::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Thunder2"),
+		CThunder2::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Thunder3"),
+		CThunder3::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BreakCar"),
 		CBreakCar::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -724,9 +814,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_EvolLight"),
 		CEvolLight::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Cross"),
-	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/Cross/Cross.fbx", PivotMatrix))))
-	return E_FAIL;
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Cross"),
+	//CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/Cross/Cross.fbx", PivotMatrix))))
+	//return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_EvolLight2"),
 		CEvolLight2::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -771,15 +861,13 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 
 
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Cylinder"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/Cylinder/Cylinder.fbx", PivotMatrix))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Cone"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/Cone/Cone.fbx", PivotMatrix))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_WaterBall"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/WaterBall/WaterBall.fbx", PivotMatrix))))
-		return E_FAIL;
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Cylinder"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/Cylinder/Cylinder.fbx", PivotMatrix))))
+	//	return E_FAIL;
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Cone"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/Cone/Cone.fbx", PivotMatrix))))
+	//	return E_FAIL;
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("WaterBall"), LEVEL_STATIC, CData_Manager::DATA_NONANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_WaterBeam"),
 		CWaterBeam::Create(m_pDevice, m_pContext))))
 		return E_FAIL;

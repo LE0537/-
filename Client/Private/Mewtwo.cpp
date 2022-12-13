@@ -38,13 +38,13 @@ HRESULT CMewtwo::Initialize(void * pArg)
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tackle"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum1)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Thunder"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum1)))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_WaterGun"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum2)))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_WaterBeam"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum3)))
 		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BreakCar"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum4)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_HydroPump"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum4)))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_None"), LEVEL_STATIC, TEXT("Layer_Item"), &m_PokemonInfo.eItem)))
 		return E_FAIL;

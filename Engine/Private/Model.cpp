@@ -44,7 +44,8 @@ CHierarchyNode * CModel::Get_BonePtr(const char * pBoneName) const
 	{
 		return !strcmp(pNode->Get_Name(), pBoneName);
 	});
-
+	if (iter == m_Bones.end())
+		return nullptr;
 
 	return *iter;
 }

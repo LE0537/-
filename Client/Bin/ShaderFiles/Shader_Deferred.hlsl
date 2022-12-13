@@ -221,7 +221,7 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
 
 	float		fFogDistance = 5.f;
 
-	fFogPower = max((vDepth.y * 1300.f) - fFogDistance, 0.f) / 700.0f;
+	fFogPower = min((max((vDepth.y * 1300.f) - fFogDistance, 0.f) / 90.0f),0.3f);
 
 	Out.vColor = (vDiffuse * vShade + vSpecular) + vFogColor * fFogPower;
 

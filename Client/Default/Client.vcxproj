@@ -190,8 +190,15 @@
     <ClInclude Include="..\public\BattleIntro.h" />
     <ClInclude Include="..\public\BattleUI.h" />
     <ClInclude Include="..\public\Beat.h" />
+    <ClInclude Include="..\public\Bite.h" />
+    <ClInclude Include="..\public\Bite1.h" />
+    <ClInclude Include="..\public\Bite2.h" />
     <ClInclude Include="..\public\Blastoise.h" />
     <ClInclude Include="..\Public\BreakCar.h" />
+    <ClInclude Include="..\public\BugBuzz.h" />
+    <ClInclude Include="..\public\BugBuzz1.h" />
+    <ClInclude Include="..\public\BugBuzz2.h" />
+    <ClInclude Include="..\public\BugBuzz3.h" />
     <ClInclude Include="..\public\Butterfree.h" />
     <ClInclude Include="..\Public\Camera_Dynamic.h" />
     <ClInclude Include="..\public\Candy.h" />
@@ -227,6 +234,10 @@
     <ClInclude Include="..\public\Gyarados.h" />
     <ClInclude Include="..\public\Hit.h" />
     <ClInclude Include="..\public\HpPotion.h" />
+    <ClInclude Include="..\public\HydroPump1.h" />
+    <ClInclude Include="..\public\HydroPump2.h" />
+    <ClInclude Include="..\public\HydroPump3.h" />
+    <ClInclude Include="..\public\HydroPump4.h" />
     <ClInclude Include="..\public\HyperBall.h" />
     <ClInclude Include="..\public\IceBadge.h" />
     <ClInclude Include="..\public\Jigglypuff.h" />
@@ -276,6 +287,10 @@
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\public\TerrainBadge.h" />
     <ClInclude Include="..\public\TextBox.h" />
+    <ClInclude Include="..\public\Thunder.h" />
+    <ClInclude Include="..\public\Thunder1.h" />
+    <ClInclude Include="..\public\Thunder2.h" />
+    <ClInclude Include="..\public\Thunder3.h" />
     <ClInclude Include="..\public\Tr0.h" />
     <ClInclude Include="..\public\Tr1.h" />
     <ClInclude Include="..\public\Tr2.h" />
@@ -299,6 +314,7 @@
     <ClInclude Include="..\public\Weed.h" />
     <ClInclude Include="..\public\Wigglytuff.h" />
     <ClInclude Include="Client.h" />
+    <ClInclude Include="HydroPump.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -324,8 +340,15 @@
     <ClCompile Include="..\private\BattleIntro.cpp" />
     <ClCompile Include="..\private\BattleUI.cpp" />
     <ClCompile Include="..\private\Beat.cpp" />
+    <ClCompile Include="..\private\Bite.cpp" />
+    <ClCompile Include="..\private\Bite1.cpp" />
+    <ClCompile Include="..\private\Bite2.cpp" />
     <ClCompile Include="..\private\Blastoise.cpp" />
     <ClCompile Include="..\Private\BreakCar.cpp" />
+    <ClCompile Include="..\private\BugBuzz.cpp" />
+    <ClCompile Include="..\private\BugBuzz1.cpp" />
+    <ClCompile Include="..\private\BugBuzz2.cpp" />
+    <ClCompile Include="..\private\BugBuzz3.cpp" />
     <ClCompile Include="..\private\Butterfree.cpp" />
     <ClCompile Include="..\Private\Camera_Dynamic.cpp" />
     <ClCompile Include="..\private\Candy.cpp" />
@@ -360,6 +383,10 @@
     <ClCompile Include="..\private\Gyarados.cpp" />
     <ClCompile Include="..\private\Hit.cpp" />
     <ClCompile Include="..\private\HpPotion.cpp" />
+    <ClCompile Include="..\private\HydroPump1.cpp" />
+    <ClCompile Include="..\private\HydroPump2.cpp" />
+    <ClCompile Include="..\private\HydroPump3.cpp" />
+    <ClCompile Include="..\private\HydroPump4.cpp" />
     <ClCompile Include="..\private\HyperBall.cpp" />
     <ClCompile Include="..\private\IceBadge.cpp" />
     <ClCompile Include="..\private\Jigglypuff.cpp" />
@@ -409,6 +436,10 @@
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\private\TerrainBadge.cpp" />
     <ClCompile Include="..\private\TextBox.cpp" />
+    <ClCompile Include="..\private\Thunder.cpp" />
+    <ClCompile Include="..\private\Thunder1.cpp" />
+    <ClCompile Include="..\private\Thunder2.cpp" />
+    <ClCompile Include="..\private\Thunder3.cpp" />
     <ClCompile Include="..\private\Tr0.cpp" />
     <ClCompile Include="..\private\Tr1.cpp" />
     <ClCompile Include="..\private\Tr2.cpp" />
@@ -432,6 +463,7 @@
     <ClCompile Include="..\private\Weed.cpp" />
     <ClCompile Include="..\private\Wigglytuff.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="HydroPump.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

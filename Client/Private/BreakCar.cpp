@@ -26,7 +26,7 @@ HRESULT CBreakCar::Initialize(void * pArg)
 
 	m_SkillInfo.strName = TEXT("난폭운전");
 	m_SkillInfo.strInfo = TEXT("배해월 특기 난폭운전 이다.");
-	m_SkillInfo.iSkillNum = 0;
+	m_SkillInfo.iSkillNum = 98;
 	m_SkillInfo.iDmg = 0;
 	m_SkillInfo.iSDmg = 150;
 	m_SkillInfo.fHit = 50;

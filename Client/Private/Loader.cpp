@@ -127,6 +127,10 @@
 #include "MegaPunch1.h"
 #include "MegaPunch2.h"
 #include "MegaPunch3.h"
+#include "Psychic.h"
+#include "Psychic1.h"
+#include "Psychic2.h"
+#include "Psychic3.h"
 
 #include "BreakCar.h"
 #include "NoneSkill.h"
@@ -153,7 +157,9 @@
 #include "BallRed2.h"
 #include "CaptureEffect.h"
 #include "CaptureStar.h"
-
+#include "Refract.h"
+#include "Trail.h"
+#include "TrailStar.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -312,6 +318,18 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_MegaPunch2"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/MegaPunch/MegaPunch2/%d.png"), 4))))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Trail"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Trail/%d.png"), 1))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Psychic1"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/Psychic/Psychic1/%d.png"), 1))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Psychic2"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/Psychic/Psychic2/%d.png"), 16))))
+		return E_FAIL;
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Refract"),
+	//	CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Refract/%d.png"), 3))))
+	//	return E_FAIL;
 	/* 터레인 텍스쳐 */
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
 	//	CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.dds"), 2))))
@@ -815,6 +833,23 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_MegaPunch3"),
 		CMegaPunch3::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Psychic"),
+		CPsychic::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Psychic"),
+	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/Psychic/Psychic.fbx", PivotMatrix))))
+	return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Psychic1"),
+	CPsychic1::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Psychic2"),
+		CPsychic2::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Psychic3"),
+		CPsychic3::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BreakCar"),
 		CBreakCar::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -882,7 +917,15 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_CaptureStar"),
 		CCaptureStar::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Trail"),
+		CTrail::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_TrailStar"),
+		CTrailStar::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Refract"),
+	//	CRefract::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Cylinder"),
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/Cylinder/Cylinder.fbx", PivotMatrix))))

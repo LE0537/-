@@ -350,6 +350,7 @@ void CTr6::BattleStart(_float fTimeDelta)
 			m_pModelCom->Set_End(1);
 			dynamic_cast<CPlayer*>(m_pTarget)->Set_BattleStart();
 			dynamic_cast<CBall*>(m_pBall)->Set_Render(false, 0);
+			dynamic_cast<CBall*>(m_pBall)->Set_Reset();
 			return;
 		}
 		m_fStartBattle += fTimeDelta;
@@ -430,6 +431,7 @@ void CTr6::Check_Anim(_float fTimeDelta)
 			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
 			m_bChangeAnim = false;
 			m_ChangePoke = false;
+			dynamic_cast<CBall*>(m_pBall)->Set_Reset();
 		}
 		m_fStartBattle += fTimeDelta;
 		if (!m_ChangePoke && m_iAnimIndex == 1)

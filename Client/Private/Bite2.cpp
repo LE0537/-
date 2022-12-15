@@ -24,7 +24,7 @@ HRESULT CBite2::Initialize(void * pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_fSize = 2.5f;
+	m_fSize = 2.f;
 	_vector vScale = { m_fSize ,m_fSize ,m_fSize ,0.f };
 
 	m_vTargetBattlePos = ((SKILLINFO*)pArg)->vTargetPos;

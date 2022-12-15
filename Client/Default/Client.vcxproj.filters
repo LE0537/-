@@ -472,6 +472,27 @@
     <Filter Include="02.GameObjects\99.GameObj\05.Skill\07.MegaPunch\MegaPunch3">
       <UniqueIdentifier>{9da58ec1-17fb-407e-aa25-c43dee2e787a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\99.Refract">
+      <UniqueIdentifier>{49545375-389a-4b41-8612-787e266073b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\08.Trail">
+      <UniqueIdentifier>{ad438c38-8f71-4413-9a27-a90c4527dd1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\08.Trail\TrailStar">
+      <UniqueIdentifier>{1cf3aba3-d42f-40b7-a0cb-f032c5465aa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\08.Psychic">
+      <UniqueIdentifier>{9ca43978-a381-40ec-aa72-a73f7c643023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\08.Psychic\Psychic1">
+      <UniqueIdentifier>{d4c86ef0-1107-4f48-bcbd-4732c1d69334}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\08.Psychic\Psychic2">
+      <UniqueIdentifier>{a00ce6ee-d728-4185-81b9-eb1fd2eb895d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\08.Psychic\Psychic3">
+      <UniqueIdentifier>{89c0e8ad-a497-4655-84a2-135adcef9740}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -936,6 +957,27 @@
     <ClInclude Include="..\public\MegaPunch3.h">
       <Filter>02.GameObjects\99.GameObj\05.Skill\07.MegaPunch\MegaPunch3</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Refract.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\99.Refract</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Trail.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\08.Trail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TrailStar.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\08.Trail\TrailStar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Psychic.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\08.Psychic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Psychic1.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\08.Psychic\Psychic1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Psychic3.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\08.Psychic\Psychic3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Psychic2.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\08.Psychic\Psychic2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1384,6 +1426,27 @@
     </ClCompile>
     <ClCompile Include="..\private\MegaPunch3.cpp">
       <Filter>02.GameObjects\99.GameObj\05.Skill\07.MegaPunch\MegaPunch3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Refract.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\99.Refract</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Trail.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\08.Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TrailStar.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\08.Trail\TrailStar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Psychic.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\08.Psychic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Psychic1.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\08.Psychic\Psychic1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Psychic3.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\08.Psychic\Psychic3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Psychic2.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\08.Psychic\Psychic2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

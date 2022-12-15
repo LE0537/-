@@ -106,6 +106,8 @@ private:
 
 	_bool					m_bCaptureBall = false;
 	_float					m_fCaptureTime = 0.f;
+
+	CGameObject*			m_pTrail = nullptr;
 public:
 	static CPlayer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

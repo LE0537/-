@@ -85,7 +85,7 @@ HRESULT CVIBuffer_Point_Instance::Initialize_Prototype(_uint iNumInstance)
 	m_iNumIndicesPerInstance = 1;
 
 	m_BufferDesc.ByteWidth = m_iInstanceStride * m_iNumInstance;
-	m_BufferDesc.Usage = D3D11_USAGE_DYNAMIC; /* 정적버퍼를 생성한다. */
+	m_BufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	m_BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	m_BufferDesc.MiscFlags = 0;

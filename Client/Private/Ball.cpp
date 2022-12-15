@@ -3,6 +3,8 @@
 
 #include "GameInstance.h"
 #include "Level_GamePlay.h"
+#include "VIBuffer_Trail.h"
+#include "Trail.h"
 
 CBall::CBall(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
@@ -31,6 +33,14 @@ HRESULT CBall::Initialize(void * pArg)
 
 	m_pTransformCom->Turn2(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(-90.0f));
 	m_pTransformCom->Turn2(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(180.0f));
+
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Trail"), LEVEL_STATIC, TEXT("Layer_Effect"), &m_pTrail)))
+		return E_FAIL;
+	
+	RELEASE_INSTANCE(CGameInstance);
+
 	return S_OK;
 }
 
@@ -48,7 +58,32 @@ void CBall::Tick(_float fTimeDelta)
 
 
 		XMStoreFloat4x4(&m_CombinedWorldMatrix, m_pTransformCom->Get_WorldMatrix() * SocketMatrix);
+		if (m_bTrail)
+		{
+			CVIBuffer_Trail::BUFFERDESC tInfo;
 
+			_vector vPos = *(_vector*)&SocketMatrix.r[3];
+			tInfo.matCurWorld = m_CombinedWorldMatrix;
+			vPos.m128_f32[1] += 0.05f;
+			XMStoreFloat3(&tInfo.vHighPos, vPos);
+			vPos.m128_f32[1] -= 0.1f;
+			XMStoreFloat3(&tInfo.vLowPos, vPos);
+
+			dynamic_cast<CTrail*>(m_pTrail)->Set_Trail(tInfo);
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+			for (_int i = 0; i < 5; ++i)
+			{
+				CLevel_GamePlay::LOADFILE tInfo;
+				vPos.m128_f32[1] += 0.05f;
+				XMStoreFloat4(&tInfo.vPos, vPos);
+
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TrailStar"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"), &tInfo)))
+					return;
+			}
+
+			RELEASE_INSTANCE(CGameInstance);
+		}
 	}
 
 	if (m_bTakeBall)
@@ -71,7 +106,6 @@ void CBall::Tick(_float fTimeDelta)
 			m_bTakeBall = false;
 		}
 	}
-
 
 }
 
@@ -106,6 +140,13 @@ HRESULT CBall::Render()
 	return S_OK;
 }
 
+
+void CBall::Set_Reset()
+{
+	dynamic_cast<CTrail*>(m_pTrail)->Reset_Trail();
+	m_bTrail = false;
+}
+
 HRESULT CBall::Ready_Components()
 {
 	/* For.Com_Renderer */
@@ -125,6 +166,8 @@ HRESULT CBall::Ready_Components()
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Components(TEXT("Com_Shader"), LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxModel"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
+	
+
 
 	/* For.Com_Model*/
 	wstring szModel[4];
@@ -155,11 +198,12 @@ HRESULT CBall::SetUp_ShaderResources()
 	_float4x4		WorldMatrix;
 	XMStoreFloat4x4(&WorldMatrix, XMMatrixTranspose(XMLoadFloat4x4(&m_CombinedWorldMatrix)));
 
+
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
 	if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4))))
 		return E_FAIL;
 
-	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-	
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &pGameInstance->Get_TransformFloat4x4_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
 		return E_FAIL;
 
@@ -167,6 +211,8 @@ HRESULT CBall::SetUp_ShaderResources()
 		return E_FAIL;
 
 	RELEASE_INSTANCE(CGameInstance);
+
+	
 
 	return S_OK;
 }
@@ -211,5 +257,6 @@ void CBall::Free()
 	}
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pShaderCom);
+
 	Safe_Release(m_pRendererCom);
 }

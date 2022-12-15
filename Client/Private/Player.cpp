@@ -9,7 +9,7 @@
 #include "BattleUI.h"
 #include "Data_Manager.h"	// Ãß°¡
 #include "Ball.h"
-
+#include "Trail.h"
 CPlayer::CPlayer(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
 {
@@ -47,6 +47,13 @@ HRESULT CPlayer::Initialize(void * pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4((&((CLevel_GamePlay::LOADFILE*)pArg)->vPos)));
 	m_pModelCom->Set_CurrentAnimIndex(IDLE);
 	
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Trail"), LEVEL_STATIC, TEXT("Layer_Effect"), &m_pTrail)))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
+
 	return S_OK;
 }
 
@@ -340,6 +347,7 @@ void CPlayer::BattleStart(_float fTimeDelta)
 			m_pModelCom->Set_End(2);
 			m_fBattleUITime = 0.f;
 			dynamic_cast<CBall*>(m_pBall)->Set_Render(false, m_iBallIndex);
+			dynamic_cast<CBall*>(m_pBall)->Set_Reset();
 			return;
 		}
 		m_fStartBattle += fTimeDelta;
@@ -532,6 +540,7 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
 			m_bChangeAnim = false;
 			m_ChangePoke = false;
+			dynamic_cast<CBall*>(m_pBall)->Set_Reset();
 		}
 		if (!m_ChangePoke && m_iAnimIndex == 2)
 		{
@@ -549,7 +558,7 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 			m_bCapture = false;
 			m_bCaptureBall = false;
 			Check_Ball();
-
+			dynamic_cast<CBall*>(m_pBall)->Set_Reset();
 			g_bCaptureRender = true;
 		}
 		if (!m_bCapture && m_iAnimIndex == 1)
@@ -567,6 +576,7 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 			m_bChangeAnim = false;
 			m_bReturnPoke = false;
 			m_bReturn = false;
+			dynamic_cast<CBall*>(m_pBall)->Set_Reset();
 		}
 		if (!m_bReturnPoke && m_iAnimIndex == 8)
 		{
@@ -662,7 +672,7 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 			}
 		}
 		m_pModelCom->Play_Animation(fTimeDelta*0.8f);
-		dynamic_cast<CBall*>(m_pBall)->Set_Render(true, m_iCaptureBall);
+		dynamic_cast<CBall*>(m_pBall)->Set_Render3(true, m_iCaptureBall);
 		m_pBall->Tick(fTimeDelta);
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, m_pBall);
 	}

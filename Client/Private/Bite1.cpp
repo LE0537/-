@@ -40,6 +40,7 @@ HRESULT CBite1::Initialize(void * pArg)
 	_float3 vScale = { 0.1f,0.1f,0.1f };
 
 	m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
+	vTargetPos -= vDist * 25.f;
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vTargetPos);
 	vTargetPos += vDist * 50.f;
 	m_pTransformCom->LookAt(vTargetPos);

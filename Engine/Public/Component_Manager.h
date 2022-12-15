@@ -9,6 +9,7 @@
 #include "Collider.h"
 #include "Navigation.h"
 #include "VIBuffer_Rect.h"
+#include "VIBuffer_Trail.h"
 //#include "VIBuffer_Cube.h"
 #include "VIBuffer_Terrain.h"
 #include "VIBuffer_Hexagon.h"

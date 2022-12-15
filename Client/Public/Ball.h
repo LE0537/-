@@ -4,14 +4,14 @@
 
 
 BEGIN(Engine)
-
+class CTexture;
 class CShader;
 class CCollider;
 class CRenderer;
 class CTransform;
 class CModel;
 class CHierarchyNode;
-
+class CVIBuffer_Trail;
 END
 
 
@@ -59,15 +59,27 @@ private:
 	_float					m_fTakeBall = 0.f;
 	_float4					m_vTargetPos;
 
+	_bool					m_bTrail = false;
 
+	CGameObject*			m_pTrail = nullptr;
 public:
-	void Set_Render(_bool _bRender, _int _iBallIndex) { m_bRender = _bRender; m_iBallIndex = _iBallIndex; }
-	void Set_Render2(_bool _bRender, _int _iBallIndex,_bool _bTakeBall , _float4 _vTargetPos) {
-		m_bRender = _bRender; 
-		m_iBallIndex = _iBallIndex; 
+	void Set_Render(_bool _bRender, _int _iBallIndex){
+		m_bRender = _bRender;
+		m_iBallIndex = _iBallIndex;
+	}
+	void Set_Render2(_bool _bRender, _int _iBallIndex, _bool _bTakeBall, _float4 _vTargetPos)
+	{
+		m_bRender = _bRender;
+		m_iBallIndex = _iBallIndex;
 		m_bTakeBall = _bTakeBall;
 		m_vTargetPos = _vTargetPos;
 	}
+	void Set_Render3(_bool _bRender, _int _iBallIndex) {
+		m_bRender = _bRender;
+		m_iBallIndex = _iBallIndex;
+		m_bTrail = true;
+	}
+	void Set_Reset();
 private:
 	HRESULT Ready_Components();
 	HRESULT SetUp_ShaderResources(); /* 셰이더 전역변수에 값을 전달한다. */

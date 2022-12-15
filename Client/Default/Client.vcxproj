@@ -274,8 +274,13 @@
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\PokeDeck.h" />
     <ClInclude Include="..\public\PokeInfo.h" />
+    <ClInclude Include="..\public\Psychic.h" />
+    <ClInclude Include="..\public\Psychic1.h" />
+    <ClInclude Include="..\public\Psychic2.h" />
+    <ClInclude Include="..\public\Psychic3.h" />
     <ClInclude Include="..\public\Raticate.h" />
     <ClInclude Include="..\public\Rattata.h" />
+    <ClInclude Include="..\public\Refract.h" />
     <ClInclude Include="..\public\Screen.h" />
     <ClInclude Include="..\public\Scyther.h" />
     <ClInclude Include="..\public\SkyBox.h" />
@@ -305,6 +310,8 @@
     <ClInclude Include="..\public\Tr7.h" />
     <ClInclude Include="..\public\Tr8.h" />
     <ClInclude Include="..\public\Tr9.h" />
+    <ClInclude Include="..\public\Trail.h" />
+    <ClInclude Include="..\public\TrailStar.h" />
     <ClInclude Include="..\public\Tree.h" />
     <ClInclude Include="..\public\UI.h" />
     <ClInclude Include="..\public\Wartortle.h" />
@@ -427,8 +434,13 @@
     <ClCompile Include="..\private\Player.cpp" />
     <ClCompile Include="..\private\PokeDeck.cpp" />
     <ClCompile Include="..\private\PokeInfo.cpp" />
+    <ClCompile Include="..\private\Psychic.cpp" />
+    <ClCompile Include="..\private\Psychic1.cpp" />
+    <ClCompile Include="..\private\Psychic2.cpp" />
+    <ClCompile Include="..\private\Psychic3.cpp" />
     <ClCompile Include="..\private\Raticate.cpp" />
     <ClCompile Include="..\private\Rattata.cpp" />
+    <ClCompile Include="..\private\Refract.cpp" />
     <ClCompile Include="..\private\Screen.cpp" />
     <ClCompile Include="..\private\Scyther.cpp" />
     <ClCompile Include="..\private\SkyBox.cpp" />
@@ -458,6 +470,8 @@
     <ClCompile Include="..\private\Tr7.cpp" />
     <ClCompile Include="..\private\Tr8.cpp" />
     <ClCompile Include="..\private\Tr9.cpp" />
+    <ClCompile Include="..\private\Trail.cpp" />
+    <ClCompile Include="..\private\TrailStar.cpp" />
     <ClCompile Include="..\private\Tree.cpp" />
     <ClCompile Include="..\private\UI.cpp" />
     <ClCompile Include="..\private\Wartortle.cpp" />

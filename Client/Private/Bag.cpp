@@ -71,6 +71,16 @@ HRESULT CBag::Initialize(void * pArg)
 	tInfoItem->iNum = 10;
 	m_vecItem.push_back(tInfoItem);
 
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_PPPotion"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))
+		return E_FAIL;
+	tInfoItem->iNum = 10;
+	m_vecItem.push_back(tInfoItem);
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Candy"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))
+		return E_FAIL;
+	tInfoItem->iNum = 99;
+	m_vecItem.push_back(tInfoItem);
+
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Candy"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))
 		return E_FAIL;
 	tInfoItem->iNum = 99;
@@ -850,7 +860,8 @@ void CBag::Key_Input()
 				{
 				case 0:
 					if (m_vecItem[m_iItemPos]->iItemNum == 4 || m_vecItem[m_iItemPos]->iItemNum == 6 ||
-						m_vecItem[m_iItemPos]->iItemNum == 11 || m_vecItem[m_iItemPos]->iItemNum == 13)
+						m_vecItem[m_iItemPos]->iItemNum == 11 || m_vecItem[m_iItemPos]->iItemNum == 12 ||
+						m_vecItem[m_iItemPos]->iItemNum == 13)
 					{
 						SetSelectButtonPoke(m_iPokeSelect, DIR_LEFT);
 						m_bItem = true;
@@ -1221,6 +1232,13 @@ void CBag::UseItem()
 		m_iHealPokeIndex = m_iPokeSelect;
 		m_fHealTime = 0.f;
 		m_bHeal = true;
+		--(*iter)->iNum;
+		break;
+	case 12:
+		dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_PokePP1(99);
+		dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_PokePP2(99);
+		dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_PokePP3(99);
+		dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_PokePP4(99);
 		--(*iter)->iNum;
 		break;
 	case 13:

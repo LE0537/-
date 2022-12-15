@@ -25,7 +25,12 @@ HRESULT CPsychic3::Initialize(void * pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_fSize = (_float(rand() % 40 + 1) * 0.1f);
+	_float fIndex = ((CLevel_GamePlay::LOADFILE*)pArg)->vScale.x;
+
+	if(fIndex > 0.f)
+		m_fSize = (_float(rand() % 40 + 1) * 0.1f);
+	else
+		m_fSize = (_float(rand() % 10 + 1) * 0.1f);
 	_vector vScale = { m_fSize ,m_fSize ,m_fSize ,0.f };
 	m_pTransformCom->Set_Scale(vScale);
 
@@ -33,9 +38,9 @@ HRESULT CPsychic3::Initialize(void * pArg)
 
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
 
-	vPos.m128_f32[0] += _float(rand() % 60 - 30.f) * 0.01f;
-	vPos.m128_f32[1] += _float(rand() % 60 - 30.f) * 0.01f;
-	vPos.m128_f32[2] += _float(rand() % 60 - 30.f) * 0.01f;
+	vPos.m128_f32[0] += _float(rand() % 100 - 50.f) * 0.01f;
+	vPos.m128_f32[1] += _float(rand() % 100 - 50.f) * 0.01f;
+	vPos.m128_f32[2] += _float(rand() % 100 - 50.f) * 0.01f;
 
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
 
@@ -152,7 +157,7 @@ HRESULT CPsychic3::SetUp_ShaderResources()
 	if (FAILED(m_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom->Get_SRV(m_iFrame))))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(0);
+	m_pShaderCom->Begin(19);
 	m_pVIBufferCom->Render();
 
 	RELEASE_INSTANCE(CGameInstance);

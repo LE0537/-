@@ -324,6 +324,20 @@ PS_OUT PS_Trail(PS_IN In)
 	Out.vColor.a = 0.75f;
 
 	return Out;
+}PS_OUT PS_Psychic(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
+
+	if (Out.vColor.a < 0.3f)
+	{
+		discard;
+	}
+
+	Out.vColor.a = 0.5f;
+
+	return Out;
 }
 technique11 DefaultTechnique
 {
@@ -525,5 +539,25 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_Trail();
+	}
+	pass Psychic //19
+	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_Psychic();
+	}
+	pass DragonPulse //20
+	{
+		SetRasterizerState(RS_Effect);
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_BallRed();
 	}
 }

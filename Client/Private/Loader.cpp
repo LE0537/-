@@ -81,6 +81,7 @@
 #include "HpPotion.h"
 #include "FullPotion.h"
 #include "MaxPotion.h"
+#include "PPPotion.h"
 #include "Candy.h"
 #include "ExpShare.h"
 #include "None.h"
@@ -131,8 +132,22 @@
 #include "Psychic1.h"
 #include "Psychic2.h"
 #include "Psychic3.h"
-
+#include "RockSlide.h"
+#include "RockSlide1.h"
+#include "RockSlide2.h"
+#include "RockSlide3.h"
+#include "Scissor.h"
+#include "Scissor1.h"
+#include "Scissor2.h"
+#include "DragonPulse.h"
+#include "DragonPulse1.h"
+#include "DragonPulse2.h"
+#include "DragonPulse3.h"
+#include "DragonPulse4.h"
+#include "BodyPress.h"
+#include "BodyPress1.h"
 #include "BreakCar.h"
+#include "BreakCar1.h"
 #include "NoneSkill.h"
 
 //Effect Çì´õ
@@ -327,6 +342,28 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Psychic2"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/Psychic/Psychic2/%d.png"), 16))))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_RockSlide1"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/Rock/Rock1/%d.png"),9))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_RockSlide2"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/Rock/Rock2/%d.png"), 16))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_RockSlide3"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/Rock/Rock3/%d.png"), 8))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Scissor1"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/Scissor/Scissor1/%d.png"), 7))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Scissor2"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/Scissor/Scissor2/%d.png"), 5))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_DragonPulse1"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/DragonPulse/DragonPulse1/%d.png"), 4))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BodyPress1"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/BodyPress/BodyPress1/%d.png"), 8))))
+		return E_FAIL;
+
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Refract"),
 	//	CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Refract/%d.png"), 3))))
 	//	return E_FAIL;
@@ -407,6 +444,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_MaxPotion"),
 		CMaxPotion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_PPPotion"),
+		CPPPotion::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Candy"),
 		CCandy::Create(m_pDevice, m_pContext))))
@@ -836,9 +876,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Psychic"),
 		CPsychic::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Psychic"),
-	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/Psychic/Psychic.fbx", PivotMatrix))))
-	return E_FAIL;
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Psychic"), LEVEL_STATIC, CData_Manager::DATA_NONANIM);
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Psychic1"),
 	CPsychic1::Create(m_pDevice, m_pContext))))
 	return E_FAIL;
@@ -848,10 +886,57 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Psychic3"),
 		CPsychic3::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
-
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_RockSlide"),
+		CRockSlide::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_RockSlide1"),
+		CRockSlide1::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_RockSlide2"),
+		CRockSlide2::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_RockSlide3"),
+		CRockSlide3::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Scissor"),
+		CScissor::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Scissor1"),
+		CScissor1::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Scissor2"),
+		CScissor2::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_DragonPulse"),
+		CDragonPulse::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_DragonPulse1"),
+		CDragonPulse1::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_DragonPulse2"),
+		CDragonPulse2::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_DragonPulse3"),
+		CDragonPulse3::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_DragonPulse4"),
+		CDragonPulse4::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BodyPress"),
+		CBodyPress::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BodyPress1"),
+		CBodyPress1::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BreakCar"),
 		CBreakCar::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/*if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_BreakCar"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/BreakCar/BreakCar.fbx"))))
+		return E_FAIL;*/
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("BreakCar"), LEVEL_STATIC, CData_Manager::DATA_NONANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BreakCar1"),
+		CBreakCar1::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_NoneSkill"),
 		CNoneSkill::Create(m_pDevice, m_pContext))))

@@ -48,20 +48,20 @@ HRESULT CPsychic1::Initialize(void * pArg)
 
 void CPsychic1::Tick(_float fTimeDelta)
 {
-	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	//CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
-	if (pGameInstance->Key_Down(DIK_F5))	// 추가 -> 저장하기
-	{
-		CData_Manager* pData_Manager = GET_INSTANCE(CData_Manager);
-		char cName[MAX_PATH];
-		ZeroMemory(cName, sizeof(char) * MAX_PATH);
-		pData_Manager->TCtoC(TEXT("Psychic"), cName);
-		pData_Manager->Conv_Bin_Model(m_pModelCom, cName, CData_Manager::DATA_NONANIM);
-		ERR_MSG(TEXT("Save_Bin_Psychic"));
-		RELEASE_INSTANCE(CData_Manager);
-	}
+	//if (pGameInstance->Key_Down(DIK_F5))	// 추가 -> 저장하기
+	//{
+	//	CData_Manager* pData_Manager = GET_INSTANCE(CData_Manager);
+	//	char cName[MAX_PATH];
+	//	ZeroMemory(cName, sizeof(char) * MAX_PATH);
+	//	pData_Manager->TCtoC(TEXT("Psychic"), cName);
+	//	pData_Manager->Conv_Bin_Model(m_pModelCom, cName, CData_Manager::DATA_NONANIM);
+	//	ERR_MSG(TEXT("Save_Bin_Psychic"));
+	//	RELEASE_INSTANCE(CData_Manager);
+	//}
 
-	RELEASE_INSTANCE(CGameInstance);
+	//RELEASE_INSTANCE(CGameInstance);
 
 	Set_Pos(fTimeDelta);
 
@@ -123,7 +123,7 @@ HRESULT CPsychic1::Ready_Components()
 
 	/* For.Com_Model*/
 
-	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Prototype_Component_Model_Psychic"), (CComponent**)&m_pModelCom)))
+	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Psychic"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
 
@@ -174,6 +174,7 @@ void CPsychic1::Set_Pos(_float fTimeDelta)
 		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Psychic2"), LEVEL_GAMEPLAY, TEXT("Effect"), &tInfo)))
 			return;
 
+		tInfo.vScale = { 1.f,0.f,0.f };
 		for (_int i = 0; i < 100; ++i)
 		{
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Psychic3"), LEVEL_GAMEPLAY, TEXT("Effect"), &tInfo)))

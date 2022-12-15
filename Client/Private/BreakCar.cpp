@@ -28,8 +28,8 @@ HRESULT CBreakCar::Initialize(void * pArg)
 	m_SkillInfo.strInfo = TEXT("배해월 특기 난폭운전 이다.");
 	m_SkillInfo.iSkillNum = 98;
 	m_SkillInfo.iDmg = 0;
-	m_SkillInfo.iSDmg = 150;
-	m_SkillInfo.fHit = 50;
+	m_SkillInfo.iSDmg = 120;
+	m_SkillInfo.fHit = 100;
 	m_SkillInfo.iMaxPoint = 5;
 	m_SkillInfo.iPoint = m_SkillInfo.iMaxPoint;
 	m_SkillInfo.eType = EVIL;
@@ -40,7 +40,40 @@ HRESULT CBreakCar::Initialize(void * pArg)
 
 void CBreakCar::Tick(_float fTimeDelta)
 {
+	if (m_SkillInfo.bUseSkill)
+	{
+		m_fSkillTime += fTimeDelta;
+		if (!m_bSkill && m_fSkillTime > 0.5f)
+		{
+			Set_Pos(fTimeDelta);
+			m_bSkill = true;
+		}
+		if (!m_bHitSkill && m_fSkillTime > 0.95f)
+		{
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tackle2"), LEVEL_GAMEPLAY, TEXT("Effect"), &m_SkillInfo)))
+				return;
+			for (_int i = 0; i < 30; ++i)
+			{
+
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BodyPress1"), LEVEL_GAMEPLAY, TEXT("Effect"), &m_SkillInfo)))
+					return;
+			}
+			RELEASE_INSTANCE(CGameInstance);
+			m_bHitSkill = true;
+		}
+	
+		if (m_bHitSkill)
+		{
+			m_fDeadTime = 0.f;
+			m_fSkillTime = 0.f;
+			m_SkillInfo.bUseSkill = false;
+			m_bSkill = false;
+			m_bHitSkill = false;
+		}
+
+	}
 }
 
 void CBreakCar::Late_Tick(_float fTimeDelta)
@@ -52,7 +85,15 @@ HRESULT CBreakCar::Render()
 {
 	return S_OK;
 }
+void CBreakCar::Set_Pos(_float fTimeDelta)
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BreakCar1"), LEVEL_GAMEPLAY, TEXT("Effect"), &m_SkillInfo)))
+		return;
+
+	RELEASE_INSTANCE(CGameInstance);
+}
 CBreakCar * CBreakCar::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CBreakCar*	pInstance = new CBreakCar(pDevice, pContext);

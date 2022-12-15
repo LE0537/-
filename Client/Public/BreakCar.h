@@ -29,9 +29,15 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
-
 private:
 
+	_float		m_fSkillTime = 0.f;
+	_float		m_fDeadTime = 0.f;
+	_bool		m_bSkill = false;
+	_bool		m_bHitSkill = false;
+private:
+
+	void	Set_Pos(_float fTimeDelta);
 
 
 public:

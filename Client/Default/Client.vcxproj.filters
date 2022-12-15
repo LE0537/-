@@ -493,6 +493,57 @@
     <Filter Include="02.GameObjects\99.GameObj\05.Skill\08.Psychic\Psychic3">
       <UniqueIdentifier>{89c0e8ad-a497-4655-84a2-135adcef9740}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\09.RockSlide">
+      <UniqueIdentifier>{5c9fd884-c318-4549-b251-cd9b005a007c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\09.RockSlide\RockSlide1">
+      <UniqueIdentifier>{4260e96b-6e7c-480e-aaa0-d9cd6d99b8b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\09.RockSlide\RockSlide2">
+      <UniqueIdentifier>{06155963-d772-4583-950e-941efc922742}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\09.RockSlide\RockSlide3">
+      <UniqueIdentifier>{2edf25c2-4b94-498b-9ecf-33062cb78c99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\10.Scissor">
+      <UniqueIdentifier>{728e6d72-1d78-43f6-a18b-e18be5ca72ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\10.Scissor\Scissor1">
+      <UniqueIdentifier>{c7d6b9fb-f836-4de2-ad4e-351b129374b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\10.Scissor\Scissor2">
+      <UniqueIdentifier>{a44944ad-b6f8-42c2-a3b6-e59efd4a691d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\10.Scissor\Scissor3">
+      <UniqueIdentifier>{b0d86a46-ea3a-434a-a1a4-a50d4954b079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\11.DragonPulse">
+      <UniqueIdentifier>{ec0d8332-e330-434e-a44e-15b79e24d7b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\11.DragonPulse\DragonPulse1">
+      <UniqueIdentifier>{fbcd0507-0861-4c34-ad56-f0fe8a67e2d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\11.DragonPulse\DragonPulse2">
+      <UniqueIdentifier>{61fc24da-1d65-40df-869a-f65a4435000e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\11.DragonPulse\DragonPulse3">
+      <UniqueIdentifier>{26caa574-37f6-46d6-9b11-5a59081dbfe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\11.DragonPulse\DragonPulse4">
+      <UniqueIdentifier>{862d4425-98d9-4f61-a529-daadb989de39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\12.BodyPress">
+      <UniqueIdentifier>{bd608678-286c-49ad-ae7b-61491bdee3a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\12.BodyPress\BodyPress1">
+      <UniqueIdentifier>{e655ea50-63f8-4393-84ad-aa3f49afe14d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\05.Skill\98.BreakCar\BreakCar1">
+      <UniqueIdentifier>{2115edb0-9307-4460-b675-e37c4b66c964}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\12.PPPotion">
+      <UniqueIdentifier>{10867999-58ba-4ffb-8ad3-8b71c4b3b5bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -978,6 +1029,54 @@
     <ClInclude Include="..\public\Psychic2.h">
       <Filter>02.GameObjects\99.GameObj\05.Skill\08.Psychic\Psychic2</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\RockSlide.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\09.RockSlide</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RockSlide3.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\09.RockSlide\RockSlide3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RockSlide2.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\09.RockSlide\RockSlide2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RockSlide1.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\09.RockSlide\RockSlide1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Scissor.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\10.Scissor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Scissor1.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\10.Scissor\Scissor1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Scissor2.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\10.Scissor\Scissor2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\DragonPulse.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\11.DragonPulse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\DragonPulse4.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\11.DragonPulse\DragonPulse4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\DragonPulse3.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\11.DragonPulse\DragonPulse3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\DragonPulse2.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\11.DragonPulse\DragonPulse2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\DragonPulse1.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\11.DragonPulse\DragonPulse1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BodyPress.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\12.BodyPress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BodyPress1.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\12.BodyPress\BodyPress1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BreakCar1.h">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\98.BreakCar\BreakCar1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PPPotion.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\12.PPPotion</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1447,6 +1546,54 @@
     </ClCompile>
     <ClCompile Include="..\private\Psychic2.cpp">
       <Filter>02.GameObjects\99.GameObj\05.Skill\08.Psychic\Psychic2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RockSlide.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\09.RockSlide</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RockSlide3.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\09.RockSlide\RockSlide3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RockSlide2.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\09.RockSlide\RockSlide2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RockSlide1.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\09.RockSlide\RockSlide1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Scissor.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\10.Scissor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Scissor1.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\10.Scissor\Scissor1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Scissor2.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\10.Scissor\Scissor2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DragonPulse.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\11.DragonPulse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DragonPulse4.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\11.DragonPulse\DragonPulse4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DragonPulse3.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\11.DragonPulse\DragonPulse3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DragonPulse2.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\11.DragonPulse\DragonPulse2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DragonPulse1.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\11.DragonPulse\DragonPulse1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BodyPress.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\12.BodyPress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BodyPress1.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\12.BodyPress\BodyPress1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BreakCar1.cpp">
+      <Filter>02.GameObjects\99.GameObj\05.Skill\98.BreakCar\BreakCar1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PPPotion.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\12.PPPotion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

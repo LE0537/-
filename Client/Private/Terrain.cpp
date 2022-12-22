@@ -53,6 +53,11 @@ HRESULT CTerrain::Render()
 	return S_OK;
 }
 
+HRESULT CTerrain::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 HRESULT CTerrain::Ready_Components()
 {
 	/* For.Com_Renderer */

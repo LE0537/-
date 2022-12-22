@@ -47,6 +47,11 @@ HRESULT CHyperBall::Render()
 	return S_OK;
 }
 
+HRESULT CHyperBall::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CHyperBall * CHyperBall::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CHyperBall*	pInstance = new CHyperBall(pDevice, pContext);

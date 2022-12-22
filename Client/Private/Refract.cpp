@@ -64,6 +64,10 @@ HRESULT CRefract::Render()
 
 	return S_OK;
 }
+HRESULT CRefract::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CRefract::Ready_Components()
 {
 	/* For.Com_Renderer */

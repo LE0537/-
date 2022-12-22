@@ -119,6 +119,10 @@ HRESULT CCharmander::Render()
 	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }
+HRESULT CCharmander::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CCharmander::Ready_Components()
 {
 	/* For.Com_Renderer */

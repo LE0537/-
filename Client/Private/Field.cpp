@@ -93,7 +93,7 @@ void CField::Tick(_float fTimeDelta)
 
 void CField::Late_Tick(_float fTimeDelta)
 {
-	if (!g_Battle)
+	if (!g_Battle && !g_bRace)
 	{
 		if (!g_bEvolution && !g_bBag && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
 		{
@@ -140,6 +140,10 @@ HRESULT CField::Render()
 
 	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
+}
+HRESULT CField::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
 }
 HRESULT CField::Ready_Components()
 {

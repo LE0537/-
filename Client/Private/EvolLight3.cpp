@@ -69,6 +69,11 @@ HRESULT CEvolLight3::Render()
 	return S_OK;
 }
 
+HRESULT CEvolLight3::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 HRESULT CEvolLight3::Ready_Components()
 {
 	/* For.Com_Renderer */

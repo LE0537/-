@@ -72,6 +72,10 @@ HRESULT CHydroPump3::Render()
 
 	return S_OK;
 }
+HRESULT CHydroPump3::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CHydroPump3::Ready_Components()
 {
 	/* For.Com_Renderer */

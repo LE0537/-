@@ -71,6 +71,10 @@ HRESULT CLand::Render()
 
 	return S_OK;
 }
+HRESULT CLand::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CLand::Ready_Components()
 {
 	/* For.Com_Renderer */

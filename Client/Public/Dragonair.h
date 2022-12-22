@@ -32,7 +32,7 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
-
+	virtual HRESULT Render_ShadowDepth();
 private:
 	HRESULT SetUp_ShaderResources();
 	HRESULT Ready_Components();
@@ -55,6 +55,8 @@ private:
 
 	void	Ready_EvolScript(); //진화
 	void	Ready_ClearEvolScript(); //진화
+
+	void	Race(_float fTimeDelta);
 private:
 	CModel*					m_pModelCom = nullptr;
 	CCollider*				m_pAABBCom = nullptr;
@@ -94,6 +96,7 @@ private:
 	_bool					m_bClearEvol = false; // 진화
 	CGameObject*			m_EvolPoke = nullptr; //진화
 
+	_float					m_fSkillTime = 0.f;
 public:
 	void	Set_Render(_bool _bRender) { m_bRender = _bRender; }
 	void	Set_CheckEvol() { m_bClearEvol = true; }

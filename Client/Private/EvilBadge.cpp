@@ -48,6 +48,11 @@ HRESULT CEvilBadge::Render()
 	return S_OK;
 }
 
+HRESULT CEvilBadge::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CEvilBadge * CEvilBadge::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CEvilBadge*	pInstance = new CEvilBadge(pDevice, pContext);

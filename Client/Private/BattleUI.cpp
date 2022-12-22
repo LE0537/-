@@ -108,6 +108,22 @@ void CBattleUI::Tick(_float fTimeDelta)
 		{
 			Key_Input();
 		}
+		if (dynamic_cast<CPlayer*>(m_tInfo.pPlayer_Orgin)->Get_PlayerHit())
+		{
+			dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_HitRender(true);
+		}
+		else if (!dynamic_cast<CPlayer*>(m_tInfo.pPlayer_Orgin)->Get_PlayerHit())
+		{
+			dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Set_HitRender(false);
+		}
+		if (dynamic_cast<CPlayer*>(m_tInfo.pPlayer_Orgin)->Get_TargetHit())
+		{
+			dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Set_HitRender(true);
+		}
+		else if (!dynamic_cast<CPlayer*>(m_tInfo.pPlayer_Orgin)->Get_TargetHit())
+		{
+			dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Set_HitRender(false);
+		}
 		if (!g_Battle)
 		{
 			m_bDead = true;
@@ -153,6 +169,11 @@ HRESULT CBattleUI::Render()
 	
 
 	return S_OK;
+}
+
+HRESULT CBattleUI::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
 }
 
 HRESULT CBattleUI::Ready_Components()
@@ -1021,6 +1042,7 @@ void CBattleUI::Change_Poke(_float fTimeDelta)
 			break;
 		}
 		Use_TargetSkillEffect();
+		dynamic_cast<CPlayer*>(m_tInfo.pPlayer_Orgin)->Set_PlayerHit(true);
 		dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Set_AnimIndex(iAnim);
 		m_bCheckAttack = false;
 		m_fDotDeal = 0;
@@ -1186,6 +1208,7 @@ void CBattleUI::Use_Item(_float fTimeDelta)
 		}
 
 		Use_TargetSkillEffect();
+		dynamic_cast<CPlayer*>(m_tInfo.pPlayer_Orgin)->Set_PlayerHit(true);
 		dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Set_AnimIndex(iAnim);
 		m_bCheckAttack = false;
 		m_fDotDeal = 0;
@@ -1585,7 +1608,7 @@ void CBattleUI::BattleFrame()
 		m_bCheckAttack = false;
 		m_fDotDeal = 0;
 		m_fHPTime = 0.f;
-
+		dynamic_cast<CPlayer*>(m_tInfo.pPlayer_Orgin)->Set_TargetHit(true);
 		Use_SkillEffect();
 	}
 	else if (!m_bCreateTextBox && (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().iSpeed < dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().iSpeed))
@@ -1648,6 +1671,7 @@ void CBattleUI::BattleFrame()
 		m_fDotDeal = 0;
 		m_fHPTime = 0.f;
 		Use_TargetSkillEffect();
+		dynamic_cast<CPlayer*>(m_tInfo.pPlayer_Orgin)->Set_PlayerHit(true);
 	}
 
 	if (!m_bCreateTextBox2 && m_bCheckAttack2)
@@ -1712,6 +1736,7 @@ void CBattleUI::BattleFrame()
 			m_fHPTime = 0.f;
 
 			Use_SkillEffect();
+			dynamic_cast<CPlayer*>(m_tInfo.pPlayer_Orgin)->Set_TargetHit(true);
 		}
 		else if (!m_bCreateTextBox2 && (dynamic_cast<CGameObj*>(m_tInfo.pPlayer->Get_vecPoke(m_iPlayerIndex))->Get_PokeInfo().iSpeed >= dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().iSpeed))
 		{
@@ -1772,6 +1797,7 @@ void CBattleUI::BattleFrame()
 			m_fDotDeal = 0;
 			m_fHPTime = 0.f;
 			Use_TargetSkillEffect();
+			dynamic_cast<CPlayer*>(m_tInfo.pPlayer_Orgin)->Set_PlayerHit(true);
 		}
 	}
 

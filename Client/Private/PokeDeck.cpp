@@ -331,6 +331,11 @@ HRESULT CPokeDeck::Render()
 	return S_OK;
 }
 
+HRESULT CPokeDeck::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 HRESULT CPokeDeck::Ready_Components()
 {
 	/* For.Com_Renderer */

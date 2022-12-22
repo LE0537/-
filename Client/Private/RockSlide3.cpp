@@ -77,6 +77,10 @@ HRESULT CRockSlide3::Render()
 
 	return S_OK;
 }
+HRESULT CRockSlide3::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CRockSlide3::Ready_Components()
 {
 	/* For.Com_Renderer */

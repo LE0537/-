@@ -30,7 +30,7 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
-
+	virtual HRESULT Render_ShadowDepth();
 private:
 	CTransform*				m_pTransform[5] = { nullptr };
 	CShader*				m_pShader[5] = {nullptr};

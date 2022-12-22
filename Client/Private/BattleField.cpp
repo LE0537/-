@@ -46,7 +46,7 @@ void CBattleField::Late_Tick(_float fTimeDelta)
 {
 	if (g_Battle)
 	{
-		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_ALPHABLEND, this);
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 		Compute_CamDistance(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
 	}
 }
@@ -77,6 +77,10 @@ HRESULT CBattleField::Render()
 
 	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
+}
+HRESULT CBattleField::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
 }
 HRESULT CBattleField::Ready_Components()
 {

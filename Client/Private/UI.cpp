@@ -47,45 +47,48 @@ HRESULT CUI::Initialize(void * pArg)
 
 void CUI::Tick(_float fTimeDelta)
 {
-	if (!g_Battle && !g_bBag && !g_bEvolution && !g_bPokeDeck)
+	if (!g_bRace)
 	{
-		CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
-		Safe_AddRef(pGameInstance);
-		if (pGameInstance->Key_Down(DIK_I) && !g_bBag && !g_PokeInfo)
+		if (!g_Battle && !g_bBag && !g_bEvolution && !g_bPokeDeck)
 		{
-			m_bInven = !m_bInven;
+			CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+			Safe_AddRef(pGameInstance);
+			if (pGameInstance->Key_Down(DIK_I) && !g_bBag && !g_PokeInfo)
+			{
+				m_bInven = !m_bInven;
+				if (m_bInven)
+				{
+					m_bSelect = false;
+					SetSelectButton();
+				}
+			}
+
 			if (m_bInven)
 			{
-				m_bSelect = false;
-				SetSelectButton();
-			}
-		}
+				if (m_bSelect && pGameInstance->Key_Down(DIK_LEFT))
+				{
+					m_bSelect = !m_bSelect;
+					SetSelectButton();
+				}
+				else if (!m_bSelect && pGameInstance->Key_Down(DIK_RIGHT))
+				{
+					m_bSelect = !m_bSelect;
+					SetSelectButton();
+				}
+				if (pGameInstance->Key_Down(DIK_RETURN))
+				{
+					m_bInven = !m_bInven;
+					if (m_bSelect)
+						g_bBag = true;
+					if (!m_bSelect)
+						g_bPokeDeck = true;
+				}
+				if (pGameInstance->Key_Down(DIK_BACKSPACE))
+					m_bInven = !m_bInven;
 
-		if (m_bInven)
-		{
-			if (m_bSelect && pGameInstance->Key_Down(DIK_LEFT))
-			{
-				m_bSelect = !m_bSelect;
-				SetSelectButton();
 			}
-			else if (!m_bSelect && pGameInstance->Key_Down(DIK_RIGHT))
-			{
-				m_bSelect = !m_bSelect;
-				SetSelectButton();
-			}
-			if (pGameInstance->Key_Down(DIK_RETURN))
-			{
-				m_bInven = !m_bInven;
-				if (m_bSelect)
-					g_bBag = true;
-				if (!m_bSelect)
-					g_bPokeDeck = true;
-			}
-			if (pGameInstance->Key_Down(DIK_BACKSPACE))
-				m_bInven = !m_bInven;
-
+			Safe_Release(pGameInstance);
 		}
-		Safe_Release(pGameInstance);
 	}
 }
 
@@ -104,6 +107,11 @@ HRESULT CUI::Render()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+HRESULT CUI::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
 }
 
 HRESULT CUI::Ready_Components()

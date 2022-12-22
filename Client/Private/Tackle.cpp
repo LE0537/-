@@ -67,6 +67,11 @@ HRESULT CTackle::Render()
 	return S_OK;
 }
 
+HRESULT CTackle::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CTackle * CTackle::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CTackle*	pInstance = new CTackle(pDevice, pContext);

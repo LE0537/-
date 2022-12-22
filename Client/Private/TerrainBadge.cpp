@@ -48,6 +48,11 @@ HRESULT CTerrainBadge::Render()
 	return S_OK;
 }
 
+HRESULT CTerrainBadge::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CTerrainBadge * CTerrainBadge::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CTerrainBadge*	pInstance = new CTerrainBadge(pDevice, pContext);

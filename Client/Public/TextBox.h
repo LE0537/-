@@ -29,6 +29,7 @@ public:
 		wstring*		pScript;
 		_int			iScriptSize;
 		CGameObject*	pTarget;
+		CGameObject*	pPlayer;
 		_int			iType;
 	}TINFO;
 
@@ -38,7 +39,7 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
-
+	virtual HRESULT Render_ShadowDepth();
 private:
 	_float					m_fX, m_fX2, m_fY, m_fSizeX, m_fSizeY;
 	_float4x4				m_ViewMatrix, m_ProjMatrix;

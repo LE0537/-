@@ -48,6 +48,11 @@ HRESULT CGhostBadge::Render()
 	return S_OK;
 }
 
+HRESULT CGhostBadge::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CGhostBadge * CGhostBadge::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CGhostBadge*	pInstance = new CGhostBadge(pDevice, pContext);

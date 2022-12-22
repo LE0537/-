@@ -77,6 +77,11 @@ HRESULT CNonePoke::Render()
 	return S_OK;
 }
 
+HRESULT CNonePoke::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CNonePoke * CNonePoke::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CNonePoke*	pInstance = new CNonePoke(pDevice, pContext);

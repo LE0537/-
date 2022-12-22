@@ -32,7 +32,7 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
-
+	virtual HRESULT Render_ShadowDepth();
 private:
 	HRESULT Ready_Parts();
 	HRESULT SetUp_ShaderResources();
@@ -40,12 +40,13 @@ private:
 	void	Move(_float fTimeDelta);
 	void	Ready_Script();
 	void	Ready_LoseText();
+	void	Ready_RaceText();
 	void	Check_Coll();
 	void	Battle(_float fTimeDelta);
 	void	BattleStart(_float fTimeDelta);
 	void	Check_Anim(_float fTimeDelta);
 	void	OnNavi();
-	void	Ckeck_Dist();
+	void	Ckeck_Dist(_float fTimeDelta);
 private:
 	CModel*					m_pModelCom = nullptr;
 	CCollider*				m_pAABBCom = nullptr;
@@ -81,6 +82,7 @@ private:
 	_float4					m_vPrevPos;
 	_bool					m_bPrevPos = false;
 	_bool					m_bBattleLose = false;
+
 public:
 	static CMari* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

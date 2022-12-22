@@ -48,6 +48,11 @@ HRESULT CWaterBadge::Render()
 	return S_OK;
 }
 
+HRESULT CWaterBadge::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CWaterBadge * CWaterBadge::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CWaterBadge*	pInstance = new CWaterBadge(pDevice, pContext);

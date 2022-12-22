@@ -64,6 +64,10 @@ HRESULT CWeed::Render()
 
 	return S_OK;
 }
+HRESULT CWeed::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CWeed::Ready_Components()
 {
 	/* For.Com_Renderer */

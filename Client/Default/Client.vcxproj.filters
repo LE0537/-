@@ -544,6 +544,15 @@
     <Filter Include="02.GameObjects\99.GameObj\03.Item\12.PPPotion">
       <UniqueIdentifier>{10867999-58ba-4ffb-8ad3-8b71c4b3b5bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\02.Map\06.Race">
+      <UniqueIdentifier>{3eb8162c-b096-4855-b378-5994346431ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\08.CountDown">
+      <UniqueIdentifier>{3001f918-1b72-459c-bd43-9af7d7031a84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\06.Effect\09.RaceStar">
+      <UniqueIdentifier>{53cfec65-61bb-4b72-8eb9-c8f7d547eefe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -1077,6 +1086,15 @@
     <ClInclude Include="..\public\PPPotion.h">
       <Filter>02.GameObjects\99.GameObj\03.Item\12.PPPotion</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Race.h">
+      <Filter>02.GameObjects\02.Map\06.Race</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CountDown.h">
+      <Filter>02.GameObjects\99.GameObj\04.UI\08.CountDown</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RaceStar.h">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\09.RaceStar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1087,9 +1105,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\MainApp.cpp">
       <Filter>00.MainApp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Camera_Dynamic.cpp">
-      <Filter>02.GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_GamePlay.cpp">
       <Filter>01.Levels\02.GamePlay</Filter>
@@ -1594,6 +1609,18 @@
     </ClCompile>
     <ClCompile Include="..\private\PPPotion.cpp">
       <Filter>02.GameObjects\99.GameObj\03.Item\12.PPPotion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Race.cpp">
+      <Filter>02.GameObjects\02.Map\06.Race</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Dynamic.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CountDown.cpp">
+      <Filter>02.GameObjects\99.GameObj\04.UI\08.CountDown</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RaceStar.cpp">
+      <Filter>02.GameObjects\99.GameObj\06.Effect\09.RaceStar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

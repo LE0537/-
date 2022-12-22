@@ -21,7 +21,7 @@ public:
 	void Tick(_float fTimeDelta);
 	void Late_Tick(_float fTimeDelta);
 	void Render();
-
+	_uint Get_CurrentLevel() { return m_iLevelIndex; }
 private:
 	class CLevel*				m_pCurrentLevel = nullptr;
 	_uint						m_iLevelIndex;

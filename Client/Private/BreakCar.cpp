@@ -85,6 +85,10 @@ HRESULT CBreakCar::Render()
 {
 	return S_OK;
 }
+HRESULT CBreakCar::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 void CBreakCar::Set_Pos(_float fTimeDelta)
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);

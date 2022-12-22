@@ -48,6 +48,11 @@ HRESULT CFightBadge::Render()
 	return S_OK;
 }
 
+HRESULT CFightBadge::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CFightBadge * CFightBadge::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CFightBadge*	pInstance = new CFightBadge(pDevice, pContext);

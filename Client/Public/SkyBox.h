@@ -29,7 +29,7 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
-
+	virtual HRESULT Render_ShadowDepth();
 private:
 	HRESULT SetUp_ShaderResources();
 	HRESULT Ready_Components();
@@ -38,7 +38,7 @@ private:
 	CModel*					m_pModelCom = nullptr;
 
 	_bool					m_bBattle = false;
-
+	_bool					m_bRace = false;
 
 public:
 	static CSkyBox* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

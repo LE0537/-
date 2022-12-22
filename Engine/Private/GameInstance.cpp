@@ -348,13 +348,33 @@ const LIGHTDESC * CGameInstance::Get_LightDesc(_uint iIndex)
 
 	return m_pLight_Manager->Get_LightDesc(iIndex);
 }
+const LIGHTDESC * CGameInstance::Get_ShadowLightDesc(_uint iIndex)
+{
+	if (nullptr == m_pLight_Manager)
+		return nullptr;
 
+	return m_pLight_Manager->Get_ShadowLightDesc(iIndex);
+}
+void CGameInstance::Set_ShadowLightDesc(_uint iIndex,_float4 vPos,_float4 vAt)
+{
+	if (nullptr == m_pLight_Manager)
+		return;
+
+	m_pLight_Manager->Set_ShadowLightDesc(iIndex, vPos, vAt);
+}
 HRESULT CGameInstance::Add_Light(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const LIGHTDESC & LightDesc)
 {
 	if (nullptr == m_pLight_Manager)
 		return E_FAIL;
 
 	return m_pLight_Manager->Add_Light(pDevice, pContext, LightDesc);
+}
+HRESULT CGameInstance::Add_ShadowLight(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const LIGHTDESC & LightDesc)
+{
+	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+	return m_pLight_Manager->Add_ShadowLight(pDevice, pContext, LightDesc);
 }
 HRESULT CGameInstance::Add_Fonts(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const _tchar * pFontTag, const _tchar * pFontFilePath)
 {

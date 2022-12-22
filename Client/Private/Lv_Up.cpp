@@ -41,6 +41,17 @@ HRESULT CLv_Up::Initialize(void * pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 
 	m_fDeadTime = 0.f;
+
+	m_fSizeX = 110.f;
+	m_fSizeY = 110.f;
+	m_fX = 80.f;
+	m_fY = 185.f;
+
+	vScale = { m_fSizeX,m_fSizeY,0.f };
+
+	m_pTransformCom1->Set_Scale(XMLoadFloat3(&vScale));
+	m_pTransformCom1->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
+
 	return S_OK;
 }
 
@@ -75,6 +86,10 @@ HRESULT CLv_Up::Render()
 
 	return S_OK;
 }
+HRESULT CLv_Up::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CLv_Up::Ready_Components()
 {
 	/* For.Com_Renderer */
@@ -84,17 +99,25 @@ HRESULT CLv_Up::Ready_Components()
 	/* For.Com_Transform */
 	if (FAILED(__super::Add_Components(TEXT("Com_Transform"), LEVEL_STATIC, TEXT("Prototype_Component_Transform"), (CComponent**)&m_pTransformCom)))
 		return E_FAIL;
-
+	if (FAILED(__super::Add_Components(TEXT("Com_Transform1"), LEVEL_STATIC, TEXT("Prototype_Component_Transform"), (CComponent**)&m_pTransformCom1)))
+		return E_FAIL;
 	/* For.Com_Texture */
 	if (FAILED(__super::Add_Components(TEXT("Com_Texture"), LEVEL_STATIC, TEXT("Prototype_Component_Texture_Battle"), (CComponent**)&m_pTextureCom)))
+		return E_FAIL;
+
+	if (FAILED(__super::Add_Components(TEXT("Com_Texture1"), LEVEL_STATIC, TEXT("Prototype_Component_Texture_PokeNum"), (CComponent**)&m_pTextureCom1)))
 		return E_FAIL;
 
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Components(TEXT("Com_Shader"), LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
-
+	if (FAILED(__super::Add_Components(TEXT("Com_Shader1"), LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), (CComponent**)&m_pShaderCom1)))
+		return E_FAIL;
 	/* For.Com_VIBuffer */
 	if (FAILED(__super::Add_Components(TEXT("Com_VIBuffer"), LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), (CComponent**)&m_pVIBufferCom)))
+		return E_FAIL;
+
+	if (FAILED(__super::Add_Components(TEXT("Com_VIBuffer1"), LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), (CComponent**)&m_pVIBufferCom1)))
 		return E_FAIL;
 
 
@@ -180,8 +203,19 @@ HRESULT CLv_Up::SetUp_ShaderResources()
 
 	m_pShaderCom->Begin(7);
 	m_pVIBufferCom->Render();
+	 
+	if (FAILED(m_pShaderCom1->Set_RawValue("g_WorldMatrix", &m_pTransformCom1->Get_World4x4_TP(), sizeof(_float4x4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom1->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom1->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+		return E_FAIL;
 
-
+	if (FAILED(m_pShaderCom1->Set_ShaderResourceView("g_DiffuseTexture", m_pTextureCom1->Get_SRV(m_LvInfo.iPokeNum))))
+		return E_FAIL;
+	m_pShaderCom1->Begin();
+	m_pVIBufferCom1->Render();
+	
 
 	return S_OK;
 }
@@ -217,5 +251,8 @@ void CLv_Up::Free()
 {
 	__super::Free();
 
-
+	Safe_Release(m_pVIBufferCom1);
+	Safe_Release(m_pTextureCom1);
+	Safe_Release(m_pTransformCom1);
+	Safe_Release(m_pShaderCom1);
 }

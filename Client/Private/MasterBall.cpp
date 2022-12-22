@@ -48,6 +48,11 @@ HRESULT CMasterBall::Render()
 	return S_OK;
 }
 
+HRESULT CMasterBall::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CMasterBall * CMasterBall::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CMasterBall*	pInstance = new CMasterBall(pDevice, pContext);

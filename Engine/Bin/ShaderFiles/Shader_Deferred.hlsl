@@ -2,6 +2,9 @@
 matrix			g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 matrix			g_ViewMatrixInv, g_ProjMatrixInv;
 
+matrix		    g_matLightView;
+matrix			g_matLightProj;
+
 vector			g_vCamPosition;
 
 vector			g_vLightDir;
@@ -19,10 +22,17 @@ texture2D		g_NormalTexture;
 texture2D		g_DepthTexture;
 texture2D		g_ShadeTexture;
 texture2D		g_SpecularTexture;
+texture2D       g_ShadowDepthTexture;
 
 sampler LinearSampler = sampler_state
 {
 	filter = min_mag_mip_Linear;
+};
+sampler DepthSampler = sampler_state
+{
+	filter = MIN_MAG_LINEAR_MIP_POINT;
+	AddressU = clamp;
+	AddressV = clamp;
 };
 
 
@@ -94,7 +104,22 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 
 	vector			vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
 
-	Out.vShade = g_vLightDiffuse * (saturate(dot(normalize(g_vLightDir) * -1.f, normalize(vNormal))) + (g_vLightAmbient * g_vMtrlAmbient));
+
+	if (vNormalDesc.w != 3.f)
+	{
+		if (saturate(dot(normalize(g_vLightDir) * -1.f, normalize(vNormal))) < 0.2f)
+		{
+			Out.vShade = g_vLightDiffuse * 0.5f + (g_vLightAmbient * g_vMtrlAmbient);
+		}
+		else
+		{
+			Out.vShade = g_vLightDiffuse * 0.3f + (g_vLightAmbient * g_vMtrlAmbient);
+		}
+	}
+	else
+	{
+		Out.vShade = g_vLightDiffuse * (saturate(dot(normalize(g_vLightDir) * -1.f, normalize(vNormal))) + (g_vLightAmbient * g_vMtrlAmbient));
+	}
 	
 	Out.vShade.a = 1.f;
 
@@ -116,6 +141,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 
 	/* 로컬점의위치 * 월드행렬   */
 	vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+
 
 	vector			vReflect = reflect(normalize(g_vLightDir), normalize(vNormal));
 	vector			vLook = vWorldPos - g_vCamPosition;
@@ -224,7 +250,37 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
 	fFogPower = min((max((vDepth.y * 1300.f) - fFogDistance, 0.f) / 90.0f),0.3f);
 
 	Out.vColor = (vDiffuse * vShade + vSpecular) + vFogColor * fFogPower;
+	//=================== 그림자 =======================================================
 
+	vector			vDepthDesc = g_DepthTexture.Sample(DepthSampler, In.vTexUV);
+
+	float			fViewZ = vDepthDesc.y * 1300.f;
+
+	vector			vWorldPos = (vector)0.f;
+
+	vWorldPos.x = In.vTexUV.x * 2.f - 1.f;
+	vWorldPos.y = In.vTexUV.y * -2.f + 1.f;
+	vWorldPos.z = vDepthDesc.r;
+	vWorldPos.w = 1.0f;
+
+	vWorldPos *= fViewZ;
+
+	vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
+
+	vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+	
+	vWorldPos = mul(vWorldPos, g_matLightView);
+
+	vector		vUVPos = mul(vWorldPos, g_matLightProj);
+	float2		vNewUV;
+
+	vNewUV.x = (vUVPos.x / vUVPos.w) * 0.5f + 0.5f;
+	vNewUV.y = (vUVPos.y / vUVPos.w) * -0.5f + 0.5f;
+
+	vector		vShadowDepthInfo = g_ShadowDepthTexture.Sample(DepthSampler, vNewUV);
+
+	if (vWorldPos.z - 0.1f > vShadowDepthInfo.x * 1300.0f)
+		Out.vColor -= vector(0.2f, 0.2f, 0.2f, 0.f);
 
 	if (Out.vColor.a == 0.f)
 		discard;

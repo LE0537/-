@@ -67,6 +67,10 @@ HRESULT CMegaPunch3::Render()
 
 	return S_OK;
 }
+HRESULT CMegaPunch3::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CMegaPunch3::Ready_Components()
 {
 	/* For.Com_Renderer */

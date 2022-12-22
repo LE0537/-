@@ -73,6 +73,11 @@ HRESULT CScreen::Render()
 	return S_OK;
 }
 
+HRESULT CScreen::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 HRESULT CScreen::Ready_Components()
 {
 	/* For.Com_Renderer */

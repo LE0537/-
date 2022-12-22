@@ -81,6 +81,10 @@ HRESULT CThunder2::Render()
 
 	return S_OK;
 }
+HRESULT CThunder2::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CThunder2::Ready_Components()
 {
 	/* For.Com_Renderer */

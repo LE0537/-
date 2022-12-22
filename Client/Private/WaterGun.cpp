@@ -66,6 +66,11 @@ HRESULT CWaterGun::Render()
 	return S_OK;
 }
 
+HRESULT CWaterGun::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CWaterGun * CWaterGun::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CWaterGun*	pInstance = new CWaterGun(pDevice, pContext);

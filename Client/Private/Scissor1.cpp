@@ -74,6 +74,10 @@ HRESULT CScissor1::Render()
 
 	return S_OK;
 }
+HRESULT CScissor1::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CScissor1::Ready_Components()
 {
 	/* For.Com_Renderer */

@@ -82,6 +82,10 @@ HRESULT CPsychic3::Render()
 
 	return S_OK;
 }
+HRESULT CPsychic3::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CPsychic3::Ready_Components()
 {
 	/* For.Com_Renderer */

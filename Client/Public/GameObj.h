@@ -28,7 +28,7 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
-
+	virtual HRESULT Render_ShadowDepth();
 public:
 	typedef struct tagInfo {
 		wstring		strName;
@@ -78,9 +78,11 @@ public:
 		_int		iExp;
 		_int		iSex;
 		_int		iBallNum;
+		_int		iRaceNum;
 		_bool		bRide;
 		_bool		bEvolution;
 		_bool		bLvUp;
+		_bool		bRace;
 		ITEMINFO*		eItem;
 		SKILLINFO*		eSkillNum1;
 		SKILLINFO*		eSkillNum2;
@@ -117,12 +119,18 @@ protected:
 	_int					m_iPokeSize = 0;
 	_int					m_iPokeMaxSize = 0;
 	_bool					m_bAnimReset = false;
+	_bool					m_bHitRender = false;
+	_bool					m_bSlowMotion = false;
 public:
 	POKEINFO Get_PokeInfo() {return m_PokemonInfo;}
 	PLAYERINFO Get_PalyerInfo() { return m_PlayerInfo; }
 	SKILLINFO Get_SkillInfo() { return m_SkillInfo; }
 	ITEMINFO Get_ItemInfo() { return m_ItemInfo; }
 
+
+	void	Set_SlowMotion() { m_bSlowMotion = true; }
+	void	Set_SlowMotionClear() { m_bSlowMotion = false; }
+	void	Set_HitRender(_bool _bTrue) { m_bHitRender = _bTrue; }
 	CGameObject* Get_Target() {	return m_pTarget;}
 	void Set_Target(CGameObject* pTarget) { m_pTarget = pTarget; }
 	void Set_Camera(CGameObject* pCamera) { m_pCamera = pCamera; }
@@ -145,9 +153,11 @@ public:
 	_bool Get_bBattle() { return m_PlayerInfo.bBattle; }
 	void OnOffbBattle() { m_PlayerInfo.bBattle = !m_PlayerInfo.bBattle; }
 	
-
+	void	Set_Money(_int _iMoney) { m_PlayerInfo.iMoney += _iMoney; }
 
 	//PokeInfo
+	void	Set_RaceNum(_int _iNum) { m_PokemonInfo.iRaceNum = _iNum; }
+	void	Set_RacePoke() { m_PokemonInfo.bRace = true; }
 	void	Set_PokeHp(_int _iDmg) {
 		m_PokemonInfo.iHp += _iDmg;
 		if (m_PokemonInfo.iHp > m_PokemonInfo.iMaxHp) { m_PokemonInfo.iHp = m_PokemonInfo.iMaxHp; }

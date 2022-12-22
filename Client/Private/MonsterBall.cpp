@@ -48,6 +48,11 @@ HRESULT CMonsterBall::Render()
 	return S_OK;
 }
 
+HRESULT CMonsterBall::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CMonsterBall * CMonsterBall::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CMonsterBall*	pInstance = new CMonsterBall(pDevice, pContext);

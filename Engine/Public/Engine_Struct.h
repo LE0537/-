@@ -19,7 +19,7 @@ namespace Engine
 
 	typedef struct tagLightDesc
 	{
-		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
+		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_FIELDSHADOW, TYPE_BATTLESHADOW, TYPE_RACESHADOW, TYPE_END };
 
 		TYPE		eType = TYPE_END;
 		XMFLOAT4	vPosition;

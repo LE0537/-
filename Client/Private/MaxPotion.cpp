@@ -48,6 +48,11 @@ HRESULT CMaxPotion::Render()
 	return S_OK;
 }
 
+HRESULT CMaxPotion::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CMaxPotion * CMaxPotion::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CMaxPotion*	pInstance = new CMaxPotion(pDevice, pContext);

@@ -85,6 +85,10 @@ HRESULT CCaptureEffect::Render()
 
 	return S_OK;
 }
+HRESULT CCaptureEffect::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CCaptureEffect::Ready_Components()
 {
 	/* For.Com_Renderer */

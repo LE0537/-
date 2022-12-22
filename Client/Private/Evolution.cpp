@@ -71,6 +71,10 @@ HRESULT CEvolution::Render()
 
 	return S_OK;
 }
+HRESULT CEvolution::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CEvolution::Ready_Components()
 {
 	/* For.Com_Renderer */

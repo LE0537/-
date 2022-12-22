@@ -73,6 +73,10 @@ HRESULT CLeaf::Render()
 
 	return S_OK;
 }
+HRESULT CLeaf::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CLeaf::Ready_Components()
 {
 	/* For.Com_Renderer */

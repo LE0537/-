@@ -29,5 +29,8 @@ extern bool		g_bEvolution;
 extern bool		g_bCapture;
 extern bool	    g_bCaptureRender;
 extern bool		g_bEnding;
+extern bool		g_bRace;
+extern bool		g_bRaceEnd;
+extern int		g_iRaceNum;
 
 using namespace Client;

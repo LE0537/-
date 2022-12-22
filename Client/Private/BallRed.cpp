@@ -86,6 +86,10 @@ HRESULT CBallRed::Render()
 
 	return S_OK;
 }
+HRESULT CBallRed::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CBallRed::Ready_Components()
 {
 	/* For.Com_Renderer */

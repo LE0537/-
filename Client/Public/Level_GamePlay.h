@@ -27,7 +27,9 @@ public:
 		_float3	 vScale;
 		CGameObject* pTarget;
 		CGameObject* pCamera;
+		CGameObject* pRaceMap;
 		_bool	 bBattleMap;
+		_bool	 bRaceMap;
 	}LOADFILE;
 
 public:
@@ -47,6 +49,7 @@ private:
 	void Load();
 	void LoadCamPos();
 	void LoadBattle();
+	void LoadRace();
 	void Create_Leaf(_float fTimeDelta);
 private:
 	LOADFILE			m_LoadFile;
@@ -54,6 +57,7 @@ private:
 	vector<SaveInfo>	m_vecCamPos;
 	vector<SaveInfo>	m_vecSaveLookAt;
 	vector<SaveInfo>	m_vecSaveBattle;
+	vector<SaveInfo>	m_vecSaveRace;
 	CCamera_Dynamic::CAMERADESC_DERIVED			CameraDesc;
 
 	vector<_float4>					m_listPos1;

@@ -98,19 +98,16 @@ HRESULT CBag::Initialize(void * pArg)
 	}
 	CGameObject* tInfo;
 	
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Mewtwo"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
-	dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_pPlayer);
 	m_vecPoke.push_back(tInfo);
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Kangaskhan"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
-	dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_pPlayer);
 	m_vecPoke.push_back(tInfo);
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Snorlax"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
-	dynamic_cast<CGameObj*>(tInfo)->Set_Target(m_pPlayer);
 	m_vecPoke.push_back(tInfo);
 
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
@@ -163,46 +160,49 @@ HRESULT CBag::Initialize(void * pArg)
 
 void CBag::Tick(_float fTimeDelta)
 {
-	if (g_bBag)
+	if (!g_bRace)
 	{
-		if (m_iLvUp)
+		if (g_bBag)
 		{
-			CheckLv();
-			return;
-		}
-		if (m_bHeal)
-		{
-			HealPoke(fTimeDelta);
-			return;
-		}
-		if (!m_bItem && !m_bSwap)
-			Key_Input();
-		else if (m_bItem)
-			Key_UseInput();
-		else if (m_bSwap)
-			Key_PokeInput();
+			if (m_iLvUp)
+			{
+				CheckLv();
+				return;
+			}
+			if (m_bHeal)
+			{
+				HealPoke(fTimeDelta);
+				return;
+			}
+			if (!m_bItem && !m_bSwap)
+				Key_Input();
+			else if (m_bItem)
+				Key_UseInput();
+			else if (m_bSwap)
+				Key_PokeInput();
 
 
-	}
-	if (m_bBattlePokeDead)
-	{
-		BattlePokeKey();
-	}
-	else if (m_bBattleChangePoke)
-	{
-		BattleChangePokeKey();
-	}
-	else if (m_bBattleUseItem)
-	{
-		if (m_bHeal)
-		{
-			HealPoke(fTimeDelta);
-			return;
 		}
-		if (!m_bItem)
-			BattleUseItemKey();
-		else if (m_bItem)
-			Key_UseInput();
+		if (m_bBattlePokeDead)
+		{
+			BattlePokeKey();
+		}
+		else if (m_bBattleChangePoke)
+		{
+			BattleChangePokeKey();
+		}
+		else if (m_bBattleUseItem)
+		{
+			if (m_bHeal)
+			{
+				HealPoke(fTimeDelta);
+				return;
+			}
+			if (!m_bItem)
+				BattleUseItemKey();
+			else if (m_bItem)
+				Key_UseInput();
+		}
 	}
 }
 
@@ -243,6 +243,11 @@ HRESULT CBag::Render()
 
 	}
 	return S_OK;
+}
+
+HRESULT CBag::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
 }
 
 void CBag::Set_vecPokeExpShare(_int _iExp)

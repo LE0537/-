@@ -211,6 +211,7 @@
     <ClInclude Include="..\public\Chansey.h" />
     <ClInclude Include="..\public\Charmander.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
+    <ClInclude Include="..\public\CountDown.h" />
     <ClInclude Include="..\public\Dandel.h" />
     <ClInclude Include="..\Public\Data_Manager.h" />
     <ClInclude Include="..\public\Dragonair.h" />
@@ -287,6 +288,8 @@
     <ClInclude Include="..\public\Psychic1.h" />
     <ClInclude Include="..\public\Psychic2.h" />
     <ClInclude Include="..\public\Psychic3.h" />
+    <ClInclude Include="..\public\Race.h" />
+    <ClInclude Include="..\public\RaceStar.h" />
     <ClInclude Include="..\public\Raticate.h" />
     <ClInclude Include="..\public\Rattata.h" />
     <ClInclude Include="..\public\Refract.h" />
@@ -387,6 +390,7 @@
     <ClCompile Include="..\private\Caterpie.cpp" />
     <ClCompile Include="..\private\Chansey.cpp" />
     <ClCompile Include="..\private\Charmander.cpp" />
+    <ClCompile Include="..\private\CountDown.cpp" />
     <ClCompile Include="..\private\Dandel.cpp" />
     <ClCompile Include="..\Private\Data_Manager.cpp" />
     <ClCompile Include="..\private\Dragonair.cpp" />
@@ -463,6 +467,8 @@
     <ClCompile Include="..\private\Psychic1.cpp" />
     <ClCompile Include="..\private\Psychic2.cpp" />
     <ClCompile Include="..\private\Psychic3.cpp" />
+    <ClCompile Include="..\private\Race.cpp" />
+    <ClCompile Include="..\private\RaceStar.cpp" />
     <ClCompile Include="..\private\Raticate.cpp" />
     <ClCompile Include="..\private\Rattata.cpp" />
     <ClCompile Include="..\private\Refract.cpp" />

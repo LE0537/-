@@ -68,6 +68,11 @@ HRESULT CBackGround::Render()
 	return S_OK;
 }
 
+HRESULT CBackGround::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 HRESULT CBackGround::Ready_Components()
 {
 	/* For.Com_Renderer */

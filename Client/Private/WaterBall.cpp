@@ -123,6 +123,11 @@ HRESULT CWaterBall::Render()
 	return S_OK;
 }
 
+HRESULT CWaterBall::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 HRESULT CWaterBall::Ready_Components()
 {
 	/* For.Com_Renderer */

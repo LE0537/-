@@ -89,6 +89,10 @@ HRESULT CBallEffect6::Render()
 
 	return S_OK;
 }
+HRESULT CBallEffect6::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CBallEffect6::Ready_Components()
 {
 	/* For.Com_Renderer */

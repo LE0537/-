@@ -28,6 +28,7 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
+	virtual HRESULT Render_ShadowDepth();
 public:
 	void	Set_Trail(CVIBuffer_Trail::BUFFERDESC _BUFFERDESC);
 	void	Reset_Trail();

@@ -54,29 +54,83 @@ HRESULT CTarget_Manager::Begin_MRT(ID3D11DeviceContext* pContext, const _tchar *
 	if (nullptr == pMRTList)
 		return E_FAIL;
 
+
+	// 끼워져 있는 8개의 랜더 타겟와 스텐실 하나를 보관한다.
+	
 	pContext->OMGetRenderTargets(1, &m_pOldRTV, &m_pOldDSV);
 
-	ID3D11RenderTargetView*		pRTVs[8] = { nullptr };
+	_uint			iNumRTVs = 0;
 
-	_uint		iNumRenderTargets = 0;
+	ID3D11RenderTargetView*			RTVs[8] = { nullptr };
 
 	for (auto& pRenderTarget : *pMRTList)
 	{
 		pRenderTarget->Clear();
-		pRTVs[iNumRenderTargets++] = pRenderTarget->Get_RTV();
+		RTVs[iNumRTVs++] = pRenderTarget->Get_RTV();
 	}
 
-	pContext->OMSetRenderTargets(iNumRenderTargets, pRTVs, m_pOldDSV);
+
+	pContext->OMSetRenderTargets(iNumRTVs, RTVs, m_pOldDSV);
 	
 	return S_OK;
 }
+HRESULT CTarget_Manager::Begin_ShadowMRT(ID3D11DeviceContext * pContext, const _tchar * pMRTTag)
+{
+	list<CRenderTarget*>*		pMRTList = Find_MRT(pMRTTag);
+	if (nullptr == pMRTList)
+		return E_FAIL;
 
+
+	// 끼워져 있는 8개의 랜더 타겟와 스텐실 하나를 보관한다.
+
+	pContext->OMGetRenderTargets(1, &m_pOldRTV, &m_pOldDSV);
+
+	_uint			iNumRTVs = 0;
+
+	ID3D11RenderTargetView*			RTVs[8] = { nullptr };
+
+	for (auto& pRenderTarget : *pMRTList)
+	{
+		pRenderTarget->Clear();
+		RTVs[iNumRTVs++] = pRenderTarget->Get_RTV();
+	}
+
+
+	pContext->ClearDepthStencilView(m_pShadowDeptheStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+	pContext->OMSetRenderTargets(iNumRTVs, RTVs, m_pShadowDeptheStencil);
+	
+
+	D3D11_VIEWPORT			ViewPortDesc;
+	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
+	ViewPortDesc.TopLeftX = 0;
+	ViewPortDesc.TopLeftY = 0;
+	ViewPortDesc.Width = 1280.f * 10.f;
+	ViewPortDesc.Height = 720.f * 10.f;
+	ViewPortDesc.MinDepth = 0.f;
+	ViewPortDesc.MaxDepth = 1.f;
+
+	pContext->RSSetViewports(1, &ViewPortDesc);
+	return S_OK;
+}
 HRESULT CTarget_Manager::End_MRT(ID3D11DeviceContext * pContext)
 {
+
 	pContext->OMSetRenderTargets(1, &m_pOldRTV, m_pOldDSV);
 
 	Safe_Release(m_pOldRTV);
+
 	Safe_Release(m_pOldDSV);
+
+	D3D11_VIEWPORT			ViewPortDesc;
+	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
+	ViewPortDesc.TopLeftX = 0;
+	ViewPortDesc.TopLeftY = 0;
+	ViewPortDesc.Width = 1280.f;
+	ViewPortDesc.Height = 720.f;
+	ViewPortDesc.MinDepth = 0.f;
+	ViewPortDesc.MaxDepth = 1.f;
+
+	pContext->RSSetViewports(1, &ViewPortDesc);
 
 	return S_OK;
 }
@@ -88,6 +142,42 @@ HRESULT CTarget_Manager::Bind_ShaderResource(const _tchar * pTargetTag, CShader 
 		return E_FAIL;
 
 	return pRenderTarget->Bind_ShaderResource(pShader, pConstantName);
+}
+
+HRESULT CTarget_Manager::Ready_ShadowDepthStencilRenderTargetView(ID3D11Device * pDevice, _uint iWinCX, _uint iWinCY)
+{
+	if (nullptr == pDevice)
+		return E_FAIL;
+
+	ID3D11Texture2D*		pDepthStencilTexture = nullptr;
+
+	D3D11_TEXTURE2D_DESC	TextureDesc;
+	ZeroMemory(&TextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
+
+	TextureDesc.Width = iWinCX;
+	TextureDesc.Height = iWinCY;
+	TextureDesc.MipLevels = 1;
+	TextureDesc.ArraySize = 1;
+	TextureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+	TextureDesc.SampleDesc.Quality = 0;
+	TextureDesc.SampleDesc.Count = 1;
+
+	TextureDesc.Usage = D3D11_USAGE_DEFAULT;
+	TextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	TextureDesc.CPUAccessFlags = 0;
+	TextureDesc.MiscFlags = 0;
+
+	if (FAILED(pDevice->CreateTexture2D(&TextureDesc, nullptr, &pDepthStencilTexture)))
+		return E_FAIL;
+
+
+	if (FAILED(pDevice->CreateDepthStencilView(pDepthStencilTexture, nullptr, &m_pShadowDeptheStencil)))
+		return E_FAIL;
+
+	Safe_Release(pDepthStencilTexture);
+
+	return S_OK;
 }
 
 HRESULT CTarget_Manager::Ready_Debug(const _tchar * pTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY)
@@ -150,7 +240,8 @@ void CTarget_Manager::Free()
 		Safe_Release(Pair.second);
 
 	m_RenderTargets.clear();	
-
+	
+	Safe_Release(m_pShadowDeptheStencil);
 	Safe_Release(m_pOldRTV);
 	Safe_Release(m_pOldDSV);
 }

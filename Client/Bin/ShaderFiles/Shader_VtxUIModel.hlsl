@@ -12,7 +12,7 @@ float4			g_vLightSpecular = float4(1.f, 1.f, 1.f, 1.f); //빛의 하이라이트 (빤딱�
 float4			g_vLightDir = float4(3.f, -3.f, -3.f, 0.f); // 빛의방향 //방향성광원 // 해
 
 float4			g_vMtrlAmbient = float4(1.f, 1.f, 1.f, 1.f);  // 재질의 고유색
-float4			g_vMtrlSpecular = float4(0.1f, 0.1f, 0.1f, 1.f);  // 재질의 하이라이트 (빤딱거리는느낌)
+float4			g_vMtrlSpecular = float4(1.f, 1.f, 1.f, 1.f);  // 재질의 하이라이트 (빤딱거리는느낌)
 
 /* 정점들에게 곱해져야할 행렬. */
 /* 정점들은 메시에게 소속. 이때 곱해져야하는 뼈의 행렬 == 이 메시에 영향을 주는 뼈다. */
@@ -72,6 +72,16 @@ VS_OUT VS_MAIN(VS_IN In)
 
 	Out.fShade = max(dot(normalize(g_vLightDir) * -1.f, normalize(vWorldNormal)), 0.f);
 
+	//if (saturate(dot(normalize(g_vLightDir) * -1.f, normalize(vWorldNormal))) < 0.2f)
+	//{
+	//	Out.fShade = g_vLightDiffuse * 0.5f + (g_vLightAmbient * g_vMtrlAmbient);
+	//}
+	//else
+	//{
+	//	Out.fShade = g_vLightDiffuse * 0.3f + (g_vLightAmbient * g_vMtrlAmbient);
+	//}
+
+
 
 	vector		vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
 
@@ -86,7 +96,38 @@ VS_OUT VS_MAIN(VS_IN In)
 
 	return Out;
 }
+VS_OUT VS_BreakCar(VS_IN In)
+{
+	VS_OUT		Out = (VS_OUT)0;
 
+	matrix		matWV, matWVP;
+
+	matWV = mul(g_WorldMatrix, g_ViewMatrix);
+	matWVP = mul(matWV, g_ProjMatrix);
+
+	/* 정점의 위치에 월드 뷰 투영행렬을 곱한다. 현재 정점은 ViewSpace에 존재하낟. */
+	/* 투영행렬까지 곱하면 정점위치의 w에 뷰스페이스 상의 z를 보관한다. == Out.vPosition이 반드시 float4이어야하는 이유. */
+	Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
+	Out.vTexUV = In.vTexUV;
+
+	Out.vNormal = In.vNormal;
+
+	vector		vWorldNormal = mul(vector(In.vNormal, 0.f), g_WorldMatrix);
+
+	Out.fShade = max(dot(normalize(g_vLightDir) * -1.f, normalize(vWorldNormal)), 0.f);
+
+
+	vector		vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
+
+	vector		vReflect = reflect(normalize(g_vLightDir), normalize(vWorldNormal));
+	vector		vLook = vWorldPos - g_vCamPosition;
+
+	Out.fSpecular = pow(max(dot(normalize(vLook) * -1.f, normalize(vReflect)), 0.f), 10);
+
+	Out.vWorldPos = vWorldPos;
+
+	return Out;
+}
 struct PS_IN
 {
 	float4		vPosition : SV_POSITION;
@@ -130,6 +171,17 @@ PS_OUT PS_Evolution(PS_IN In)
 
 	return Out;
 }
+PS_OUT PS_BreakCar(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	vector		vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
+
+
+	Out.vColor = (g_vLightDiffuse * vDiffuse) *saturate(In.fShade + g_vLightAmbient * g_vMtrlAmbient) + (g_vLightSpecular * g_vMtrlSpecular) * In.fSpecular;
+
+	return Out;
+}
 technique11 DefaultTechnique
 {
 	pass Default
@@ -152,5 +204,15 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_Evolution();
+	}
+	pass BreakCar //2
+	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_BreakCar();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_BreakCar();
 	}
 }

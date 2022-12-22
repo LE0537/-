@@ -48,6 +48,11 @@ HRESULT CDragonBadge::Render()
 	return S_OK;
 }
 
+HRESULT CDragonBadge::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CDragonBadge * CDragonBadge::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CDragonBadge*	pInstance = new CDragonBadge(pDevice, pContext);

@@ -54,6 +54,11 @@ HRESULT CBattleIntro::Render()
 	return S_OK;
 }
 
+HRESULT CBattleIntro::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 HRESULT CBattleIntro::Ready_Components()
 {
 	/* For.Com_Renderer */

@@ -91,6 +91,11 @@ HRESULT CBite::Render()
 	return S_OK;
 }
 
+HRESULT CBite::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CBite * CBite::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CBite*	pInstance = new CBite(pDevice, pContext);

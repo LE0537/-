@@ -48,6 +48,11 @@ HRESULT CFireBadge::Render()
 	return S_OK;
 }
 
+HRESULT CFireBadge::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CFireBadge * CFireBadge::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CFireBadge*	pInstance = new CFireBadge(pDevice, pContext);

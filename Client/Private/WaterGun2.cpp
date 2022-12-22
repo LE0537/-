@@ -68,6 +68,10 @@ HRESULT CWaterGun2::Render()
 
 	return S_OK;
 }
+HRESULT CWaterGun2::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CWaterGun2::Ready_Components()
 {
 	/* For.Com_Renderer */

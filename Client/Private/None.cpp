@@ -45,6 +45,11 @@ HRESULT CNone::Render()
 	return S_OK;
 }
 
+HRESULT CNone::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CNone * CNone::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CNone*	pInstance = new CNone(pDevice, pContext);

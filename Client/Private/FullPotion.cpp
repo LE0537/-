@@ -48,6 +48,11 @@ HRESULT CFullPotion::Render()
 	return S_OK;
 }
 
+HRESULT CFullPotion::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CFullPotion * CFullPotion::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CFullPotion*	pInstance = new CFullPotion(pDevice, pContext);

@@ -48,6 +48,11 @@ HRESULT CPPPotion::Render()
 	return S_OK;
 }
 
+HRESULT CPPPotion::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CPPPotion * CPPPotion::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CPPPotion*	pInstance = new CPPPotion(pDevice, pContext);

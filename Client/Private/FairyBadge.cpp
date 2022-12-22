@@ -48,6 +48,11 @@ HRESULT CFairyBadge::Render()
 	return S_OK;
 }
 
+HRESULT CFairyBadge::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CFairyBadge * CFairyBadge::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CFairyBadge*	pInstance = new CFairyBadge(pDevice, pContext);

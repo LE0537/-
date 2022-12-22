@@ -87,6 +87,11 @@ HRESULT CThunder::Render()
 	return S_OK;
 }
 
+HRESULT CThunder::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 void CThunder::Set_Pos(_float fTimeDelta)
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);

@@ -38,6 +38,11 @@ HRESULT CGameObject::Render()
 	return S_OK;
 }
 
+HRESULT CGameObject::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 
 HRESULT CGameObject::Add_Components(const _tchar * pComponentTag, _uint iLevelIndex, const _tchar * pPrototypeTag, CComponent** ppOut, void * pArg)
 {

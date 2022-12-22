@@ -48,6 +48,11 @@ HRESULT CIceBadge::Render()
 	return S_OK;
 }
 
+HRESULT CIceBadge::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CIceBadge * CIceBadge::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CIceBadge*	pInstance = new CIceBadge(pDevice, pContext);

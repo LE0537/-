@@ -32,7 +32,7 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
-
+	virtual HRESULT Render_ShadowDepth();
 private:
 	HRESULT SetUp_ShaderResources();
 	HRESULT Ready_Components();
@@ -50,6 +50,8 @@ private:
 	void	WildBattle();
 	void	Ready_Script();
 	void	Move(_float fTimeDelta);
+
+	void	Race(_float fTimeDelta);
 private:
 	CModel*					m_pModelCom = nullptr;
 	CCollider*				m_pAABBCom = nullptr;
@@ -83,7 +85,7 @@ private:
 	_float4x4				m_ViewMatrix, m_ProjMatrix;
 
 
-
+	_float					m_fSkillTime = 0.f;
 public:
 	static CPikachu* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

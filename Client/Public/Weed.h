@@ -31,6 +31,7 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
+	virtual HRESULT Render_ShadowDepth();
 public:
 	void	Set_Vector(vector<_float4> _listPos, vector<_float3> _listScale, _int _iWeed) {
 		m_listPos = _listPos;

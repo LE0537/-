@@ -17,9 +17,11 @@
 #include "Lv_Up.h"
 #include "Evolution.h"
 #include "EndingErr.h"
+#include "CountDown.h"
 //Map
 #include "Field.h"
 #include "BattleField.h"
+#include "Race.h"
 #include "Tree.h"
 #include "SkyBox.h"
 #include "Weed.h"
@@ -162,6 +164,7 @@
 #include "EvolLight3.h"
 #include "EvolLight4.h"
 #include "Leaf.h"
+#include "RaceStar.h"
 #include "BallEffect.h"
 #include "BallEffect2.h"
 #include "BallEffect3.h"
@@ -273,6 +276,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Leaf"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Leaf/%d.png"), 1))))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_RaceParticle"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/RaceParticle/%d.png"), 1))))
+		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BallEffect"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/BallEffect/%d.png"), 4))))
 		return E_FAIL;
@@ -363,7 +369,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BodyPress1"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Skill/BodyPress/BodyPress1/%d.png"), 8))))
 		return E_FAIL;
-
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Count"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Count/%d.png"), 4))))
+		return E_FAIL;
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Refract"),
 	//	CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Refract/%d.png"), 3))))
 	//	return E_FAIL;
@@ -419,6 +427,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_EndingErr"),
 		CEndingErr::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_CountDown"),
+		CCountDown::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	/* ¾ÆÀÌÅÛ °´Ã¼ */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_None"),
@@ -781,6 +792,14 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	CSkyBox::Create(m_pDevice, m_pContext))))
 	return E_FAIL;
 
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Race"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/Race/Race.fbx"))))
+	//	return E_FAIL;
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Race"), LEVEL_STATIC, CData_Manager::DATA_NONANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Race"),
+		CRace::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Weed"),
 		CWeed::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -842,7 +861,11 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Bite"),
 		CBite::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
 	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Bite"), LEVEL_STATIC, CData_Manager::DATA_ANIM);
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Bite"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/fbx/Bite/Bite.fbx"))))
+	//	return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Bite1"),
 		CBite1::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -971,6 +994,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Leaf"),
 		CLeaf::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_RaceStar"),
+		CRaceStar::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BallEffect"),
 		CBallEffect::Create(m_pDevice, m_pContext))))

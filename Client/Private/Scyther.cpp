@@ -9,6 +9,7 @@
 #include "Camera_Dynamic.h"
 #include "Player.h"
 #include "VIBuffer_Navigation.h"
+#include "Level_GamePlay.h"
 
 CScyther::CScyther(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -40,11 +41,11 @@ HRESULT CScyther::Initialize(void * pArg)
 
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tackle"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum1)))
 		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BreakCar"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum2)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Scissor"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum2)))
 		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BreakCar"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum3)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BugBuzz"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum3)))
 		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BreakCar"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum4)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NoneSkill"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum4)))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_None"), LEVEL_STATIC, TEXT("Layer_Item"), &m_PokemonInfo.eItem)))
 		return E_FAIL;
@@ -56,6 +57,7 @@ HRESULT CScyther::Initialize(void * pArg)
 	m_PokemonInfo.eType2 = FLY;
 	m_PokemonInfo.eStatInfo = STATINFO_END;
 	m_PokemonInfo.bLvUp = false;
+	m_PokemonInfo.bRace = false;
 	m_bWildPoke = false;
 	m_pModelCom->Set_CurrentAnimIndex(2);
 	m_pTransformCom->Set_Scale(XMVectorSet(0.055f, 0.055f, 0.055f, 0.f));
@@ -65,89 +67,105 @@ HRESULT CScyther::Initialize(void * pArg)
 
 void CScyther::Tick(_float fTimeDelta)
 {
-	//CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
-
-	//if (pGameInstance->Key_Down(DIK_F2))	// 추가 -> 저장하기
-	//{
-	//	CData_Manager* pData_Manager = GET_INSTANCE(CData_Manager);
-	//	char cName[MAX_PATH];
-	//	ZeroMemory(cName, sizeof(char) * MAX_PATH);
-	//	pData_Manager->TCtoC(TEXT("Magikarp"), cName);
-	//	pData_Manager->Conv_Bin_Model(m_pModelCom, cName, CData_Manager::DATA_ANIM);
-	//	ERR_MSG(TEXT("Save_Bin_Magikarp"));
-	//	RELEASE_INSTANCE(CData_Manager);
-	//}
-
-	//RELEASE_INSTANCE(CGameInstance);
-	if (m_bOnOff)
+	if (!m_PokemonInfo.bRace)
 	{
-		Set_DeckPos();
-		if (!m_bDeckInfo)
+		if (m_bOnOff)
 		{
-			Key_Input(fTimeDelta);
+			Set_DeckPos();
+			if (!m_bDeckInfo)
+			{
+				Key_Input(fTimeDelta);
+			}
+			if (g_PokeInfo || g_bPokeDeck)
+				m_pModelCom->Play_Animation(fTimeDelta);
 		}
-		if (g_PokeInfo || g_bPokeDeck)
-			m_pModelCom->Play_Animation(fTimeDelta);
-	}
 
-	if (!m_bOnOff)
-		m_bSetPos = false;
+		if (!m_bOnOff)
+			m_bSetPos = false;
 
-	if (m_bBattleMap)
-	{
-		Battle(fTimeDelta);
-		if (m_PokemonInfo.bLvUp)
-			LvUp();
+		if (m_bBattleMap)
+		{
+			Battle(fTimeDelta);
+			if (m_PokemonInfo.bLvUp)
+				LvUp();
+		}
+		else
+		{
+			if (m_PokemonInfo.bLvUp)
+				LvUp();
+		}
+		if (m_bAnimReset)
+			Reset_Battle();
+		if (m_bWildPoke)
+		{
+			if (!m_bReadyWild)
+			{
+				Ready_WildBattle();
+				m_bReadyWild = true;
+			}
+			if (g_Battle)
+			{
+				if (!m_bBattleStart && m_bCollCheck)
+					WildBattle();
+			}
+
+
+			if (m_bWildPoke && !g_Battle && !g_bBag && !g_PokeInfo && !g_bPokeDeck && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
+			{
+				Move(fTimeDelta);
+			}
+		}
 	}
 	else
 	{
-		if (m_PokemonInfo.bLvUp)
-			LvUp();
-	}
-	if (m_bAnimReset)
-		Reset_Battle();
-	if (m_bWildPoke)
-	{
-		if (!m_bReadyWild)
-		{
-			Ready_WildBattle();
-			m_bReadyWild = true;
-		}
-		if (g_Battle)
-		{
-			if (!m_bBattleStart && m_bCollCheck)
-				WildBattle();
-		}
-
-
-		if (m_bWildPoke && !g_Battle && !g_bBag && !g_PokeInfo && !g_bPokeDeck && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
-		{
-			Move(fTimeDelta);
-		}
+		Race(fTimeDelta);
+		if (!m_bSlowMotion)
+			m_pModelCom->Play_Animation(fTimeDelta);
+		else
+			m_pModelCom->Play_Animation(fTimeDelta * 0.3f);
 	}
 }
 
 void CScyther::Late_Tick(_float fTimeDelta)
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-
-	if (!g_Battle && m_bWildPoke)
-		Check_Coll();
-
-	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), 10.f))
+	if (!m_PokemonInfo.bRace)
 	{
-		if (m_fDist < 30.f && !g_bEvolution && !g_bBag && !g_PokeInfo && !g_bPokeDeck && m_bWildPoke && !m_bBattleMap && !g_Battle && nullptr != m_pRendererCom)
-			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+		if (!g_Battle && m_bWildPoke)
+			Check_Coll();
+
+		if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), 10.f))
+		{
+			if (m_fDist < 30.f && !g_bEvolution && !g_bBag && !g_PokeInfo && !g_bPokeDeck && m_bWildPoke && !m_bBattleMap && !g_Battle && nullptr != m_pRendererCom)
+			{
+				m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_SHADOWDEPTH, this);
+				m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+			}
+		}
+
+		if ((g_PokeInfo || g_bPokeDeck) && m_bOnOff && nullptr != m_pRendererCom)
+			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UIPOKE, this);
+		else if (m_bBattleMap && g_Battle && nullptr != m_pRendererCom)
+		{
+			if (!m_bHitRender)
+			{
+				if (g_bCaptureRender && !m_bWildPoke)
+				{
+					m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_SHADOWDEPTH, this);
+					m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+				}
+				else if (!g_bCaptureRender)
+				{
+					m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_SHADOWDEPTH, this);
+					m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+				}
+			}
+		}
 	}
-
-	if ((g_PokeInfo || g_bPokeDeck) && m_bOnOff && nullptr != m_pRendererCom)
-		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UIPOKE, this);
-	else if (m_bBattleMap && g_Battle && nullptr != m_pRendererCom)
+	else if (g_bRace)
 	{
-		if (g_bCaptureRender && !m_bWildPoke)
-			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-		else if (!g_bCaptureRender)
-			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_SHADOWDEPTH, this);
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 	}
 	RELEASE_INSTANCE(CGameInstance);
 
@@ -198,6 +216,103 @@ HRESULT CScyther::Render()
 
 
 	return S_OK;
+}
+HRESULT CScyther::Render_ShadowDepth()
+{
+	if (nullptr == m_pShaderCom ||
+		nullptr == m_pModelCom)
+		return E_FAIL;
+
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
+		return E_FAIL;
+
+
+	_vector			vLightEye = XMLoadFloat4(&pGameInstance->Get_ShadowLightDesc(LIGHTDESC::TYPE_FIELDSHADOW)->vDirection);
+	_vector			vLightAt = XMLoadFloat4(&pGameInstance->Get_ShadowLightDesc(LIGHTDESC::TYPE_FIELDSHADOW)->vDiffuse);
+	_vector			vLightUp = { 0.f, 1.f, 0.f ,0.f };
+	_matrix			matLightView = XMMatrixLookAtLH(vLightEye, vLightAt, vLightUp);
+
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &XMMatrixTranspose(matLightView), sizeof(_float4x4))))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &pGameInstance->Get_TransformFloat4x4_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
+		return E_FAIL;
+
+
+
+	_uint		iNumMeshes = m_pModelCom->Get_NumMeshContainers();
+
+	for (_uint i = 0; i < iNumMeshes; ++i)
+	{
+		if (FAILED(m_pModelCom->SetUp_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+			return E_FAIL;
+
+		if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 3)))
+			return E_FAIL;
+
+	}
+
+	RELEASE_INSTANCE(CGameInstance);
+
+
+
+	return S_OK;
+}
+void CScyther::Race(_float fTimeDelta)
+{
+	if (m_iAnimIndex == 8)
+	{
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+		m_fSkillTime += fTimeDelta;
+		if (m_fSkillTime > 0.05f)
+		{
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+			CLevel_GamePlay::LOADFILE tInfo;
+
+			XMStoreFloat4(&tInfo.vPos, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+			for (_int i = 0; i < 3; ++i)
+			{
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_RockSlide2"), LEVEL_GAMEPLAY, TEXT("Effect"), &tInfo)))
+					return;
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_RockSlide3"), LEVEL_GAMEPLAY, TEXT("Effect"), &tInfo)))
+					return;
+			}
+			RELEASE_INSTANCE(CGameInstance);
+
+			m_fSkillTime = 0.f;
+		}
+	}
+	else if (m_iAnimIndex == 7)
+	{
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+		m_fSkillTime += fTimeDelta;
+		if (m_fSkillTime > 0.3f)
+		{
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+			CLevel_GamePlay::LOADFILE tInfo;
+			XMStoreFloat4(&tInfo.vPos, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+			tInfo.vScale = { 0.5f,0.5f,0.5f };
+			tInfo.vPos.y += 0.2f;
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Land"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
+				return;
+
+			RELEASE_INSTANCE(CGameInstance);
+			m_fSkillTime = 0.f;
+		}
+	}
+	else if (m_iAnimIndex == 2)
+	{
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+	}
+	else if (m_iAnimIndex == 9)
+	{
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+	}
+
 }
 HRESULT CScyther::Ready_Components()
 {
@@ -671,7 +786,7 @@ void CScyther::LvUp()
 	tInfo.iSDmg = m_PokemonInfo.iSDmg;
 	tInfo.iSDef = m_PokemonInfo.iSDef;
 	tInfo.iSpeed = m_PokemonInfo.iSpeed;
-
+	tInfo.iPokeNum = m_PokemonInfo.iPokeNum;
 
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Lv_Up"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
 		return;

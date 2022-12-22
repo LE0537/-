@@ -69,6 +69,11 @@ HRESULT CScissor::Render()
 	return S_OK;
 }
 
+HRESULT CScissor::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 void CScissor::Set_Pos(_float fTimeDelta)
 {
 

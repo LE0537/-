@@ -74,6 +74,10 @@ HRESULT CBattleEvent::Render()
 
 	return S_OK;
 }
+HRESULT CBattleEvent::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CBattleEvent::Ready_Components()
 {
 	/* For.Com_Renderer */

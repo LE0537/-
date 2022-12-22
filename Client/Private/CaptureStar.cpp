@@ -77,6 +77,10 @@ HRESULT CCaptureStar::Render()
 
 	return S_OK;
 }
+HRESULT CCaptureStar::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CCaptureStar::Ready_Components()
 {
 	/* For.Com_Renderer */

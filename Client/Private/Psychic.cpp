@@ -69,6 +69,11 @@ HRESULT CPsychic::Render()
 	return S_OK;
 }
 
+HRESULT CPsychic::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 void CPsychic::Set_Pos(_float fTimeDelta)
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);

@@ -48,6 +48,11 @@ HRESULT CHpPotion::Render()
 	return S_OK;
 }
 
+HRESULT CHpPotion::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CHpPotion * CHpPotion::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CHpPotion*	pInstance = new CHpPotion(pDevice, pContext);

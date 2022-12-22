@@ -92,6 +92,11 @@ HRESULT CHydroPump::Render()
 	return S_OK;
 }
 
+HRESULT CHydroPump::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 void CHydroPump::Set_Pos(_float fTimeDelta)
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);

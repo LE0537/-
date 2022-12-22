@@ -9,6 +9,7 @@
 #include "Camera_Dynamic.h"
 #include "Player.h"
 #include "VIBuffer_Navigation.h"
+#include "Level_GamePlay.h"
 
 CPikachu::CPikachu(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -38,7 +39,7 @@ HRESULT CPikachu::Initialize(void * pArg)
 	
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tackle"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum1)))
 		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NoneSkill"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum2)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Thunder"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum2)))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NoneSkill"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum3)))
 		return E_FAIL;
@@ -54,6 +55,7 @@ HRESULT CPikachu::Initialize(void * pArg)
 	m_PokemonInfo.eType2 = POKETYPE_END;
 	m_PokemonInfo.eStatInfo = STATINFO_END;
 	m_PokemonInfo.bLvUp = false;
+	m_PokemonInfo.bRace = false;
 	m_bWildPoke = false;
 	m_pModelCom->Set_CurrentAnimIndex(2);
 	m_pTransformCom->Set_Scale(XMVectorSet(0.085f, 0.085f, 0.085f, 0.f));
@@ -63,75 +65,104 @@ HRESULT CPikachu::Initialize(void * pArg)
 
 void CPikachu::Tick(_float fTimeDelta)
 {
-	
-	if (m_bOnOff)
+	if (!m_PokemonInfo.bRace)
 	{
-		Set_DeckPos();
-		if (!m_bDeckInfo)
+		if (m_bOnOff)
 		{
-			Key_Input(fTimeDelta);
+			Set_DeckPos();
+			if (!m_bDeckInfo)
+			{
+				Key_Input(fTimeDelta);
+			}
+			if (g_PokeInfo || g_bPokeDeck)
+				m_pModelCom->Play_Animation(fTimeDelta);
 		}
-		if (g_PokeInfo || g_bPokeDeck)
-			m_pModelCom->Play_Animation(fTimeDelta);
-	}
 
-	if(!m_bOnOff)
-		m_bSetPos = false;
+		if (!m_bOnOff)
+			m_bSetPos = false;
 
-	if (m_bBattleMap)
-	{
-		Battle(fTimeDelta);
-		if (m_PokemonInfo.bLvUp)
-			LvUp();
+		if (m_bBattleMap)
+		{
+			Battle(fTimeDelta);
+			if (m_PokemonInfo.bLvUp)
+				LvUp();
+		}
+		else
+		{
+			if (m_PokemonInfo.bLvUp)
+				LvUp();
+		}
+		if (m_bAnimReset)
+			Reset_Battle();
+		if (m_bWildPoke)
+		{
+			if (!m_bReadyWild)
+			{
+				Ready_WildBattle();
+				m_bReadyWild = true;
+			}
+			if (g_Battle)
+			{
+				if (!m_bBattleStart && m_bCollCheck)
+					WildBattle();
+			}
+
+
+			if (m_bWildPoke && !g_Battle && !g_bBag && !g_PokeInfo && !g_bPokeDeck && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
+			{
+				Move(fTimeDelta);
+			}
+		}
 	}
 	else
 	{
-		if (m_PokemonInfo.bLvUp)
-			LvUp();
-	}
-	if (m_bAnimReset)
-		Reset_Battle();
-	if (m_bWildPoke)
-	{
-		if (!m_bReadyWild)
-		{
-			Ready_WildBattle();
-			m_bReadyWild = true;
-		}
-		if (g_Battle)
-		{
-			if (!m_bBattleStart && m_bCollCheck)
-				WildBattle();
-		}
-
-
-		if (m_bWildPoke && !g_Battle && !g_bBag && !g_PokeInfo && !g_bPokeDeck && !dynamic_cast<CGameObj*>(m_pTarget)->Get_Event())
-		{
-			Move(fTimeDelta);
-		}
+		Race(fTimeDelta);
+		if (!m_bSlowMotion)
+			m_pModelCom->Play_Animation(fTimeDelta);
+		else
+			m_pModelCom->Play_Animation(fTimeDelta * 0.3f);
 	}
 }
 
 void CPikachu::Late_Tick(_float fTimeDelta)
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-	
-	if (!g_Battle && m_bWildPoke)
-		Check_Coll();
+	if (!m_PokemonInfo.bRace)
+	{
+		if (!g_Battle && m_bWildPoke)
+			Check_Coll();
 
-	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), 10.f))
-	{
-		if (m_fDist < 30.f && !g_bEvolution && !g_bBag && !g_PokeInfo && !g_bPokeDeck && m_bWildPoke && !m_bBattleMap && !g_Battle && nullptr != m_pRendererCom)
-			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+		if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), 10.f))
+		{
+			if (m_fDist < 30.f && !g_bEvolution && !g_bBag && !g_PokeInfo && !g_bPokeDeck && m_bWildPoke && !m_bBattleMap && !g_Battle && nullptr != m_pRendererCom)
+			{
+				m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_SHADOWDEPTH, this);
+				m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+			}
+		}
+		if ((g_PokeInfo || g_bPokeDeck) && m_bOnOff && nullptr != m_pRendererCom)
+			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UIPOKE, this);
+		else if (m_bBattleMap && g_Battle && nullptr != m_pRendererCom)
+		{
+			if (!m_bHitRender)
+			{
+				if (g_bCaptureRender && !m_bWildPoke)
+				{
+					m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_SHADOWDEPTH, this);
+					m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+				}
+				else if (!g_bCaptureRender)
+				{
+					m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_SHADOWDEPTH, this);
+					m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+				}
+			}
+		}
 	}
-	if ((g_PokeInfo || g_bPokeDeck) && m_bOnOff && nullptr != m_pRendererCom)
-		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UIPOKE, this);
-	else if (m_bBattleMap && g_Battle && nullptr != m_pRendererCom)
+	else if (g_bRace)
 	{
-		if (g_bCaptureRender && !m_bWildPoke)
-			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-		else if (!g_bCaptureRender)
-			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_SHADOWDEPTH, this);
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 	}
 	RELEASE_INSTANCE(CGameInstance);
 	if (g_CollBox)
@@ -179,6 +210,103 @@ HRESULT CPikachu::Render()
 
 
 	return S_OK;
+}
+HRESULT CPikachu::Render_ShadowDepth()
+{
+	if (nullptr == m_pShaderCom ||
+		nullptr == m_pModelCom)
+		return E_FAIL;
+
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
+		return E_FAIL;
+
+
+	_vector			vLightEye = XMLoadFloat4(&pGameInstance->Get_ShadowLightDesc(LIGHTDESC::TYPE_FIELDSHADOW)->vDirection);
+	_vector			vLightAt = XMLoadFloat4(&pGameInstance->Get_ShadowLightDesc(LIGHTDESC::TYPE_FIELDSHADOW)->vDiffuse);
+	_vector			vLightUp = { 0.f, 1.f, 0.f ,0.f };
+	_matrix			matLightView = XMMatrixLookAtLH(vLightEye, vLightAt, vLightUp);
+
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &XMMatrixTranspose(matLightView), sizeof(_float4x4))))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &pGameInstance->Get_TransformFloat4x4_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
+		return E_FAIL;
+
+
+
+	_uint		iNumMeshes = m_pModelCom->Get_NumMeshContainers();
+
+	for (_uint i = 0; i < iNumMeshes; ++i)
+	{
+		if (FAILED(m_pModelCom->SetUp_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+			return E_FAIL;
+
+		if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 3)))
+			return E_FAIL;
+
+	}
+
+	RELEASE_INSTANCE(CGameInstance);
+
+
+
+	return S_OK;
+}
+void CPikachu::Race(_float fTimeDelta)
+{
+	if (m_iAnimIndex == 8)
+	{
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+		m_fSkillTime += fTimeDelta;
+		if (m_fSkillTime > 0.05f)
+		{
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+			CLevel_GamePlay::LOADFILE tInfo;
+
+			XMStoreFloat4(&tInfo.vPos, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+			for (_int i = 0; i < 3; ++i)
+			{
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_RockSlide2"), LEVEL_GAMEPLAY, TEXT("Effect"), &tInfo)))
+					return;
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_RockSlide3"), LEVEL_GAMEPLAY, TEXT("Effect"), &tInfo)))
+					return;
+			}
+			RELEASE_INSTANCE(CGameInstance);
+
+			m_fSkillTime = 0.f;
+		}
+	}
+	else if (m_iAnimIndex == 7)
+	{
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+		m_fSkillTime += fTimeDelta;
+		if (m_fSkillTime > 0.3f)
+		{
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+			CLevel_GamePlay::LOADFILE tInfo;
+			XMStoreFloat4(&tInfo.vPos, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+			tInfo.vScale = { 0.5f,0.5f,0.5f };
+			tInfo.vPos.y += 0.2f;
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Land"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
+				return;
+
+			RELEASE_INSTANCE(CGameInstance);
+			m_fSkillTime = 0.f;
+		}
+	}
+	else if (m_iAnimIndex == 2)
+	{
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+	}
+	else if (m_iAnimIndex == 9)
+	{
+		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
+	}
+
 }
 HRESULT CPikachu::Ready_Components()
 {
@@ -589,10 +717,10 @@ void CPikachu::Set_Stats()
 	m_PlayerInfo.bEvent = false;
 
 	m_PokemonInfo.strName = TEXT("피카츄");
-	m_PokemonInfo.strInfo = TEXT("재벌3세 석카츄...삼성게임즈를 위하여!\n최근 나이키 지디포스 화이트사고 자존감업됨.\n제발 코딩력도 업되자.");
+	m_PokemonInfo.strInfo = TEXT("재벌3세 석카츄...삼성게임즈를 위하여!");
 	m_PokemonInfo.strChar = TEXT("부유함");
 	m_PokemonInfo.iPokeNum = 25;
-	m_PokemonInfo.iLv = rand() % 5 + 5;
+	m_PokemonInfo.iLv = 5;
 	m_PokemonInfo.iMaxHp = _int(((fHp * 2.f) + 31.f + 100) * (m_PokemonInfo.iLv / 100.f) + 10.f);
 	m_PokemonInfo.iHp = m_PokemonInfo.iMaxHp;
 	m_PokemonInfo.iDmg = _int(((fDmg * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);
@@ -648,7 +776,7 @@ void CPikachu::LvUp()
 	tInfo.iSDmg = m_PokemonInfo.iSDmg;
 	tInfo.iSDef = m_PokemonInfo.iSDef;
 	tInfo.iSpeed = m_PokemonInfo.iSpeed;
-
+	tInfo.iPokeNum = m_PokemonInfo.iPokeNum;
 
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Lv_Up"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
 		return;

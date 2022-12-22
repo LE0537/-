@@ -74,6 +74,11 @@ HRESULT CRockSlide::Render()
 	return S_OK;
 }
 
+HRESULT CRockSlide::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 void CRockSlide::Set_Pos(_float fTimeDelta)
 {
 	for (_int i = 0; i < 3; ++i)

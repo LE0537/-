@@ -41,6 +41,11 @@ HRESULT CGameObj::Render()
 	return S_OK;
 }
 
+HRESULT CGameObj::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CGameObj * CGameObj::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CGameObj*	pInstance = new CGameObj(pDevice, pContext);

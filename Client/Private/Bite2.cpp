@@ -74,6 +74,10 @@ HRESULT CBite2::Render()
 
 	return S_OK;
 }
+HRESULT CBite2::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CBite2::Ready_Components()
 {
 	/* For.Com_Renderer */

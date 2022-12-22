@@ -54,58 +54,88 @@ HRESULT CPlayer::Initialize(void * pArg)
 
 	RELEASE_INSTANCE(CGameInstance);
 
+
 	return S_OK;
 }
 
 void CPlayer::Tick(_float fTimeDelta)
 {
-	if(g_Battle)
-		Battle(fTimeDelta);
-	else if(!g_bEvolution)
+	if (!g_bRace)
 	{
-		OnNavi();
-		if (!m_PlayerInfo.bRide)
-			m_pModelCom->Set_CurrentAnimIndex(IDLE);
-		if (m_PlayerInfo.bRide)
-			CheckRideIDLE();
-	
-		if (!m_PlayerInfo.bEvent)
-			Key_Input(fTimeDelta);
-		
-		m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
-		m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
-	}
-	if(!g_bEvolution && !m_PlayerInfo.bRide)
-		m_pModelCom->Play_Animation(fTimeDelta);
-	else if (m_PlayerInfo.bRide)
-	{
-		switch (m_PlayerInfo.iRideNum)
+		if (g_Battle)
+			Battle(fTimeDelta);
+		else if (!g_bEvolution)
 		{
-		case 115:
-			m_pModelCom->Play_Animation(fTimeDelta );
-			break;
-		case 143:
-			m_pModelCom->Play_Animation(fTimeDelta * 1.5f);
-			break;
-		default:
-			break;
+			OnNavi();
+			if (!m_PlayerInfo.bRide)
+				m_pModelCom->Set_CurrentAnimIndex(IDLE);
+			if (m_PlayerInfo.bRide)
+				CheckRideIDLE();
+
+			if (!m_PlayerInfo.bEvent)
+				Key_Input(fTimeDelta);
+
+			m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
+			m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 		}
+		if (!g_bEvolution && !m_PlayerInfo.bRide)
+			m_pModelCom->Play_Animation(fTimeDelta);
+		else if (m_PlayerInfo.bRide)
+		{
+			switch (m_PlayerInfo.iRideNum)
+			{
+			case 115:
+				m_pModelCom->Play_Animation(fTimeDelta);
+				break;
+			case 143:
+				m_pModelCom->Play_Animation(fTimeDelta * 1.5f);
+				break;
+			default:
+				break;
+			}
+		}
+		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	
+		_float4 vPos;
+		XMStoreFloat4(&vPos, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+		_float4 vAt = vPos;
+		if (!g_Battle)
+		{
+			vPos.x -= 15.f;
+			vPos.y += 30.f;
+			vPos.z -= 30.f;
+		}
+		else if (g_Battle)
+		{
+			vPos.x -= 5.f;
+			vPos.y += 10.f;
+			vPos.z -= 10.f;
+		}
+		pGameInstance->Set_ShadowLightDesc(LIGHTDESC::TYPE_FIELDSHADOW,vPos, vAt);
+
+		RELEASE_INSTANCE(CGameInstance);
 	}
 }
 
 void CPlayer::Late_Tick(_float fTimeDelta)
 {
-	if (g_Battle && m_PlayerInfo.bRide)
-		m_PlayerInfo.bRide = false;
-
-	if (!g_bEvolution && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
-		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-
-	if (g_CollBox)
+	if (!g_bRace)
 	{
-		m_pRendererCom->Add_Debug(m_pNavigationCom);
- 		m_pRendererCom->Add_Debug(m_pAABBCom);
-		m_pRendererCom->Add_Debug(m_pOBBCom);
+		if (g_Battle && m_PlayerInfo.bRide)
+			m_PlayerInfo.bRide = false;
+
+		if (!g_bEvolution && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
+		{
+			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_SHADOWDEPTH, this);
+			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+		}
+		if (g_CollBox)
+		{
+			m_pRendererCom->Add_Debug(m_pNavigationCom);
+			m_pRendererCom->Add_Debug(m_pAABBCom);
+			m_pRendererCom->Add_Debug(m_pOBBCom);
+		}
 	}
 }
 
@@ -134,6 +164,49 @@ HRESULT CPlayer::Render()
 	}
 
 	RELEASE_INSTANCE(CGameInstance);
+
+
+	return S_OK;
+}
+HRESULT CPlayer::Render_ShadowDepth()
+{
+	if (nullptr == m_pShaderCom ||
+		nullptr == m_pModelCom)
+		return E_FAIL;
+
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
+		return E_FAIL;
+	
+
+	_vector			vLightEye = XMLoadFloat4(&pGameInstance->Get_ShadowLightDesc(LIGHTDESC::TYPE_FIELDSHADOW)->vDirection);
+	_vector			vLightAt = XMLoadFloat4(&pGameInstance->Get_ShadowLightDesc(LIGHTDESC::TYPE_FIELDSHADOW)->vDiffuse);
+	_vector			vLightUp = { 0.f, 1.f, 0.f ,0.f };
+	_matrix			matLightView = XMMatrixLookAtLH(vLightEye, vLightAt, vLightUp);
+
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &XMMatrixTranspose(matLightView), sizeof(_float4x4))))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &pGameInstance->Get_TransformFloat4x4_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
+		return E_FAIL;
+
+
+
+	_uint		iNumMeshes = m_pModelCom->Get_NumMeshContainers();
+
+	for (_uint i = 0; i < iNumMeshes; ++i)
+	{
+		if (FAILED(m_pModelCom->SetUp_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+			return E_FAIL;
+
+		if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 3)))
+			return E_FAIL;
+
+	}
+
+	RELEASE_INSTANCE(CGameInstance);
+
 
 
 	return S_OK;

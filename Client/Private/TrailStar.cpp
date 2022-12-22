@@ -77,6 +77,10 @@ HRESULT CTrailStar::Render()
 
 	return S_OK;
 }
+HRESULT CTrailStar::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CTrailStar::Ready_Components()
 {
 	/* For.Com_Renderer */

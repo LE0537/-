@@ -69,6 +69,11 @@ HRESULT CWaterBeam::Render()
 	return S_OK;
 }
 
+HRESULT CWaterBeam::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 
 
 CWaterBeam * CWaterBeam::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

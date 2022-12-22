@@ -37,12 +37,12 @@ HRESULT CBite1::Initialize(void * pArg)
 		return E_FAIL;
 
 
-	_float3 vScale = { 0.1f,0.1f,0.1f };
+	_float3 vScale = { 0.2f,0.2f,0.2f };
 
 	m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
-	vTargetPos -= vDist * 25.f;
+	vTargetPos -= vDist * 0.25f;
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vTargetPos);
-	vTargetPos += vDist * 50.f;
+	vTargetPos += vDist * 0.5f;
 	m_pTransformCom->LookAt(vTargetPos);
 	m_pTransformCom->Turn2(m_pTransformCom->Get_State(CTransform::STATE_UP), XMConvertToRadians(180.f));
 
@@ -103,12 +103,17 @@ HRESULT CBite1::Render()
 		if (FAILED(m_pModelCom->SetUp_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 
-		if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 0)))
+		if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 2)))
 			return E_FAIL;
 
 	}
 
 	return S_OK;
+}
+
+HRESULT CBite1::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
 }
 
 HRESULT CBite1::Ready_Components()

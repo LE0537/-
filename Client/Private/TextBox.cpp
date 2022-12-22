@@ -89,6 +89,11 @@ HRESULT CTextBox::Render()
 	return S_OK;
 }
 
+HRESULT CTextBox::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 HRESULT CTextBox::Ready_Components()
 {
 	/* For.Com_Renderer */
@@ -265,6 +270,120 @@ void CTextBox::Running_TextBox()
 				g_bEnding = true;
 				g_CollBox = true;
 			}
+		}
+	}
+	else if (m_tTInfo.iType == 9)
+	{
+		if (pGameInstance->Key_Down(DIK_SPACE))
+		{
+			if (m_iScriptIndex < m_tTInfo.iScriptSize - 1)
+			{
+				++m_iScriptIndex;
+				m_wstr = TEXT("");
+				m_iIndex = 0;
+			}
+			else if (m_iScriptIndex == m_tTInfo.iScriptSize - 1)
+			{
+				m_bDead = true;
+				g_bEvolution = false;
+			}
+		}
+	}
+	else if (m_tTInfo.iType == 10)
+	{
+		if (m_fDeadTime > 3.0f)
+		{
+			if (m_iScriptIndex < m_tTInfo.iScriptSize - 1)
+			{
+				++m_iScriptIndex;
+				m_wstr = TEXT("");
+				m_iIndex = 0;
+			}
+			else if (m_iScriptIndex == m_tTInfo.iScriptSize - 1)
+			{
+				m_bDead = true;
+			}
+			m_fDeadTime = 0.f;
+		}
+	}
+	else if (m_tTInfo.iType == 11)
+	{
+		if (m_iScriptIndex == 0 && pGameInstance->Key_Down(DIK_SPACE))
+		{
+			if (m_iScriptIndex < m_tTInfo.iScriptSize - 1)
+			{
+				++m_iScriptIndex;
+				m_wstr = TEXT("");
+				m_iIndex = 0;
+			}
+		}
+		else if (m_iScriptIndex == 1 && pGameInstance->Key_Down(DIK_1))
+		{
+			g_iRaceNum = 1;
+			m_bDead = true;
+		}
+		else if (m_iScriptIndex == 1 && pGameInstance->Key_Down(DIK_2))
+		{
+			g_iRaceNum = 2;
+			m_bDead = true;
+		}
+		else if (m_iScriptIndex == 1 && pGameInstance->Key_Down(DIK_3))
+		{
+			g_iRaceNum = 3;
+			m_bDead = true;
+		}
+		else if (m_iScriptIndex == 1 && pGameInstance->Key_Down(DIK_4))
+		{
+			g_iRaceNum = 4;
+			m_bDead = true;
+		}
+	}
+	else if (m_tTInfo.iType == 12)
+	{
+		if (pGameInstance->Key_Down(DIK_SPACE))
+		{
+			if (m_iScriptIndex < m_tTInfo.iScriptSize - 1)
+			{
+				++m_iScriptIndex;
+				m_wstr = TEXT("");
+				m_iIndex = 0;
+			}
+			else if (m_iScriptIndex == m_tTInfo.iScriptSize - 1)
+			{
+				m_bDead = true;
+				g_bRace = false;
+			}
+		}
+	}
+	else if (m_tTInfo.iType == 13)
+	{
+		if (m_iScriptIndex == 0 && pGameInstance->Key_Down(DIK_SPACE))
+		{
+			if (m_iScriptIndex < m_tTInfo.iScriptSize - 1)
+			{
+				++m_iScriptIndex;
+				m_wstr = TEXT("");
+				m_iIndex = 0;
+			}
+		}
+		else if (m_iScriptIndex == 1 && pGameInstance->Key_Down(DIK_SPACE))
+		{
+			if (m_iScriptIndex < m_tTInfo.iScriptSize - 1)
+			{
+				++m_iScriptIndex;
+				m_wstr = TEXT("");
+				m_iIndex = 0;
+			}
+		}
+		else if (m_iScriptIndex == 2 && pGameInstance->Key_Down(DIK_1))
+		{
+			dynamic_cast<CGameObj*>(m_tTInfo.pPlayer)->Set_Money(-1000);
+			g_bRace = true;
+			m_bDead = true;
+		}
+		else if (m_iScriptIndex == 2 && pGameInstance->Key_Down(DIK_2))
+		{
+			m_bDead = true;
 		}
 	}
 	RELEASE_INSTANCE(CGameInstance);

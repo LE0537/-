@@ -53,6 +53,11 @@ HRESULT CNoneSkill::Render()
 	return S_OK;
 }
 
+HRESULT CNoneSkill::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CNoneSkill * CNoneSkill::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CNoneSkill*	pInstance = new CNoneSkill(pDevice, pContext);

@@ -22,7 +22,7 @@ HRESULT CBugBuzz::Initialize(void * pArg)
 {
 
 	//	*(CGameObject**)pArg = this;
-	m_SkillInfo.strName = TEXT("벌레의야단법석");
+	m_SkillInfo.strName = TEXT("벌레의 야단법석");
 	m_SkillInfo.strInfo = TEXT("진동으로 음파를 일으켜서 공격한다.");
 	m_SkillInfo.iSkillNum = 4;
 	m_SkillInfo.iDmg = 0;
@@ -90,6 +90,11 @@ void CBugBuzz::Late_Tick(_float fTimeDelta)
 HRESULT CBugBuzz::Render()
 {
 	return S_OK;
+}
+
+HRESULT CBugBuzz::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
 }
 
 void CBugBuzz::Set_Pos(_float fTimeDelta)

@@ -40,7 +40,7 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
-
+	virtual HRESULT Render_ShadowDepth();
 private:
 	CTexture*				m_pTextureCom2 = nullptr; //타입스몰 텍스쳐
 	CTexture*				m_pTextureCom3 = nullptr; // 백 텍스쳐

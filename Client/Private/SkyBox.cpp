@@ -26,14 +26,34 @@ HRESULT CSkyBox::Initialize(void * pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	if (((CLevel_GamePlay::LOADFILE*)pArg)->bRaceMap)
+		m_bRace = true;
 	if (((CLevel_GamePlay::LOADFILE*)pArg)->bBattleMap)
 		m_bBattle = true;
-		
 
 	m_pTransformCom->Set_Scale(XMLoadFloat3((&((CLevel_GamePlay::LOADFILE*)pArg)->vScale)));
 //	m_pTransformCom->Set_Scale(XMVectorSet(0.013f, 0.013f, 0.013f, 0.f));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4((&((CLevel_GamePlay::LOADFILE*)pArg)->vPos)));
 
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	LIGHTDESC			LightDesc;
+
+	/* For.Directional*/
+	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+	_float4 vLightPos;
+	XMStoreFloat4(&vLightPos,m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+	vLightPos.y += 300.f;
+	LightDesc.eType = LIGHTDESC::TYPE_FIELDSHADOW;
+	LightDesc.vDirection = vLightPos;
+	LightDesc.vDiffuse = _float4(380.f, 0.f, -1180.f, 1.f);
+	LightDesc.vAmbient = _float4(0.f, 0.1f, 0.f, 0.f);
+
+
+	if (FAILED(pGameInstance->Add_ShadowLight(m_pDevice, m_pContext, LightDesc)))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
 }
@@ -60,22 +80,26 @@ void CSkyBox::Tick(_float fTimeDelta)
 
 void CSkyBox::Late_Tick(_float fTimeDelta)
 {
-	if (!m_bBattle)
+	if (!m_bBattle && !m_bRace)
 	{
-		if (!g_Battle)
+		if (!g_Battle && !g_bRace)
 		{
 			if (!g_bEvolution && !g_bBag && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
 				m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
 		}
 	}
-	else
+	else if (g_bRace)
 	{
-		if (g_Battle)
-		{
-			if (!g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
-				m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
-		}
+		if (m_bRace && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
+			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
 	}
+	
+	else if (g_Battle)
+	{
+		if (m_bBattle && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
+			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
+	}
+	
 }
 
 HRESULT CSkyBox::Render()
@@ -104,6 +128,10 @@ HRESULT CSkyBox::Render()
 
 	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
+}
+HRESULT CSkyBox::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
 }
 HRESULT CSkyBox::Ready_Components()
 {

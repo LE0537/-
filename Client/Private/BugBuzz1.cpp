@@ -80,6 +80,10 @@ HRESULT CBugBuzz1::Render()
 
 	return S_OK;
 }
+HRESULT CBugBuzz1::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CBugBuzz1::Ready_Components()
 {
 	/* For.Com_Renderer */

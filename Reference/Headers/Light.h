@@ -13,7 +13,10 @@ public:
 	const LIGHTDESC* Get_LightDesc() const {
 		return &m_LightDesc;
 	}
-
+	void	Set_ShadowLightDesc(_float4 vPos, _float4 vAt) {
+		m_LightDesc.vDirection = vPos;
+		m_LightDesc.vDiffuse = vAt;
+	}
 public:
 	HRESULT Initialize(const LIGHTDESC& LightDesc);
 

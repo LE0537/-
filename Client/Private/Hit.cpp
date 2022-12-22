@@ -63,6 +63,11 @@ HRESULT CHit::Render()
 	return S_OK;
 }
 
+HRESULT CHit::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 HRESULT CHit::Ready_Components()
 {
 	/* For.Com_Renderer */

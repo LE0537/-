@@ -48,6 +48,11 @@ HRESULT CCandy::Render()
 	return S_OK;
 }
 
+HRESULT CCandy::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CCandy * CCandy::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CCandy*	pInstance = new CCandy(pDevice, pContext);

@@ -52,6 +52,10 @@ HRESULT CTrail::Render()
 
 	return S_OK;
 }
+HRESULT CTrail::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 void CTrail::Set_Trail(CVIBuffer_Trail::BUFFERDESC _BUFFERDESC)
 {
 	m_pVIBufferTrailCom->Set_VBTrail(_BUFFERDESC);

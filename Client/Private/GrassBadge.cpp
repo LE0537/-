@@ -48,6 +48,11 @@ HRESULT CGrassBadge::Render()
 	return S_OK;
 }
 
+HRESULT CGrassBadge::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CGrassBadge * CGrassBadge::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CGrassBadge*	pInstance = new CGrassBadge(pDevice, pContext);

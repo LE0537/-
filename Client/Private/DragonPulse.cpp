@@ -69,6 +69,11 @@ HRESULT CDragonPulse::Render()
 	return S_OK;
 }
 
+HRESULT CDragonPulse::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 void CDragonPulse::Set_Pos(_float fTimeDelta)
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);

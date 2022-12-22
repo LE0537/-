@@ -104,6 +104,11 @@ HRESULT CPokeInfo::Render()
 	return S_OK;
 }
 
+HRESULT CPokeInfo::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 HRESULT CPokeInfo::Ready_Components()
 {
 	/* For.Com_Renderer */

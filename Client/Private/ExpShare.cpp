@@ -48,6 +48,11 @@ HRESULT CExpShare::Render()
 	return S_OK;
 }
 
+HRESULT CExpShare::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CExpShare * CExpShare::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CExpShare*	pInstance = new CExpShare(pDevice, pContext);

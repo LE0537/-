@@ -72,7 +72,10 @@ struct PS_OUT
 	float4		vDepth : SV_TARGET2;
 
 };
-
+struct PS_OUT_SHADOW
+{
+	float4			vLightDepth :  SV_TARGET0;
+};
 
 /* 이렇게 만들어진 픽셀을 PS_MAIN함수의 인자로 던진다. */
 /* 리턴하는 색은 Target0 == 장치에 0번째에 바인딩되어있는 렌더타겟(일반적으로 백버퍼)에 그린다. */
@@ -91,7 +94,16 @@ PS_OUT PS_MAIN(PS_IN In)
 
 	return Out;
 }
+PS_OUT_SHADOW PS_Shadow(PS_IN In)
+{
+	PS_OUT_SHADOW		Out = (PS_OUT_SHADOW)0;
 
+	Out.vLightDepth.x = In.vProjPos.w / 1300.f;
+
+	Out.vLightDepth.a = 1.f;
+
+	return Out;
+}
 PS_OUT PS_Evolution(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
@@ -107,7 +119,7 @@ PS_OUT PS_Ball(PS_IN In)
 	PS_OUT		Out = (PS_OUT)0;
 
 	Out.vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
-	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 3.f);
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1300.f, 0.f, 0.f);
 
 	if (Out.vDiffuse.a <= 0.3f)
@@ -147,5 +159,15 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_Ball();
+	}
+	pass Shadow //3
+	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Shadow, 0);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_Shadow();
 	}
 }

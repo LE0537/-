@@ -48,6 +48,11 @@ HRESULT CSuperBall::Render()
 	return S_OK;
 }
 
+HRESULT CSuperBall::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CSuperBall * CSuperBall::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CSuperBall*	pInstance = new CSuperBall(pDevice, pContext);

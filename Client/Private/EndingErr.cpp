@@ -67,6 +67,10 @@ HRESULT CEndingErr::Render()
 
 	return S_OK;
 }
+HRESULT CEndingErr::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CEndingErr::Ready_Components()
 {
 	/* For.Com_Renderer */

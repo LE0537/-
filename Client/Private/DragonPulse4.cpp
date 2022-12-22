@@ -73,6 +73,10 @@ HRESULT CDragonPulse4::Render()
 
 	return S_OK;
 }
+HRESULT CDragonPulse4::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
 HRESULT CDragonPulse4::Ready_Components()
 {
 	/* For.Com_Renderer */

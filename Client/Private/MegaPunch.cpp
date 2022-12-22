@@ -69,6 +69,11 @@ HRESULT CMegaPunch::Render()
 	return S_OK;
 }
 
+HRESULT CMegaPunch::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 void CMegaPunch::Set_Pos(_float fTimeDelta)
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);

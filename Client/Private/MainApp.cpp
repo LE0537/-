@@ -17,6 +17,9 @@ bool		g_bEvolution = false;
 bool		g_bCapture = false;
 bool	    g_bCaptureRender = false;
 bool		g_bEnding = false;
+bool		g_bRace = false;
+bool		g_bRaceEnd = false;
+int			g_iRaceNum = 99;
 
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::Get_Instance())

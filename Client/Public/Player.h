@@ -33,6 +33,7 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
+	virtual HRESULT Render_ShadowDepth();
 private:
 	void	OnNavi();
 	HRESULT SetUp_ShaderResources();
@@ -44,6 +45,10 @@ private:
 	void	Ready_Script();
 	void	Check_Ball();
 public:
+	void	Set_PlayerHit(_bool _bTrue) { m_bPlayerHit = _bTrue; }
+	void	Set_TargetHit(_bool _bTrue) { m_bTargetHit = _bTrue; }
+	_bool	Get_PlayerHit() { return m_bPlayerHit; }
+	_bool	Get_TargetHit() { return m_bTargetHit; }
 	void	Set_PlayerBallIndex(_int _iIndex) { m_iPrevBall = m_iBallIndex;  m_iBallIndex = _iIndex; }
 	void	Set_CaptureBallIndex(_int _iIndex) { m_iCaptureBall = _iIndex; }
 	_bool	Get_Captrue() { return m_bCapturePoke; }
@@ -108,6 +113,11 @@ private:
 	_float					m_fCaptureTime = 0.f;
 
 	CGameObject*			m_pTrail = nullptr;
+
+	_bool					m_bPlayerHit = false;
+	_bool					m_bTargetHit = false;
+
+	_float4				    m_Light;
 public:
 	static CPlayer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

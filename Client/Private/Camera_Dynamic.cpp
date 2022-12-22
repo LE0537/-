@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "GameObj.h"
 #include "Level_GamePlay.h"
+#include "Player.h"
 
 CCamera_Dynamic::CCamera_Dynamic(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
@@ -51,6 +52,13 @@ void CCamera_Dynamic::Tick(_float fTimeDelta)
 	//	else if(bNavi)
 	//		EndingKeyInput(fTimeDelta);
 	}
+	else if (g_bRace)
+	{
+		if(!g_bRaceEnd)
+			RaceStartCamPos(fTimeDelta);
+		else if(g_bRaceEnd)
+			RaceEndCamPos(fTimeDelta);
+	}
 	else
 	{
 		if (g_bCaptureRender)
@@ -74,11 +82,21 @@ void CCamera_Dynamic::Tick(_float fTimeDelta)
 		}
 		else if (!g_bCaptureRender && !m_bCaptureCam)
 		{
-			if (fSpeed < 1.4f)
-				BattleEventcam(fTimeDelta);
+			if (dynamic_cast<CPlayer*>(m_CameraDesc.pTarget)->Get_PlayerHit())
+			{
+				PlayerHitCam(fTimeDelta);
+			}
+			else if (dynamic_cast<CPlayer*>(m_CameraDesc.pTarget)->Get_TargetHit())
+			{
+				TargetHitCam(fTimeDelta);
+			}
 			else
-				Battlecam(fTimeDelta);
-
+			{
+				if (fSpeed < 1.4f)
+					BattleEventcam(fTimeDelta);
+				else
+					Battlecam(fTimeDelta);
+			}
 		}
 		if (m_bCaptureCam)
 		{
@@ -88,6 +106,9 @@ void CCamera_Dynamic::Tick(_float fTimeDelta)
 				m_bCaptureCam = false;
 		}
 	}
+	if(!g_bRace)
+		ResetRace();
+
 	if (FAILED(Bind_OnPipeLine()))
 		return;
 }
@@ -338,6 +359,309 @@ void CCamera_Dynamic::EndingKeyInput(_float fTimeDelta)
 	}
 
 	Safe_Release(pGameInstance);
+}
+
+void CCamera_Dynamic::PlayerHitCam(_float fTimeDelta)
+{
+	m_fPlayerHitTime += fTimeDelta;
+	if (m_fPlayerHitTime <= 0.7f)
+	{
+		_vector vTarget = XMLoadFloat4(&m_vTargetBattlePos);
+		_vector vPos = dynamic_cast<CGameObj*>(m_CameraDesc.pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
+		_vector vLook = vTarget - vPos;
+
+		vPos += XMVector3Normalize(vLook) * 2.5f;
+		vPos.m128_f32[1] += 1.5f;
+		vTarget.m128_f32[1] += 1.1f;
+		m_CameraDesc.fFovy = XMConvertToRadians(70.f);
+		m_pTransform->Set_State(CTransform::STATE_TRANSLATION, vPos);
+		m_pTransform->LookAt(vTarget);
+	}
+	//else if (m_fPlayerHitTime <= 1.5f && m_fPlayerHitTime > 0.7f)
+	//{
+	//	_vector vPos = XMLoadFloat4(&m_vTargetBattlePos);
+	//	_vector vTarget = dynamic_cast<CGameObj*>(m_CameraDesc.pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
+	//	_vector vLook = vTarget - vPos;
+
+	//	vPos += XMVector3Normalize(vLook) * 2.f;
+	//	vPos.m128_f32[1] += 1.1f;
+	//	vTarget.m128_f32[1] += 0.8f;
+	//	//m_CameraDesc.fFovy = XMConvertToRadians(60.f);
+	//	m_pTransform->Set_State(CTransform::STATE_TRANSLATION, vPos);
+	//	m_pTransform->LookAt(vTarget);
+	//}
+	else if (m_fPlayerHitTime > 0.7f)
+	{
+		m_fPlayerHitTime = 0.f;
+		dynamic_cast<CPlayer*>(m_CameraDesc.pTarget)->Set_PlayerHit(false);
+	}
+}
+
+void CCamera_Dynamic::TargetHitCam(_float fTimeDelta)
+{
+	m_fTargetHitTime += fTimeDelta;
+	if (m_fTargetHitTime <= 0.7f)
+	{
+		_vector vPos = XMLoadFloat4(&m_vTargetBattlePos);
+		_vector vTarget = dynamic_cast<CGameObj*>(m_CameraDesc.pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
+		_vector vLook = vTarget - vPos;
+
+		vPos += XMVector3Normalize(vLook) * 2.5f;
+		vPos.m128_f32[1] += 1.5f;
+		vTarget.m128_f32[1] += 1.1f;
+		m_CameraDesc.fFovy = XMConvertToRadians(70.f);
+		m_pTransform->Set_State(CTransform::STATE_TRANSLATION, vPos);
+		m_pTransform->LookAt(vTarget);
+	}
+	//else if(m_fTargetHitTime <= 1.5f && m_fTargetHitTime > 0.7f)
+	//{
+	//	_vector vTarget = XMLoadFloat4(&m_vTargetBattlePos);
+	//	_vector vPos = dynamic_cast<CGameObj*>(m_CameraDesc.pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
+	//	_vector vLook = vTarget - vPos;
+
+	//	vPos += XMVector3Normalize(vLook) * 2.f;
+	//	vPos.m128_f32[1] += 1.1f;
+	//	vTarget.m128_f32[1] += 0.8f;
+	//	//m_CameraDesc.fFovy = XMConvertToRadians(60.f);
+	//	m_pTransform->Set_State(CTransform::STATE_TRANSLATION, vPos);
+	//	m_pTransform->LookAt(vTarget);
+	//}
+	else if (m_fTargetHitTime > 0.7f)
+	{
+		m_fTargetHitTime = 0.f;
+		dynamic_cast<CPlayer*>(m_CameraDesc.pTarget)->Set_TargetHit(false);
+	}
+}
+
+void CCamera_Dynamic::RaceStartCamPos(_float fTimeDelta)
+{
+	if (g_iRaceNum == 99)
+	{
+		if (!m_bRaceStart)
+		{
+			for (auto& iter : m_vecRace)
+			{
+				if (iter.iType == 30)
+				{
+					RacePos1 = iter.vPos;
+					RacePos1.y += 1.7f;
+				}
+				if (iter.iType == 31)
+				{
+					RacePos2 = iter.vPos;
+					RacePos2.y += 1.7f;
+				}
+				if (iter.iType == 32)
+				{
+					RacePos3 = iter.vPos;
+					RacePos3.y += 1.7f;
+				}
+				if (iter.iType == 33)
+				{
+					RacePos4 = iter.vPos;
+					RacePos4.y += 1.7f;
+				}
+				if (iter.iType == 20)
+				{
+					RaceAt = iter.vPos;
+					RaceAt.y += 1.5f;
+				}
+				if (iter.iType == 21)
+				{
+					vRaceStartLook = iter.vPos;
+					vRaceStartLook.y += 1.f;
+				}
+				if (iter.iType == 12)
+				{
+					m_vRaceAt1 = iter.vPos;
+					m_vRaceAt1.y += 1.5f;
+				}
+				if (iter.iType == 13)
+				{
+					m_vRaceAt2 = iter.vPos;
+					m_vRaceAt2.y += 1.5f;
+				}
+				if (iter.iType == 14)
+				{
+					m_vRaceAt3 = iter.vPos;
+					m_vRaceAt3.y += 1.5f;
+				}
+				if (iter.iType == 15)
+				{
+					m_vRaceAt4 = iter.vPos;
+					m_vRaceAt4.y += 1.5f;
+				}
+				if (iter.iType == 16)
+				{
+					m_vRace1 = iter.vPos;
+					m_vRace1.y += 1.8f;
+				}
+				if (iter.iType == 17)
+				{
+					m_vRace2 = iter.vPos;
+					m_vRace2.y += 1.8f;
+				}
+				if (iter.iType == 18)
+				{
+					m_vRace3 = iter.vPos;
+					m_vRace3.y += 1.8f;
+				}
+				if (iter.iType == 19)
+				{
+					m_vRace4 = iter.vPos;
+					m_vRace4.y += 1.8f;
+				}
+				if (iter.iType == 22)
+				{
+					m_vCamPoint1 = iter.vPos;
+					m_vCamPoint1.y += 1.8f;
+				}
+				if (iter.iType == 23)
+				{
+					m_vCamLook1 = iter.vPos;
+					m_vCamLook1.y += 1.5f;
+				}
+				if (iter.iType == 24)
+				{
+					m_vCamPoint2 = iter.vPos;
+					m_vCamPoint2.y += 2.8f;
+				}
+				if (iter.iType == 25)
+				{
+					m_vCamLook2 = iter.vPos;
+					m_vCamLook2.y += 1.f;
+				}
+				if (iter.iType == 26)
+				{
+					m_vCamPoint3 = iter.vPos;
+					m_vCamPoint3.y += 1.f;
+				}
+				if (iter.iType == 27)
+				{
+					m_vCamLook3 = iter.vPos;
+					m_vCamLook3.y += 1.f;
+				}
+				if (iter.iType == 28)
+				{
+					m_vRaceEndCamLook = RaceAt;
+					m_vRaceEndCamLook.y -= 0.5f;
+				}
+				if (iter.iType == 29)
+				{
+					m_vRaceEndCamPos = RaceAt;
+					m_vRaceEndCamPos.x -= 10.f;
+				//	m_vRaceEndCamPos.y += 1.f;
+				}
+			}
+			m_bRaceStart = true;
+		}
+		if (m_fRaceStartTime <= 1.5f)
+		{
+			m_fRaceStartTime += 0.3f * fTimeDelta;
+
+			_vector vPos = XMVectorCatmullRom(XMLoadFloat4(&RacePos1), XMLoadFloat4(&RacePos2)
+				, XMLoadFloat4(&RacePos3), XMLoadFloat4(&RacePos4), m_fRaceStartTime);
+
+			m_CameraDesc.fFovy = XMConvertToRadians(70.f);
+
+			vPos.m128_f32[1] += 0.5f;
+			m_pTransform->Set_State(CTransform::STATE_TRANSLATION, vPos);
+			m_pTransform->LookAt(XMLoadFloat4(&RaceAt));
+		}
+		else if (m_fRaceStartTime < 4.5f && m_fRaceStartTime > 1.5f)
+		{
+			m_fRaceStartTime += fTimeDelta;
+			if (!m_bRaceAtUp)
+			{
+				RaceAt.y += 3.f;
+				m_bRaceAtUp = true;
+			}
+			m_CameraDesc.fFovy = XMConvertToRadians(40.f);
+			m_pTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&RaceAt));
+			m_pTransform->LookAt(XMLoadFloat4(&vRaceStartLook));
+		}
+		else if (m_fRaceStartTime < 7.5f && m_fRaceStartTime >= 4.5f)
+		{
+			m_fRaceStartTime += fTimeDelta;
+			m_pTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_vRace1));
+			m_pTransform->LookAt(XMLoadFloat4(&m_vRaceAt1));
+		}
+		else if (m_fRaceStartTime < 10.5f && m_fRaceStartTime >= 7.5f)
+		{
+			m_fRaceStartTime += fTimeDelta;
+			m_pTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_vRace2));
+			m_pTransform->LookAt(XMLoadFloat4(&m_vRaceAt2));
+		}
+		else if (m_fRaceStartTime < 13.5f && m_fRaceStartTime >= 10.5f)
+		{
+			m_fRaceStartTime += fTimeDelta;
+			m_pTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_vRace3));
+			m_pTransform->LookAt(XMLoadFloat4(&m_vRaceAt3));
+		}
+		else if (m_fRaceStartTime < 16.5f && m_fRaceStartTime >= 13.5f)
+		{
+			m_fRaceStartTime += fTimeDelta;
+			m_pTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_vRace4));
+			m_pTransform->LookAt(XMLoadFloat4(&m_vRaceAt4));
+		}
+		else if (m_fRaceStartTime >= 16.5f)
+		{
+			m_pTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&RaceAt));
+			m_pTransform->LookAt(XMLoadFloat4(&vRaceStartLook));
+		}
+
+	}
+	else
+	{
+		m_fRaceTime += fTimeDelta;
+		if (m_fRaceTime < 7.5f && m_fRaceTime >= 3.5f)
+		{
+			m_CameraDesc.fFovy = XMConvertToRadians(25.f);
+		}
+		else if (m_fRaceTime < 12.5f && m_fRaceTime >= 7.5f)
+		{
+			m_CameraDesc.fFovy = XMConvertToRadians(50.f);
+			m_pTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_vCamPoint1));
+			m_pTransform->LookAt(XMLoadFloat4(&m_vCamLook1));
+		}
+		else if (m_fRaceTime < 22.5f && m_fRaceTime >= 12.5f)
+		{
+			m_CameraDesc.fFovy = XMConvertToRadians(40.f);
+			m_pTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_vCamPoint2));
+			m_pTransform->LookAt(XMLoadFloat4(&m_vCamLook2));
+		}
+		else if (m_fRaceTime >= 22.5f)
+		{
+			m_CameraDesc.fFovy = XMConvertToRadians(70.f);
+			m_pTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_vCamPoint3));
+			m_pTransform->LookAt(XMLoadFloat4(&m_vCamLook3));
+		}
+	}
+}
+
+void CCamera_Dynamic::RaceEndCamPos(_float fTimeDelta)
+{
+	m_CameraDesc.fFovy = XMConvertToRadians(50.f);
+	m_pTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_vRaceEndCamPos));
+	m_pTransform->LookAt(XMLoadFloat4(&m_vRaceEndCamLook));
+}
+
+void CCamera_Dynamic::ResetRace()
+{
+	m_bRaceStart = false;
+	m_fRaceStartTime = 0.f;
+	m_bRaceAtUp = false;
+	m_bCheckRacePoke = false;
+	m_fRaceTime = 0.f;
+	RaceAt.y -= 3.f;
+}
+
+void CCamera_Dynamic::Set_RaceInfo(_float4 vPos, _int iType)
+{
+	RaceInfo tInfo;
+	tInfo.iType = iType;
+	tInfo.vPos = vPos;
+	m_vecRace.push_back(tInfo);
 }
 
 void CCamera_Dynamic::Set_Target(CGameObject * _pTarget)

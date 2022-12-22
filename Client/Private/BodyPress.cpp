@@ -70,6 +70,11 @@ HRESULT CBodyPress::Render()
 	return S_OK;
 }
 
+HRESULT CBodyPress::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 CBodyPress * CBodyPress::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CBodyPress*	pInstance = new CBodyPress(pDevice, pContext);

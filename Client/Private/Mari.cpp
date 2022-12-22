@@ -44,15 +44,15 @@ HRESULT CMari::Initialize(void * pArg)
 
 	CGameObject* tInfo;
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Caterpie"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
 	m_vecPoke.push_back(tInfo);
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
 	m_vecPoke.push_back(tInfo);
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
 	m_vecPoke.push_back(tInfo);
 
@@ -70,7 +70,7 @@ HRESULT CMari::Initialize(void * pArg)
 
 	RELEASE_INSTANCE(CGameInstance);
 
-	m_iPokeMaxSize = 2;
+	m_iPokeMaxSize = 0;
 	m_iPokeSize = 0;
 	m_PlayerInfo.strName = L"마리";
  	m_PlayerInfo.bEvent = false;
@@ -90,60 +90,68 @@ HRESULT CMari::Initialize(void * pArg)
 
 void CMari::Tick(_float fTimeDelta)
 {
-	if (m_OnOff && m_bBattleLose)
+	if (!g_bRace)
 	{
-		for (auto& iter : m_vecPoke)
+		if (m_OnOff && m_bBattleLose)
 		{
-			iter->Set_Dead();
+			for (auto& iter : m_vecPoke)
+			{
+				iter->Set_Dead();
+			}
+			m_vecPoke.clear();
 		}
-		m_vecPoke.clear();
-	}
-	if (m_OnOff && !m_bBattleLose && g_Battle)
-	{
-		Check_Anim(fTimeDelta);
-		if(!m_bChangeAnim && g_Battle)
-			Battle(fTimeDelta);
-	}
-	else if(!g_bEvolution)
-	{
-		Ckeck_Dist();
-		OnNavi();
-		m_fEventTime += fTimeDelta;
-		if (!m_bFindPlayer)
-			m_pModelCom->Set_CurrentAnimIndex(0);
-		if (m_bFindPlayer && !m_PlayerInfo.bEvent)
-			Move(fTimeDelta);
+		if (m_OnOff && !m_bBattleLose && g_Battle)
+		{
+			Check_Anim(fTimeDelta);
+			if (!m_bChangeAnim && g_Battle)
+				Battle(fTimeDelta);
+		}
+		else if (!g_bEvolution)
+		{
+			Ckeck_Dist(fTimeDelta);
+			OnNavi();
+			m_fEventTime += fTimeDelta;
+			if (!m_bFindPlayer)
+				m_pModelCom->Set_CurrentAnimIndex(0);
+			if (m_bFindPlayer && !m_PlayerInfo.bEvent)
+				Move(fTimeDelta);
 
-		if (m_bFindPlayer && m_fEventTime > 1.5f)
-		{
-			m_PlayerInfo.bEvent = false;
-		}
-		if (m_fDist <= 30.f)
-		{
-			m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
-			m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
-			m_pModelCom->Play_Animation(fTimeDelta);
+			if (m_bFindPlayer && m_fEventTime > 1.5f)
+			{
+				m_PlayerInfo.bEvent = false;
+			}
+			if (m_fDist <= 30.f)
+			{
+				m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
+				m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+				m_pModelCom->Play_Animation(fTimeDelta);
+			}
 		}
 	}
-
 }
 
 void CMari::Late_Tick(_float fTimeDelta)
 {
-	if(!g_Battle && !g_bEvolution)
-		Check_Coll();
-	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	if (!g_bRace)
+	{
+		if (!g_Battle && !g_bEvolution)
+			Check_Coll();
+		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-	if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION),10.f ))
-	{
-		if (m_fDist <= 30.f && !g_bEvolution && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
-			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-	}
-	RELEASE_INSTANCE(CGameInstance);
-	if (g_CollBox)
-	{
-		m_pRendererCom->Add_Debug(m_pAABBCom);
-		m_pRendererCom->Add_Debug(m_pOBBCom);
+		if (pGameInstance->IsInFrustum(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION), 10.f))
+		{
+			if (m_fDist <= 30.f && !g_bEvolution && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
+			{
+				m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+				m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_SHADOWDEPTH, this);
+			}
+		}
+		RELEASE_INSTANCE(CGameInstance);
+		if (g_CollBox)
+		{
+			m_pRendererCom->Add_Debug(m_pAABBCom);
+			m_pRendererCom->Add_Debug(m_pOBBCom);
+		}
 	}
 }
 
@@ -172,6 +180,49 @@ HRESULT CMari::Render()
 	}
 
 	RELEASE_INSTANCE(CGameInstance);
+
+
+	return S_OK;
+}
+HRESULT CMari::Render_ShadowDepth()
+{
+	if (nullptr == m_pShaderCom ||
+		nullptr == m_pModelCom)
+		return E_FAIL;
+
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &m_pTransformCom->Get_World4x4_TP(), sizeof(_float4x4))))
+		return E_FAIL;
+
+
+	_vector			vLightEye = XMLoadFloat4(&pGameInstance->Get_ShadowLightDesc(LIGHTDESC::TYPE_FIELDSHADOW)->vDirection);
+	_vector			vLightAt = XMLoadFloat4(&pGameInstance->Get_ShadowLightDesc(LIGHTDESC::TYPE_FIELDSHADOW)->vDiffuse);
+	_vector			vLightUp = { 0.f, 1.f, 0.f ,0.f };
+	_matrix			matLightView = XMMatrixLookAtLH(vLightEye, vLightAt, vLightUp);
+
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &XMMatrixTranspose(matLightView), sizeof(_float4x4))))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &pGameInstance->Get_TransformFloat4x4_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
+		return E_FAIL;
+
+
+
+	_uint		iNumMeshes = m_pModelCom->Get_NumMeshContainers();
+
+	for (_uint i = 0; i < iNumMeshes; ++i)
+	{
+		if (FAILED(m_pModelCom->SetUp_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+			return E_FAIL;
+
+		if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 3)))
+			return E_FAIL;
+
+	}
+
+	RELEASE_INSTANCE(CGameInstance);
+
 
 
 	return S_OK;
@@ -234,10 +285,10 @@ void CMari::Move(_float fTimeDelta)
 
 void CMari::Ready_Script()
 {
-	m_vNormalScript.push_back(TEXT("거기 잠깐!!"));
-	m_vNormalScript.push_back(TEXT("내 앞을 지나가려면 UI를 다 해야한다고!"));
-	m_vNormalScript.push_back(TEXT("난 너가 UI를 다 했는지 안했는지 알 수 있는 방법이 있다고!"));
-	m_vNormalScript.push_back(TEXT("바로! 포켓몬 승부다!"));
+	m_vNormalScript.push_back(TEXT("거기 잠깐!!너 돈 좀 있니??"));
+	m_vNormalScript.push_back(TEXT("방금 경마장에서 전재산을 날렸다고!"));
+	m_vNormalScript.push_back(TEXT("포켓몬까지 팔아가면서 한탕 치려한건데..."));
+	m_vNormalScript.push_back(TEXT("나랑 승부해서 진다면 가진 돈을 모두 내놔!"));
 
 	wstring szScriptBegin = TEXT("봐주지 않겠어 전력으로 간다!!\n가라!!     '");
 	wstring szScriptEnd = TEXT("'!!     너로 정했다!");
@@ -254,8 +305,19 @@ void CMari::Ready_LoseText()
 	m_vBattleScript.clear();
 
 
-	wstring strTextBegin = TEXT("내...내가...지다니...믿을 수 없어...");
+	wstring strTextBegin = TEXT("제길...경마에서 팔아버린 해월막구리만 있었어도...");
 	m_vBattleScript.push_back(strTextBegin);
+}
+void CMari::Ready_RaceText()
+{
+	for (auto iter = m_vBattleScript.begin(); iter != m_vBattleScript.end();)
+		iter = m_vBattleScript.erase(iter);
+
+	m_vBattleScript.clear();
+
+	m_vBattleScript.push_back(TEXT("뭐 경마장에 가고싶다고?"));
+	m_vBattleScript.push_back(TEXT("그럼 배팅금 1000원을 가져와!\n경마에서 우승포켓몬을 맞추면 2배로 받을 수 있어"));
+	m_vBattleScript.push_back(TEXT("1.경마장에 간다.     2.안간다.(쫄?)"));
 }
 void CMari::OnNavi()
 {
@@ -277,11 +339,35 @@ void CMari::OnNavi()
 
 	RELEASE_INSTANCE(CGameInstance);
 }
-void CMari::Ckeck_Dist()
+void CMari::Ckeck_Dist(_float fTimeDelta)
 {
 	_vector vTargetPos = dynamic_cast<CGameObj*>(m_pTarget)->Get_Transfrom()->Get_State(CTransform::STATE_TRANSLATION);
 	_vector vLook = vTargetPos - m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
 	m_fDist = XMVectorGetX(XMVector3Length(vLook));
+	if (m_bBattleLose && m_fDist < 1.5f)
+	{
+		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+		if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().iMoney >= 1000)
+		{
+			if (pGameInstance->Key_Down(DIK_F))
+			{
+				Ready_RaceText();
+				CTextBox::TINFO tTInfo;
+
+				tTInfo.iScriptSize = (_int)m_vBattleScript.size();
+				tTInfo.pTarget = this;
+				tTInfo.pPlayer = m_pTarget;
+				tTInfo.pScript = new wstring[m_vBattleScript.size()];
+				tTInfo.iType = 13;
+				for (_int i = 0; i < m_vBattleScript.size(); ++i)
+					tTInfo.pScript[i] = m_vBattleScript[i];
+
+				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
+					return;
+			}
+		}
+		RELEASE_INSTANCE(CGameInstance);
+	}
 }
 void CMari::Check_Coll()
 {

@@ -30,7 +30,7 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
-
+	virtual HRESULT Render_ShadowDepth();
 
 private:
 	_float					m_fX, m_fX2, m_fY, m_fSizeX, m_fSizeY;

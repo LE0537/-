@@ -35,6 +35,7 @@ public:
 		_int iSDmg;
 		_int iSDef;
 		_int iSpeed;
+		_int iPokeNum;
 
 	}LVUPINFO;
 
@@ -44,12 +45,17 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
-
+	virtual HRESULT Render_ShadowDepth();
 private:
 	HRESULT SetUp_ShaderResources();
 	HRESULT Ready_Components();
 	void	Render_Fonts();
 private:
+	CVIBuffer_Rect*			m_pVIBufferCom1 = nullptr;
+	CTexture*				m_pTextureCom1 = nullptr;
+	CTransform*				m_pTransformCom1 = nullptr;
+	CShader*				m_pShaderCom1 = nullptr;
+
 	_float					m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_float4x4				m_ViewMatrix, m_ProjMatrix;
 

@@ -140,6 +140,11 @@ HRESULT CBall::Render()
 	return S_OK;
 }
 
+HRESULT CBall::Render_ShadowDepth()
+{
+	return E_NOTIMPL;
+}
+
 
 void CBall::Set_Reset()
 {

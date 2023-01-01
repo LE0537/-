@@ -41,7 +41,7 @@ HRESULT CPikachu::Initialize(void * pArg)
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Thunder"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum2)))
 		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NoneSkill"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum3)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BodyPress"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum3)))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NoneSkill"), LEVEL_STATIC, TEXT("Layer_Skill"), &m_PokemonInfo.eSkillNum4)))
 		return E_FAIL;
@@ -552,6 +552,7 @@ void CPikachu::Set_DeckPos()
 			m_pTransformCom->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp));
 			m_pTransformCom->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
 			m_bSetPos = true;
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Pikachu.mp3"), 0.7f);
 		}
 
 		m_fSizeX = 20.f;
@@ -582,6 +583,7 @@ void CPikachu::Set_DeckPos()
 			m_pTransformCom->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp));
 			m_pTransformCom->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
 			m_bSetPos = true;
+		//	CSoundMgr::Get_Instance()->PlayEffect(TEXT("Pikachu.mp3"), 0.7f);
 		}
 
 		m_fSizeX =	20.f;
@@ -648,6 +650,7 @@ void CPikachu::Battle(_float fTimeDelta)
 			m_pModelCom->Set_Loop(m_iAnimIndex);
 			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
 			m_bBrath = true;
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Pikachu.mp3"), 0.7f);
 		}
 		if (m_bBattleMap)
 		{
@@ -717,8 +720,8 @@ void CPikachu::Set_Stats()
 	m_PlayerInfo.bEvent = false;
 
 	m_PokemonInfo.strName = TEXT("ÇÇÄ«Ãò");
-	m_PokemonInfo.strInfo = TEXT("Àç¹ú3¼¼ ¼®Ä«Ãò...»ï¼º°ÔÀÓÁî¸¦ À§ÇÏ¿©!");
-	m_PokemonInfo.strChar = TEXT("ºÎÀ¯ÇÔ");
+	m_PokemonInfo.strInfo = TEXT("ÇÇÄ«'ÂÞ' \n#½Å¸²Äý,#½Å¸²±øÆÐ,#ÂÞ¹Ì,#·¹°íºØ");
+	m_PokemonInfo.strChar = TEXT("ÂÞÁö¹Ù");
 	m_PokemonInfo.iPokeNum = 25;
 	m_PokemonInfo.iLv = 5;
 	m_PokemonInfo.iMaxHp = _int(((fHp * 2.f) + 31.f + 100) * (m_PokemonInfo.iLv / 100.f) + 10.f);
@@ -782,7 +785,7 @@ void CPikachu::LvUp()
 		return;
 
 	RELEASE_INSTANCE(CGameInstance);
-
+	CSoundMgr::Get_Instance()->PlayEffect(TEXT("LvUp.mp3"), 0.7f);
 
 	m_PokemonInfo.bLvUp = false;
 }

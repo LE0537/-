@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 #include "Level_GamePlay.h"
+#include "SoundMgr.h"
 
 CBallEffect3::CBallEffect3(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -44,7 +45,7 @@ HRESULT CBallEffect3::Initialize(void * pArg)
 		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BallEffect4"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"), &tInfo)))
 			return E_FAIL;
 	}
-
+	CSoundMgr::Get_Instance()->PlayEffect(TEXT("Ball2.mp3"), 0.7f);
 	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;

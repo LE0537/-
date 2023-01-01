@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 #include "Level_GamePlay.h"
+#include "SoundMgr.h"
 
 CTackle2::CTackle2(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -35,6 +36,7 @@ HRESULT CTackle2::Initialize(void * pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_vTargetBattlePos));
 
 
+	CSoundMgr::Get_Instance()->PlayEffect(TEXT("Tackle.mp3"), 1.f);
 
 	return S_OK;
 }

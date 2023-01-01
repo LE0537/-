@@ -72,7 +72,10 @@ void CSoundMgr::BGM_Stop()
 	m_Channel[SOUND_EFFECT]->stop();
 }
 
-
+void CSoundMgr::Effect_Stop()
+{
+	m_Channel[SOUND_EFFECT]->stop();
+}
 
 void CSoundMgr::PlayBGM(TCHAR * pSoundKey, float fVolume)
 {

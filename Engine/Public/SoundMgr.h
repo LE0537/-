@@ -35,6 +35,7 @@ public:
 	void PlayBGM(TCHAR* pSoundKey, float fVolume);
 	void PlayEffect(TCHAR * pSoundKey, float fVolume);
 	void BGM_Stop();
+	void Effect_Stop();
 	void Free();
 	void SetSoundVolume(CHANNELID  _Channel, float fVolume);
 private:

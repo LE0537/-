@@ -2,6 +2,7 @@
 #include "..\Public\BodyPress.h"
 
 #include "GameInstance.h"
+#include "SoundMgr.h"
 
 CBodyPress::CBodyPress(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -43,6 +44,11 @@ void CBodyPress::Tick(_float fTimeDelta)
 		m_fSkillTime += fTimeDelta;
 		if (m_fSkillTime > 1.f)
 		{
+			if (!m_bSound)
+			{
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("BodyPress.mp3"), 1.f);
+				m_bSound = true;
+			}
 			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Tackle2"), LEVEL_GAMEPLAY, TEXT("Effect"), &m_SkillInfo)))
@@ -56,6 +62,7 @@ void CBodyPress::Tick(_float fTimeDelta)
 			RELEASE_INSTANCE(CGameInstance);
 			m_fSkillTime = 0.f;
 			m_SkillInfo.bUseSkill = false;
+			m_bSound = false;
 		}
 	}
 }

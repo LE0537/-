@@ -162,7 +162,8 @@ void CDandel::Late_Tick(_float fTimeDelta)
 			if (m_fDist <= 30.f && !g_bEvolution && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
 			{
 				m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-				m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_SHADOWDEPTH, this);
+				if(!g_bEnding)
+					m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_SHADOWDEPTH, this);
 			}
 		}
 		RELEASE_INSTANCE(CGameInstance);

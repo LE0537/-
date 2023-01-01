@@ -4,6 +4,7 @@
 #include "GameInstance.h"
 #include "MonsterBall.h"
 #include "Player.h"
+#include "SoundMgr.h"
 
 CBag::CBag(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -741,10 +742,12 @@ void CBag::Key_Input()
 	Safe_AddRef(pGameInstance);
 	if (pGameInstance->Key_Down(DIK_BACKSPACE) && !m_bUseItem && !m_bUsePoke)
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Close.mp3"), 1.f);
 		ClearBag();
 	}
 	if (pGameInstance->Key_Down(DIK_UP))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if (!m_bUseItem && !m_bUsePoke)
 		{
 			if (m_bItemSelect)
@@ -793,6 +796,7 @@ void CBag::Key_Input()
 
 	if (pGameInstance->Key_Down(DIK_DOWN))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if (!m_bUseItem && !m_bUsePoke)
 		{
 			if (m_bItemSelect)
@@ -847,11 +851,13 @@ void CBag::Key_Input()
 		{
 			if (m_bItemSelect && m_bUseKey)
 			{
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check2.mp3"), 1.f);
 				m_bUseItem = true;
 				Set_UseItemPos(m_iSelect);
 			}
 			else if (!m_bItemSelect && m_bUseKey)
 			{
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check2.mp3"), 1.f);
 				m_bUsePoke = true;
 				Set_UsePokePos(m_iPokeSelect);
 			}
@@ -861,6 +867,7 @@ void CBag::Key_Input()
 		{
 			if (m_bUse)
 			{
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check2.mp3"), 1.f);
 				switch (m_UsePos)
 				{
 				case 0:
@@ -906,6 +913,7 @@ void CBag::Key_Input()
 				switch (m_UsePos)
 				{
 				case 0:
+					CSoundMgr::Get_Instance()->PlayEffect(TEXT("Deck.mp3"), 1.f);
 					dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_PokeUIOnOff();
 					dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_DeckInfoOff();
 					g_bBag = false;
@@ -913,6 +921,7 @@ void CBag::Key_Input()
 					m_bUse = false;
 					break;
 				case 1:
+					CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check2.mp3"), 1.f);
 					SetSelectButtonPoke(m_iPokeSelect, DIR_LEFT);
 					m_iSwapPoke = m_iPokeSelect;
 					m_bSwap = true;
@@ -923,6 +932,7 @@ void CBag::Key_Input()
 					return;
 					break;
 				case 2:
+					CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check2.mp3"), 1.f);
 					ClearItem();
 					m_bUsePoke = false;
 					m_UsePos = 0;
@@ -931,6 +941,7 @@ void CBag::Key_Input()
 					return;
 					break;
 				case 3:
+					CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check2.mp3"), 1.f);
 					if (!dynamic_cast<CGameObj*>(m_pPlayer)->Get_Ride() && dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().bRide)
 					{
 						RidePoke();
@@ -941,6 +952,7 @@ void CBag::Key_Input()
 					}
 					break;
 				case 4:
+					CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check2.mp3"), 1.f);
 					m_bUsePoke = false;
 					m_UsePos = 0;
 					m_bUse = false;
@@ -957,11 +969,13 @@ void CBag::Key_Input()
 	{
 		if (m_bItemSelect && pGameInstance->Key_Down(DIK_LEFT))
 		{
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 			m_bItemSelect = !m_bItemSelect;
 			SetSelectButtonPoke(m_iPokeSelect, DIR_LEFT);
 		}
 		else if (!m_bItemSelect && pGameInstance->Key_Down(DIK_RIGHT))
 		{
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 			m_iPokeSelect = 0;
 			m_bItemSelect = !m_bItemSelect;
 		}
@@ -975,6 +989,7 @@ void CBag::Key_UseInput()
 
 	if (pGameInstance->Key_Down(DIK_BACKSPACE) && !m_bUseItem && !m_bUsePoke)
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Close.mp3"), 1.f);
 		m_iPokeSelect = 0;
 		m_bItem = false;
 		m_bUsePoke = false;
@@ -985,6 +1000,7 @@ void CBag::Key_UseInput()
 	}
 	if (pGameInstance->Key_Down(DIK_UP))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if (m_iPokeSelect != 0)
 		{
 			SetSelectButtonPoke(m_iPokeSelect, DIR_UP);
@@ -994,6 +1010,7 @@ void CBag::Key_UseInput()
 
 	if (pGameInstance->Key_Down(DIK_DOWN))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if (m_iPokeSelect != 5 && dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect + 1])->Get_PokeInfo().iPokeNum != 999)
 		{
 			SetSelectButtonPoke(m_iPokeSelect, DIR_DOWN);
@@ -1002,6 +1019,7 @@ void CBag::Key_UseInput()
 	}
 	if (pGameInstance->Key_Down(DIK_RETURN))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check2.mp3"), 1.f);
 		if (!m_bGiveItem)
 			UseItem();
 		else if (m_bGiveItem)
@@ -1024,6 +1042,7 @@ void CBag::Key_PokeInput()
 	
 	if (pGameInstance->Key_Down(DIK_BACKSPACE) && !m_bUseItem && !m_bUsePoke)
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Close.mp3"), 1.f);
 		if (m_iSwapPoke != 99)
 			m_iSwapPoke = 99;
 		else
@@ -1039,6 +1058,7 @@ void CBag::Key_PokeInput()
 	}
 	if (pGameInstance->Key_Down(DIK_UP))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if (m_iPokeSelect != 0)
 		{
 			SetSelectButtonPoke(m_iPokeSelect, DIR_UP);
@@ -1048,6 +1068,7 @@ void CBag::Key_PokeInput()
 
 	if (pGameInstance->Key_Down(DIK_DOWN))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if (m_iPokeSelect != 5 && dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect + 1])->Get_PokeInfo().iPokeNum != 999)
 		{
 			SetSelectButtonPoke(m_iPokeSelect, DIR_DOWN);
@@ -1056,6 +1077,7 @@ void CBag::Key_PokeInput()
 	}
 	if (pGameInstance->Key_Down(DIK_RETURN))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check2.mp3"), 1.f);
 		if (m_bSwap && m_iSwapPoke == 99)
 		{
 			m_iSwapPoke = m_iPokeSelect;
@@ -1219,6 +1241,7 @@ void CBag::UseItem()
 			m_fHealTime = 0.f;
 			m_bHeal = true;
 			--(*iter)->iNum;
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Hp.mp3"), 0.7f);
 		}
 		break;
 	case 6:
@@ -1229,6 +1252,7 @@ void CBag::UseItem()
 			m_fHealTime = 0.f;
 			m_bHeal = true;
 			--(*iter)->iNum;
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Hp.mp3"), 0.7f);
 		}
 		break;
 	case 11:
@@ -1238,6 +1262,7 @@ void CBag::UseItem()
 		m_fHealTime = 0.f;
 		m_bHeal = true;
 		--(*iter)->iNum;
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Hp.mp3"), 0.7f);
 		break;
 	case 12:
 		dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_PokePP1(99);
@@ -1517,6 +1542,7 @@ void CBag::BattlePokeKey()
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 	if (pGameInstance->Key_Down(DIK_UP))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if (m_iPokeSelect != 0)
 		{
 			SetSelectButtonPoke(m_iPokeSelect, DIR_UP);
@@ -1525,6 +1551,7 @@ void CBag::BattlePokeKey()
 	}
 	if (pGameInstance->Key_Down(DIK_DOWN))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if (m_iPokeSelect != 5 && dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect + 1])->Get_PokeInfo().iPokeNum != 999)
 		{
 			SetSelectButtonPoke(m_iPokeSelect, DIR_DOWN);
@@ -1533,6 +1560,7 @@ void CBag::BattlePokeKey()
 	}
 	if (pGameInstance->Key_Down(DIK_RETURN))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check2.mp3"), 1.f);
 		if (dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().eStatInfo != STUN)
 		{
 			m_iChangePoke = m_iPokeSelect;
@@ -1556,6 +1584,7 @@ void CBag::BattleChangePokeKey()
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 	if (pGameInstance->Key_Down(DIK_UP))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if (m_iPokeSelect != 0)
 		{
 			SetSelectButtonPoke(m_iPokeSelect, DIR_UP);
@@ -1564,6 +1593,7 @@ void CBag::BattleChangePokeKey()
 	}
 	if (pGameInstance->Key_Down(DIK_DOWN))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if (m_iPokeSelect != 5 && dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect + 1])->Get_PokeInfo().iPokeNum != 999)
 		{
 			SetSelectButtonPoke(m_iPokeSelect, DIR_DOWN);
@@ -1572,6 +1602,7 @@ void CBag::BattleChangePokeKey()
 	}
 	if (pGameInstance->Key_Down(DIK_RETURN))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check2.mp3"), 1.f);
 		if (m_iChangePoke != m_iPokeSelect && dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().eStatInfo != STUN)
 		{
 			dynamic_cast<CPlayer*>(m_pPlayer)->Set_PlayerBallIndex(dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().iBallNum);
@@ -1584,6 +1615,7 @@ void CBag::BattleChangePokeKey()
 	}
 	if (pGameInstance->Key_Down(DIK_BACKSPACE))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Close.mp3"), 1.f);
 		m_bStart = false;
 		m_bBattleChangePoke = false;
 		m_bClose = true;
@@ -1597,6 +1629,7 @@ void CBag::BattleUseItemKey()
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 	if (pGameInstance->Key_Down(DIK_UP))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if (!m_bUseItem)
 		{
 			if (m_iSelect == 0)
@@ -1625,6 +1658,7 @@ void CBag::BattleUseItemKey()
 	}
 	if (pGameInstance->Key_Down(DIK_DOWN))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if (!m_bUseItem)
 		{
 			if (m_iSelect == 7)
@@ -1656,6 +1690,7 @@ void CBag::BattleUseItemKey()
 	}
 	if (pGameInstance->Key_Down(DIK_RETURN))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check2.mp3"), 1.f);
 		if (!m_bUseItem)
 		{
 			if (m_bItemSelect && m_bUseKey)
@@ -1778,6 +1813,7 @@ void CBag::BattleUseItemKey()
 	}
 	if (pGameInstance->Key_Down(DIK_BACKSPACE))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Close.mp3"), 1.f);
 		m_bStart = false;
 		ClearBag();
 		m_bBattleUseItem = false;

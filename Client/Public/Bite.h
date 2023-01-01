@@ -37,7 +37,7 @@ private:
 	_float		m_fDeadTime = 0.f;
 	_bool		m_bSkill = false;
 	_bool		m_bHitSkill = false;
-
+	_bool		m_bSound = false;
 public:
 	static CBite* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

@@ -272,7 +272,7 @@ void CBattleIntro::RatBall(_float fTimeDelta)
 	if (m_fDeadtime > 0.5f)
 	{
 		CSoundMgr::Get_Instance()->BGM_Stop();
-		CSoundMgr::Get_Instance()->PlayBGM(TEXT("Battle.wav"), 0.5f);
+		CSoundMgr::Get_Instance()->PlayBGM(TEXT("Battle.wav"), 0.7f);
 		g_Battle = true;
 		m_bDead = true;
 	}

@@ -128,7 +128,7 @@ void CBattleUI::Tick(_float fTimeDelta)
 		{
 			m_bDead = true;
 			CSoundMgr::Get_Instance()->BGM_Stop();
-			CSoundMgr::Get_Instance()->PlayBGM(TEXT("hov.wav"), 0.75f);
+			CSoundMgr::Get_Instance()->PlayBGM(TEXT("hov.wav"), 0.45f);
 		}
 	}
 }
@@ -1499,6 +1499,7 @@ void CBattleUI::Key_Input()
 	
 	if (pGameInstance->Key_Down(DIK_UP))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if (m_iSelect != 0)
 		{
 			SetSelectButton(DIR_UP);
@@ -1508,6 +1509,7 @@ void CBattleUI::Key_Input()
 	}
 	if (pGameInstance->Key_Down(DIK_DOWN))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if (m_iSelect != 3)
 		{
 			if (m_bSkill)
@@ -1541,6 +1543,7 @@ void CBattleUI::Key_Input()
 	}
 	if (m_bSkill && pGameInstance->Key_Down(DIK_BACKSPACE))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Close.mp3"), 1.f);
 		Set_CheckPos(CHECKPOS_INFO);
 		m_bSkill = false;
 	}
@@ -2070,6 +2073,7 @@ void CBattleUI::Check_Selected()
 	switch (m_iSelect)
 	{
 	case 0:
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check2.mp3"), 1.f);
 		if (!m_bSkill)
 		{
 			m_bSkill = true;
@@ -2085,6 +2089,7 @@ void CBattleUI::Check_Selected()
 		}
 		break;
 	case 1:
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Deck.mp3"), 1.f);
 		if (!m_bSkill)
 		{
 			if (!m_bBattleBagPoke)
@@ -2103,6 +2108,7 @@ void CBattleUI::Check_Selected()
 		}
 		break;
 	case 2:
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Deck.mp3"), 1.f);
 		if (!m_bSkill)
 		{
 			if (!m_bBattleUseItem)
@@ -2123,6 +2129,7 @@ void CBattleUI::Check_Selected()
 		}
 		break;
 	case 3:
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check2.mp3"), 1.f);
 		if (!m_bSkill)
 		{
 			if (m_tInfo.eBattleType == BATTLE_TRAINER)

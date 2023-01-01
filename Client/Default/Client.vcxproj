@@ -283,6 +283,8 @@
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\PokeDeck.h" />
     <ClInclude Include="..\public\PokeInfo.h" />
+    <ClInclude Include="..\public\Portal.h" />
+    <ClInclude Include="..\public\PortalUI.h" />
     <ClInclude Include="..\public\PPPotion.h" />
     <ClInclude Include="..\public\Psychic.h" />
     <ClInclude Include="..\public\Psychic1.h" />
@@ -462,6 +464,8 @@
     <ClCompile Include="..\private\Player.cpp" />
     <ClCompile Include="..\private\PokeDeck.cpp" />
     <ClCompile Include="..\private\PokeInfo.cpp" />
+    <ClCompile Include="..\private\Portal.cpp" />
+    <ClCompile Include="..\private\PortalUI.cpp" />
     <ClCompile Include="..\private\PPPotion.cpp" />
     <ClCompile Include="..\private\Psychic.cpp" />
     <ClCompile Include="..\private\Psychic1.cpp" />

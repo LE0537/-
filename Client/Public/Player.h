@@ -63,6 +63,9 @@ public:
 	void	Battle_Win();
 	void	Check_Anim(_float fTimeDelta);
 	HRESULT Ready_Parts();
+	void	Find_Navi(_int _iIndex);
+	_int	Get_Portal() { return m_iPortal; }
+	void	Set_Portal(_int _iIndex) { m_iPortal = _iIndex;}
 private:
 	CModel*					m_pModelCom = nullptr;
 	CCollider*				m_pAABBCom = nullptr;
@@ -86,6 +89,7 @@ private:
 	_bool					m_bBattleUI = false;
 
 	_float					m_fLandTime = 0.f;
+	_float					m_fSoundTime = 0.f;
 	_bool					m_bRideLand = false;
 
 	_bool					m_bPrevPos = false;
@@ -118,6 +122,12 @@ private:
 	_bool					m_bTargetHit = false;
 
 	_float4				    m_Light;
+
+	//Portal
+	_int					m_iPortal = 0;
+
+	//Sound
+	_bool					m_bSound = false;
 public:
 	static CPlayer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

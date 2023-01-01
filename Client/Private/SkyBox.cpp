@@ -28,7 +28,7 @@ HRESULT CSkyBox::Initialize(void * pArg)
 
 	if (((CLevel_GamePlay::LOADFILE*)pArg)->bRaceMap)
 		m_bRace = true;
-	if (((CLevel_GamePlay::LOADFILE*)pArg)->bBattleMap)
+	else if (((CLevel_GamePlay::LOADFILE*)pArg)->bBattleMap)
 		m_bBattle = true;
 
 	m_pTransformCom->Set_Scale(XMLoadFloat3((&((CLevel_GamePlay::LOADFILE*)pArg)->vScale)));

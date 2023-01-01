@@ -44,7 +44,7 @@ HRESULT CLevel_GamePlay::Initialize()
 		return E_FAIL;
 
 	
-	CSoundMgr::Get_Instance()->PlayBGM(TEXT("hov.wav"),0.65f);
+	CSoundMgr::Get_Instance()->PlayBGM(TEXT("hov.wav"),0.45f);
 
 	return S_OK;
 }
@@ -247,6 +247,17 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar * pLayerTag)
 	{
 		dynamic_cast<CRace*>(m_LoadFile.pRaceMap)->Set_RaceInfo(iter.vPos, iter.iType);
 	}
+
+
+	m_LoadFile.vPos = { 90.f,27.f, -1093.f,1.f };
+	m_LoadFile.vScale = {1.f,1.f,1.f};
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Portal"), LEVEL_GAMEPLAY, TEXT("Layer_Portal"), &m_LoadFile)))
+		return E_FAIL;
+
+	m_LoadFile.vPos = { 653.5f, 13.7f, -895.5f,1.f };
+	m_LoadFile.vScale = { 1.f,1.f,1.f };
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Portal"), LEVEL_GAMEPLAY, TEXT("Layer_Portal"), &m_LoadFile)))
+		return E_FAIL;
 
 	Safe_Release(pGameInstance);
 

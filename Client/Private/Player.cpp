@@ -127,7 +127,8 @@ void CPlayer::Late_Tick(_float fTimeDelta)
 
 		if (!g_bEvolution && !g_PokeInfo && !g_bPokeDeck && nullptr != m_pRendererCom)
 		{
-			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_SHADOWDEPTH, this);
+			if (!g_bEnding)
+				m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_SHADOWDEPTH, this);
 			m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 		}
 		if (g_CollBox)
@@ -281,6 +282,7 @@ void CPlayer::CheckRideIDLE()
 void CPlayer::Key_Input(_float fTimeDelta)
 {
 	m_fLandTime += fTimeDelta;
+	m_fSoundTime += fTimeDelta;
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
 	if (!m_PlayerInfo.bRide)
@@ -299,6 +301,11 @@ void CPlayer::Key_Input(_float fTimeDelta)
 					return;
 				m_fLandTime = 0.f;
 			}
+			if (m_fSoundTime > 0.45f)
+			{
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Walk.mp3"), 1.f);
+				m_fSoundTime = 0.f;
+			}
 		}
 		else if (pGameInstance->Key_Pressing(DIK_W))
 		{
@@ -313,6 +320,11 @@ void CPlayer::Key_Input(_float fTimeDelta)
 				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Land"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
 					return;
 				m_fLandTime = 0.f;
+			}
+			if (m_fSoundTime > 0.6f)
+			{
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Walk.mp3"), 1.f);
+				m_fSoundTime = 0.f;
 			}
 		}
 
@@ -359,6 +371,11 @@ void CPlayer::Key_Input(_float fTimeDelta)
 					return;
 				m_fLandTime = 0.f;
 			}
+			if (m_fSoundTime > 0.5f)
+			{
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Walk.mp3"), 1.f);
+				m_fSoundTime = 0.f;
+			}
 		}
 		if (pGameInstance->Key_Pressing(DIK_R))
 		{
@@ -387,6 +404,7 @@ void CPlayer::Battle(_float fTimeDelta)
 		{
 			XMStoreFloat4(&m_vPrevPos, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
 			m_bPrevPos = true;
+			m_bSound = false;
 		}
 		if (m_bBattleStart)
 			BattleStart(fTimeDelta);
@@ -429,6 +447,11 @@ void CPlayer::BattleStart(_float fTimeDelta)
 		dynamic_cast<CBall*>(m_pBall)->Set_Render(true, m_iBallIndex);
 		m_pBall->Tick(fTimeDelta);
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, m_pBall);
+		if (!m_bSound && m_fStartBattle > 2.f)
+		{
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Ball.mp3"), 1.f);
+			m_bSound = true;
+		}
 		if (m_fStartBattle > 3.1f && !m_bEffect)
 		{
 			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
@@ -441,7 +464,7 @@ void CPlayer::BattleStart(_float fTimeDelta)
 			CLevel_GamePlay::LOADFILE tInfo;
 
 			XMStoreFloat4(&tInfo.vPos, vPos);
-
+		
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BallEffect"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
 				return;
 
@@ -613,10 +636,12 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
 			m_bChangeAnim = false;
 			m_ChangePoke = false;
+			m_bSound = false;
 			dynamic_cast<CBall*>(m_pBall)->Set_Reset();
 		}
 		if (!m_ChangePoke && m_iAnimIndex == 2)
 		{
+			m_bSound = false;
 			m_pModelCom->Set_Loop(m_iAnimIndex);
 			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
 			m_ChangePoke = true;
@@ -630,12 +655,14 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 			m_bChangeAnim = false;
 			m_bCapture = false;
 			m_bCaptureBall = false;
+			m_bSound = false;
 			Check_Ball();
 			dynamic_cast<CBall*>(m_pBall)->Set_Reset();
 			g_bCaptureRender = true;
 		}
 		if (!m_bCapture && m_iAnimIndex == 1)
 		{
+			m_bSound = false;
 			m_pModelCom->Set_Loop(m_iAnimIndex);
 			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
 			m_bCapture = true;
@@ -668,6 +695,11 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 		dynamic_cast<CBall*>(m_pBall)->Set_Render(true, m_iBallIndex);
 		m_pBall->Tick(fTimeDelta);
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, m_pBall);
+		if (!m_bSound && m_fStartBattle > 1.f)
+		{
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Ball.mp3"), 1.f);
+			m_bSound = true;
+		}
 		if (m_fStartBattle > 1.4f && !m_bEffect)
 		{
 			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
@@ -683,7 +715,7 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BallEffect"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
 				return;
-
+		
 			RELEASE_INSTANCE(CGameInstance);
 			m_bEffect = true;
 		}
@@ -724,6 +756,11 @@ void CPlayer::Check_Anim(_float fTimeDelta)
 		if (!m_bCaptureBall)
 		{
 			m_fCaptureTime += fTimeDelta;
+			if (!m_bSound && m_fCaptureTime > 1.f)
+			{
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Ball.mp3"), 1.f);
+				m_bSound = true;
+			}
 			if (m_fCaptureTime > 2.2f)
 			{
 				CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
@@ -813,6 +850,27 @@ HRESULT CPlayer::Ready_Parts()
 	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
+}
+
+void CPlayer::Find_Navi(_int _iIndex)
+{
+	switch (_iIndex)
+	{
+	case 0:
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(650.f, 15.f, -895.5f,1.f));
+		m_pTransformCom->LookAt(XMVectorSet(640.f, 15.f, -895.5f, 1.f));
+		m_iPortal = 10;
+		break;
+	case 1:
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(93.75f, 28.6f, -1093.f, 1.f));
+		m_pTransformCom->LookAt(XMVectorSet(103.75f, 28.6f, -1093.f, 1.f));
+		m_iPortal = 20;
+		break;
+	default:
+		break;
+	}
+
+	m_pNavigationCom->Find_CurrentCellIndex(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
 }
 
 CPlayer * CPlayer::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

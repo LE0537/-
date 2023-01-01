@@ -553,6 +553,12 @@
     <Filter Include="02.GameObjects\99.GameObj\06.Effect\09.RaceStar">
       <UniqueIdentifier>{53cfec65-61bb-4b72-8eb9-c8f7d547eefe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\02.Map\07.Portal">
+      <UniqueIdentifier>{b0cd27eb-660f-4e74-924e-fff9d5c48a59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\09.PortalUI">
+      <UniqueIdentifier>{98cc408a-9701-483f-9c5c-aead727999f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -1095,6 +1101,12 @@
     <ClInclude Include="..\public\RaceStar.h">
       <Filter>02.GameObjects\99.GameObj\06.Effect\09.RaceStar</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Portal.h">
+      <Filter>02.GameObjects\02.Map\07.Portal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PortalUI.h">
+      <Filter>02.GameObjects\99.GameObj\04.UI\09.PortalUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1621,6 +1633,12 @@
     </ClCompile>
     <ClCompile Include="..\private\RaceStar.cpp">
       <Filter>02.GameObjects\99.GameObj\06.Effect\09.RaceStar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Portal.cpp">
+      <Filter>02.GameObjects\02.Map\07.Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PortalUI.cpp">
+      <Filter>02.GameObjects\99.GameObj\04.UI\09.PortalUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

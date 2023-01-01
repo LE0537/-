@@ -86,6 +86,8 @@ private:
 	_bool				m_bReset = false;
 
 	_float				m_fLeafTime = 0.f;
+
+	_bool				m_bSound = false;
 public:
 	static CRace* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

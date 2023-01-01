@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 #include "Level_GamePlay.h"
+#include "SoundMgr.h"
 
 CWaterGun1::CWaterGun1(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -50,7 +51,7 @@ HRESULT CWaterGun1::Initialize(void * pArg)
 	vMyPos += vDist * 0.25f;
 	XMStoreFloat4(&m_vPos3, vMyPos);
 
-
+	CSoundMgr::Get_Instance()->PlayEffect(TEXT("WaterGun.mp3"), 1.f);
 
 
 

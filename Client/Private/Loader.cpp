@@ -18,6 +18,7 @@
 #include "Evolution.h"
 #include "EndingErr.h"
 #include "CountDown.h"
+#include "PortalUI.h"
 //Map
 #include "Field.h"
 #include "BattleField.h"
@@ -25,6 +26,7 @@
 #include "Tree.h"
 #include "SkyBox.h"
 #include "Weed.h"
+#include "Portal.h"
 //Player 헤더
 #include "Player.h"
 //Trainer
@@ -266,6 +268,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Weed"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Weed/%d.dds"), 3))))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Portal"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Portal/%d.png"), 1))))
+		return E_FAIL;
 	//Effect 텍스쳐
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Land"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Land/%d.png"), 16))))
@@ -430,6 +435,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_CountDown"),
 		CCountDown::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_PortalUI"),
+		CPortalUI::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	/* 아이템 객체 */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_None"),
@@ -790,6 +798,14 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	/*CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("SkyBox"), LEVEL_STATIC, CData_Manager::DATA_NONANIM);*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_SkyBox"),
 	CSkyBox::Create(m_pDevice, m_pContext))))
+	return E_FAIL;
+
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Portal"),
+	//CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/fbx/Portal/Portal.fbx"))))
+	//return E_FAIL;
+	CData_Manager::Get_Instance()->Create_Try_BinModel(TEXT("Portal"), LEVEL_STATIC, CData_Manager::DATA_NONANIM);
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Portal"),
+	CPortal::Create(m_pDevice, m_pContext))))
 	return E_FAIL;
 
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Race"),

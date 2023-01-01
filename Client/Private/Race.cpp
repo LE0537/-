@@ -45,6 +45,8 @@ void CRace::Tick(_float fTimeDelta)
 	{
 		if (!m_bRaceStart)
 		{
+			CSoundMgr::Get_Instance()->BGM_Stop();
+			CSoundMgr::Get_Instance()->PlayBGM(TEXT("Tera.mp3"), 0.3f);
 			Create_RacePoke();
 		}
 		else if (m_bRaceStart)
@@ -364,7 +366,7 @@ void CRace::Check_RacePoke(_float fTimeDelta)
 			return;
 
 		RELEASE_INSTANCE(CGameInstance);
-
+		//CSoundMgr::Get_Instance()->BGM_Stop();
 		CSoundMgr::Get_Instance()->PlayEffect(TEXT("CountDown.mp3"), 1.f);
 		m_bCount = true;
 		m_fTextTime = 0.f;
@@ -372,6 +374,11 @@ void CRace::Check_RacePoke(_float fTimeDelta)
 	}
 	else if (m_bCount && m_fTextTime > 4.f)
 	{
+		if (!m_bSound)
+		{
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Race.mp3"), 1.f);
+			m_bSound = true;
+		}
 		Run_RacePoke(fTimeDelta);
 	}
 }
@@ -577,8 +584,12 @@ void CRace::Run_RacePoke(_float fTimeDelta)
 
 	if (!m_bGoal && !m_bSlowMotion)
 	{
-		if(fDist1 < 10.5f || fDist2 < 10.5f || fDist3 < 10.5f || fDist4 < 10.5f)
+		if (fDist1 < 10.5f || fDist2 < 10.5f || fDist3 < 10.5f || fDist4 < 10.5f)
+		{
 			m_bSlowMotion = true;
+			CSoundMgr::Get_Instance()->Effect_Stop();
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Goal.mp3"), 1.f);
+		}
 	}
 	if (m_bSlowMotion)
 	{
@@ -610,6 +621,7 @@ void CRace::RaceEnd()
 		m_bGoal = false;
 		m_bRaceEnd = false;
 		m_bCheckWin = false;
+		m_bSound = false;
 
 		m_fRand1 = 0.f;
 		m_fRand2 = 0.f;
@@ -628,6 +640,8 @@ void CRace::RaceEnd()
 		g_bRaceEnd = false;
 
 		m_bReset = true;
+		CSoundMgr::Get_Instance()->BGM_Stop();
+		CSoundMgr::Get_Instance()->PlayBGM(TEXT("hov.wav"), 0.45f);
 	}
 }
 

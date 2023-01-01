@@ -37,6 +37,8 @@ private:
 	_float					m_fSkillTime = 0.f;
 	_float					m_fDeadTime = 0.f;
 	_bool					m_bSetPos = false;
+
+	_bool		m_bSound = false;
 private:
 
 	void	Set_Pos(_float fTimeDelta);

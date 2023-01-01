@@ -6,13 +6,14 @@ texture2D		g_DiffuseTexture;
 vector			g_vCamPosition;
 
 float4			g_vLightDiffuse = float4(1.f, 1.f, 1.f, 1.f); //빛의색
-float4			g_vLightAmbient = float4(0.5f, 0.5f, 0.5f, 1.f); //빛의 최소 밝기
+float4			g_vLightAmbient = float4(0.4f, 0.4f, 0.4f, 1.f); //빛의 최소 밝기
 float4			g_vLightSpecular = float4(1.f, 1.f, 1.f, 1.f); //빛의 하이라이트 (빤딱거리는 흰색)
 
-float4			g_vLightDir = float4(3.f, -3.f, -3.f, 0.f); // 빛의방향 //방향성광원 // 해
+float4			g_vLightDir = float4(1.f, -1.f, 1.f, 0.f); // 빛의방향 //방향성광원 // 해
 
 float4			g_vMtrlAmbient = float4(1.f, 1.f, 1.f, 1.f);  // 재질의 고유색
 float4			g_vMtrlSpecular = float4(1.f, 1.f, 1.f, 1.f);  // 재질의 하이라이트 (빤딱거리는느낌)
+
 
 /* 정점들에게 곱해져야할 행렬. */
 /* 정점들은 메시에게 소속. 이때 곱해져야하는 뼈의 행렬 == 이 메시에 영향을 주는 뼈다. */
@@ -71,17 +72,6 @@ VS_OUT VS_MAIN(VS_IN In)
 	vector		vWorldNormal = mul(vector(In.vNormal, 0.f), g_WorldMatrix);
 
 	Out.fShade = max(dot(normalize(g_vLightDir) * -1.f, normalize(vWorldNormal)), 0.f);
-
-	//if (saturate(dot(normalize(g_vLightDir) * -1.f, normalize(vWorldNormal))) < 0.2f)
-	//{
-	//	Out.fShade = g_vLightDiffuse * 0.5f + (g_vLightAmbient * g_vMtrlAmbient);
-	//}
-	//else
-	//{
-	//	Out.fShade = g_vLightDiffuse * 0.3f + (g_vLightAmbient * g_vMtrlAmbient);
-	//}
-
-
 
 	vector		vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
 
@@ -155,7 +145,16 @@ PS_OUT PS_MAIN(PS_IN In)
 	vector		vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
 
 
-	Out.vColor = (g_vLightDiffuse * vDiffuse) *saturate(In.fShade + g_vLightAmbient * g_vMtrlAmbient);
+	if (In.fShade < 0.5f)
+	{
+		Out.vColor = (g_vLightDiffuse * vDiffuse) * saturate(0.6f + g_vLightAmbient * g_vMtrlAmbient);
+	}
+	else
+	{
+		Out.vColor = (g_vLightDiffuse * vDiffuse) * saturate(0.4f + g_vLightAmbient * g_vMtrlAmbient);
+	}
+
+	//Out.vColor = (g_vLightDiffuse * vDiffuse) * saturate(In.fShade + g_vLightAmbient * g_vMtrlAmbient);
 	//+(g_vLightSpecular * g_vMtrlSpecular) * In.fSpecular;
 
 	return Out;
@@ -212,6 +211,16 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_Default, 0);
 
 		VertexShader = compile vs_5_0 VS_BreakCar();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_BreakCar();
+	}
+	pass AnimBall //3
+	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_BreakCar();
 	}

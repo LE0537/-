@@ -34,7 +34,7 @@ public:
 private:
 
 	_float		m_fSkillTime = 0.f;
-
+	_bool		m_bSound = false;
 public:
 	static CBodyPress* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

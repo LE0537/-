@@ -8,6 +8,7 @@ matrix			g_matLightProj;
 vector			g_vCamPosition;
 
 vector			g_vLightDir;
+vector			g_vLightDir2 = vector(1.f, -1.f, 1.f, 0.f);
 vector			g_vLightPos;
 float			g_fLightRange;
 vector			g_vLightDiffuse;
@@ -118,7 +119,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 	}
 	else
 	{
-		Out.vShade = g_vLightDiffuse * (saturate(dot(normalize(g_vLightDir) * -1.f, normalize(vNormal))) + (g_vLightAmbient * g_vMtrlAmbient));
+		Out.vShade = g_vLightDiffuse * (saturate(dot(normalize(g_vLightDir2) * -1.f, normalize(vNormal))) + (g_vLightAmbient * g_vMtrlAmbient));
 	}
 	
 	Out.vShade.a = 1.f;
@@ -142,8 +143,15 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 	/* 로컬점의위치 * 월드행렬   */
 	vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
 
-
-	vector			vReflect = reflect(normalize(g_vLightDir), normalize(vNormal));
+	vector			vReflect;
+	if (vNormalDesc.w != 3.f)
+	{
+		vReflect = reflect(normalize(g_vLightDir), normalize(vNormal));
+	}
+	else
+	{
+		vReflect = reflect(normalize(g_vLightDir2), normalize(vNormal));
+	}
 	vector			vLook = vWorldPos - g_vCamPosition;
 	
 	if (vNormalDesc.w == 1.f)

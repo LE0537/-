@@ -69,7 +69,7 @@ void CAnimHyperBall::Tick(_float fTimeDelta)
 	if (m_bCaptureSuccesss)
 	{
 		m_fSuccessTime += fTimeDelta;
-		if (m_fSuccessTime > 1.5f)
+		if (m_fSuccessTime > 2.5f)
 		{
 			dynamic_cast<CPlayer*>(m_pTarget)->Set_Captrue(true);
 			Set_Dead();
@@ -151,7 +151,7 @@ HRESULT CAnimHyperBall::Render_ShadowDepth()
 		if (FAILED(m_pModelCom->SetUp_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 
-		if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 3)))
+		if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 2)))
 			return E_FAIL;
 
 	}
@@ -248,6 +248,7 @@ void CAnimHyperBall::Move(_float fTimeDelta)
 				return;
 
 			RELEASE_INSTANCE(CGameInstance);
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Ball3.mp3"), 0.7f);
 		}
 		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
 
@@ -342,7 +343,7 @@ void CAnimHyperBall::Capture_Success()
 				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_CaptureStar"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"), &tInfo)))
 					return;
 			}
-
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Ball5.mp3"), 0.7f);
 			RELEASE_INSTANCE(CGameInstance);
 			return;
 		}

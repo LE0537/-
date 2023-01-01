@@ -3,7 +3,7 @@
 
 #include "GameInstance.h"
 #include "Pikachu.h"
-
+#include "SoundMgr.h"
 
 CPokeDeck::CPokeDeck(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -540,6 +540,7 @@ void CPokeDeck::Key_Input()
 
 	if (!m_bSelect && pGameInstance->Key_Pressing(DIK_LSHIFT) && pGameInstance->Key_Pressing(DIK_UP))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if (m_iSelect == 0)
 		{
 			if (m_iPokeScroll != 0)
@@ -563,6 +564,7 @@ void CPokeDeck::Key_Input()
 	}
 	else if (!m_bSelect && pGameInstance->Key_Down(DIK_UP))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if (m_iSelect == 0)
 		{
 			if (m_iPokeScroll != 0)
@@ -586,6 +588,7 @@ void CPokeDeck::Key_Input()
 	}
 	if (!m_bSelect && pGameInstance->Key_Pressing(DIK_LSHIFT) && pGameInstance->Key_Pressing(DIK_DOWN))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if (m_iSelect == 5)
 		{
 			if (m_iPokeScroll != 146)
@@ -609,6 +612,7 @@ void CPokeDeck::Key_Input()
 	}
 	else if (!m_bSelect && pGameInstance->Key_Down(DIK_DOWN))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if (m_iSelect == 5)
 		{
 			if (m_iPokeScroll != 146)
@@ -633,13 +637,112 @@ void CPokeDeck::Key_Input()
 
 	if (m_bUseKey && !m_bSelect && pGameInstance->Key_Down(DIK_RETURN))
 	{
-		if(dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Get_PokeInfo().iPokeNum != 999)
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Deck.mp3"), 1.f);
+		_int iIndex = dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Get_PokeInfo().iPokeNum;
+		if (iIndex != 999)
+		{
 			m_bSelect = true;
 
+			switch (iIndex)
+			{
+			case 7:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Squirtle.mp3"), 0.7f);
+				break;
+			case 8:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Wartortle.mp3"), 0.7f);
+				break;
+			case 9:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Blastoise.mp3"), 0.7f);
+				break;
+			case 10:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Caterpie.mp3"), 0.7f);
+				break;
+			case 11:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Metapod.mp3"), 0.7f);
+				break;
+			case 12:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Butterfree.mp3"), 0.7f);
+				break;
+			case 19:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Rattata.mp3"), 0.7f);
+				break;
+			case 20:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Raticate.mp3"), 0.7f);
+				break;
+			case 25:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Pikachu.mp3"), 0.7f);
+				break;
+			case 39:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Jigglypuff.mp3"), 0.7f);
+				break;
+			case 40:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Wigglytuff.mp3"), 0.7f);
+				break;
+			case 52:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Meowth.mp3"), 0.7f);
+				break;
+			case 53:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Persian.mp3"), 0.7f);
+				break;
+			case 79:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Slowpoke.mp3"), 0.7f);
+				break;
+			case 80:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Slowbro.mp3"), 0.7f);
+				break;
+			case 95:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Onix.mp3"), 0.7f);
+				break;
+			case 108:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Lickitung.mp3"), 0.7f);
+				break;
+			case 113:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Chansey.mp3"), 0.7f);
+				break;
+			case 115:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Kangaskhan.mp3"), 0.7f);
+				break;
+			case 123:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Scyther.mp3"), 0.7f);
+				break;
+			case 129:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Magikarp.mp3"), 0.7f);
+				break;
+			case 130:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Gyarados.mp3"), 0.7f);
+				break;
+			case 143:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Snorlax.mp3"), 0.7f);
+				break;
+			case 147:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Dratini.mp3"), 0.7f);
+				break;
+			case 148:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Dragonair.mp3"), 0.7f);
+				break;
+			case 149:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Dragonite.mp3"), 0.7f);
+				break;
+			case 150:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Mewtwo.mp3"), 0.7f);
+				break;
+			case 151:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Mew.mp3"), 0.7f);
+				break;
+			case 152:
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Garomakguri.mp3"), 0.7f);
+				break;
+			default:
+				break;
+			}
+
+		}
+		
 	}
 	m_bUseKey = true;
 	if (!m_bSelect && pGameInstance->Key_Down(DIK_BACKSPACE))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Close.mp3"), 1.f);
 		dynamic_cast<CGameObj*>(m_vecPoke[m_iPokePos])->Set_PokeUIOnOff();
 		g_bPokeDeck = false;
 		m_bUseKey = false;
@@ -655,8 +758,10 @@ void CPokeDeck::Key_Input()
 		m_pTransformCom2->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 	}
 	else if (m_bSelect && pGameInstance->Key_Down(DIK_BACKSPACE))
+	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Close.mp3"), 1.f);
 		m_bSelect = false;
-
+	}
 
 
 	RELEASE_INSTANCE(CGameInstance);

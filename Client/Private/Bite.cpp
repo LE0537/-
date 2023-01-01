@@ -2,6 +2,7 @@
 #include "..\Public\Bite.h"
 
 #include "GameInstance.h"
+#include "SoundMgr.h"
 
 CBite::CBite(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -40,6 +41,11 @@ void CBite::Tick(_float fTimeDelta)
 {
 	if (m_SkillInfo.bUseSkill)
 	{
+		if (!m_bSound)
+		{
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Bite.mp3"), 1.f);
+			m_bSound = true;
+		}
 		m_fSkillTime += fTimeDelta;
 		if (m_fSkillTime > 0.1f)
 		{
@@ -76,6 +82,7 @@ void CBite::Tick(_float fTimeDelta)
 			m_SkillInfo.bUseSkill = false;
 			m_bSkill = false;
 			m_bHitSkill = false;
+			m_bSound = false;
 		}
 
 	}

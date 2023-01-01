@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 #include "Bag.h"
+#include "SoundMgr.h"
 
 CPokeInfo::CPokeInfo(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -387,6 +388,7 @@ void CPokeInfo::Key_Input()
 	Safe_AddRef(pGameInstance);
 	if (m_bSelect && pGameInstance->Key_Down(DIK_LEFT))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		m_bSelect = !m_bSelect;
 		m_fButtonX = 45.f;
 		m_fButtonY = 112.f;
@@ -395,11 +397,13 @@ void CPokeInfo::Key_Input()
 	}
 	else if (!m_bSelect && pGameInstance->Key_Down(DIK_RIGHT))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		m_bSelect = !m_bSelect;
 	}
 
 	if (pGameInstance->Key_Down(DIK_BACKSPACE))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Close.mp3"), 1.f);
 		dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Set_PokeUIOnOff();
 		m_bSelect = false;
 		g_PokeInfo = false;
@@ -408,6 +412,7 @@ void CPokeInfo::Key_Input()
 	}
 	if (pGameInstance->Key_Down(DIK_UP))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if (m_bSelect && m_iSelect != 0)
 		{
 			SetSelectButton(DIR_UP);
@@ -416,6 +421,7 @@ void CPokeInfo::Key_Input()
 	}
 	if (pGameInstance->Key_Down(DIK_DOWN))
 	{
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 		if(m_bSelect && m_iSelect != 3)
 		{ 
 			if (dynamic_cast<CGameObj*>(m_pBag->Get_SelectPoke())->Get_PokeInfo().eSkillNum2->iSkillNum != 99 && m_iSelect == 0)

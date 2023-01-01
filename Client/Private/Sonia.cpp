@@ -306,7 +306,7 @@ void CSonia::Check_Coll()
 		tTInfo.iScriptSize = (_int)m_vNormalScript.size();
 		tTInfo.pTarget = this;
 		tTInfo.pScript = new wstring[m_vNormalScript.size()];
-		tTInfo.iType = 7;
+		tTInfo.iType = 14;
 		for (_int i = 0; i < m_vNormalScript.size(); ++i)
 			tTInfo.pScript[i] = m_vNormalScript[i];
 
@@ -323,7 +323,7 @@ void CSonia::Check_Coll()
 				dynamic_cast<CGameObj*>(m_pTarget)->OnOffEvent();
 
 			m_bGiveItem = true;
-
+		
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Pikachu"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &m_GivePoke)))
 				return;
 			for (_int i = 0; i < 6; ++i)

@@ -69,7 +69,7 @@ void CAnimMasterBall::Tick(_float fTimeDelta)
 	if (m_bCaptureSuccesss)
 	{
 		m_fSuccessTime += fTimeDelta;
-		if (m_fSuccessTime > 1.5f)
+		if (m_fSuccessTime > 2.5f)
 		{
 			dynamic_cast<CPlayer*>(m_pTarget)->Set_Captrue(true);
 			Set_Dead();
@@ -151,7 +151,7 @@ HRESULT CAnimMasterBall::Render_ShadowDepth()
 		if (FAILED(m_pModelCom->SetUp_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 
-		if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 3)))
+		if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 2)))
 			return E_FAIL;
 
 	}
@@ -331,6 +331,8 @@ void CAnimMasterBall::Capture_Success()
 				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_CaptureStar"), LEVEL_GAMEPLAY, TEXT("Layer_Effect"), &tInfo)))
 					return;
 			}
+
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Ball5.mp3"), 0.7f);
 			RELEASE_INSTANCE(CGameInstance);
 			return;
 		}
@@ -379,7 +381,6 @@ HRESULT CAnimMasterBall::SetUp_ShaderResources()
 
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &pGameInstance->Get_TransformFloat4x4_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
 		return E_FAIL;
-
 
 
 	RELEASE_INSTANCE(CGameInstance);

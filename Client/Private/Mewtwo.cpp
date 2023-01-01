@@ -484,6 +484,7 @@ void CMewtwo::Set_DeckPos()
 			m_pTransformCom->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp));
 			m_pTransformCom->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
 			m_bSetPos = true;
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Mewtwo.mp3"), 0.7f);
 		}
 
 		m_fSizeX = 7.f;
@@ -514,6 +515,7 @@ void CMewtwo::Set_DeckPos()
 			m_pTransformCom->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp));
 			m_pTransformCom->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
 			m_bSetPos = true;
+	//		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Mewtwo.mp3"), 0.7f);
 		}
 
 		m_fSizeX = 7.f;
@@ -580,6 +582,7 @@ void CMewtwo::Battle(_float fTimeDelta)
 			m_pModelCom->Set_Loop(m_iAnimIndex);
 			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
 			m_bBrath = true;
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Mewtwo.mp3"), 0.7f);
 		}
 		if (m_bBattleMap)
 		{
@@ -654,7 +657,7 @@ void CMewtwo::Set_Stats()
 	m_PlayerInfo.bEvent = false;
 
 	m_PokemonInfo.strName = TEXT("뮤츠");
-	m_PokemonInfo.strInfo = TEXT("뮤의 유전자로부터 만들어진 포켓몬. 압도적인 파워와 난폭한 마음을 가졌다.");
+	m_PokemonInfo.strInfo = TEXT("뮤의 유전자로부터 만들어진 포켓몬.\n압도적인 파워와 난폭한 마음을 가졌다.");
 	m_PokemonInfo.strChar = TEXT("난폭");
 	m_PokemonInfo.iPokeNum = 150;
 	m_PokemonInfo.iLv = 60;
@@ -720,6 +723,7 @@ void CMewtwo::LvUp()
 
 	RELEASE_INSTANCE(CGameInstance);
 
+	CSoundMgr::Get_Instance()->PlayEffect(TEXT("LvUp.mp3"), 0.7f);
 
 	m_PokemonInfo.bLvUp = false;
 }

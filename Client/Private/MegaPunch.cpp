@@ -2,6 +2,7 @@
 #include "..\Public\MegaPunch.h"
 
 #include "GameInstance.h"
+#include "SoundMgr.h"
 
 CMegaPunch::CMegaPunch(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -40,6 +41,11 @@ void CMegaPunch::Tick(_float fTimeDelta)
 {
 	if (m_SkillInfo.bUseSkill)
 	{
+		if (!m_bSound)
+		{
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("MegaPunch.mp3"), 1.f);
+			m_bSound = true;
+		}
 		m_fSkillTime += fTimeDelta;
 		if (!m_bSkill && m_fSkillTime > 0.7f)
 		{
@@ -54,6 +60,7 @@ void CMegaPunch::Tick(_float fTimeDelta)
 			m_SkillInfo.bUseSkill = false;
 			m_bSkill = false;
 			m_bHitSkill = false;
+			m_bSound = false;
 		}
 
 	}

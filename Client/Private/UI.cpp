@@ -2,6 +2,7 @@
 #include "..\Public\UI.h"
 
 #include "GameInstance.h"
+#include "SoundMgr.h"
 
 CUI::CUI(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -55,6 +56,8 @@ void CUI::Tick(_float fTimeDelta)
 			Safe_AddRef(pGameInstance);
 			if (pGameInstance->Key_Down(DIK_I) && !g_bBag && !g_PokeInfo)
 			{
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Deck.mp3"), 1.f);
+
 				m_bInven = !m_bInven;
 				if (m_bInven)
 				{
@@ -67,16 +70,19 @@ void CUI::Tick(_float fTimeDelta)
 			{
 				if (m_bSelect && pGameInstance->Key_Down(DIK_LEFT))
 				{
+					CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 					m_bSelect = !m_bSelect;
 					SetSelectButton();
 				}
 				else if (!m_bSelect && pGameInstance->Key_Down(DIK_RIGHT))
 				{
+					CSoundMgr::Get_Instance()->PlayEffect(TEXT("Check.mp3"), 1.f);
 					m_bSelect = !m_bSelect;
 					SetSelectButton();
 				}
 				if (pGameInstance->Key_Down(DIK_RETURN))
 				{
+					CSoundMgr::Get_Instance()->PlayEffect(TEXT("UI.mp3"), 1.f);
 					m_bInven = !m_bInven;
 					if (m_bSelect)
 						g_bBag = true;
@@ -84,8 +90,10 @@ void CUI::Tick(_float fTimeDelta)
 						g_bPokeDeck = true;
 				}
 				if (pGameInstance->Key_Down(DIK_BACKSPACE))
+				{
+					CSoundMgr::Get_Instance()->PlayEffect(TEXT("Close.mp3"), 1.f);
 					m_bInven = !m_bInven;
-
+				}
 			}
 			Safe_Release(pGameInstance);
 		}

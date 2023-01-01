@@ -235,7 +235,7 @@ void CTextBox::Running_TextBox()
 			m_fDeadTime = 0.f;
 		}
 	}
-	if (m_tTInfo.iType == 7)
+	else if (m_tTInfo.iType == 7)
 	{
 		if (pGameInstance->Key_Down(DIK_SPACE))
 		{
@@ -251,7 +251,7 @@ void CTextBox::Running_TextBox()
 			}
 		}
 	}
-	if (m_tTInfo.iType == 8)
+	else if (m_tTInfo.iType == 8)
 	{
 		if (pGameInstance->Key_Down(DIK_SPACE))
 		{
@@ -384,6 +384,23 @@ void CTextBox::Running_TextBox()
 		else if (m_iScriptIndex == 2 && pGameInstance->Key_Down(DIK_2))
 		{
 			m_bDead = true;
+		}
+	}
+	else if (m_tTInfo.iType == 14)
+	{
+		if (pGameInstance->Key_Down(DIK_SPACE))
+		{
+			if (m_iScriptIndex < m_tTInfo.iScriptSize - 1)
+			{
+				++m_iScriptIndex;
+				m_wstr = TEXT("");
+				m_iIndex = 0;
+			}
+			else if (m_iScriptIndex == m_tTInfo.iScriptSize - 1)
+			{
+				m_bDead = true;
+				CSoundMgr::Get_Instance()->PlayEffect(TEXT("Item.mp3"), 0.7f);
+			}
 		}
 	}
 	RELEASE_INSTANCE(CGameInstance);

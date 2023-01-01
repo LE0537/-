@@ -181,7 +181,26 @@ void CCamera_Dynamic::Key_Input(_float fTimeDelta)
 			fAngleY = 360.f;
 
 	}
+	 
+	_int iIndex = dynamic_cast<CPlayer*>(m_CameraDesc.pTarget)->Get_Portal();
 
+	if (iIndex != 0)
+	{
+		switch (iIndex)
+		{
+		case 10:
+			fAngleX = -3.f;
+			fAngleY = 80.f;
+			break;
+		case 20:
+			fAngleX = 3.f;
+			fAngleY = -80.f;
+			break;
+		default:
+			break;
+		}
+		dynamic_cast<CPlayer*>(m_CameraDesc.pTarget)->Set_Portal(0);
+	}
 	_matrix matRotX = XMMatrixRotationAxis(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(fAngleX));
 	_matrix matRotY = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(fAngleY));
 

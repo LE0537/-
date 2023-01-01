@@ -5,6 +5,7 @@
 #include "Level_GamePlay.h"
 #include "VIBuffer_Trail.h"
 #include "Trail.h"
+#include "SoundMgr.h"
 
 CBall::CBall(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
@@ -100,7 +101,7 @@ void CBall::Tick(_float fTimeDelta)
 
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BallRed"), LEVEL_GAMEPLAY, TEXT("CaptureBall"), &tInfo)))
 				return;
-
+	
 			RELEASE_INSTANCE(CGameInstance);
 			m_fTakeBall = 0.f;
 			m_bTakeBall = false;

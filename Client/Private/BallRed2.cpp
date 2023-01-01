@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 #include "Level_GamePlay.h"
+#include "SoundMgr.h"
 
 CBallRed2::CBallRed2(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -33,7 +34,7 @@ HRESULT CBallRed2::Initialize(void * pArg)
 	_float4 vPos = ((CLevel_GamePlay::LOADFILE*)pArg)->vPos;
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&vPos));
 
-	
+	CSoundMgr::Get_Instance()->PlayEffect(TEXT("Ball4.mp3"), 0.7f);
 
 	return S_OK;
 }

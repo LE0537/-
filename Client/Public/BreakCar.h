@@ -36,6 +36,8 @@ private:
 	_float		m_fDeadTime = 0.f;
 	_bool		m_bSkill = false;
 	_bool		m_bHitSkill = false;
+
+	_bool		m_bSound = false;
 private:
 
 	void	Set_Pos(_float fTimeDelta);

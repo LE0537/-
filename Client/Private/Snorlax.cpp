@@ -568,6 +568,7 @@ void CSnorlax::Set_DeckPos()
 			m_pTransformCom->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp));
 			m_pTransformCom->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
 			m_bSetPos = true;
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Snorlax.mp3"), 0.7f);
 		}
 
 		m_fSizeX = 8.f;
@@ -598,6 +599,7 @@ void CSnorlax::Set_DeckPos()
 			m_pTransformCom->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp));
 			m_pTransformCom->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
 			m_bSetPos = true;
+	//		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Snorlax.mp3"), 0.7f);
 		}
 
 		m_fSizeX = 8.f;
@@ -687,6 +689,7 @@ void CSnorlax::Battle(_float fTimeDelta)
 			m_pModelCom->Set_Loop(m_iAnimIndex);
 			m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
 			m_bBrath = true;
+			CSoundMgr::Get_Instance()->PlayEffect(TEXT("Snorlax.mp3"), 0.7f);
 		}
 		if (m_bBattleMap)
 		{
@@ -823,7 +826,7 @@ void CSnorlax::LvUp()
 
 	RELEASE_INSTANCE(CGameInstance);
 
-
+	CSoundMgr::Get_Instance()->PlayEffect(TEXT("LvUp.mp3"), 0.7f);
 	m_PokemonInfo.bLvUp = false;
 }
 void CSnorlax::OnNavi()

@@ -722,7 +722,7 @@ void CMewtwo::LvUp()
 		return;
 
 	RELEASE_INSTANCE(CGameInstance);
-
+	CSoundMgr::Get_Instance()->Effect_Stop();
 	CSoundMgr::Get_Instance()->PlayEffect(TEXT("LvUp.mp3"), 0.7f);
 
 	m_PokemonInfo.bLvUp = false;

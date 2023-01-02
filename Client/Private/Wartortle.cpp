@@ -1068,6 +1068,7 @@ void CWartortle::LvUp()
 
 		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Lv_Up"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tInfo)))
 			return;
+		CSoundMgr::Get_Instance()->Effect_Stop();
 		CSoundMgr::Get_Instance()->PlayEffect(TEXT("LvUp.mp3"), 0.7f);
 		RELEASE_INSTANCE(CGameInstance);
 	}

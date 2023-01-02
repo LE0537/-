@@ -2041,7 +2041,7 @@ void CBattleUI::BattleDelay(_float fTimeDelta)
 	}
 	//서로 포켓몬 죽었는지 확인
 	m_fDelayTime += fTimeDelta;
-	if (m_bPokeDead && m_fDelayTime > m_fTextSizeTime)
+	if (m_bPokeDead && m_fDelayTime > (m_fTextSizeTime - 1.5f))
 	{
 		if (dynamic_cast<CGameObj*>((*m_tInfo.pvecTargetPoke)[m_iTargetIndex])->Get_PokeInfo().eStatInfo == STUN)
 			Change_TargetPoke(fTimeDelta);

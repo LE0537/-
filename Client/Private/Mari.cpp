@@ -44,7 +44,7 @@ HRESULT CMari::Initialize(void * pArg)
 
 	CGameObject* tInfo;
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Caterpie"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Slowbro"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
 	m_vecPoke.push_back(tInfo);
 

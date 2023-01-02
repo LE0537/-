@@ -83,6 +83,8 @@ private:
 	_bool					m_bPrevPos = false;
 	_bool					m_bBattleLose = false;
 
+	CGameObject*			m_pButton = nullptr;
+	_bool					m_bButton = false;
 public:
 	static CMari* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

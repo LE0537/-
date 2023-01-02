@@ -347,6 +347,14 @@ void CMari::Ckeck_Dist(_float fTimeDelta)
 	if (m_bBattleLose && m_fDist < 1.5f)
 	{
 		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+		if (!m_bButton)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_PortalButton"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &m_pButton)))
+				return;
+			m_bButton = true;
+		}
+		
 		if (dynamic_cast<CGameObj*>(m_pTarget)->Get_PalyerInfo().iMoney >= 1000)
 		{
 			if (pGameInstance->Key_Down(DIK_F))
@@ -364,9 +372,21 @@ void CMari::Ckeck_Dist(_float fTimeDelta)
 
 				if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_TextBox"), LEVEL_GAMEPLAY, TEXT("Layer_UI"), &tTInfo)))
 					return;
+
+				m_bButton = false;
+				m_pButton->Set_Dead();
 			}
+
 		}
 		RELEASE_INSTANCE(CGameInstance);
+	}
+	else
+	{
+		if (m_bButton)
+		{
+			m_bButton = false;
+			m_pButton->Set_Dead();
+		}
 	}
 }
 void CMari::Check_Coll()

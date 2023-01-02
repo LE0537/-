@@ -42,6 +42,8 @@ private:
 
 	_int					m_iPortalIndex = 0;
 
+	CGameObject*			m_pButton = nullptr;
+	_bool					m_bButton = false;
 public:
 	static CPortal* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

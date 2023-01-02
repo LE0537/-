@@ -727,7 +727,7 @@ void CGaromakguri::Set_Stats()
 	m_PokemonInfo.strInfo = TEXT("쥬신 130기 배해월, 난폭운전으로 유명하다.\n2022년10월20일 최우진 암살시도.\n결과는 성공적...");
 	m_PokemonInfo.strChar = TEXT("난폭");
 	m_PokemonInfo.iPokeNum = 152;
-	m_PokemonInfo.iLv = rand() % 10 + 40;
+	m_PokemonInfo.iLv = 70;//rand() % 10 + 40;
 	m_PokemonInfo.iMaxHp = _int(((fHp * 2.f) + 31.f + 100) * (m_PokemonInfo.iLv / 100.f) + 10.f);
 	m_PokemonInfo.iHp = m_PokemonInfo.iMaxHp;
 	m_PokemonInfo.iDmg = _int(((fDmg * 2.f) + 31.f) * (m_PokemonInfo.iLv / 100.f) + 5.f);

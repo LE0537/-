@@ -19,6 +19,7 @@
 #include "EndingErr.h"
 #include "CountDown.h"
 #include "PortalUI.h"
+#include "PortalButton.h"
 //Map
 #include "Field.h"
 #include "BattleField.h"
@@ -271,6 +272,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Portal"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Portal/%d.png"), 1))))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Button"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Button/%d.png"), 1))))
+		return E_FAIL;
 	//Effect 텍스쳐
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Land"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Land/%d.png"), 16))))
@@ -438,6 +442,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_PortalUI"),
 		CPortalUI::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_PortalButton"),
+		CPortalButton::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	/* 아이템 객체 */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_None"),

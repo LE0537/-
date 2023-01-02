@@ -184,6 +184,12 @@ void CPortal::Check_Coll()
 
 	if (m_pOBBCom->Collision(pTargetCollider))
 	{
+		if (!m_bButton)
+		{
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_PortalButton"), LEVEL_GAMEPLAY, TEXT("Layer_UI"),&m_pButton)))
+				return;
+			m_bButton = true;
+		}
 		if (pGameInstance->Key_Down(DIK_F))
 		{
 			dynamic_cast<CPlayer*>(m_pTarget)->Find_Navi(m_iPortalIndex);
@@ -191,10 +197,20 @@ void CPortal::Check_Coll()
 
 			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_PortalUI"), LEVEL_GAMEPLAY, TEXT("Layer_UI"))))
 				return;
+
+			m_bButton = false;
+			m_pButton->Set_Dead();
 		}
 	
 	}
-
+	else
+	{
+		if (m_bButton)
+		{
+			m_bButton = false;
+			m_pButton->Set_Dead();
+		}
+	}
 	RELEASE_INSTANCE(CGameInstance);
 }
 HRESULT CPortal::Ready_Components()

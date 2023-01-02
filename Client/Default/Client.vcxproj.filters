@@ -559,6 +559,9 @@
     <Filter Include="02.GameObjects\99.GameObj\04.UI\09.PortalUI">
       <UniqueIdentifier>{98cc408a-9701-483f-9c5c-aead727999f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\04.UI\10.Button">
+      <UniqueIdentifier>{573430cf-814d-43a6-87c0-b2e84bfe67c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -1107,6 +1110,9 @@
     <ClInclude Include="..\public\PortalUI.h">
       <Filter>02.GameObjects\99.GameObj\04.UI\09.PortalUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\PortalButton.h">
+      <Filter>02.GameObjects\99.GameObj\04.UI\10.Button</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1639,6 +1645,9 @@
     </ClCompile>
     <ClCompile Include="..\private\PortalUI.cpp">
       <Filter>02.GameObjects\99.GameObj\04.UI\09.PortalUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PortalButton.cpp">
+      <Filter>02.GameObjects\99.GameObj\04.UI\10.Button</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

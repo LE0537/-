@@ -34,3 +34,5 @@ extern bool		g_bRaceEnd;
 extern int		g_iRaceNum;
 
 using namespace Client;
+
+#define		DISSOLVEINDEX 1

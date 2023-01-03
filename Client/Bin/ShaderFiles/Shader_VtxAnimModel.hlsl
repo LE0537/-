@@ -2,8 +2,13 @@
 
 matrix			g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 texture2D		g_DiffuseTexture;
+texture2D		g_DissolveTexture;
 
 matrix			g_BoneMatrices[256];
+
+float			g_DissolveTimer;
+float			g_DissolveLifespan = 1.f;
+
 
 struct VS_IN
 {
@@ -72,6 +77,13 @@ struct PS_OUT
 	float4		vDepth : SV_TARGET2;
 
 };
+struct PS_OUT_DISSOLVE
+{
+	float4      vDiffuse : SV_TARGET0;
+	float4      vNormal : SV_TARGET1;
+	float4      vDepth : SV_TARGET2;
+	float4      vDissolve : SV_TARGET3;
+};
 struct PS_OUT_SHADOW
 {
 	float4			vLightDepth :  SV_TARGET0;
@@ -91,6 +103,49 @@ PS_OUT PS_MAIN(PS_IN In)
 
 	if (Out.vDiffuse.a <= 0.3f)
 		discard;
+
+	return Out;
+}
+PS_OUT_DISSOLVE PS_DISSOLVE(PS_IN In)
+{
+	PS_OUT_DISSOLVE      Out = (PS_OUT_DISSOLVE)0;
+
+	Out.vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
+	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1300.f, 0.f, 0.f);
+
+	if (Out.vDiffuse.a <= 0.3f)
+		discard;
+
+	/* Dissolve with Highlight */
+	float dissolveFactor = lerp(0, 1, g_DissolveTimer / g_DissolveLifespan);
+
+	/* If dissolveFactor:
+	== 0:   Should not Dissolve
+	== 1:   Should Dissolve Everything. */
+
+	float4 dissolveColor = g_DissolveTexture.Sample(LinearSampler, In.vTexUV);
+	dissolveColor.a = dissolveColor.y;
+	dissolveColor.yz = dissolveColor.x;
+
+	float dissolveValue = dissolveColor.r - dissolveFactor;
+
+	/* If dissolveValue:
+	> .15:      No Dissolve
+	0 ~ .15f:   Highlight
+	<= 0:      Dissolve. */
+
+
+	if (dissolveValue <= 0)
+		discard;
+	else if (dissolveValue < 0.15f)
+	{
+		float3 colorYellow = float3(1.f, 0.95f, 0.6f);
+		float3 colorOrange = float3(0.92f, 0.36f, 0.2f);
+
+		float3 lerpColor = lerp(colorOrange, colorYellow, dissolveValue / 0.15f);
+		Out.vDissolve.rgb = lerpColor;
+	}
 
 	return Out;
 }
@@ -169,5 +224,15 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_Shadow();
+	}
+	pass Dissolve   // 4
+	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_DISSOLVE();
 	}
 }

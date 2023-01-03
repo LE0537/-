@@ -90,6 +90,11 @@ void CGaromakguri::Tick(_float fTimeDelta)
 		}
 		else
 		{
+			if (m_bDissolve)
+			{
+				m_bDissolve = false;
+				m_fDissolveTime = 0.f;
+			}
 			if (m_PokemonInfo.bLvUp)
 				LvUp();
 		}
@@ -155,7 +160,8 @@ void CGaromakguri::Late_Tick(_float fTimeDelta)
 				}
 				else if (!g_bCaptureRender)
 				{
-					m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_SHADOWDEPTH, this);
+					if (!m_bDissolve)
+						m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_SHADOWDEPTH, this);
 					m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 				}
 			}
@@ -194,7 +200,7 @@ HRESULT CGaromakguri::Render()
 			if (FAILED(m_pModelCom->SetUp_Material(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 				return E_FAIL;
 
-			if (FAILED(m_pModelCom->Render(m_pShaderCom, i, 0)))
+			if (FAILED(m_pModelCom->Render(m_pShaderCom, i, (m_bDissolve == false) ? 0 : 4)))
 				return E_FAIL;
 		}
 	}
@@ -264,7 +270,8 @@ HRESULT CGaromakguri::Ready_Components()
 	/* For.Com_Renderer */
 	if (FAILED(__super::Add_Components(TEXT("Com_Renderer"), LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
-
+	if (FAILED(__super::Add_Components(TEXT("Com_Texture"), LEVEL_STATIC, TEXT("Prototype_Component_Texture_Dissolve"), (CComponent**)&m_pTextureCom)))
+		return E_FAIL;
 	/* For.Com_Transform */
 	CTransform::TRANSFORMDESC		TransformDesc;
 	ZeroMemory(&TransformDesc, sizeof(CTransform::TRANSFORMDESC));
@@ -706,7 +713,10 @@ void CGaromakguri::Battle(_float fTimeDelta)
 		m_pModelCom->Set_Loop(m_iAnimIndex);
 		m_pModelCom->Set_CurrentAnimIndex(m_iAnimIndex);
 		m_bDown = true;
+		m_bDissolve = true;
 	}
+	if (m_bDissolve)
+		m_fDissolveTime += 0.6f * fTimeDelta;
 
 	if(!m_bStopAnim)
 		m_pModelCom->Play_Animation(fTimeDelta * 1.1f);
@@ -829,6 +839,14 @@ HRESULT CGaromakguri::SetUp_ShaderResources()
 
 		if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &pGameInstance->Get_TransformFloat4x4_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
 			return E_FAIL;
+
+		if (m_bDissolve)
+		{
+			if (FAILED(m_pShaderCom->Set_RawValue("g_DissolveTimer", &m_fDissolveTime, sizeof(_float))))
+				return E_FAIL;
+			if (FAILED(m_pShaderCom->Set_ShaderResourceView("g_DissolveTexture", m_pTextureCom->Get_SRV(DISSOLVEINDEX))))
+				return E_FAIL;
+		}
 	}
 	else if (m_bOnOff)
 	{

@@ -94,6 +94,7 @@ private:
 	CGameObject*			m_EvolPoke = nullptr; //ÁøÈ­
 
 	_float					m_fSkillTime = 0.f;
+
 public:
 	static CSquirtle* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

@@ -121,6 +121,9 @@ protected:
 	_bool					m_bAnimReset = false;
 	_bool					m_bHitRender = false;
 	_bool					m_bSlowMotion = false;
+
+	_bool					m_bDissolve = false;
+	_float					m_fDissolveTime = 0.f;
 public:
 	POKEINFO Get_PokeInfo() {return m_PokemonInfo;}
 	PLAYERINFO Get_PalyerInfo() { return m_PlayerInfo; }

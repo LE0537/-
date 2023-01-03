@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿  Wigglytuff.cpp
   Wartortle.cpp
   Squirtle.cpp
@@ -15,4 +16,206 @@
   Meowth.cpp
   코드를 생성하고 있습니다...
   Client.vcxproj -> C:\Users\KING\Desktop\수업\-\Client\Default\..\Bin\Client.exe
+=======
+﻿  HydroPump.cpp
+  Client.cpp
+  Wigglytuff.cpp
+  Weed.cpp
+  WaterGun3.cpp
+  WaterGun2.cpp
+  WaterGun1.cpp
+  WaterGun.cpp
+  WaterBeam.cpp
+  WaterBall.cpp
+  WaterBadge.cpp
+  Wartortle.cpp
+  UI.cpp
+  Tree.cpp
+  TrailStar.cpp
+  Trail.cpp
+  Tr9.cpp
+  Tr8.cpp
+  Tr7.cpp
+  Tr6.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  Tr5.cpp
+  Tr4.cpp
+  Tr3.cpp
+  Tr2.cpp
+  Tr1.cpp
+  Tr0.cpp
+  Thunder3.cpp
+  Thunder2.cpp
+  Thunder1.cpp
+  Thunder.cpp
+  TextBox.cpp
+  TerrainBadge.cpp
+  Tackle3.cpp
+  Tackle2.cpp
+  Tackle.cpp
+  SuperBall.cpp
+  Squirtle.cpp
+  Sonia.cpp
+  Snorlax.cpp
+  Slowpoke.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  Slowbro.cpp
+  SkyBox.cpp
+  Scyther.cpp
+  Screen.cpp
+  Scissor2.cpp
+  Scissor1.cpp
+  Scissor.cpp
+  RockSlide3.cpp
+  RockSlide2.cpp
+  RockSlide1.cpp
+  RockSlide.cpp
+  Refract.cpp
+  Rattata.cpp
+  Raticate.cpp
+  RaceStar.cpp
+  Race.cpp
+  Psychic3.cpp
+  Psychic2.cpp
+  Psychic1.cpp
+  Psychic.cpp
+  코드를 생성하고 있습니다...
+c:\users\shout\desktop\과제\pokemon\갠폴\client\private\race.cpp(806): warning C4715: 'Client::CRace::RandPoke': 모든 제어 경로에서 값을 반환하지는 않습니다.
+  컴파일하고 있습니다...
+  PortalUI.cpp
+  PortalButton.cpp
+  Portal.cpp
+  PokeInfo.cpp
+  PokeDeck.cpp
+  Player.cpp
+  Pikachu.cpp
+  Persian.cpp
+  PPPotion.cpp
+  Onix.cpp
+  Olive.cpp
+  NoneSkill.cpp
+  NonePoke.cpp
+  None.cpp
+  MonsterBall.cpp
+  Mewtwo.cpp
+  Mew.cpp
+  Metapod.cpp
+  MegaPunch3.cpp
+  MegaPunch2.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  MegaPunch1.cpp
+  MegaPunch.cpp
+  MaxPotion.cpp
+  MasterBall.cpp
+  Mari.cpp
+  Magikarp.cpp
+  Lv_Up.cpp
+  Lickitung.cpp
+  Leaf.cpp
+  Land.cpp
+  Kangaskhan.cpp
+  Jigglypuff.cpp
+  IceBadge.cpp
+  HyperBall.cpp
+  HydroPump4.cpp
+  HydroPump3.cpp
+  HydroPump2.cpp
+  HydroPump1.cpp
+  HpPotion.cpp
+  Hit.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  Gyarados.cpp
+  GrassBadge.cpp
+  GhostBadge.cpp
+  Garomakguri.cpp
+  GameObj.cpp
+  FullPotion.cpp
+  FireBadge.cpp
+  FightBadge.cpp
+  Field.cpp
+c:\users\shout\desktop\과제\pokemon\갠폴\client\private\field.cpp(181): warning C4267: '인수': 'size_t'에서 'Engine::_int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  FairyBadge.cpp
+  ExpShare.cpp
+  Evolution.cpp
+  EvolLight4.cpp
+  EvolLight3.cpp
+c:\users\shout\desktop\과제\pokemon\갠폴\client\private\evollight3.cpp(40): warning C4244: '인수': 'Engine::_int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  EvolLight2.cpp
+  EvolLight.cpp
+  EvilBadge.cpp
+  EndingErr.cpp
+  Dratini.cpp
+  Dragonite.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  Dragonair.cpp
+  DragonPulse4.cpp
+  DragonPulse3.cpp
+  DragonPulse2.cpp
+  DragonPulse1.cpp
+  DragonPulse.cpp
+  DragonBadge.cpp
+  Dandel.cpp
+  CountDown.cpp
+  Charmander.cpp
+  Chansey.cpp
+  Caterpie.cpp
+  CaptureStar.cpp
+  CaptureEffect.cpp
+  Candy.cpp
+  Butterfree.cpp
+  BugBuzz3.cpp
+  BugBuzz2.cpp
+  BugBuzz1.cpp
+  BugBuzz.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  BreakCar1.cpp
+  BodyPress1.cpp
+  BodyPress.cpp
+  Blastoise.cpp
+  Bite2.cpp
+  Bite1.cpp
+  Bite.cpp
+  Beat.cpp
+  BattleUI.cpp
+  BattleIntro.cpp
+  BattleField.cpp
+  BattleEvent.cpp
+  BallRed2.cpp
+  BallRed.cpp
+  BallEffect6.cpp
+  BallEffect5.cpp
+  BallEffect4.cpp
+  BallEffect3.cpp
+  BallEffect2.cpp
+  BallEffect.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  Ball.cpp
+  Bag.cpp
+  BackGround.cpp
+  AnimSuperBall.cpp
+  AnimMonsterBall.cpp
+  AnimMasterBall.cpp
+  AnimHyperBall.cpp
+  Terrain.cpp
+  Meowth.cpp
+  MainApp.cpp
+  Loader.cpp
+  Level_Logo.cpp
+  Level_Loading.cpp
+  Level_GamePlay.cpp
+  Data_Manager.cpp
+  Camera_Dynamic.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  BreakCar.cpp
+  코드를 생성하고 있습니다...
+  Client.vcxproj -> C:\Users\shout\Desktop\과제\Pokemon\갠폴\Client\Default\..\Bin\Client.exe
+>>>>>>> jusin
   Client.vcxproj -> ..\Bin\Client.pdb (Full PDB)

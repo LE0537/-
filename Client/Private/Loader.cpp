@@ -275,6 +275,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Button"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Button/%d.png"), 1))))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Dissolve"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Dissolve/%d.png"), 3))))
+		return E_FAIL;
 	//Effect ÅØ½ºÃÄ
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Land"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Land/%d.png"), 16))))

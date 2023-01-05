@@ -1,3 +1,77 @@
-﻿  Level_GamePlay.cpp
-  Client.vcxproj -> C:\Users\KING\Desktop\수업\-\Client\Default\..\Bin\Client.exe
+﻿  Client.cpp
+  Wigglytuff.cpp
+  Wartortle.cpp
+  Squirtle.cpp
+  Snorlax.cpp
+  Slowpoke.cpp
+  Slowbro.cpp
+  Scyther.cpp
+  Rattata.cpp
+  Raticate.cpp
+  Pikachu.cpp
+  Persian.cpp
+  Onix.cpp
+  Mewtwo.cpp
+  Mew.cpp
+  Metapod.cpp
+  Mari.cpp
+  Magikarp.cpp
+  Lickitung.cpp
+  Kangaskhan.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  Jigglypuff.cpp
+  Gyarados.cpp
+  Garomakguri.cpp
+  Dratini.cpp
+  Dragonite.cpp
+  Dragonair.cpp
+  Charmander.cpp
+  Chansey.cpp
+  Caterpie.cpp
+  CaptureStar.cpp
+  CaptureEffect.cpp
+  Candy.cpp
+  Butterfree.cpp
+  BugBuzz3.cpp
+  BugBuzz2.cpp
+  BugBuzz1.cpp
+  BugBuzz.cpp
+  BreakCar1.cpp
+  BodyPress1.cpp
+  BodyPress.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  Blastoise.cpp
+  Bite2.cpp
+  Bite1.cpp
+  Bite.cpp
+  Beat.cpp
+  BattleUI.cpp
+  BattleIntro.cpp
+  BattleField.cpp
+  BattleEvent.cpp
+  BallRed2.cpp
+  BallRed.cpp
+  BallEffect6.cpp
+  BallEffect5.cpp
+  BallEffect4.cpp
+  BallEffect3.cpp
+  BallEffect2.cpp
+  BallEffect.cpp
+  Ball.cpp
+  Bag.cpp
+  BackGround.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  AnimSuperBall.cpp
+  AnimMonsterBall.cpp
+  AnimMasterBall.cpp
+  AnimHyperBall.cpp
+  Meowth.cpp
+  Camera_Dynamic.cpp
+  BreakCar.cpp
+  코드를 생성하고 있습니다...
+  LINK : ..\Bin\Client.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
+  Client.vcxproj -> C:\Users\shout\Desktop\과제\Pokemon\갠폴\Client\Default\..\Bin\Client.exe
   Client.vcxproj -> ..\Bin\Client.pdb (Full PDB)

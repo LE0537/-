@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 #include "Level_GamePlay.h"
+#include "SoundMgr.h"
 
 CEvolution::CEvolution(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObj(pDevice, pContext)
@@ -39,15 +40,28 @@ HRESULT CEvolution::Initialize(void * pArg)
 	m_pTransformCom->Set_Scale(XMLoadFloat3(&vScale));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 300.f, 1.f));
 
+	CSoundMgr::Get_Instance()->BGM_Stop();
+	CSoundMgr::Get_Instance()->PlayEffect(TEXT("Evol2.mp3"), 1.f);
+
 	return S_OK;
 }
 
 void CEvolution::Tick(_float fTimeDelta)
 {
+	if (!m_bSound)
+	{
+		CSoundMgr::Get_Instance()->BGM_Stop();
+		CSoundMgr::Get_Instance()->PlayEffect(TEXT("Evol2.mp3"), 1.f);
+		m_bSound = true;
+	}
 	Create_Light(fTimeDelta);
 
 	if (!g_bEvolution)
+	{
 		Set_Dead();
+		CSoundMgr::Get_Instance()->BGM_Stop();
+		CSoundMgr::Get_Instance()->PlayBGM(TEXT("hov.wav"), 0.45f);
+	}
 }
 
 void CEvolution::Late_Tick(_float fTimeDelta)

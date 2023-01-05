@@ -38,6 +38,7 @@ private:
 	_float4x4				m_ViewMatrix, m_ProjMatrix;
 
 	_float					m_fCreateTime = 0.f;
+	_bool					m_bSound = false;
 public:
 	static CEvolution* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

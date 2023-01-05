@@ -52,7 +52,7 @@ HRESULT CLevel_GamePlay::Initialize()
 void CLevel_GamePlay::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);	
-
+	ShowCursor(false);
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
 	if (pGameInstance->Key_Down(DIK_F1))

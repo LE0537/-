@@ -52,7 +52,7 @@ void CPortalButton::Tick(_float fTimeDelta)
 void CPortalButton::Late_Tick(_float fTimeDelta)
 {
 
-	if (!g_bRace && !g_Battle && nullptr != m_pRendererCom)
+	if (!g_bPokeDeck && !g_PokeInfo && !g_bBag && !g_bRace && !g_Battle && nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
 
 }

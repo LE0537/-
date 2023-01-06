@@ -48,7 +48,7 @@ HRESULT CMari::Initialize(void * pArg)
 		return E_FAIL;
 	m_vecPoke.push_back(tInfo);
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_NonePoke"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Scyther"), LEVEL_STATIC, TEXT("Layer_Pokemon"), &tInfo)))
 		return E_FAIL;
 	m_vecPoke.push_back(tInfo);
 
@@ -70,7 +70,7 @@ HRESULT CMari::Initialize(void * pArg)
 
 	RELEASE_INSTANCE(CGameInstance);
 
-	m_iPokeMaxSize = 0;
+	m_iPokeMaxSize = 1;
 	m_iPokeSize = 0;
 	m_PlayerInfo.strName = L"¸¶¸®";
  	m_PlayerInfo.bEvent = false;

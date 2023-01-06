@@ -47,6 +47,8 @@ public:
 	HRESULT Ready_Layer_UI(const _tchar* pLayerTag);
 private:
 	void Load();
+	void Load_Weed();
+	void Load_Weed2();
 	void LoadCamPos();
 	void LoadBattle();
 	void LoadRace();

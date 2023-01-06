@@ -205,6 +205,7 @@
     <ClInclude Include="..\public\Butterfree.h" />
     <ClInclude Include="..\Public\Camera_Dynamic.h" />
     <ClInclude Include="..\public\Candy.h" />
+    <ClInclude Include="..\public\Candy2.h" />
     <ClInclude Include="..\public\CaptureEffect.h" />
     <ClInclude Include="..\public\CaptureStar.h" />
     <ClInclude Include="..\public\Caterpie.h" />
@@ -388,6 +389,7 @@
     <ClCompile Include="..\private\Butterfree.cpp" />
     <ClCompile Include="..\Private\Camera_Dynamic.cpp" />
     <ClCompile Include="..\private\Candy.cpp" />
+    <ClCompile Include="..\private\Candy2.cpp" />
     <ClCompile Include="..\private\CaptureEffect.cpp" />
     <ClCompile Include="..\private\CaptureStar.cpp" />
     <ClCompile Include="..\private\Caterpie.cpp" />

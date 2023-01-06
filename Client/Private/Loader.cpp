@@ -88,6 +88,7 @@
 #include "MaxPotion.h"
 #include "PPPotion.h"
 #include "Candy.h"
+#include "Candy2.h"
 #include "ExpShare.h"
 #include "None.h"
 #include "Ball.h"
@@ -479,6 +480,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Candy"),
 		CCandy::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Candy2"),
+		CCandy2::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_ExpShare"),
 		CExpShare::Create(m_pDevice, m_pContext))))

@@ -562,6 +562,9 @@
     <Filter Include="02.GameObjects\99.GameObj\04.UI\10.Button">
       <UniqueIdentifier>{573430cf-814d-43a6-87c0-b2e84bfe67c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.GameObj\03.Item\14.Candy2">
+      <UniqueIdentifier>{ba1264ee-da59-406b-a64d-9eda7b3485c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -1113,6 +1116,9 @@
     <ClInclude Include="..\public\PortalButton.h">
       <Filter>02.GameObjects\99.GameObj\04.UI\10.Button</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Candy2.h">
+      <Filter>02.GameObjects\99.GameObj\03.Item\14.Candy2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1648,6 +1654,9 @@
     </ClCompile>
     <ClCompile Include="..\private\PortalButton.cpp">
       <Filter>02.GameObjects\99.GameObj\04.UI\10.Button</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Candy2.cpp">
+      <Filter>02.GameObjects\99.GameObj\03.Item\14.Candy2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

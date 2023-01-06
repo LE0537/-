@@ -82,7 +82,7 @@ HRESULT CBag::Initialize(void * pArg)
 	tInfoItem->iNum = 99;
 	m_vecItem.push_back(tInfoItem);
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Candy"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Candy2"), LEVEL_STATIC, TEXT("Layer_Item"), &tInfoItem)))
 		return E_FAIL;
 	tInfoItem->iNum = 99;
 	m_vecItem.push_back(tInfoItem);
@@ -873,7 +873,7 @@ void CBag::Key_Input()
 				case 0:
 					if (m_vecItem[m_iItemPos]->iItemNum == 4 || m_vecItem[m_iItemPos]->iItemNum == 6 ||
 						m_vecItem[m_iItemPos]->iItemNum == 11 || m_vecItem[m_iItemPos]->iItemNum == 12 ||
-						m_vecItem[m_iItemPos]->iItemNum == 13)
+						m_vecItem[m_iItemPos]->iItemNum == 13 || m_vecItem[m_iItemPos]->iItemNum == 14)
 					{
 						SetSelectButtonPoke(m_iPokeSelect, DIR_LEFT);
 						m_bItem = true;
@@ -1273,6 +1273,15 @@ void CBag::UseItem()
 		break;
 	case 13:
 		dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_PokeEXP(dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().iMaxExp);
+		--(*iter)->iNum;
+		m_iLvPokeIndex = m_iPokeSelect;
+		m_iLvUp = true;
+		break;
+	case 14:
+		for (_int i = 0; i < 10; ++i)
+		{
+			dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Set_PokeEXP(dynamic_cast<CGameObj*>(m_vecPoke[m_iPokeSelect])->Get_PokeInfo().iMaxExp);
+		}
 		--(*iter)->iNum;
 		m_iLvPokeIndex = m_iPokeSelect;
 		m_iLvUp = true;
